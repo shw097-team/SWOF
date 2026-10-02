@@ -1,8 +1,21 @@
 # SWOF / SWOF GENIE
 
 Greenfield construction root for the SWOF / SWOF GENIE system, built under the HG-KSEOS
-governance control plane from the frozen pre-construction baseline
-(`SWOF-PRECONSTRUCTION-001`, externally accepted).
+governance control plane from the frozen pre-construction baseline.
+
+Baseline locator (external acceptance evidence, outside this repository):
+
+```text
+order            SWOF-PRECONSTRUCTION-001
+external verdict PASS / PRECONSTRUCTION_EXTERNAL_ACCEPTANCE_GRANTED
+closure receipt  HG-KSEOS/evidence/swof-construction-002/closure/
+                 SWOF_PRECONSTRUCTION_EXTERNAL_PASS_CLOSURE_RECEIPT.json
+receipt sha256   2e9a7c9d2a59aba6af0a9fee0932a973e5fc58b8103e210effffae627111d03a
+accepted ZIP     3b18c4e6...445c1 (25,605,869 bytes, 36 members)
+```
+
+That acceptance covers the **pre-construction baseline only**. It does not accept this
+repository, which is unreviewed W0 work.
 
 ## Status
 
