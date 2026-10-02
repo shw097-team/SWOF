@@ -1,0 +1,37 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/knowledge/retrieval_lifecycle.schema.json",
+ "title": "Retrieval lifecycle + orthogonality of the four objects (PI-PKG-05 D05-H1-03)",
+ "type": "object",
+ "required": [
+  "lifecycle",
+  "invariants"
+ ],
+ "properties": {
+  "lifecycle": {
+   "const": [
+    "QUERY_RECEIVED",
+    "CLASSIFIED",
+    "AUTH_SCOPE_RESOLVED",
+    "PLAN_DRAFTED",
+    "PLAN_VALIDATED",
+    "CANDIDATE_GENERATION_READY",
+    "EXECUTION_PENDING",
+    "CANDIDATES_RETURNED",
+    "GENERATION_RECHECKED",
+    "GROUNDING_PENDING",
+    "GROUNDED",
+    "EVALUATED",
+    "IF05B_READY"
+   ]
+  },
+  "invariants": {
+   "type": "array",
+   "minItems": 5
+  },
+  "grounded_option_never_is_acceptance": {
+   "const": true
+  }
+ },
+ "additionalProperties": true
+}
