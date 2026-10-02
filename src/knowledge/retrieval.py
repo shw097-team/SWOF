@@ -67,8 +67,22 @@ class CandidateEnvelope:
     locator: str
     eligible: bool
     state: str = "RETRIEVED"
+    eligibility_source: str = "CALLER_ASSERTED"
+
+    @classmethod
+    def from_trust(cls, *, candidate_id: str, source_id: str, generation: int, score: float,
+                   locator: str, validity, use_class: str, required_purpose: str) -> "CandidateEnvelope":
+        """R-2: derive eligibility from the SourceValidityVector facets, not from the caller."""
+        from .trust import evaluate_eligibility
+        d = evaluate_eligibility(validity, use_class=use_class, required_purpose=required_purpose)
+        return cls(candidate_id=candidate_id, source_id=source_id, generation=generation, score=score,
+                   locator=locator, eligible=d.eligible, eligibility_source=f"TRUST_DERIVED:{d.reason}")
 
     def as_grounding_input(self) -> "CandidateEnvelope":
+        if self.eligibility_source == "CALLER_ASSERTED":
+            raise GroundingDefect(
+                "R-2: this candidate's eligibility was CALLER-ASSERTED; grounding requires eligibility "
+                "DERIVED from the source trust facets (use CandidateEnvelope.from_trust)")
         if not self.eligible:
             raise GroundingDefect(
                 f"candidate {self.candidate_id} is RETRIEVED but not ELIGIBLE; retrieval != eligibility")

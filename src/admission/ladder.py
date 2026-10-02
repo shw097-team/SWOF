@@ -71,6 +71,14 @@ def assert_build_new_exception_allowed(candidates: list[CandidateDisposition]) -
     if survivors:
         raise AdmissionDefect(
             f"BUILD_NEW_EXCEPTION refused: earlier dispositions still material: {survivors}")
+    # R-1: a claimed material failure must be EVIDENCED (PI-PKG-05 19 'requires evidence ...').
+    unevidenced = [c.disposition for c in candidates
+                   if c.disposition in EXTERNAL_DISPOSITIONS + ("BUILD_MINIMUM",)
+                   and c.materially_fails and not c.evidence_ref]
+    if unevidenced:
+        raise AdmissionDefect(
+            f"BUILD_NEW_EXCEPTION refused: material failure asserted WITHOUT evidence for {unevidenced}; "
+            f"PI-PKG-05 19 requires evidence that all earlier dispositions fail materially")
 
 
 def assert_anti_downgrade(technology: str, prior: str, proposed: str) -> None:

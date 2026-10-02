@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
 
 from knowledge.retrieval import (  # noqa: E402
+    CandidateEnvelope as _CE,
     CandidateEnvelope, GroundingDefect, GroundingResult, RetrievalEvaluation, RetrievalPlan,
     ScopeWidening,
 )
@@ -44,3 +45,34 @@ class TestRetrievalObjects(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    def test_caller_asserted_eligibility_refuses_grounding(self):
+        """R-2: eligibility must be DERIVED from trust facets, not asserted by the caller."""
+        c = _CE("C9", "s1", 1, 0.99, "loc", eligible=True)
+        with self.assertRaises(GroundingDefect) as e:
+            c.as_grounding_input()
+        self.assertIn("CALLER-ASSERTED", str(e.exception))
+
+    def test_trust_derived_eligibility_allows_grounding(self):
+        from knowledge.trust import Freshness, Provenance, Revocation, Rights, SourceValidityVector
+        from knowledge.retrieval import CandidateEnvelope
+        v = SourceValidityVector(rights=Rights.GRANTED, freshness=Freshness.CURRENT,
+                                 revocation=Revocation.LIVE, provenance=Provenance.VERIFIED,
+                                 generation=1, purpose="research")
+        c = CandidateEnvelope.from_trust(candidate_id="C10", source_id="s1", generation=1, score=0.5,
+                                         locator="loc", validity=v, use_class="Q",
+                                         required_purpose="research")
+        self.assertTrue(c.eligible)
+        self.assertTrue(c.eligibility_source.startswith("TRUST_DERIVED:"))
+        c.as_grounding_input()  # must not raise
+
+    def test_trust_derived_ineligible_cannot_ground(self):
+        from knowledge.trust import Freshness, Provenance, Revocation, Rights, SourceValidityVector
+        from knowledge.retrieval import CandidateEnvelope
+        v = SourceValidityVector(rights=Rights.DENIED, freshness=Freshness.CURRENT,
+                                 revocation=Revocation.LIVE, provenance=Provenance.VERIFIED, generation=1)
+        c = CandidateEnvelope.from_trust(candidate_id="C11", source_id="s2", generation=1, score=0.99,
+                                         locator="loc", validity=v, use_class="Q", required_purpose="")
+        self.assertFalse(c.eligible)
+        with self.assertRaises(GroundingDefect):
+            c.as_grounding_input()
