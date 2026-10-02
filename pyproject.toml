@@ -1,0 +1,9 @@
+[project]
+name = "swof"
+version = "0.0.0"
+description = "SWOF / SWOF GENIE - construction under HG-KSEOS governance"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

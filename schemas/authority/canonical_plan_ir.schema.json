@@ -1,0 +1,50 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/authority/canonical_plan_ir.schema.json",
+ "title": "Canonical Plan IR guard (PI-PKG-00 2.3)",
+ "description": "Guards the exactly-one-canonical-plan-IR invariant. Projections and adapters must never be promoted to a parent semantic root.",
+ "type": "object",
+ "required": [
+  "canonical_plan_ir_count",
+  "projections"
+ ],
+ "properties": {
+  "canonical_plan_ir_count": {
+   "const": 1
+  },
+  "projections": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "kind",
+     "is_semantic_authority"
+    ],
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "kind": {
+      "enum": [
+       "PRODUCT_IR",
+       "STACK_IR",
+       "SQS_IR",
+       "PACKAGE_VIEW",
+       "PROVIDER_PROFILE",
+       "OPENSPEC_ARTIFACT",
+       "SPEC_KIT_ARTIFACT",
+       "GSD_FILE",
+       "VENDOR_SCHEMA"
+      ]
+     },
+     "is_semantic_authority": {
+      "const": false
+     }
+    },
+    "additionalProperties": true
+   }
+  }
+ },
+ "additionalProperties": true
+}
