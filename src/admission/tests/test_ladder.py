@@ -108,18 +108,18 @@ class TestRegister(unittest.TestCase):
         with self.assertRaises(AdmissionDefect):
             self.reg.get("NoSuchTech")
 
-def test_build_new_exception_needs_evidenced_failures(self):
-    """R-1: material failure asserted WITHOUT evidence must not satisfy the BUILD_NEW_EXCEPTION gate."""
-    with self.assertRaises(AdmissionDefect) as c:
-        assert_build_new_exception_allowed([
-            CandidateDisposition("REUSE", materially_fails=True, evidence_ref=""),
-            CandidateDisposition("WRAP", materially_fails=True, evidence_ref="e2"),
-            CandidateDisposition("TRANSLATE", materially_fails=True, evidence_ref="e3"),
-            CandidateDisposition("ADAPT", materially_fails=True, evidence_ref="e4"),
-            CandidateDisposition("COMPOSE", materially_fails=True, evidence_ref="e5"),
-            CandidateDisposition("BUILD_MINIMUM", materially_fails=True, evidence_ref="e6"),
-            CandidateDisposition("BUILD_NEW_EXCEPTION")])
-    self.assertIn("WITHOUT evidence", str(c.exception))
+    def test_build_new_exception_needs_evidenced_failures(self):
+        """R-1: material failure asserted WITHOUT evidence must not satisfy the BUILD_NEW_EXCEPTION gate."""
+        with self.assertRaises(AdmissionDefect) as c:
+            assert_build_new_exception_allowed([
+                CandidateDisposition("REUSE", materially_fails=True, evidence_ref=""),
+                CandidateDisposition("WRAP", materially_fails=True, evidence_ref="e2"),
+                CandidateDisposition("TRANSLATE", materially_fails=True, evidence_ref="e3"),
+                CandidateDisposition("ADAPT", materially_fails=True, evidence_ref="e4"),
+                CandidateDisposition("COMPOSE", materially_fails=True, evidence_ref="e5"),
+                CandidateDisposition("BUILD_MINIMUM", materially_fails=True, evidence_ref="e6"),
+                CandidateDisposition("BUILD_NEW_EXCEPTION")])
+        self.assertIn("WITHOUT evidence", str(c.exception))
 
 
 if __name__ == "__main__":
