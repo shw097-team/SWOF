@@ -19,7 +19,17 @@ repository, which is unreviewed W0 work.
 
 ## Status
 
-**W0 only** - constitution and repository foundation. W1-W5 are `PLANNED_NOT_DISPATCHED`.
+**W0 and W1 complete locally.** W2-W5 are `PLANNED_NOT_DISPATCHED`.
+
+| Wave | Scope | State |
+|---|---|---|
+| W0 | constitution, repo foundation, PD04 packet factory | IMPLEMENTED + INDEPENDENTLY VERIFIED |
+| W1 | narrow waist: `src/fabric`, `src/knowledge`, `src/admission` | IMPLEMENTED + INDEPENDENTLY VERIFIED |
+| W2-W5 | security/assurance, product surfaces, ops/research, migration/handoff | PLANNED_NOT_DISPATCHED |
+
+**This is a W1-stage snapshot with a REDUCED claim.** It is NOT externally accepted,
+NOT released, NOT production. External acceptance of W0-W5 as a whole has not been
+performed and must not be inferred from any verdict on this snapshot.
 
 ## Layout (W0)
 
@@ -37,9 +47,19 @@ may land in W0.
 
 ## Verification
 
+`src/` is not an importable package root, so each subsystem test root must be
+run separately. All four roots are green:
+
 ```bash
-python -m unittest discover -s tests -t .
+python -m unittest discover -s tests -t .   # 15 tests
+python -m unittest discover -s src/fabric/tests -t src/fabric/tests   # 21 tests
+python -m unittest discover -s src/knowledge/tests -t src/knowledge/tests   # 25 tests
+python -m unittest discover -s src/admission/tests -t src/admission/tests   # 17 tests
 ```
+
+Aggregate: **78 tests**, 0 failures.
+
+A structural hygiene guard (`tests/test_test_hygiene.py`) fails the suite if any test is defined after an `if __name__ == "__main__"` guard, since such tests are silently never collected.
 
 ## Authority
 
