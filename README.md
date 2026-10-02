@@ -31,19 +31,26 @@ repository, which is unreviewed W0 work.
 NOT released, NOT production. External acceptance of W0-W5 as a whole has not been
 performed and must not be inferred from any verdict on this snapshot.
 
-## Layout (W0)
+## Layout
 
 ```text
 AGENTS.md              operative agent constitution
 docs/constitution/     authority / non-goals
-schemas/authority/     machine-checkable authority guards
-tests/                 W0 bootstrap tests
+schemas/authority/     machine-checkable authority guards (W0)
+schemas/pd04/          construction-packet route guards (W0-003)
+schemas/fabric/        narrow-waist + CapabilityContract guards (W1-001)
+schemas/knowledge/     source-trust orthogonality + retrieval lifecycle (W1-002)
+schemas/admission/     admission-ladder guards (W1-003)
+tools/pd04/            PD04 construction-packet factory (W0-003)
+src/fabric/            provider-neutral narrow waist + binder (W1-001)
+src/knowledge/         Data Brain: trust facets, retrieval, source-as-DATA (W1-002)
+src/admission/         Search-Before-Build admission ladder (W1-003)
+tests/, src/*/tests/   test suites (each subsystem root is discovered separately)
 config/                workspace + runtime configuration
 ```
 
-`src/` is deliberately **absent**: the admitted write-sets grant `src/<subsystem>/` to
-W1+ only (W1-001 `src/fabric`, W1-002 `src/knowledge`, ...). No semantic implementation
-may land in W0.
+`src/<subsystem>/` is granted to W1+ by the admitted write-sets; W0 itself introduces no
+semantic implementation. Each subsystem owns its own test root under `src/<subsystem>/tests/`.
 
 ## Verification
 
