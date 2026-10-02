@@ -1,0 +1,39 @@
+{
+ "schema": "SWOF-W0-HERMETIC-001-CLOSURE/1",
+ "at_utc": "2026-10-02T16:52:37Z",
+ "under_workorder_authority": "WO-SWOF-W0-002 (tests/)",
+ "fixes": [
+  {
+   "id": "W0-HERMETIC-001",
+   "status": "FIXED",
+   "detail": "branch-name assertion replaced by the codex/* convention; export/CI checkouts now skip instead of failing"
+  }
+ ],
+ "tests": {
+  "tests": {
+   "ran": 15,
+   "rc": 0,
+   "fail": null
+  },
+  "src/fabric/tests": {
+   "ran": 21,
+   "rc": 0,
+   "fail": null
+  },
+  "src/knowledge/tests": {
+   "ran": 25,
+   "rc": 0,
+   "fail": null
+  },
+  "src/admission/tests": {
+   "ran": 17,
+   "rc": 0,
+   "fail": null
+  }
+ },
+ "aggregate": 78,
+ "all_rc_zero": true,
+ "verdict": "PASS",
+ "branch": "codex/swof-w1-stage",
+ "target_head": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b"
+}

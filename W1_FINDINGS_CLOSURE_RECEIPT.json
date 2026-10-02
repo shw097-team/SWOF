@@ -1,0 +1,57 @@
+{
+ "schema": "SWOF-W1-CHECKER-FINDINGS-CLOSURE/1",
+ "at_utc": "2026-10-02T16:38:58Z",
+ "checker_lane": "deleg_8acba964",
+ "checker_verdict": "PASS",
+ "fixes": [
+  {
+   "id": "R-1",
+   "file": "src/admission/ladder.py",
+   "status": "FIXED",
+   "detail": "BUILD_NEW_EXCEPTION now requires a non-empty evidence_ref for every materially-failing earlier disposition"
+  },
+  {
+   "id": "R-2",
+   "file": "src/knowledge/retrieval.py",
+   "status": "FIXED",
+   "detail": "added CandidateEnvelope.from_trust(); caller-asserted eligibility now refuses grounding"
+  }
+ ],
+ "reduced_claims": [],
+ "admitted_write_set": [
+  "SWOF/src/knowledge/*",
+  "SWOF/schemas/knowledge/*",
+  "SWOF/src/admission/*",
+  "SWOF/schemas/admission/*"
+ ],
+ "outside_write_set": [],
+ "write_set_containment_ok": true,
+ "tests": {
+  "ran": 71,
+  "ok": false,
+  "roots": {
+   "tests": {
+    "rc": 0,
+    "ran": 13,
+    "fail": null
+   },
+   "src/fabric/tests": {
+    "rc": 0,
+    "ran": 21,
+    "fail": null
+   },
+   "src/knowledge/tests": {
+    "rc": 1,
+    "ran": 21,
+    "fail": "FAILED (failures=1)"
+   },
+   "src/admission/tests": {
+    "rc": 0,
+    "ran": 16,
+    "fail": null
+   }
+  }
+ },
+ "verdict": "FAIL",
+ "target_head": "3805beb1d894aa28e980f6bb557d0b92451ff4a3"
+}

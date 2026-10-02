@@ -1,0 +1,22 @@
+{
+ "schema": "SWOF-CW3-README-SYNC/1",
+ "corrective_id": "CW-3",
+ "at_utc": "2026-10-02T16:47:12Z",
+ "under_workorder_authority": "WO-SWOF-W0-002 (README.md write-set)",
+ "trigger": "W1_FINAL_STAGE_VERIFICATION residual: README status stale and would mislead a repo-reading external officer",
+ "test_counts": {
+  "tests": 15,
+  "src/fabric/tests": 21,
+  "src/knowledge/tests": 25,
+  "src/admission/tests": 17
+ },
+ "aggregate": 78,
+ "pre_change_head": "72098aa9dd2cba56778ebf9b2bfcf48592604a89",
+ "post_change": {
+  "tests": 78,
+  "all_rc_zero": true,
+  "hygiene_guard_rc": 0
+ },
+ "verdict": "PASS",
+ "target_head": "175fd1403cf3585c9fb108e9c13d278681ddc17f"
+}

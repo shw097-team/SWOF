@@ -1,0 +1,46 @@
+{
+ "schema": "SWOF-EVIDENCE-MANIFEST/1",
+ "subject_source_candidate_sha": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b",
+ "items": [
+  {
+   "path": "DEFECT_LEDGER.json",
+   "sha256": "747dde5d24ed548e7acea97c7e18ea65de2e1173e242475d1219925ceff9b4b8",
+   "bytes": 2506
+  },
+  {
+   "path": "EVIDENCE_README.md",
+   "sha256": "fee9fc0652a40f17ea375d23676394c0660e83e7aa0a853b098dd2f5a5175979",
+   "bytes": 1745
+  },
+  {
+   "path": "W0_002_CORRECTIVE_CW3_RECEIPT.json",
+   "sha256": "71fe3a079273adf9be4af83ed57ec6b6abb09ce97b2e1feb847379e8db4ade27",
+   "bytes": 680
+  },
+  {
+   "path": "W0_HERMETIC_001_CLOSURE_RECEIPT.json",
+   "sha256": "8333ddf45d9f7f3885b7c3a17e4b81175c25101af5d7f257910e6ac5763c5eab",
+   "bytes": 820
+  },
+  {
+   "path": "W1_002_EXECUTION_RECEIPT.json",
+   "sha256": "345dfcc81da0a9596d5da15a74c724688a6d572795ec785955ed3ddfce15928a",
+   "bytes": 1471
+  },
+  {
+   "path": "W1_003_EXECUTION_RECEIPT.json",
+   "sha256": "82add0af92b2ae310f33e16a6138053ccbdcc790b626ff91cff2cf4bcfea9ad4",
+   "bytes": 1244
+  },
+  {
+   "path": "W1_FINDINGS_CLOSURE_RECEIPT.json",
+   "sha256": "d5c9a979282cfda58e94d59bddc6e86bb3c3dad3b278f1caa8235cdea26973c6",
+   "bytes": 1298
+  },
+  {
+   "path": "W1_LOCAL_CLOSURE_AND_INDEPENDENT_RECEIPT.json",
+   "sha256": "d5646a25c4548d7367e1ff6b162a56f0d24ed331f7e98e849bd3acd38d3a9b41",
+   "bytes": 6420
+  }
+ ]
+}

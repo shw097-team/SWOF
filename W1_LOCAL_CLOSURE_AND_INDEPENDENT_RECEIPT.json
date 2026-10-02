@@ -1,0 +1,179 @@
+{
+ "schema": "SWOF-W1-LOCAL-CLOSURE-AND-INDEPENDENT-RECEIPT/1",
+ "order_id": "SWOF-CONSTRUCTION-002",
+ "wave": "W1",
+ "at_utc": "2026-10-02T16:49:02Z",
+ "subject": {
+  "target_root": "C:/Projects/Agent_Workspace/SWOF",
+  "branch": "codex/swof-w0-construction",
+  "head": "9fa8e06a5dbd246bf8e128b22d8aecb213a9fc77",
+  "clean_workspace": true,
+  "tracked_files": 47,
+  "commits": [
+   "9fa8e06 CW-3b: remove false 'src/ deliberately absent' claim; sync layout for W1 subsystems",
+   "175fd14 CW-3: README sync for external readers (W0+W1 state, 78 tests, reduced claim)",
+   "72098aa CW-2c: rename guard helper so it is not mistaken for a test; all 78 tests collected",
+   "b8a6775 CW-2b: re-indent moved tests into their classes; guard probe name fixed",
+   "c9a0f71 CW-2: fix dead-test recurrence (DEFECT-W1-004) + structural hygiene guard",
+   "eb0ee93 W1 findings closure: evidenced-failure gate + trust-derived eligibility; tests aligned",
+   "3805beb W1 findings closure: BUILD_NEW_EXCEPTION needs evidenced failures; eligibility derived from trust facets",
+   "8edf244 W1-002 knowledge/data-brain seam + W1-003 admission seam; W1-003 negative gate enforced",
+   "8d2c59d W1-001 findings closure: R-1 dead regression test fixed (claim corrected)",
+   "03d0aa2 W1-001: provider-neutral fabric seam + PD04 factory defects fixed; CW-1 wave-scoped test repair",
+   "f014d56 W0 corrective: citation accuracy (RBWI 10.4 mutation law; baseline locator)",
+   "01454b6 W0-003: PD04 construction-packet factory + route predicate",
+   "3bdfc52 W0: tests package init; W0 test suite green",
+   "83f577a W0-002 corrective: strict write-set compliance + stdlib test runner",
+   "acdbfaa W0: constitution + repository foundation"
+  ]
+ },
+ "verdict": "PASS",
+ "maker_identity": "Hermes (bounded runtime/orchestrator)",
+ "workorders": {
+  "WO-SWOF-W1-001": {
+   "objective": "Execution / provider-neutral fabric seam",
+   "state": "IMPLEMENTED_TESTED_VERIFIED",
+   "artifacts": [
+    "src/fabric/capability_contract.py",
+    "src/fabric/binding.py",
+    "schemas/fabric/*"
+   ]
+  },
+  "WO-SWOF-W1-002": {
+   "objective": "Data Brain / retrieval / grounding seam",
+   "state": "IMPLEMENTED_TESTED_VERIFIED",
+   "artifacts": [
+    "src/knowledge/trust.py",
+    "src/knowledge/retrieval.py",
+    "src/knowledge/injection.py",
+    "schemas/knowledge/*"
+   ]
+  },
+  "WO-SWOF-W1-003": {
+   "objective": "Search-Before-Build / technology admission seam",
+   "state": "IMPLEMENTED_TESTED_VERIFIED",
+   "artifacts": [
+    "src/admission/ladder.py",
+    "schemas/admission/*"
+   ]
+  }
+ },
+ "tests": {
+  "roots": {
+   "tests": 15,
+   "src/fabric/tests": 21,
+   "src/knowledge/tests": 25,
+   "src/admission/tests": 17
+  },
+  "total": 78,
+  "every_defined_test_collected": true,
+  "hygiene_guard": "tests/test_test_hygiene.py (falsifiable: fails on a poisoned tree)"
+ },
+ "w1_exit_predicate": {
+  "source_retrieval_profiles_provider_seams_closed": true,
+  "named_capability_ledgers_consumed": "PARTIAL - carry-forward refs are recorded in the PD04 packets; ledger row consumption is not yet exercised end-to-end",
+  "fallback_provider_off_available": "PARTIAL - binding requires exit/fallback/rollback before BOUND (enforced); a full provider-off runtime drill is deferred",
+  "all_three_seams_implemented": true,
+  "verdict": "W1_EXIT_SUBSTANTIALLY_SATISFIED_WITH_TWO_REDUCED_SUBCLAIMS"
+ },
+ "independent_checkers": [
+  {
+   "lane": "deleg_fdea89ae",
+   "head": "f014d567",
+   "scope": "W0",
+   "verdict": "PASS"
+  },
+  {
+   "lane": "deleg_d8765cab",
+   "head": "03d0aa2e",
+   "scope": "W1-001",
+   "verdict": "PARTIAL -> 2 defects"
+  },
+  {
+   "lane": "deleg_cf9c30ff",
+   "head": "8d2c59d3",
+   "scope": "W1-001 R-1/R-2 closure",
+   "verdict": "PASS"
+  },
+  {
+   "lane": "deleg_8acba964",
+   "head": "8edf244f",
+   "scope": "W1-002 + W1-003",
+   "verdict": "PASS -> 2 residuals"
+  },
+  {
+   "lane": "deleg_d3fd92ea",
+   "head": "eb0ee93f",
+   "scope": "R-1/R-2 closure",
+   "verdict": "PASS -> found DEFECT-W1-004 recurrence"
+  },
+  {
+   "lane": "deleg_08156f09",
+   "head": "72098aa9",
+   "scope": "W1 final stage",
+   "verdict": "PASS"
+  },
+  {
+   "lane": "deleg_73a52a82",
+   "head": "9fa8e06a",
+   "scope": "docs delta",
+   "verdict": "PASS"
+  }
+ ],
+ "defects_found_and_fixed": [
+  {
+   "id": "DEFECT-W1-001",
+   "detail": "from_mapping constructed before validating -> TypeError instead of CONTRACT_INVALID"
+  },
+  {
+   "id": "DEFECT-W1-002",
+   "detail": "content_digest included mutable binding state so the subject key moved on binding"
+  },
+  {
+   "id": "DEFECT-W1-003",
+   "detail": "own test wrongly asserted the narrow waist ends at CapabilityContract (it ends at HarnessABI)"
+  },
+  {
+   "id": "DEFECT-W1-003-001",
+   "detail": "BUILD_NEW_EXCEPTION was reachable without any evidence (law documented, unenforced)"
+  },
+  {
+   "id": "R-2",
+   "detail": "CandidateEnvelope.eligible was caller-supplied; eligibility now DERIVED from trust facets"
+  },
+  {
+   "id": "DEFECT-W1-004",
+   "detail": "RECURRENCE of the dead-test pattern: 4 new regression tests sat after the __main__ guard and were never collected while the receipt claimed 72 passing. Fixed and a structural guard added."
+  },
+  {
+   "id": "CW-1/CW-3/CW-3b",
+   "detail": "W0-002-authority correctives: wave-scoped test repair; README sync (removed two now-FALSE statements that would mislead a repo-reading officer)"
+  }
+ ],
+ "accepted_residuals": [
+  {
+   "id": "R-W1-A",
+   "detail": "hygiene guard is regex-based rather than AST; decorator-only or non-def forms would evade it (they are not unittest-collectable anyway)",
+   "disposition": "ACCEPTED_LOW_RISK"
+  },
+  {
+   "id": "R-W1-B",
+   "detail": "README lines 17-18 say 'unreviewed W0 work' - imprecise now W1 exists but scoped to the baseline disclaimer",
+   "disposition": "ACCEPTED_COSMETIC"
+  },
+  {
+   "id": "R-W1-C",
+   "detail": "named-capability ledger row consumption and a full provider-off runtime drill are deferred",
+   "disposition": "REDUCED_SUBCLAIM_DISCLOSED"
+  }
+ ],
+ "checkpoint": "CKPT-SWOF-W1-002",
+ "resume_token": "RESUME:SWOF-CONSTRUCTION-002.W2_DISPATCH_OR_W1_LEDGER_CLOSURE",
+ "non_claims": [
+  "NOT_EXTERNALLY_ACCEPTED",
+  "NO_REMOTE_MERGE",
+  "NO_RELEASE",
+  "NO_PRODUCTION",
+  "W2_W5_NOT_DISPATCHED"
+ ]
+}

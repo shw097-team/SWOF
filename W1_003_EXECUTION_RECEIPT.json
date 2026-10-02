@@ -1,0 +1,53 @@
+{
+ "schema": "SWOF-W1-003-EXECUTION/1",
+ "workorder_id": "WO-SWOF-W1-003",
+ "at_utc": "2026-10-02T16:35:03Z",
+ "admitted_write_set": [
+  "SWOF/src/admission/*",
+  "SWOF/schemas/admission/*"
+ ],
+ "files": [
+  "src/admission/__init__.py",
+  "src/admission/README.md",
+  "src/admission/ladder.py",
+  "src/admission/tests/__init__.py",
+  "src/admission/tests/test_ladder.py",
+  "schemas/admission/technology_row.schema.json",
+  "schemas/admission/README.md"
+ ],
+ "outside_write_set": [],
+ "source_locators": [
+  "PI-PKG-05 H1-05 Search-Before-Build / Technology Admission",
+  "PI-PKG-05 19 admission ladder + anti-downgrade contracts",
+  "PI-PKG-05 19.2 D02-TECH-ADOPTION-LEDGER",
+  "RBWI 10.2 (Search-Before-Build / admission <- PI03, PI14, PI15; PD07, PD08)"
+ ],
+ "write_set_containment_ok": true,
+ "tests": {
+  "ran": 69,
+  "ok": false,
+  "roots": {
+   "tests": {
+    "rc": 0,
+    "ran": 13,
+    "fail": null
+   },
+   "src/fabric/tests": {
+    "rc": 0,
+    "ran": 21,
+    "fail": null
+   },
+   "src/knowledge/tests": {
+    "rc": 0,
+    "ran": 21,
+    "fail": null
+   },
+   "src/admission/tests": {
+    "rc": 1,
+    "ran": 14,
+    "fail": "FAILED (failures=1)"
+   }
+  }
+ },
+ "verdict": "FAIL"
+}

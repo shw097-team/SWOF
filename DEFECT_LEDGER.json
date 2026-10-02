@@ -1,0 +1,58 @@
+{
+ "schema": "SWOF-W1-DEFECT-LEDGER/1",
+ "subject_sha": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b",
+ "note": "Every defect below was found by an independent read-only checker AFTER the maker claimed done, then repaired. Disclosed so a reviewer sees repair quality and residual risk.",
+ "defects": [
+  {
+   "id": "DEFECT-W1-001",
+   "detail": "from_mapping constructed before validating -> TypeError instead of CONTRACT_INVALID"
+  },
+  {
+   "id": "DEFECT-W1-002",
+   "detail": "content_digest included mutable binding state, so the subject key moved on binding"
+  },
+  {
+   "id": "DEFECT-W1-003",
+   "detail": "maker's own test wrongly asserted the narrow waist ends at CapabilityContract (PI-PKG-04 6.1 ends it at HarnessABI)"
+  },
+  {
+   "id": "DEFECT-W1-003-001",
+   "detail": "BUILD_NEW_EXCEPTION reachable with no evidence; the PI-PKG-05 19 rule was documented but unenforced"
+  },
+  {
+   "id": "DEFECT-W1-R2",
+   "detail": "CandidateEnvelope.eligible was caller-supplied; now derived from trust facets"
+  },
+  {
+   "id": "DEFECT-W1-004",
+   "severity": "HIGH",
+   "detail": "RECURRENCE of the dead-test pattern: four regression tests sat after the __main__ guard and were never collected, while the receipt claimed 72 passing. Repaired + a falsifiable structural guard added (tests/test_test_hygiene.py)."
+  },
+  {
+   "id": "W0-HERMETIC-001",
+   "detail": "the W0-002 suite hardcoded the construction branch name, so it FAILED on the publication branch and on any export checkout. Deferred once as 'low risk'; that judgement was wrong - it blocked the publication path. Closed: asserts the codex/* convention and skips on an export checkout."
+  }
+ ],
+ "accepted_residuals": [
+  {
+   "id": "R-A",
+   "detail": "hygiene guard is regex-based not AST; decorator-only forms evade it (not unittest-collectable anyway)"
+  },
+  {
+   "id": "R-B",
+   "detail": "branch test asserts only the codex/* prefix, not an exact name"
+  },
+  {
+   "id": "R-C",
+   "detail": "detached HEAD skips the branch check by design"
+  },
+  {
+   "id": "R-D",
+   "detail": "named-capability ledger row consumption and a full provider-off runtime drill are deferred; README 'unreviewed W0 work' phrase is imprecise"
+  }
+ ],
+ "process_lessons": [
+  "FREEZE-001: never edit the target while an independent checker is reading it (committed once, then honoured).",
+  "Defects found only by independent lanes: 7. Maker self-verification alone would have shipped all of them."
+ ]
+}

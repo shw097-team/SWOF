@@ -1,0 +1,54 @@
+{
+ "schema": "SWOF-W1-002-EXECUTION/1",
+ "workorder_id": "WO-SWOF-W1-002",
+ "at_utc": "2026-10-02T16:34:17Z",
+ "admitted_write_set": [
+  "SWOF/src/knowledge/*",
+  "SWOF/schemas/knowledge/*"
+ ],
+ "files": [
+  "src/knowledge/__init__.py",
+  "src/knowledge/README.md",
+  "src/knowledge/trust.py",
+  "src/knowledge/retrieval.py",
+  "src/knowledge/injection.py",
+  "src/knowledge/tests/__init__.py",
+  "src/knowledge/tests/test_trust.py",
+  "src/knowledge/tests/test_retrieval.py",
+  "src/knowledge/tests/test_injection.py",
+  "schemas/knowledge/source_validity_vector.schema.json",
+  "schemas/knowledge/retrieval_lifecycle.schema.json",
+  "schemas/knowledge/README.md"
+ ],
+ "outside_write_set": [],
+ "source_locators": [
+  "PI-PKG-05 H1-07 data brain / source fabric",
+  "PI-PKG-05 D05-H1-03 four orthogonal retrieval objects + lifecycle invariants",
+  "PI-PKG-05 D05-H1-04 query routing (new_scope subset of authorized scope)",
+  "PI-PKG-05 18.1 D02-THREAT-ABUSE-PROJECTION (source injection / authority laundering)",
+  "RBWI 10.2 (Data Brain / retrieval / grounding <- PI05, PD06)"
+ ],
+ "write_set_containment_ok": true,
+ "tests": {
+  "ran": 55,
+  "ok": true,
+  "roots": {
+   "tests": {
+    "rc": 0,
+    "ran": 13,
+    "fail": null
+   },
+   "src/fabric/tests": {
+    "rc": 0,
+    "ran": 21,
+    "fail": null
+   },
+   "src/knowledge/tests": {
+    "rc": 0,
+    "ran": 21,
+    "fail": null
+   }
+  }
+ },
+ "verdict": "PASS"
+}
