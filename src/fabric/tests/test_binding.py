@@ -83,6 +83,14 @@ class TestBinding(unittest.TestCase):
         with self.assertRaises(BindingRejected):
             bind(c, self.p, self.perms, **self.kw)
 
+    def test_digest_is_stable_across_binding(self):
+        """DEFECT-W1-002 regression: the subject key must not move when the contract is bound."""
+        c = validated()
+        before = c.content_digest()
+        ref = bind(c, self.p, self.perms, **self.kw)
+        self.assertEqual(c.content_digest(), before)
+        self.assertEqual(ref.capability_contract_digest, before)
+
     def test_p04_cr_001_adapter_may_not_change_semantic_meaning(self):
         before = good_mapping()
         after = dict(before, mission_ref="MISSION-CHANGED")
@@ -100,11 +108,3 @@ class TestBinding(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-    def test_digest_is_stable_across_binding(self):
-        """DEFECT-W1-002 regression: the subject key must not move when the contract is bound."""
-        c = validated()
-        before = c.content_digest()
-        ref = bind(c, self.p, self.perms, **self.kw)
-        self.assertEqual(c.content_digest(), before)
-        self.assertEqual(ref.capability_contract_digest, before)
