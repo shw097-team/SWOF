@@ -23,8 +23,21 @@ class TestRetrievalObjects(unittest.TestCase):
         p = RetrievalPlan("P1", "Q1", "EXACT_ID", "research", frozenset({"a", "b"}), frozenset({"a"}))
         self.assertEqual(p.validate().state, "PLAN_VALIDATED")
 
-    def test_high_score_ineligible_candidate_cannot_ground(self):
+    def test_caller_asserted_ineligibility_is_refused_first(self):
+        """R-2: a caller-asserted eligibility flag is refused before the ineligible branch can be trusted."""
         c = CandidateEnvelope("C1", "s1", 1, 0.99, "loc", eligible=False)
+        with self.assertRaises(GroundingDefect) as e:
+            c.as_grounding_input()
+        self.assertIn("CALLER-ASSERTED", str(e.exception))
+
+    def test_high_score_ineligible_candidate_cannot_ground(self):
+        """A high-scoring candidate whose eligibility is DERIVED as ineligible still cannot ground."""
+        from knowledge.trust import Freshness, Provenance, Revocation, Rights, SourceValidityVector
+        v = SourceValidityVector(rights=Rights.DENIED, freshness=Freshness.CURRENT,
+                                 revocation=Revocation.LIVE, provenance=Provenance.VERIFIED, generation=1)
+        c = CandidateEnvelope.from_trust(candidate_id="C1", source_id="s1", generation=1, score=0.99,
+                                         locator="loc", validity=v, use_class="Q", required_purpose="")
+        self.assertFalse(c.eligible)
         with self.assertRaises(GroundingDefect) as e:
             c.as_grounding_input()
         self.assertIn("RETRIEVED but not ELIGIBLE", str(e.exception))
