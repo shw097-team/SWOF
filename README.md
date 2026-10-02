@@ -1,15 +1,79 @@
 # SWOF / SWOF GENIE
 
-Greenfield construction root for the SWOF / SWOF GENIE system, built under the
-HG-KSEOS governance control plane from the frozen pre-construction baseline.
+Greenfield construction root for the SWOF / SWOF GENIE system, built under the HG-KSEOS
+governance control plane from the frozen pre-construction baseline.
+
+Baseline locator (external acceptance evidence, outside this repository):
+
+```text
+order            SWOF-PRECONSTRUCTION-001
+external verdict PASS / PRECONSTRUCTION_EXTERNAL_ACCEPTANCE_GRANTED
+closure receipt  HG-KSEOS/evidence/swof-construction-002/closure/
+                 SWOF_PRECONSTRUCTION_EXTERNAL_PASS_CLOSURE_RECEIPT.json
+receipt sha256   2e9a7c9d2a59aba6af0a9fee0932a973e5fc58b8103e210effffae627111d03a
+accepted ZIP     3b18c4e6...445c1 (25,605,869 bytes, 36 members)
+```
+
+That acceptance covers the **pre-construction baseline only**. It does not accept this
+repository, which is unreviewed W0 work.
 
 ## Status
 
-W0 (constitution + repository foundation). W1-W5 are `PLANNED_NOT_DISPATCHED`.
+**W0 and W1 complete locally.** W2-W5 are `PLANNED_NOT_DISPATCHED`.
+
+| Wave | Scope | State |
+|---|---|---|
+| W0 | constitution, repo foundation, PD04 packet factory | IMPLEMENTED + INDEPENDENTLY VERIFIED |
+| W1 | narrow waist: `src/fabric`, `src/knowledge`, `src/admission` | IMPLEMENTED + INDEPENDENTLY VERIFIED |
+| W2-W5 | security/assurance, product surfaces, ops/research, migration/handoff | PLANNED_NOT_DISPATCHED |
+
+**This is a W1-stage snapshot with a REDUCED claim.** It is NOT externally accepted,
+NOT released, NOT production. External acceptance of W0-W5 as a whole has not been
+performed and must not be inferred from any verdict on this snapshot.
+
+## Layout
+
+```text
+AGENTS.md              operative agent constitution
+docs/constitution/     authority / non-goals
+schemas/authority/     machine-checkable authority guards (W0)
+schemas/pd04/          construction-packet route guards (W0-003)
+schemas/fabric/        narrow-waist + CapabilityContract guards (W1-001)
+schemas/knowledge/     source-trust orthogonality + retrieval lifecycle (W1-002)
+schemas/admission/     admission-ladder guards (W1-003)
+tools/pd04/            PD04 construction-packet factory (W0-003)
+src/fabric/            provider-neutral narrow waist + binder (W1-001)
+src/knowledge/         Data Brain: trust facets, retrieval, source-as-DATA (W1-002)
+src/admission/         Search-Before-Build admission ladder (W1-003)
+tests/, src/*/tests/   test suites (each subsystem root is discovered separately)
+config/                workspace + runtime configuration
+```
+
+`src/<subsystem>/` is granted to W1+ by the admitted write-sets; W0 itself introduces no
+semantic implementation. Each subsystem owns its own test root under `src/<subsystem>/tests/`.
+
+## Verification
+
+`src/` is not an importable package root, so each subsystem test root must be
+run separately. All four roots are green:
+
+```bash
+python -m unittest discover -s tests -t .   # 15 tests
+python -m unittest discover -s src/fabric/tests -t src/fabric/tests   # 21 tests
+python -m unittest discover -s src/knowledge/tests -t src/knowledge/tests   # 25 tests
+python -m unittest discover -s src/admission/tests -t src/admission/tests   # 17 tests
+```
+
+Aggregate: **78 tests**, 0 failures.
+
+A structural hygiene guard (`tests/test_test_hygiene.py`) fails the suite if any test is defined after an `if __name__ == "__main__"` guard, since such tests are silently never collected.
 
 ## Authority
 
-HG-KSEOS is the sole governance/normative control plane. This repository is a
-*product* root: it holds implementation, never semantic authority.
+HG-KSEOS is the sole governance/normative control plane. This repository is a *product*
+root: it holds implementation and never semantic authority.
 
-See `AGENTS.md` and `docs/constitution/` for the operative constitution.
+## Non-claims
+
+Not externally accepted, not released, not production; no runtime or
+world-effect claim.

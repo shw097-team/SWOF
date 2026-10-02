@@ -1,7 +1,13 @@
 # Authority constitution
 
-Compiled from `PI-PKG-00` §2.1–§2.5 (H1-01, Package-00 primary non-degradable chapter) and
-`SWOF_HGK_ACA_RBWI.md` §10.2.
+Compiled from `PI-PKG-00` §2.1–§2.5 (H1-01, Package-00 primary non-degradable chapter)
+and `SWOF_HGK_ACA_RBWI.md`:
+
+- **§10.2** — dependency matrix (which PI/PD surfaces own which construction concern, and in which wave);
+- **§10.4** — the PD04 regression predicate, which is where the substantive mutation-law invariant
+  (`for_each_repo_mutating_workorder: require ... ; on_missing: FAIL_PD04_ROUTE`) actually lives.
+
+Where this document states the mutation law, §10.4 is the operative locator.
 
 ## 1. Stack order
 
