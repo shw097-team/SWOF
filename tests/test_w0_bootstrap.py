@@ -5,6 +5,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+W1_SUBSYSTEMS = {'fabric', 'knowledge', 'admission', 'security', 'assurance', 'ops',
+                 'product', 'domains', 'research', 'evolution', 'migration'}
 
 
 class TestW0Bootstrap(unittest.TestCase):
@@ -16,10 +18,22 @@ class TestW0Bootstrap(unittest.TestCase):
                              capture_output=True, text=True).stdout.strip()
         self.assertEqual(out, "codex/swof-w0-construction", f"unexpected branch {out!r}")
 
-    def test_no_src_package_in_w0(self):
-        """Negative: src/ is granted to W1+ only; W0 must not contain semantic implementation."""
-        self.assertFalse((ROOT / "src").exists(),
-                         "W0-002 write-set does not grant src/ (defect W0-002-WS-001)")
+    def test_no_w0_semantic_implementation(self):
+        """W0 invariant, wave-scoped correctly: W0 introduces no semantic implementation.
+
+        The original violation path src/swof/ must stay absent, and src/ may only ever contain
+        W1+ subsystem packages - never a W0-owned artifact.
+        (Repaired by corrective CW-1: the earlier form asserted src/ never exists, which W1-001
+        legitimately invalidated by creating src/fabric/.)
+        """
+        self.assertFalse((ROOT / "src" / "swof").exists(),
+                         "src/swof/ was the W0-002-WS-001 violation path and must remain absent")
+        src = ROOT / "src"
+        if src.exists():
+            for child in src.iterdir():
+                if child.is_dir():
+                    self.assertIn(child.name, W1_SUBSYSTEMS,
+                                  f"src/{child.name} is not an admitted W1+ subsystem package")
 
     def test_workspace_config_declares_non_authority(self):
         cfg = json.loads((ROOT / "config" / "workspace.json").read_text(encoding="utf-8"))
