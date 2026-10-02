@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_files():
+def iter_test_files():
     for p in sorted(ROOT.rglob("test_*.py")):
         if ".git" in p.parts:
             continue
@@ -21,7 +21,7 @@ def test_files():
 class TestTestHygiene(unittest.TestCase):
     def test_no_tests_after_main_guard(self):
         offenders = []
-        for p in test_files():
+        for p in iter_test_files():
             text = p.read_text(encoding="utf-8")
             m = re.search(r'^if __name__ == ["\']__main__["\']:', text, re.M)
             if not m:
@@ -35,7 +35,7 @@ class TestTestHygiene(unittest.TestCase):
     def test_every_test_file_defines_at_least_one_test(self):
         empty = []
         seen_any = False
-        for p in test_files():
+        for p in iter_test_files():
             text = p.read_text(encoding="utf-8")
             if re.search(r"^\s*def test_", text, re.M):
                 seen_any = True
