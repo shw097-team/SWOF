@@ -1,70 +1,60 @@
 {
  "schema": "SWOF-POST-COMMIT-REMOTE-READBACK-RECEIPT/1",
- "layer": "COMMIT_7_BINDING",
+ "layer": "COMMIT_9_BINDING",
  "repo": "shw097-team/SWOF",
  "evidence_branch": "evidence/w1-r4-evidence-cleanup",
- "bound_evidence_commit_sha": "8731c34308e8a619ed26384d33cbf56b20e3b4bd",
+ "bound_evidence_commit_sha": "1d3b4e3799af89cbb98d7059f559767752400851",
  "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
  "source_branch_tip_at_readback": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
  "source_branch_unchanged_by_cleanup": true,
- "supersedes_binding_of": "39ba9e03cfd16cda840ed367d00a09e913bae4ce",
+ "supersedes_binding_of": "8731c34308e8a619ed26384d33cbf56b20e3b4bd",
  "superseded_commits_retained_in_history": [
   "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f",
   "a45009bd7b459fa400a81f339b67e25ea9c051c2",
   "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
   "0a34440f786cc1bedc5eac75167e233884623f87",
   "39ba9e03cfd16cda840ed367d00a09e913bae4ce",
-  "cf553b6f373e45fd95647b742079434f7f3c5acb"
+  "cf553b6f373e45fd95647b742079434f7f3c5acb",
+  "8731c34308e8a619ed26384d33cbf56b20e3b4bd",
+  "ece3010e49b9bdbfd9df90d5fb299597ace4907f"
  ],
- "readback_method": "PATH_INDEPENDENT: paths resolved to blob SHAs via git ls-tree, content read with git cat-file blob; an empty read is a hard error, never a silent mismatch.",
+ "readback_method": "PATH_INDEPENDENT blob-SHA readback; an empty read is a hard error.",
  "residual_closure": {
-  "R-1_stale_in_tree_publish_receipt": {
+  "R-1": {
    "state": "CLOSED",
-   "stale_receipt_paths_now_absent_from_current_names": true,
-   "supersession_record": "receipts/superseded/SUPERSESSION.json",
-   "preserved_not_deleted": true
+   "record": "receipts/superseded/SUPERSESSION.json"
   },
-  "R-2_assertion_only_guard_fixture": {
+  "R-2": {
    "state": "CLOSED",
-   "backing_artifact": "artifacts/W2_COMPILER_PROVENANCE_GUARD_NEGATIVE_FIXTURES.json",
-   "all_fixtures_demonstrated": true,
-   "fixture_violation_counts": {
-    "historical_R4_contract": 5,
-    "injected_rank1_predecessor_path": 1
+   "all_fixtures_demonstrated": true
+  },
+  "R-3": {
+   "state": "CLOSED",
+   "committed_tree_files_scanned": 34
+  },
+  "R-4_class_elimination": {
+   "state": "CLOSED_STRUCTURALLY",
+   "instances_found_and_fixed": 3,
+   "descriptive_receipts_removed_from_immutable_set": true,
+   "self_consistency_validator": {
+    "declared_hashes_checked": 147,
+    "files": 34,
+    "contradictions": 0
    }
-  },
-  "R-3_scan_scope": {
-   "state": "CLOSED",
-   "committed_tree_files_scanned": 33,
-   "note": "the final readback now scans the COMMITTED tree, not the generation-time workspace set"
   }
  },
  "remote_readback": {
-  "file_count": 33,
-  "byte_and_hash_match_count": 33,
+  "file_count": 34,
+  "byte_and_hash_match_count": 34,
   "mismatch_count": 0,
   "mismatches": [],
   "empty_read_count": 0,
-  "remote_tip_git_fetch": "8731c34308e8a619ed26384d33cbf56b20e3b4bd",
-  "remote_tip_github_api": "8731c34308e8a619ed26384d33cbf56b20e3b4bd",
-  "transports_agree": true,
-  "github_contents_api_spot_check": {
-   "path": "artifacts/SWOF_EVIDENCE_RETURN_PACK.json",
-   "api_sha256": "9f6fd073c78678d8bcbf1cb3ec53ca6df65eaf36e183ad3184c0028ba0e37a67",
-   "remote_sha256": "9f6fd073c78678d8bcbf1cb3ec53ca6df65eaf36e183ad3184c0028ba0e37a67",
-   "match": true
-  }
+  "remote_tip_git_fetch": "1d3b4e3799af89cbb98d7059f559767752400851",
+  "remote_tip_github_api": "1d3b4e3799af89cbb98d7059f559767752400851",
+  "transports_agree": true
  },
  "committed_tree_secret_scan": {
-  "files_scanned": 33,
-  "secret_patterns_checked": [
-   "GITHUB_PAT",
-   "GITHUB_TOKEN",
-   "OPENAI_KEY",
-   "AWS_KEY",
-   "SLACK_TOKEN",
-   "PRIVATE_KEY"
-  ],
+  "files_scanned": 34,
   "token_hits": 0,
   "findings": [],
   "verdict": "PASS"
@@ -87,6 +77,5 @@
   "grounding_fix_verified": true
  },
  "evidence_commit_neq_source": true,
- "evidence_commit_neq_historical": true,
  "verdict": "PASS"
 }
