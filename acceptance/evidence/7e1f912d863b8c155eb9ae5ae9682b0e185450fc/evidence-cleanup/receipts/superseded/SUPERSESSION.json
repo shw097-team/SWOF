@@ -1,6 +1,6 @@
 {
  "schema": "SWOF-IN_TREE-RECEIPT-SUPERSESSION/1",
- "defect_class": "STALE_RECEIPT_OF_THE_SAME_CLASS_AS_R4-EXT-002",
+ "defect_class": "STALE_DESCRIPTIVE_RECEIPT_INSIDE_THE_SET_IT_DESCRIBES",
  "disclosure": "The immutable evidence set previously carried publish/republish-time receipts that named an evidence commit which has since been superseded, with a file count and readback/readset hashes that no longer match. They are PRESERVED here under their original content and explicitly declared superseded. Nothing was deleted.",
  "superseded": [
   {
@@ -15,9 +15,58 @@
     "readset_sha256": "2ef9f4d8f8ba0d25013435c9d464e61ff2091baf4940d0096be118195a100ec0",
     "verdict": "PASS"
    }
+  },
+  {
+   "superseded_file": "E1_CONTRACT_RECEIPT.json",
+   "was": "receipts/E1_CONTRACT_RECEIPT.json",
+   "reason": "descriptive receipt removed from the immutable set"
+  },
+  {
+   "superseded_file": "E2_CALIBRATION_RECEIPT.json",
+   "was": "receipts/E2_CALIBRATION_RECEIPT.json",
+   "reason": "descriptive receipt removed from the immutable set"
+  },
+  {
+   "superseded_file": "E3_LINKAGE_RECEIPT.json",
+   "was": "receipts/E3_LINKAGE_RECEIPT.json",
+   "reason": "descriptive receipt removed from the immutable set"
+  },
+  {
+   "superseded_file": "E4_PROVENANCE_RECEIPT.json",
+   "was": "receipts/E4_PROVENANCE_RECEIPT.json",
+   "reason": "descriptive receipt removed from the immutable set"
+  },
+  {
+   "superseded_file": "E5_PACKAGING_RECEIPT.json",
+   "was": "receipts/E5_PACKAGING_RECEIPT.json",
+   "reason": "descriptive receipt removed from the immutable set"
+  },
+  {
+   "superseded_file": "E6_PACK_RECEIPT.json",
+   "was": "receipts/E6_PACK_RECEIPT.json",
+   "reason": "descriptive receipt removed from the immutable set"
   }
  ],
  "superseded_by": "the out-of-tree FINAL_EVIDENCE_CLEANUP_READBACK.json and SWOF_EXTERNAL_ACCEPTANCE_READSET.json for the current final evidence commit",
  "policy_going_forward": "publish/republish-time receipts are no longer copied into the immutable in-tree evidence set; the immutable set carries only generation receipts whose claims do not depend on a commit that can later move.",
- "overwritten_or_deleted": false
+ "overwritten_or_deleted": false,
+ "instances_found": [
+  {
+   "artifact": "historical W1_R4_FINAL_PACKAGING.json (206ab073)",
+   "defect": "R4-EXT-002",
+   "closed_by": "HISTORICAL_PACKAGING_SUPERSESSION.json + a truthful new packaging receipt"
+  },
+  {
+   "artifact": "receipts/E8_FINAL_RECEIPT.json",
+   "defect": "asserted superseded commit a45009bd as final",
+   "closed_by": "this supersession record"
+  },
+  {
+   "artifact": "receipts/E6_PACK_RECEIPT.json",
+   "defect": "declared return_pack_sha256 2274852243... while the in-tree pack became 9f6fd073...",
+   "closed_by": "this supersession record + the new self-consistency validator"
+  }
+ ],
+ "structural_fix": "descriptive/generation-time receipts are no longer part of the immutable set; receipts/README.md states the policy, and a self-consistency validator now fails if any in-tree artifact declares a hash that contradicts the in-tree bytes.",
+ "generation_receipts_preserved_under": "receipts/superseded/"
 }
