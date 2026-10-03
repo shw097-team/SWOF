@@ -30,9 +30,11 @@ retry                    != readback
   unresolved record into `UNKNOWN_EFFECT`; `assert_no_success_inference` raises unless the record
   is `RECONCILED`; `is_success` is True only for `RECONCILED`.
 - `idempotency.py` - one attempt key per intended effect (`sha256` over the immutable identity),
-  plus a hard retry ceiling. Prevents a retry from becoming a duplicate side effect, refuses
-  retries of `RECONCILED` / `DENIED` / `IRREVERSIBLE` effects, and turns uncertainty into a fresh
-  READBACK (`plan_reobserve`) rather than another side effect.
+  plus a hard retry ceiling. Prevents a retry from becoming a duplicate side effect and refuses
+  retries of `RECONCILED` / `DENIED` / `IRREVERSIBLE` effects. A retry is allowed ONLY from
+  `UNKNOWN_EFFECT` (nothing has been confirmed applied): `PARTIAL_EFFECT` is NOT retryable
+  (`RETRY_REFUSED_PARTIAL_EFFECT`), and its recovery route is a fresh READBACK plus the
+  compensation pointer, never another side effect.
 - `compensation.py` - reversibility classification and compensation PLANNING (never execution).
   An irreversible effect yields a non-compensable pointer whose `assert_compensable` raises; a
   `PARTIAL_EFFECT` with no registered path is refused with `NoCompensationPath`.
@@ -43,8 +45,10 @@ retry                    != readback
 ## Terminal states
 
 `RECONCILED` is the only success. `UNKNOWN_EFFECT` and `PARTIAL_EFFECT` are first-class terminal
-states reached when truth cannot be established - they are not errors to be retried away.
-`DENIED`, `FAILED`, `COMPENSATED` and `IRREVERSIBLE` are likewise terminal.
+states reached when truth cannot be established - they are not errors to be retried away. Only
+`UNKNOWN_EFFECT` may be retried; `PARTIAL_EFFECT` has already applied part of the intent, so its
+recovery is a fresh readback plus the compensation pointer. `DENIED`, `FAILED`, `COMPENSATED` and
+`IRREVERSIBLE` are likewise terminal.
 
 ## Running the tests
 

@@ -241,5 +241,37 @@ class TestThreatAssessment(unittest.TestCase):
         self.assertIn("w1 subject", text)
 
 
+class TestUnauthenticatedHeader(unittest.TestCase):
+    def _rewritten(self):
+        journal = built()
+        manifest = journal.export_manifest()
+        journal.entries = list(journal.entries[:-1])
+        journal.header["entry_count"] = len(journal.entries)
+        journal.header["final_digest"] = journal.entries[-1].entry_digest
+        return journal, manifest
+
+    def test_coherent_rewrite_is_not_an_authoritative_intact(self):
+        journal, _ = self._rewritten()
+        verdict = journal.verify()
+        self.assertTrue(verdict["intact"])
+        self.assertFalse(verdict["header_is_authoritative"])
+        self.assertEqual(
+            verdict["anchor_reason_code"],
+            "COHERENT_HEADER_AND_ENTRY_REWRITE_UNDETECTABLE_WITHOUT_EXTERNAL_ANCHOR")
+
+    def test_verify_against_manifest_catches_the_truncation(self):
+        journal, manifest = self._rewritten()
+        verdict = journal.verify_against_manifest(manifest)
+        self.assertFalse(verdict["intact"])
+        self.assertEqual(verdict["reason_code"], "ENTRY_DIGEST_MISMATCH")
+        self.assertTrue(verdict["header_is_authoritative"])
+
+    def test_unmodified_chain_against_manifest_is_authoritative_intact(self):
+        journal = built()
+        verdict = journal.verify_against_manifest(journal.export_manifest())
+        self.assertTrue(verdict["intact"])
+        self.assertTrue(verdict["header_is_authoritative"])
+
+
 if __name__ == "__main__":
     unittest.main()

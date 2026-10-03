@@ -128,6 +128,15 @@ class TestAdversarial(unittest.TestCase):
         self.assertNotIn("eyJhbGciOiJIUzI1NiJ9", str(clean))
         self.assertFalse(receipt["clean"])
 
+    def test_13_unscannable_bytes_are_fail_closed(self):
+        payload = {"evidence": {"blob": b"Authorization: Bearer " + b"x" * 32}}
+        with self.assertRaises(SecretExfiltrationBlocked):
+            assert_no_secret(payload)
+        clean, receipt = sanitize_evidence(payload)
+        self.assertFalse(receipt["clean"])
+        self.assertEqual(receipt["unscannable_bytes"], 1)
+        self.assertIn("[REDACTED:UNSCANNABLE_BYTES]", str(clean))
+
 
 if __name__ == "__main__":
     unittest.main()

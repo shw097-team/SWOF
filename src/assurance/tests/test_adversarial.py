@@ -281,5 +281,29 @@ class TestA9PlanPartialFailure(unittest.TestCase):
         self.assertEqual(verdict["checked"], 0)
 
 
+class TestA10CoherentJournalRewrite(unittest.TestCase):
+    def test_coherent_rewrite_surfaces_non_authoritative_header_and_manifest_catches_it(self):
+        journal = from_lifecycle_rows([
+            {"rowid": 1, "transition_id": "T1", "from_state": "A", "to_state": "B",
+             "created_at": "t1"},
+            {"rowid": 2, "transition_id": "T2", "from_state": "B", "to_state": "C",
+             "created_at": "t2"},
+            {"rowid": 3, "transition_id": "T3", "from_state": "C", "to_state": "D",
+             "created_at": "t3"},
+        ])
+        manifest = journal.export_manifest()
+        journal.entries = list(journal.entries[:-1])
+        journal.header["entry_count"] = len(journal.entries)
+        journal.header["final_digest"] = journal.entries[-1].entry_digest
+        verdict = journal.verify()
+        self.assertFalse(verdict["header_is_authoritative"])
+        self.assertEqual(
+            verdict["anchor_reason_code"],
+            "COHERENT_HEADER_AND_ENTRY_REWRITE_UNDETECTABLE_WITHOUT_EXTERNAL_ANCHOR")
+        anchored = journal.verify_against_manifest(manifest)
+        self.assertFalse(anchored["intact"])
+        self.assertTrue(anchored["header_is_authoritative"])
+
+
 if __name__ == "__main__":
     unittest.main()

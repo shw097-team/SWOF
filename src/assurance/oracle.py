@@ -224,12 +224,15 @@ class Oracle:
         if self._rules.get("require_negative_representation", True):
             manifest = self._negative_fixture_manifest
             present_kinds = {str(kind) for kind in kinds if kind is not None}
-            present_ids = {str(_item_field(item, "item_id", "")) for item in items}
             claimed = _fixtures_declared_by_items(items)
             unrepresented = []
             for fixture in sorted(set(predicate.negative_fixtures)):
                 proof_kinds = _manifest_kinds(manifest, self.oracle_id, fixture)
-                proven = bool(proof_kinds & present_kinds) or fixture in present_ids
+                # A negative fixture is represented ONLY through a plan-level manifest that
+                # binds it to a proof KIND actually present in the checked evidence. A bare
+                # item_id equal to the fixture, or any other caller-chosen field on an
+                # item, is NEVER a representation.
+                proven = bool(proof_kinds & present_kinds)
                 if not proven:
                     unrepresented.append(fixture)
             if unrepresented:

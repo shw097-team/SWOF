@@ -176,6 +176,19 @@ class TestAdversarial(unittest.TestCase):
         with self.assertRaises(RetryRefused):
             assert_retryable(record, attempt_no=2)
 
+    def test_15_partial_effect_retry_is_refused(self):
+        record = record_attempt(intended({"op": "transfer", "parts": PARTS}), actor="agent-7",
+                                permission_allowed=True, attempt_key="k1", at="t0")
+        record = observe(record, payload={"part": "debit"}, provider_success=True, at="t1")
+        record = readback(record, payload={"part": "debit"}, expected=PARTS, at="t2")
+        record = reconcile(record, at="t3")
+        self.assertEqual(record.state, "PARTIAL_EFFECT")
+        plan = plan_retry(record)
+        self.assertFalse(plan.allowed)
+        self.assertEqual(plan.reason_code, "RETRY_REFUSED_PARTIAL_EFFECT")
+        with self.assertRaises(RetryRefused):
+            assert_retryable(record, attempt_no=2)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -19,6 +19,10 @@ from dataclasses import dataclass
 CLASSES = ("PUBLIC", "INTERNAL", "PII", "SECRET")
 _RANK = {name: index for index, name in enumerate(CLASSES)}
 
+# Marker for a bytes/bytearray scalar: bytes cannot be scanned for credentials, so they are
+# fail-closed (blocked by the gate, replaced and counted by sanitize_evidence).
+UNSCANNABLE_BYTES_MARKER = "[REDACTED:UNSCANNABLE_BYTES]"
+
 
 class SecretExfiltrationBlocked(Exception):
     """A SECRET-class value (or an unverifiable payload) would have reached evidence."""
@@ -212,7 +216,13 @@ def redact(text, *, replacement=None) -> str:
     return "".join(out)
 
 
-def _walk(value, redactions, classes):
+def _walk(value, redactions, classes, counters):
+    if isinstance(value, (bytes, bytearray)):
+        # A bytes/bytearray scalar cannot be scanned for a credential, so it is fail-closed:
+        # it is replaced with a marker and counted as unscannable, never passed through.
+        classes.add("SECRET")
+        counters["unscannable_bytes"] = counters.get("unscannable_bytes", 0) + 1
+        return UNSCANNABLE_BYTES_MARKER, 1
     if isinstance(value, str):
         found = _hits(value)
         if found:
@@ -230,7 +240,7 @@ def _walk(value, redactions, classes):
                 clean[key] = "[REDACTED:SECRET]"
                 scanned += 1
                 continue
-            clean_value, count = _walk(item, redactions, classes)
+            clean_value, count = _walk(item, redactions, classes, counters)
             clean[key] = clean_value
             scanned += count
         return clean, scanned
@@ -238,7 +248,7 @@ def _walk(value, redactions, classes):
         clean_list = []
         scanned = 0
         for item in value:
-            clean_item, count = _walk(item, redactions, classes)
+            clean_item, count = _walk(item, redactions, classes, counters)
             clean_list.append(clean_item)
             scanned += count
         return clean_list, scanned
@@ -246,7 +256,7 @@ def _walk(value, redactions, classes):
         clean_items = []
         scanned = 0
         for item in value:
-            clean_item, count = _walk(item, redactions, classes)
+            clean_item, count = _walk(item, redactions, classes, counters)
             clean_items.append(clean_item)
             scanned += count
         return tuple(clean_items), scanned
@@ -254,21 +264,32 @@ def _walk(value, redactions, classes):
 
 
 def sanitize_evidence(payload) -> tuple[object, dict]:
-    """Redact a deep copy of the payload and return `(clean_payload, receipt)`."""
+    """Redact a deep copy of the payload and return `(clean_payload, receipt)`.
+
+    A bytes/bytearray scalar anywhere in the payload is UNSCANNABLE, so it is replaced with
+    `[REDACTED:UNSCANNABLE_BYTES]`, the receipt reports `clean=False` and an
+    `unscannable_bytes` count. Ordinary scalars (int/float/bool/None) are NOT credentials and
+    are left untouched.
+    """
     redactions = {}
     classes = set()
-    clean, scanned = _walk(payload, redactions, classes)
+    counters = {"unscannable_bytes": 0}
+    clean, scanned = _walk(payload, redactions, classes, counters)
     receipt = {
         "redactions": dict(redactions),
         "scanned_items": scanned,
         "classes_present": sorted(classes, key=lambda name: _RANK[name]),
-        "clean": not redactions,
+        "unscannable_bytes": counters["unscannable_bytes"],
+        "clean": not redactions and counters["unscannable_bytes"] == 0,
     }
     return clean, receipt
 
 
 def _secret_survives(payload, depth=0):
     if depth > 32:
+        return True
+    if isinstance(payload, (bytes, bytearray)):
+        # Unscannable bytes are fail-closed: never proven free of a credential.
         return True
     if isinstance(payload, str):
         return classify(payload) == "SECRET"

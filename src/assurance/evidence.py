@@ -317,7 +317,7 @@ def invalidate(plan, *, changed_identity, gates):
             reasons.append("ORACLE_ID_CHANGED")
         if "environment" in changed and _superseded(gate, "environment", changed):
             reasons.append("ENVIRONMENT_CHANGED")
-        if "security_config" in changed or changed.get("security_relevant"):
+        if "security_config" in changed and _superseded(gate, "security_config", changed):
             reasons.append("SECURITY_CONFIG_CHANGED")
         if reasons:
             affected.append({

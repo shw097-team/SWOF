@@ -264,5 +264,35 @@ class TestDetectorSelftestReceiptFlags(unittest.TestCase):
             classification.BENIGN_SAMPLES = original
 
 
+class TestUnscannableBytes(unittest.TestCase):
+    def test_bytes_scalar_is_blocked_by_the_gate(self):
+        with self.assertRaises(SecretExfiltrationBlocked):
+            assert_no_secret({"blob": b"Authorization: Bearer " + b"x" * 32})
+
+    def test_bytearray_scalar_is_blocked_by_the_gate(self):
+        with self.assertRaises(SecretExfiltrationBlocked):
+            assert_no_secret({"blob": bytearray(b"plain-ascii-bytes")})
+
+    def test_bytes_scalar_is_replaced_and_reported_unscannable(self):
+        clean, receipt = sanitize_evidence({"blob": b"prefix " + AWS_KEY.encode()})
+        self.assertNotIn("AKIA", str(clean))
+        self.assertIn("[REDACTED:UNSCANNABLE_BYTES]", str(clean))
+        self.assertFalse(receipt["clean"])
+        self.assertEqual(receipt["unscannable_bytes"], 1)
+
+    def test_nested_bytes_scalar_is_counted(self):
+        clean, receipt = sanitize_evidence({"rows": [{"raw": b"secret-bytes"}, "plain"]})
+        self.assertEqual(receipt["unscannable_bytes"], 1)
+        self.assertIn("[REDACTED:UNSCANNABLE_BYTES]", str(clean))
+
+    def test_ordinary_scalars_are_not_flagged(self):
+        payload = {"n": 42, "f": 3.5, "b": True, "none": None, "s": "plain text"}
+        clean, receipt = sanitize_evidence(payload)
+        self.assertTrue(receipt["clean"])
+        self.assertEqual(receipt["unscannable_bytes"], 0)
+        self.assertEqual(clean, payload)
+        assert_no_secret(payload)
+
+
 if __name__ == "__main__":
     unittest.main()

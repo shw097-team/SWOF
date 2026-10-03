@@ -31,6 +31,13 @@ MANIFEST_SCHEMA = "SWOF-JOURNAL-MANIFEST/1"
 VERDICT_SCHEMA = "SWOF-JOURNAL-VERDICT/1"
 THREAT_SCHEMA = "SWOF-W2-JOURNAL-INTEGRITY-ASSESSMENT/1"
 
+# The header carries no signature and no key management, so it is NOT authoritative: a
+# coherent rewrite of both the entries and the header is undetectable without an external
+# anchor. The anchor is the retained export manifest (verify_against_manifest).
+UNAUTHENTICATED_HEADER_NOTE = (
+    "COHERENT_HEADER_AND_ENTRY_REWRITE_UNDETECTABLE_WITHOUT_EXTERNAL_ANCHOR")
+MANIFEST_IS_ANCHOR_NOTE = "MANIFEST_IS_THE_EXTERNAL_ANCHOR"
+
 
 class JournalTamperDetected(Exception):
     """A tamper class was detected while verifying an exported chain."""
@@ -72,13 +79,16 @@ def _compute_digest(chain_id, seq, event_id, prev_digest, payload):
     return hashlib.sha256(material.encode("utf-8")).hexdigest()
 
 
-def _verdict(intact, checked, reason_code, first_broken_seq):
+def _verdict(intact, checked, reason_code, first_broken_seq, *,
+             header_is_authoritative=False, anchor_reason_code=None):
     return {
         "schema": VERDICT_SCHEMA,
         "intact": intact,
         "checked": checked,
         "reason_code": reason_code,
         "first_broken_seq": first_broken_seq,
+        "header_is_authoritative": header_is_authoritative,
+        "anchor_reason_code": anchor_reason_code,
     }
 
 
@@ -197,11 +207,17 @@ class DigestChainJournal:
                        "header final_digest %r != chain final digest %r (header tampering)"
                        % (self.header.get("final_digest"), prev_digest))
 
-        return _verdict(True, len(self.entries), "INTACT", None)
+        # The entries are internally consistent, but the header is unauthenticated, so this is
+        # NOT an authoritative verdict: a coherent header+entry rewrite is undetectable here.
+        return _verdict(True, len(self.entries), "INTACT", None,
+                        header_is_authoritative=False,
+                        anchor_reason_code=UNAUTHENTICATED_HEADER_NOTE)
 
     def _fail(self, reason_code, first_broken_seq, message):
         exc = JournalTamperDetected(message, reason_code, first_broken_seq)
-        exc.verdict = _verdict(False, len(self.entries), reason_code, first_broken_seq)
+        exc.verdict = _verdict(False, len(self.entries), reason_code, first_broken_seq,
+                               header_is_authoritative=False,
+                               anchor_reason_code=UNAUTHENTICATED_HEADER_NOTE)
         raise exc
 
     def export_manifest(self):
@@ -213,6 +229,24 @@ class DigestChainJournal:
             "entry_count": len(self.entries),
             "entry_digests": [entry.entry_digest for entry in self.entries],
         }
+
+    def verify_against_manifest(self, manifest):
+        """AUTHORITATIVE check of this journal against a retained export manifest.
+
+        Unlike `verify()` - whose header is unauthenticated - the manifest is an external
+        anchor, so a coherent rewrite of both the entry list and the header is detectable
+        here (a truncated stream fails as ENTRY_DIGEST_MISMATCH / a count mismatch).
+        """
+        manifest = dict(manifest or {})
+        declared_chain = manifest.get("chain_id")
+        if declared_chain is not None and declared_chain != self.chain_id:
+            return _verdict(False, len(self.entries), "CHAIN_ID_MISMATCH", None,
+                            header_is_authoritative=True,
+                            anchor_reason_code=MANIFEST_IS_ANCHOR_NOTE)
+        verdict = self.verify_manifest(manifest, self.entries)
+        verdict["header_is_authoritative"] = True
+        verdict["anchor_reason_code"] = MANIFEST_IS_ANCHOR_NOTE
+        return verdict
 
     @staticmethod
     def verify_manifest(manifest, entries):
@@ -277,13 +311,23 @@ def threat_assessment():
         "db_level_enforcement_claimed": False,
         "writes_to_hgk": False,
         "justified": True,
+        "authentication": "NONE_NO_KEY_MANAGEMENT",
+        "header_is_authoritative": False,
+        "anchor": "EXPORT_MANIFEST",
+        "undetectable_without_anchor": UNAUTHENTICATED_HEADER_NOTE,
         "gives": [
             "DETECTION of post-export modification of an exported event stream",
+            "detection of header-inconsistent tampering (SEQ_GAP, HEADER_MISMATCH, ...)",
             "an export manifest that re-checks against a re-exported entry list",
+            "an authoritative manifest comparison (verify_against_manifest) that catches a "
+            "coherent rewrite of the entries and the unauthenticated header",
         ],
         "does_not_give": [
             "it does NOT make the HGK database tamper-proof",
             "it is NOT a cryptographic signature (there is no key management)",
+            "the header is NOT authoritative and carries no signature or key management",
+            "a coherent rewrite of both the entries and the unauthenticated header is "
+            "undetectable without an external anchor (the manifest is the anchor)",
             "it is read-only with respect to HG-KSEOS (it never writes to HGK)",
             "it should NOT be backported into the accepted W1 subject for evidence aesthetics",
         ],

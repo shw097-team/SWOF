@@ -236,5 +236,23 @@ class TestInvalidate(unittest.TestCase):
         self.assertEqual(invalidate(plan(), changed_identity={}, gates=gates), [])
 
 
+class TestSecurityAxisDiscrimination(unittest.TestCase):
+    def test_superseded_security_binding_is_invalidated(self):
+        gates = [{"gate_id": "G-OLD", "security_config": "SEC-OLD"}]
+        affected = invalidate(plan(), changed_identity={"security_config": "SEC-NEW"}, gates=gates)
+        self.assertEqual([entry["gate_id"] for entry in affected], ["G-OLD"])
+        self.assertEqual(affected[0]["reason_codes"], ["SECURITY_CONFIG_CHANGED"])
+
+    def test_current_security_binding_is_untouched(self):
+        gates = [{"gate_id": "G-NEW", "security_config": "SEC-NEW"}]
+        affected = invalidate(plan(), changed_identity={"security_config": "SEC-NEW"}, gates=gates)
+        self.assertEqual(affected, [])
+
+    def test_unbound_gate_is_untouched_by_the_security_axis(self):
+        gates = [{"gate_id": "G-UNBOUND"}]
+        affected = invalidate(plan(), changed_identity={"security_config": "SEC-NEW"}, gates=gates)
+        self.assertEqual(affected, [])
+
+
 if __name__ == "__main__":
     unittest.main()

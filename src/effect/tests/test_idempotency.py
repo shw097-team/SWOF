@@ -132,5 +132,28 @@ class TestReobserve(unittest.TestCase):
         self.assertFalse(plan_reobserve(as_state(attempted(), "RECONCILED"))["reobserve"])
 
 
+class TestPartialEffectNotRetryable(unittest.TestCase):
+    def test_plan_retry_refuses_partial_effect(self):
+        record = as_state(attempted(), "PARTIAL_EFFECT", "PARTIAL_EFFECT_DETECTED")
+        plan = plan_retry(record)
+        self.assertFalse(plan.allowed)
+        self.assertEqual(plan.reason_code, "RETRY_REFUSED_PARTIAL_EFFECT")
+
+    def test_assert_retryable_raises_for_partial_effect(self):
+        record = as_state(attempted(), "PARTIAL_EFFECT", "PARTIAL_EFFECT_DETECTED")
+        with self.assertRaises(RetryRefused):
+            assert_retryable(record, attempt_no=2)
+
+    def test_classify_retry_refuses_partial_effect(self):
+        record = as_state(attempted(), "PARTIAL_EFFECT", "PARTIAL_EFFECT_DETECTED")
+        self.assertEqual(classify_retry(record, attempt_no=2), "REFUSED")
+
+    def test_unknown_effect_retry_is_still_reachable(self):
+        record = as_state(attempted(), "UNKNOWN_EFFECT", "NO_READBACK_FAIL_CLOSED")
+        plan = plan_retry(record)
+        self.assertTrue(plan.allowed)
+        self.assertEqual(plan.reason_code, "RETRY_ALLOWED")
+
+
 if __name__ == "__main__":
     unittest.main()

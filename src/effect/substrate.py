@@ -107,9 +107,11 @@ def intend(effect_id, subject_id, intent, *, environment="local") -> EffectRecor
                         intent_digest=digest, state="INTENDED", environment=environment)
 
 
-# A fresh attempt supersedes the previous observation cycle. Retry is recordable from these
-# states when the attempt_key is NEW; every terminal state outside this set (RECONCILED,
-# DENIED, FAILED, COMPENSATED, IRREVERSIBLE) still refuses.
+# A fresh attempt supersedes the previous observation cycle (a mechanical re-arm of the state
+# machine). The RETRY GATE is effect.idempotency.plan_retry / assert_retryable, and it allows a
+# PLANNED retry ONLY from UNKNOWN_EFFECT: a planned retry from PARTIAL_EFFECT is refused with
+# RETRY_REFUSED_PARTIAL_EFFECT. Every terminal state outside this set (RECONCILED, DENIED,
+# FAILED, COMPENSATED, IRREVERSIBLE) refuses at the mechanical layer too.
 RETRY_FROM_STATES = ("ATTEMPTED", "OBSERVED", "READBACK", "UNKNOWN_EFFECT", "PARTIAL_EFFECT")
 
 

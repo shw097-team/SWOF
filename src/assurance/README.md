@@ -32,7 +32,10 @@ manifest intact   != DB tamper-proof
   stable condition ladder that stops at the first failure. An `oracle_id` with no defined rules
   raises `OracleAmbiguous`. Missing kind, duplicate kind, wrong subject and non-deterministic
   ordering each return a distinct `reason_code`. `decide` never returns passed=True while any
-  declared negative fixture is unrepresented in the checked set.
+  declared negative fixture is unrepresented in the checked set: a fixture is represented ONLY
+  through a plan-level manifest that binds it to a proof KIND actually present in the evidence -
+  an `item_id` that merely equals the fixture, or any self-declared `negative_fixtures` /
+  `negative_cases` field, is never a representation.
 - `evidence.py` - raw-proof, subject, environment and linkage binding. A summary boolean with no
   raw artifact is `FORGED_SUMMARY`; a plausible artifact with the wrong hash is `HASH_MISMATCH`;
   a pre-mutation object sold as direct-final is `DIRECT_FINAL_CLAIM_ON_PRE_MUTATION`; a moving
@@ -40,7 +43,10 @@ manifest intact   != DB tamper-proof
   self-referential and maker-as-checker items each have their own reason. `validate_plan` keeps
   the per-linkage-mode counters **separate** (one mixed counter both over- and under-reports)
   and never passes on an empty item list. `invalidate` returns the invalidation cone for a
-  changed identity (subject SHA, oracle id, environment, security config).
+  changed identity (subject SHA, oracle id, environment, security config), applying the SAME
+  discriminating rule on every axis: a gate is invalidated only when the identity it was bound to
+  is no longer current, and an unbound gate is untouched by that axis (the security axis
+  included).
 - `sod.py` - `assert_separated` returns a SoD receipt or raises `SoDViolation` when the producer
   and checker are the same or empty identity. `ReadOnlyChecker.write_product` **always** raises
   `CheckerWriteRefused`; a checker may not repair the candidate, its evaluator logic, the
@@ -52,13 +58,18 @@ manifest intact   != DB tamper-proof
   and the genesis is chain-bound, so a foreign chain cannot be spliced in. `verify` distinguishes
   payload mutation (`ENTRY_DIGEST_MISMATCH`), removal/truncation (`SEQ_GAP`), reordering
   (`PREV_DIGEST_MISMATCH`), foreign chain (`CHAIN_ID_MISMATCH`) and header tampering
-  (`HEADER_MISMATCH`). It never writes to HGK.
+  (`HEADER_MISMATCH`). `verify()` reports `header_is_authoritative` as false: the header carries no
+  signature, so a coherent rewrite of both the entries and the header is undetectable without an
+  external anchor. `verify_against_manifest(manifest)` IS authoritative and catches that rewrite
+  (the manifest is the anchor). It never writes to HGK.
 
 ## The journal envelope is DETECTION-ONLY (non-claims)
 
 - It gives DETECTION of post-export modification of the exported event stream.
 - It does **NOT** make the HGK database tamper-proof.
 - It is **NOT** a cryptographic signature (there is no key management).
+- The journal header is **NOT** authoritative: a coherent rewrite of the entries and the
+  unauthenticated header is undetectable without an external anchor (the export manifest).
 - It is read-only with respect to HG-KSEOS (it never writes to HGK).
 - It should **NOT** be backported into the accepted W1 subject for evidence aesthetics.
 

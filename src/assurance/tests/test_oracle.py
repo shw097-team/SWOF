@@ -157,5 +157,40 @@ class TestPurity(unittest.TestCase):
         self.assertEqual(verdict.first_failure, "PREDICATE_INVALID")
 
 
+class TestNegativeFixtureHardening(unittest.TestCase):
+    def test_item_id_equal_to_fixture_with_no_manifest_is_unrepresented(self):
+        items = [item(kind="TEST_RUN", item_id="NEG-1", negative_fixtures=())]
+        verdict = Oracle(ORACLE_ID).decide(predicate(), items)
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_UNREPRESENTED")
+
+    def test_unrelated_kind_named_the_fixture_plus_a_real_item_is_unrepresented(self):
+        items = [item(kind="OTHER", item_id="NEG-1", negative_fixtures=()),
+                 item(kind="TEST_RUN", item_id="real", negative_fixtures=())]
+        verdict = Oracle(ORACLE_ID).decide(predicate(), items)
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_UNREPRESENTED")
+
+    def test_self_declared_fixture_fields_are_not_a_representation(self):
+        declared = {"item_id": "self", "kind": "TEST_RUN", "subject_id": "SUBJ-1",
+                    "sha256": "a" * 64, "negative_fixtures": ("NEG-1",),
+                    "negative_cases": ("NEG-1",)}
+        verdict = Oracle(ORACLE_ID).decide(predicate(), [declared])
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_UNREPRESENTED")
+
+    def test_item_id_match_alone_still_fails_even_with_manifest_absent(self):
+        items = [item(kind="NEGATIVE_FIXTURE_PROOF", item_id="NEG-1", negative_fixtures=())]
+        verdict = Oracle(ORACLE_ID).decide(predicate(), items)
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "MISSING_EVIDENCE_KIND")
+
+    def test_plan_level_manifest_binding_a_present_kind_passes(self):
+        verdict = Oracle(ORACLE_ID, negative_fixture_manifest=MANIFEST).decide(
+            predicate(), [proof_item(), item(negative_fixtures=())])
+        self.assertTrue(verdict.passed)
+        self.assertEqual(verdict.reason_code, "PASS")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -2,9 +2,11 @@
 
 WHY: a retry is how one intended side effect becomes two real ones. An attempt key derived from
 the immutable intent identity means the same logical attempt can never fire twice, and a retry
-plan is refused for any state where a second side effect would be wrong. Uncertainty
-(UNKNOWN_EFFECT / PARTIAL_EFFECT) is answered with a fresh READBACK, never with another side
-effect. max_retries is a ceiling, not a suggestion: exceeding it refuses rather than looping.
+plan is refused for any state where a second side effect would be wrong. A retry is allowed
+ONLY from UNKNOWN_EFFECT; a PARTIAL_EFFECT has already applied part of the intent and is
+answered with a fresh READBACK (plan_reobserve) plus a compensation pointer, never with
+another side effect. max_retries is a ceiling, not a suggestion: exceeding it refuses rather
+than looping.
 """
 from __future__ import annotations
 
@@ -15,8 +17,10 @@ from effect.state import TERMINAL_STATES, is_unknown
 
 ATTEMPT_KEY_DOMAIN = "swof.effect.attempt.v1"
 
-# Retry is meaningful only where a second attempt can still change the outcome.
-RETRYABLE_STATES = ("UNKNOWN_EFFECT", "PARTIAL_EFFECT")
+# Retry is allowed ONLY from UNKNOWN_EFFECT, where no effect has been confirmed applied. A
+# PARTIAL_EFFECT has confirmed part of the intent, so a second side effect would compound it;
+# its recovery route is a fresh readback (plan_reobserve) plus the compensation pointer.
+RETRYABLE_STATES = ("UNKNOWN_EFFECT",)
 
 
 class DuplicateAttemptDetected(Exception):
