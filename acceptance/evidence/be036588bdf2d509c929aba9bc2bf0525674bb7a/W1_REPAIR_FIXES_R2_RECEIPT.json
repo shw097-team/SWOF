@@ -1,0 +1,79 @@
+{
+ "schema": "SWOF-W1-REPAIR-FIXES-R2/1",
+ "at_utc": "2026-10-03T02:01:59Z",
+ "fixes": [
+  {
+   "id": "FIX-2",
+   "applied_in_memory": true
+  },
+  {
+   "id": "FIX-3",
+   "applied_in_memory": true
+  }
+ ],
+ "readback_assertions": {
+  "FIX-2_no_W1_SUBSYSTEMS_ref": true,
+  "FIX-2_structural_invariant": true,
+  "FIX-3_self_scan_excluded": true,
+  "branch_policy_is_rbwi": true
+ },
+ "all_fixes_landed": true,
+ "tests": {
+  "ran": 98,
+  "fail": 0,
+  "error": 0,
+  "skip": 0,
+  "roots": {
+   "tests": {
+    "ran": 16,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "rc": 0,
+    "log_sha256": "f56bd8f213eb542659d4d3a546b6f26f6f4a20e40d45a9396143dcd75dedc3e0"
+   },
+   "src/fabric/tests": {
+    "ran": 21,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "rc": 0,
+    "log_sha256": "417ba1a6b9654f6f504bb38f9b679de7d3258d7f692dee8c8e49ed2d55cba40f"
+   },
+   "src/knowledge/tests": {
+    "ran": 25,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "rc": 0,
+    "log_sha256": "227e87ed950b3ccb1297319b6605f2125f1a648ec474843656494cf3baf2887a"
+   },
+   "src/admission/tests": {
+    "ran": 17,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "rc": 0,
+    "log_sha256": "bb614afc2134979641029b72acbd52f75fedbe85d78b1d90b9e1ca09647e6d3b"
+   },
+   "src/profile/tests": {
+    "ran": 12,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "rc": 0,
+    "log_sha256": "f1e9c95eee88cc745e3d3c412ef3d1d70a67b9b5e5ac89cb738a2a1305bd1ffb"
+   },
+   "src/capability/tests": {
+    "ran": 7,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "rc": 0,
+    "log_sha256": "1ec383c324df762b7f44ba8187abef2de20ee299850a376bd0de56d40d65e06b"
+   }
+  },
+  "all_ok": true
+ },
+ "verdict": "PASS"
+}

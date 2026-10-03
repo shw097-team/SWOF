@@ -1,0 +1,35 @@
+{
+ "schema": "SWOF-INDEPENDENT-RECEIPT/1",
+ "order_id": "SWOF-CONSTRUCTION-002",
+ "changeset": "NARROW_REPAIR",
+ "repair_workorder_id": "WO-SWOF-W1-REPAIR-001",
+ "local_checkpoint_id": "CKPT-SWOF-W1-REPAIR-001",
+ "source_candidate_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "branch": "repair/w1-ext-001-008",
+ "maker_identity": "hermes-orchestrator (HG-KSEOS bounded runtime)",
+ "checker_identity": "fresh-context VERIFY_ONLY lane deleg_208a9326",
+ "checker_ne_maker": true,
+ "checker_did_not_mutate_subject": true,
+ "verdict": "PASS",
+ "falsification_assertions": {
+  "branch_is_repair": true,
+  "asserts_wo_or_repair": true,
+  "branch_policy_negative_fixture_can_fail": true,
+  "fixture_not_vacuous": true,
+  "ledger_reference_alone_refused": true,
+  "ledger_no_consumer_refused": true,
+  "ledger_silent_omission_refused": true,
+  "topology_not_runtime_parallelism": true,
+  "tool_presence_no_rights": true,
+  "qualification_no_self_pass": true,
+  "projection_provider_neutral": true,
+  "no_regression_probes": 5,
+  "prior_shas_not_reused": true
+ },
+ "superseded_prior_subject": {
+  "source_candidate_sha": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b",
+  "evidence_commit_sha": "7c0fa362347ff59bd6faaff08da96c5ca2ad7cf3",
+  "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+ },
+ "generated_at_utc": "2026-10-03T02:12:28Z"
+}

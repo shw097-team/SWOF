@@ -1,0 +1,191 @@
+{
+ "schema": "SWOF-EVIDENCE-RETURN-PACK/1",
+ "workorder_id": "WO-SWOF-W1-REPAIR-001",
+ "repo": "shw097-team/SWOF",
+ "source_candidate_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "local_checkpoint_id": "CKPT-SWOF-W1-REPAIR-001",
+ "producer_identity": "hermes-orchestrator (HG-KSEOS bounded runtime)",
+ "checker_identity": "fresh-context VERIFY_ONLY lane deleg_208a9326",
+ "local_closure_receipt_sha256": "b20d816113a774a188a03bd916bbcce2761c686eeb13875a55e6167d1343774b",
+ "independent_receipt_sha256": "cb57cb985943d9a2567b4277683fa999edf45232a7a1e8735dcfae6823e4fa00",
+ "redaction_receipt_sha256": "c437c4fe474d177f10b4e4dcaeab1bb97c1ae8cea8c4eb3458ccdbd4fa1ca46e",
+ "secret_scan_receipt_sha256": "2de295a2557104d5d2f85f9e207a2f42e36da93beb5cba9f1ee9b581385f8bc8",
+ "evidence_items": [
+  {
+   "id": "E-001",
+   "type": "independent_receipt",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/INDEPENDENT_RECEIPT.json",
+   "sha256": "cb57cb985943d9a2567b4277683fa999edf45232a7a1e8735dcfae6823e4fa00",
+   "bytes": 1331,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-002",
+   "type": "runtime_receipt",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/LOCAL_CLOSURE_RECEIPT.json",
+   "sha256": "b20d816113a774a188a03bd916bbcce2761c686eeb13875a55e6167d1343774b",
+   "bytes": 989,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-003",
+   "type": "runtime_receipt",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/NAMED_CAPABILITY_CONSUMPTION_RECEIPT.json",
+   "sha256": "524c0a32f1761a6096df415a0096df8e661427a8b8169e568fe8e0d062ef1605",
+   "bytes": 5680,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-004",
+   "type": "runtime_receipt",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/pd04_packets/WO-SWOF-W1-REPAIR-001.json",
+   "sha256": "acd8f0fa22611e11c7ed4f52f813239b1202f2f2ffee5acd7b671043ed1e8b6d",
+   "bytes": 2258,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-005",
+   "type": "test_log",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/raw_test_logs/src_admission_tests.log",
+   "sha256": "45eab28e44cf4d04be87908cc8cd7069c1e17dd4ce679883cc13bcea6720fdb0",
+   "bytes": 2560,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-006",
+   "type": "test_log",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/raw_test_logs/src_capability_tests.log",
+   "sha256": "bf39d233c0a10bf761b5160e9d00b6e066d2f6ac7fc5a4b314786f99c1433952",
+   "bytes": 1118,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-007",
+   "type": "test_log",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/raw_test_logs/src_fabric_tests.log",
+   "sha256": "4dbbc6804940a32b26ccf9d201d8465d20ef2af244e558908167cb6bba3979cc",
+   "bytes": 3123,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-008",
+   "type": "test_log",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/raw_test_logs/src_knowledge_tests.log",
+   "sha256": "67f019d79a122d6019a7edf40faf6fd6e16b2d5c5656adf6849242c83f86c78d",
+   "bytes": 3712,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-009",
+   "type": "test_log",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/raw_test_logs/src_profile_tests.log",
+   "sha256": "be48a67a7a55797c78dcea04652b8f32c33aba5ba9234d4deed4e6534cab65eb",
+   "bytes": 1764,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-010",
+   "type": "test_log",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/raw_test_logs/tests.log",
+   "sha256": "065c0214908e3ec03682bda65f2f13777e095c7b448e4dad59b23e83f2ec43dc",
+   "bytes": 2658,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-011",
+   "type": "runtime_receipt",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/SECRET_SCAN_RECEIPT.json",
+   "sha256": "2de295a2557104d5d2f85f9e207a2f42e36da93beb5cba9f1ee9b581385f8bc8",
+   "bytes": 341,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-012",
+   "type": "runtime_receipt",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/W1_REPAIR_FINAL_PACKAGING.json",
+   "sha256": "e5903f5a48e8ade41e539fb76038ff276c60092f37525f99ed0616612337bbdc",
+   "bytes": 4410,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-013",
+   "type": "runtime_receipt",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/W1_REPAIR_FIXES_R2_RECEIPT.json",
+   "sha256": "b2e82eacef2816fa457d098f231c32d23d645f701f0a873581f1e6eb189596bc",
+   "bytes": 1667,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-014",
+   "type": "runtime_receipt",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/W1_REPAIR_FIXES_RECEIPT.json",
+   "sha256": "5fefd853f15c2e0037d0af14f7f415f9b580164ddca1cd9f8d536385b87c77b5",
+   "bytes": 2647,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  },
+  {
+   "id": "E-015",
+   "type": "runtime_receipt",
+   "subject": "subject=be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "path": "acceptance/evidence/be036588bdf2d509c929aba9bc2bf0525674bb7a/W1_REPAIR_PART_B_RECEIPT.json",
+   "sha256": "87d18a6a187b73b45a5b589db62b0dc58472c6565ff7bd14120ed3bc0cf414df",
+   "bytes": 9804,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY"
+  }
+ ],
+ "environment_identity": {
+  "os": "Windows 11",
+  "runner_or_host": "local HGK host (git-bash)",
+  "toolchain": {
+   "python": "3.12.14",
+   "sqlite": "3.53.1",
+   "git": "git version 2.53.0.windows.1"
+  },
+  "lockfile_digests": {}
+ },
+ "invalidation": [
+  "ON_NEW_SOURCE_CANDIDATE",
+  "ON_CHECKER_CHANGE",
+  "ON_REQUIRED_FIXTURE_CHANGE",
+  "ON_ENVIRONMENT_IDENTITY_CHANGE_WHERE_RELEVANT"
+ ],
+ "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_ONLY",
+ "non_claims": [
+  "NOT_EXTERNALLY_ACCEPTED",
+  "NO_REMOTE_MERGE",
+  "NO_RELEASE",
+  "NO_PRODUCTION",
+  "W2_W5_NOT_COMPLETED_BY_THIS_REPAIR"
+ ],
+ "manifest_hash_source": "COMMITTED_GIT_BLOB_BYTES",
+ "generated_at_utc": "2026-10-03T02:14:49Z"
+}

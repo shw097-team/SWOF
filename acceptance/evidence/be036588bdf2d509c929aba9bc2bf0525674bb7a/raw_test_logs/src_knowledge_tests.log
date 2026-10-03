@@ -1,0 +1,38 @@
+# command: C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s src/knowledge/tests -t src/knowledge/tests -v
+# cwd: C:\Projects\Agent_Workspace\SWOF
+# exit_code: 0
+
+test_benign_source_admitted_as_data_only (test_injection.TestSourceAsData.test_benign_source_admitted_as_data_only) ... ok
+test_external_claim_ceiling_is_support_only (test_injection.TestSourceAsData.test_external_claim_ceiling_is_support_only) ... ok
+test_external_content_cannot_acquire_authority (test_injection.TestSourceAsData.test_external_content_cannot_acquire_authority) ... ok
+test_injection_triggers_stop_quarantine_tt (test_injection.TestSourceAsData.test_injection_triggers_stop_quarantine_tt) ... ok
+test_scan_reports_hits (test_injection.TestSourceAsData.test_scan_reports_hits) ... ok
+test_caller_asserted_eligibility_refuses_grounding (test_retrieval.TestRetrievalObjects.test_caller_asserted_eligibility_refuses_grounding)
+R-2: eligibility must be DERIVED from trust facets, not asserted by the caller. ... ok
+test_caller_asserted_ineligibility_is_refused_first (test_retrieval.TestRetrievalObjects.test_caller_asserted_ineligibility_is_refused_first)
+R-2: a caller-asserted eligibility flag is refused before the ineligible branch can be trusted. ... ok
+test_grounded_answer_is_not_an_acceptance (test_retrieval.TestRetrievalObjects.test_grounded_answer_is_not_an_acceptance) ... ok
+test_high_score_ineligible_candidate_cannot_ground (test_retrieval.TestRetrievalObjects.test_high_score_ineligible_candidate_cannot_ground)
+A high-scoring candidate whose eligibility is DERIVED as ineligible still cannot ground. ... ok
+test_plan_scope_may_not_widen (test_retrieval.TestRetrievalObjects.test_plan_scope_may_not_widen) ... ok
+test_plan_scope_subset_is_allowed (test_retrieval.TestRetrievalObjects.test_plan_scope_subset_is_allowed) ... ok
+test_retrieval_evaluation_is_not_package_assurance (test_retrieval.TestRetrievalObjects.test_retrieval_evaluation_is_not_package_assurance) ... ok
+test_trust_derived_eligibility_allows_grounding (test_retrieval.TestRetrievalObjects.test_trust_derived_eligibility_allows_grounding) ... ok
+test_trust_derived_ineligible_cannot_ground (test_retrieval.TestRetrievalObjects.test_trust_derived_ineligible_cannot_ground) ... ok
+test_ungrounded_when_witness_missing (test_retrieval.TestRetrievalObjects.test_ungrounded_when_witness_missing) ... ok
+test_all_facets_pass_is_eligible (test_trust.TestEligibility.test_all_facets_pass_is_eligible) ... ok
+test_available_but_not_eligible_revoked (test_trust.TestEligibility.test_available_but_not_eligible_revoked) ... ok
+test_available_but_not_eligible_rights_denied (test_trust.TestEligibility.test_available_but_not_eligible_rights_denied) ... ok
+test_available_but_not_eligible_stale (test_trust.TestEligibility.test_available_but_not_eligible_stale) ... ok
+test_purpose_laundering_refused (test_trust.TestEligibility.test_purpose_laundering_refused)
+PI-PKG-05 18.1: a research grant reused for another purpose must DENY. ... ok
+test_revoked_generation_cannot_be_reindexed (test_trust.TestNoResurrection.test_revoked_generation_cannot_be_reindexed) ... ok
+test_revoked_generation_cannot_be_retrieved (test_trust.TestNoResurrection.test_revoked_generation_cannot_be_retrieved) ... ok
+test_stale_as_current_generation_refused (test_trust.TestNoResurrection.test_stale_as_current_generation_refused) ... ok
+test_genuine_stale_is_not_rejected (test_trust.TestOrthogonality.test_genuine_stale_is_not_rejected) ... ok
+test_revoked_as_stale_is_rejected (test_trust.TestOrthogonality.test_revoked_as_stale_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.001s
+
+OK

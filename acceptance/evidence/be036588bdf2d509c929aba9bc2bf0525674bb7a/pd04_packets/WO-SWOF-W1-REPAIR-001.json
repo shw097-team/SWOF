@@ -1,0 +1,75 @@
+{
+ "schema": "PD04-CONSTRUCTION-PACKET/1",
+ "workorder_id": "WO-SWOF-W1-REPAIR-001",
+ "wave": "W1",
+ "task_spec_seed": {
+  "schema": "PD04-TaskSpecSeed/1",
+  "workorder_id": "WO-SWOF-W1-REPAIR-001",
+  "wave": "W1",
+  "objective": "NARROW_REPAIR of the externally rejected W1 candidate (W1-EXT-001..008).",
+  "source_requirement_locators": [
+   {
+    "package": "PI-PKG-04",
+    "locator": "PI-PKG-04#H1-06 execution fabric"
+   },
+   {
+    "package": "PI-PKG-05",
+    "locator": "PI-PKG-05#H1-05 admission / H1-07 data brain"
+   },
+   {
+    "package": "PD-PKG-05",
+    "locator": "PD-PKG-05 TeamTopology..QualificationHandoff"
+   },
+   {
+    "rbwi": "SWOF_HGK_ACA_RBWI.md §12.4 publication policy (wo/* or repair/*)"
+   },
+   {
+    "rbwi": "SWOF_HGK_ACA_RBWI.md §12.5 EVIDENCE_RETURN_PACK/1"
+   }
+  ],
+  "compiled_from": {
+   "rbwi_sha256": "b9a26f959233bc63c21bb4ad764ded3efc6ba6b02c2d29c40c92e33b0bb5670d"
+  },
+  "fresh_repocontext_ref": "var/swof-precon-001/pd03_repocontext.json"
+ },
+ "task_spec": {
+  "schema": "PD04-TaskSpec/1",
+  "taskspec_id": "TS-WO-SWOF-W1-REPAIR-001",
+  "workorder_id": "WO-SWOF-W1-REPAIR-001",
+  "proposed_bounded_write_set": [
+   "SWOF/src/profile/*",
+   "SWOF/schemas/profile/*",
+   "SWOF/src/capability/*",
+   "SWOF/schemas/capability/*",
+   "SWOF/tests/*",
+   "SWOF/README.md"
+  ],
+  "permissions": {
+   "write_scope": "target_root_admitted_write_set",
+   "network": false
+  },
+  "tests": [
+   "four+2 test roots, fresh denominator"
+  ],
+  "acceptance_edges": [
+   "all five blocking findings closed"
+  ],
+  "evidence_edges": [
+   "SWOF-EVIDENCE-RETURN-PACK/1 with remote exact-byte readback"
+  ]
+ },
+ "ecp": {
+  "schema": "PD04-ECP/1",
+  "ecp_id": "ECP-WO-SWOF-W1-REPAIR-001",
+  "workorder_id": "WO-SWOF-W1-REPAIR-001",
+  "one_ecp_per_workorder": true,
+  "scope": "SWOF/src/profile/*; SWOF/schemas/profile/*; SWOF/src/capability/*; SWOF/schemas/capability/*; SWOF/tests/*; SWOF/README.md"
+ },
+ "fresh_repocontext_ref": "var/swof-precon-001/pd03_repocontext.json",
+ "pd04_packet_ref": "PD04::WO-SWOF-W1-REPAIR-001",
+ "taskspec_ref": "TS-WO-SWOF-W1-REPAIR-001",
+ "ecp_ref": "ECP-WO-SWOF-W1-REPAIR-001",
+ "state": "PLANNED_NOT_DISPATCHED",
+ "execution_binding": null,
+ "base_head": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b"
+}

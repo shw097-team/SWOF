@@ -1,0 +1,17 @@
+# command: C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s src/capability/tests -t src/capability/tests -v
+# cwd: C:\Projects\Agent_Workspace\SWOF
+# exit_code: 0
+
+test_consumed_active_requires_consumer (test_ledger.TestLedger.test_consumed_active_requires_consumer) ... ok
+test_not_active_requires_reason (test_ledger.TestLedger.test_not_active_requires_reason) ... ok
+test_receipt_counts_and_digest (test_ledger.TestLedger.test_receipt_counts_and_digest) ... ok
+test_reference_alone_is_not_consumption (test_ledger.TestLedger.test_reference_alone_is_not_consumption)
+A locator with no readback proof must NOT satisfy CONSUMED_ACTIVE. ... ok
+test_silent_omission_refused (test_ledger.TestLedger.test_silent_omission_refused) ... ok
+test_source_and_execution_dispositions_are_separate (test_ledger.TestLedger.test_source_and_execution_dispositions_are_separate) ... ok
+test_unknown_source_disposition_rejected (test_ledger.TestLedger.test_unknown_source_disposition_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.000s
+
+OK

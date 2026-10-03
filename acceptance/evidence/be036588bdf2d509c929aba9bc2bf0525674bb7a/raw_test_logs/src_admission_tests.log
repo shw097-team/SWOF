@@ -1,0 +1,29 @@
+# command: C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s src/admission/tests -t src/admission/tests -v
+# cwd: C:\Projects\Agent_Workspace\SWOF
+# exit_code: 0
+
+test_anti_downgrade_allows_strengthening (test_ladder.TestLadder.test_anti_downgrade_allows_strengthening) ... ok
+test_anti_downgrade_refuses_weakening (test_ladder.TestLadder.test_anti_downgrade_refuses_weakening) ... ok
+test_build_minimum_allowed_with_gap (test_ladder.TestLadder.test_build_minimum_allowed_with_gap) ... ok
+test_build_minimum_requires_documented_material_gap (test_ladder.TestLadder.test_build_minimum_requires_documented_material_gap) ... ok
+test_build_new_exception_allowed_when_all_earlier_fail (test_ladder.TestLadder.test_build_new_exception_allowed_when_all_earlier_fail) ... ok
+test_build_new_exception_refused_while_earlier_survives (test_ladder.TestLadder.test_build_new_exception_refused_while_earlier_survives)
+PI-PKG-05 19: requesting BUILD_NEW_EXCEPTION while an earlier disposition survives fails closed. ... ok
+test_ladder_order_matches_source (test_ladder.TestLadder.test_ladder_order_matches_source) ... ok
+test_popularity_is_not_qualification (test_ladder.TestLadder.test_popularity_is_not_qualification) ... ok
+test_popularity_ok_with_real_evidence (test_ladder.TestLadder.test_popularity_ok_with_real_evidence) ... ok
+test_strongest_non_failing_disposition_wins (test_ladder.TestLadder.test_strongest_non_failing_disposition_wins) ... ok
+test_strongest_survivor_wins_over_build_new_exception (test_ladder.TestLadder.test_strongest_survivor_wins_over_build_new_exception)
+The test was wrong: choose_disposition RETURNS the strongest surviving disposition. ... ok
+test_build_new_exception_needs_evidenced_failures (test_ladder.TestRegister.test_build_new_exception_needs_evidenced_failures)
+R-1: material failure asserted WITHOUT evidence must not satisfy the BUILD_NEW_EXCEPTION gate. ... ok
+test_full_row_activates (test_ladder.TestRegister.test_full_row_activates) ... ok
+test_missing_provider_off_blocks_activation (test_ladder.TestRegister.test_missing_provider_off_blocks_activation) ... ok
+test_rejected_technology_cannot_be_activated (test_ladder.TestRegister.test_rejected_technology_cannot_be_activated) ... ok
+test_selected_is_not_installed (test_ladder.TestRegister.test_selected_is_not_installed) ... ok
+test_unregistered_technology_refused (test_ladder.TestRegister.test_unregistered_technology_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.001s
+
+OK

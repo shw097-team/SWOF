@@ -1,0 +1,29 @@
+# command: C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s tests -t . -v
+# cwd: C:\Projects\Agent_Workspace\SWOF
+# exit_code: 0
+
+test_compiles_one_ecp_per_workorder (tests.pd04.test_pd04_factory.TestPD04Factory.test_compiles_one_ecp_per_workorder) ... ok
+test_control_case_routable (tests.pd04.test_pd04_factory.TestPD04Factory.test_control_case_routable) ... ok
+test_missing_acceptance_edges_fails_closed (tests.pd04.test_pd04_factory.TestPD04Factory.test_missing_acceptance_edges_fails_closed) ... ok
+test_missing_evidence_edges_fails_closed (tests.pd04.test_pd04_factory.TestPD04Factory.test_missing_evidence_edges_fails_closed) ... ok
+test_missing_fresh_repocontext_fails_closed (tests.pd04.test_pd04_factory.TestPD04Factory.test_missing_fresh_repocontext_fails_closed) ... ok
+test_missing_source_requirement_edges_fails_closed (tests.pd04.test_pd04_factory.TestPD04Factory.test_missing_source_requirement_edges_fails_closed) ... ok
+test_packet_fingerprint_is_deterministic (tests.pd04.test_pd04_factory.TestPD04Factory.test_packet_fingerprint_is_deterministic) ... ok
+test_schema_requires_all_route_refs (tests.pd04.test_pd04_factory.TestPD04Factory.test_schema_requires_all_route_refs) ... ok
+test_every_test_file_defines_at_least_one_test (tests.test_test_hygiene.TestTestHygiene.test_every_test_file_defines_at_least_one_test) ... ok
+test_no_tests_after_main_guard (tests.test_test_hygiene.TestTestHygiene.test_no_tests_after_main_guard) ... ok
+test_git_repo_present (tests.test_w0_bootstrap.TestW0Bootstrap.test_git_repo_present)
+Hermetic (W0-HERMETIC-001): skip rather than fail when run outside a git worktree. ... ok
+test_no_w0_semantic_implementation (tests.test_w0_bootstrap.TestW0Bootstrap.test_no_w0_semantic_implementation)
+W0 invariant, wave-scoped correctly: W0 introduces no semantic implementation. ... ok
+test_on_an_authoritative_candidate_branch (tests.test_w0_bootstrap.TestW0Bootstrap.test_on_an_authoritative_candidate_branch)
+Follow the RBWI policy - do NOT redefine it. ... ok
+test_readme_does_not_claim_semantic_authority (tests.test_w0_bootstrap.TestW0Bootstrap.test_readme_does_not_claim_semantic_authority) ... ok
+test_repository_does_not_author_branch_policy (tests.test_w0_bootstrap.TestW0Bootstrap.test_repository_does_not_author_branch_policy)
+Negative fixture (Gate C): the repo must not declare any of its own branch patterns normative. ... ok
+test_workspace_config_declares_non_authority (tests.test_w0_bootstrap.TestW0Bootstrap.test_workspace_config_declares_non_authority) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.125s
+
+OK

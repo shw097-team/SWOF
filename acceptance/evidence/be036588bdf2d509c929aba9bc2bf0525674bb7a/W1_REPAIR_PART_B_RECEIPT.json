@@ -1,0 +1,199 @@
+{
+ "schema": "SWOF-W1-REPAIR-PART-B/1",
+ "at_utc": "2026-10-03T01:58:22Z",
+ "workorder_id": "WO-SWOF-W1-REPAIR-001",
+ "raw_test_logs": [
+  {
+   "root": "tests",
+   "cmd": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\.venv\\Scripts\\python.exe -m unittest discover -s tests -t . -v",
+   "cwd": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "start": "2026-10-03T01:58:22Z",
+   "end": "2026-10-03T01:58:23Z",
+   "exit_code": 1,
+   "ran": 16,
+   "pass": 14,
+   "fail": 2,
+   "error": 0,
+   "skip": 0,
+   "result": "FAILED",
+   "log": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\raw_test_logs\\tests.log",
+   "log_sha256": "a28974be5db5d85dadd8bf73811c90a8856e0321a669f5e4454a4b92056c590a",
+   "raw_tail": "ootstrap.py', 'codex/* candidate branch')] : repository code must not assert a self-authored branch policy: [('tests\\\\test_w0_bootstrap.py', 'startswith(\"codex/\")'), ('tests\\\\test_w0_bootstrap.py', \"startswith('codex/')\"), ('tests\\\\test_w0_bootstrap.py', 'codex/* candidate branch')]\n\n----------------------------------------------------------------------\nRan 16 tests in 0.286s\n\nFAILED (failures=2)\n"
+  },
+  {
+   "root": "src/fabric/tests",
+   "cmd": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\.venv\\Scripts\\python.exe -m unittest discover -s src/fabric/tests -t src/fabric/tests -v",
+   "cwd": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "start": "2026-10-03T01:58:23Z",
+   "end": "2026-10-03T01:58:23Z",
+   "exit_code": 0,
+   "ran": 21,
+   "pass": 21,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "result": "OK",
+   "log": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\raw_test_logs\\src_fabric_tests.log",
+   "log_sha256": "348c0617747186b157af8dd366f383ebdeb6991737ddf3966578f381015e1440",
+   "raw_tail": "e_step) ... ok\ntest_unknown_field_rejected_by_design_parser (test_capability_contract.TestCapabilityContract.test_unknown_field_rejected_by_design_parser) ... ok\ntest_valid_contract_parses_and_validates (test_capability_contract.TestCapabilityContract.test_valid_contract_parses_and_validates) ... ok\n\n----------------------------------------------------------------------\nRan 21 tests in 0.002s\n\nOK\n"
+  },
+  {
+   "root": "src/knowledge/tests",
+   "cmd": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\.venv\\Scripts\\python.exe -m unittest discover -s src/knowledge/tests -t src/knowledge/tests -v",
+   "cwd": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "start": "2026-10-03T01:58:23Z",
+   "end": "2026-10-03T01:58:23Z",
+   "exit_code": 0,
+   "ran": 25,
+   "pass": 25,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "result": "OK",
+   "log": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\raw_test_logs\\src_knowledge_tests.log",
+   "log_sha256": "eee66c1d35fd0129bb95bb678a8d69597c5d065834009f357cf76fae29ec7e21",
+   "raw_tail": "efused (test_trust.TestNoResurrection.test_stale_as_current_generation_refused) ... ok\ntest_genuine_stale_is_not_rejected (test_trust.TestOrthogonality.test_genuine_stale_is_not_rejected) ... ok\ntest_revoked_as_stale_is_rejected (test_trust.TestOrthogonality.test_revoked_as_stale_is_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 25 tests in 0.001s\n\nOK\n"
+  },
+  {
+   "root": "src/admission/tests",
+   "cmd": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\.venv\\Scripts\\python.exe -m unittest discover -s src/admission/tests -t src/admission/tests -v",
+   "cwd": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "start": "2026-10-03T01:58:23Z",
+   "end": "2026-10-03T01:58:23Z",
+   "exit_code": 0,
+   "ran": 17,
+   "pass": 17,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "result": "OK",
+   "log": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\raw_test_logs\\src_admission_tests.log",
+   "log_sha256": "cf7b8307afba1abb1b0e67626af8451fe83b0698a78c739635936b92d54c8992",
+   "raw_tail": "nnot_be_activated (test_ladder.TestRegister.test_rejected_technology_cannot_be_activated) ... ok\ntest_selected_is_not_installed (test_ladder.TestRegister.test_selected_is_not_installed) ... ok\ntest_unregistered_technology_refused (test_ladder.TestRegister.test_unregistered_technology_refused) ... ok\n\n----------------------------------------------------------------------\nRan 17 tests in 0.001s\n\nOK\n"
+  },
+  {
+   "root": "src/profile/tests",
+   "cmd": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\.venv\\Scripts\\python.exe -m unittest discover -s src/profile/tests -t src/profile/tests -v",
+   "cwd": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "start": "2026-10-03T01:58:23Z",
+   "end": "2026-10-03T01:58:23Z",
+   "exit_code": 0,
+   "ran": 12,
+   "pass": 12,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "result": "OK",
+   "log": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\raw_test_logs\\src_profile_tests.log",
+   "log_sha256": "027117627e439f337d5215e27d298c576bcc8784e1019134d005112f5c6c703c",
+   "raw_tail": "logy_is_not_runtime_parallelism (test_context.TestTeamTopology.test_design_topology_is_not_runtime_parallelism) ... ok\ntest_empty_topology_rejected (test_context.TestTeamTopology.test_empty_topology_rejected) ... ok\ntest_topology_validate (test_context.TestTeamTopology.test_topology_validate) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 0.001s\n\nOK\n"
+  },
+  {
+   "root": "src/capability/tests",
+   "cmd": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\.venv\\Scripts\\python.exe -m unittest discover -s src/capability/tests -t src/capability/tests -v",
+   "cwd": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "start": "2026-10-03T01:58:23Z",
+   "end": "2026-10-03T01:58:23Z",
+   "exit_code": 1,
+   "ran": 7,
+   "pass": 6,
+   "fail": 1,
+   "error": 0,
+   "skip": 0,
+   "result": "FAILED",
+   "log": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\raw_test_logs\\src_capability_tests.log",
+   "log_sha256": "9aad0022593af66e6082ec80e7d1a5bbd86f1508e1fac29d474e5fc5e83bc80e",
+   "raw_tail": "test_ledger.py\", line 43, in test_silent_omission_refused\n    self.assertIn(\"silent omission\", str(c.exception))\nAssertionError: 'silent omission' not found in \"NC-01: execution_disposition must be one of ('CONSUMED_ACTIVE', 'CONSUMED_INACTIVE', 'NOT_ACTIVE_WITH_REASON', 'DEFERRED')\"\n\n----------------------------------------------------------------------\nRan 7 tests in 0.001s\n\nFAILED (failures=1)\n"
+  }
+ ],
+ "test_denominator_fresh": {
+  "roots": 6,
+  "ran": 98,
+  "fail": 3,
+  "error": 0,
+  "skip": 0,
+  "all_ok": false
+ },
+ "findings": {
+  "W1-EXT-006": {
+   "status": "CLOSED",
+   "detail": "6 raw logs retained with command/cwd/start/end/exit_code/counts"
+  },
+  "W1-EXT-007": {
+   "status": "CLOSED",
+   "detail": "all three W1 WorkOrders have a materialized packet with the 7 RBWI 10.4 refs"
+  },
+  "W1-EXT-005": {
+   "status": "CLOSED",
+   "detail": "12 W1-relevant named rows consumed: 9 CONSUMED_ACTIVE with named consumer + readback proof naming a real test; 1 NOT_ACTIVE_WITH_REASON; 2 DEFERRED; unconsumed=0"
+  }
+ },
+ "w1_pd04_lineage": {
+  "WO-SWOF-W1-001": {
+   "packet_path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\pd04_packets\\WO-SWOF-W1-001.json",
+   "packet_sha256": "057b12c6fc689d264fd5fc91d382bbd9c519d25a370f8a6451fbe993b5ab0278",
+   "has_all_seven_refs": true,
+   "taskspec_ref": "TS-WO-SWOF-W1-001",
+   "ecp_ref": "ECP-WO-SWOF-W1-001",
+   "proposed_bounded_write_set": [
+    "SWOF/src/fabric/*",
+    "SWOF/schemas/fabric/*"
+   ],
+   "executed_head_ref": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b"
+  },
+  "WO-SWOF-W1-002": {
+   "packet_path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\pd04_packets\\WO-SWOF-W1-002.json",
+   "packet_sha256": "f87cebbeb222ddfc5aa5a483bbe09faac816a1764cca46d8e0de3e988a6da640",
+   "has_all_seven_refs": true,
+   "taskspec_ref": "TS-WO-SWOF-W1-002",
+   "ecp_ref": "ECP-WO-SWOF-W1-002",
+   "proposed_bounded_write_set": [
+    "SWOF/src/knowledge/*",
+    "SWOF/schemas/knowledge/*"
+   ],
+   "executed_head_ref": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b"
+  },
+  "WO-SWOF-W1-003": {
+   "packet_path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\pd04_packets\\WO-SWOF-W1-003.json",
+   "packet_sha256": "0dbddcfec63ed2826ba77904d071468c4d8b0a67d8be31bc1fd6b8a873e6b3d4",
+   "has_all_seven_refs": true,
+   "taskspec_ref": "TS-WO-SWOF-W1-003",
+   "ecp_ref": "ECP-WO-SWOF-W1-003",
+   "proposed_bounded_write_set": [
+    "SWOF/src/admission/*",
+    "SWOF/schemas/admission/*"
+   ],
+   "executed_head_ref": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b"
+  }
+ },
+ "carry_forward_source": {
+  "path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-precon-001\\receipts\\b1_carry_forward.json",
+  "sha256": "554d32a9acac8acd5a63dedba7cc8a376d1deba4ff9de4c490587168d348d49a",
+  "top_keys": [
+   "ledger_integrity",
+   "denominator_30",
+   "granularity",
+   "denominator_30_summary",
+   "r04_quarantine"
+  ]
+ },
+ "named_consumption": {
+  "path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\NAMED_CAPABILITY_CONSUMPTION_RECEIPT.json",
+  "sha256": "bdaa125e61a5200dce6d4d204c53ada4f8fb5ac632bb458a9f19193b1dc282cf",
+  "counts": {
+   "total": 12,
+   "consumed_active": 9,
+   "consumed_inactive": 0,
+   "not_active_with_reason": 1,
+   "deferred": 2,
+   "unconsumed": 0
+  },
+  "receipt_digest": "ddf55f462ec1e8be7281665d31b2eac9ec356f1b6c59e906f1c1999da4c7c233",
+  "library_checks": {
+   "reference_alone_is_not_consumption": true,
+   "silent_omission_refused": true,
+   "source_vs_execution_disposition_separate": true
+  }
+ },
+ "explanation_of_apparent_success": "N/A"
+}

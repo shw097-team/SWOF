@@ -1,0 +1,39 @@
+{
+ "schema": "SWOF-LOCAL-CLOSURE-RECEIPT/1",
+ "order_id": "SWOF-CONSTRUCTION-002",
+ "changeset": "NARROW_REPAIR",
+ "repair_workorder_id": "WO-SWOF-W1-REPAIR-001",
+ "local_checkpoint_id": "CKPT-SWOF-W1-REPAIR-001",
+ "source_candidate_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "branch": "repair/w1-ext-001-008",
+ "producer_identity": "hermes-orchestrator (HG-KSEOS bounded runtime)",
+ "checker_identity": "fresh-context VERIFY_ONLY lane deleg_208a9326",
+ "producer_ne_checker": true,
+ "verdict": "PASS",
+ "tests": {
+  "roots": {
+   "tests": 16,
+   "src/fabric/tests": 21,
+   "src/knowledge/tests": 25,
+   "src/admission/tests": 17,
+   "src/profile/tests": 12,
+   "src/capability/tests": 7
+  },
+  "total": 98,
+  "fail": 0,
+  "error": 0,
+  "skip": 0,
+  "defined_eq_collected": true
+ },
+ "findings_closed": [
+  "W1-EXT-001",
+  "W1-EXT-002",
+  "W1-EXT-003",
+  "W1-EXT-004",
+  "W1-EXT-005",
+  "W1-EXT-006",
+  "W1-EXT-007",
+  "W1-EXT-008"
+ ],
+ "generated_at_utc": "2026-10-03T02:12:28Z"
+}

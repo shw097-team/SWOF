@@ -1,0 +1,31 @@
+# command: C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s src/fabric/tests -t src/fabric/tests -v
+# cwd: C:\Projects\Agent_Workspace\SWOF
+# exit_code: 0
+
+test_binding_before_validation_rejected (test_binding.TestBinding.test_binding_before_validation_rejected) ... ok
+test_denied_permission_wins (test_binding.TestBinding.test_denied_permission_wins) ... ok
+test_digest_is_stable_across_binding (test_binding.TestBinding.test_digest_is_stable_across_binding)
+DEFECT-W1-002 regression: the subject key must not move when the contract is bound. ... ok
+test_missing_exit_fallback_rollback_rejected (test_binding.TestBinding.test_missing_exit_fallback_rollback_rejected) ... ok
+test_nonlocal_without_fallback_capability_rejected (test_binding.TestBinding.test_nonlocal_without_fallback_capability_rejected) ... ok
+test_p04_cr_001_adapter_may_not_change_semantic_meaning (test_binding.TestBinding.test_p04_cr_001_adapter_may_not_change_semantic_meaning) ... ok
+test_p04_cr_001_provider_id_must_not_leak_into_semantic_source (test_binding.TestBinding.test_p04_cr_001_provider_id_must_not_leak_into_semantic_source) ... ok
+test_ungranted_permission_rejected (test_binding.TestBinding.test_ungranted_permission_rejected) ... ok
+test_unqualified_provider_rejected (test_binding.TestBinding.test_unqualified_provider_rejected) ... ok
+test_valid_binding_binds_and_advances_state (test_binding.TestBinding.test_valid_binding_binds_and_advances_state) ... ok
+test_narrow_waist_order_is_the_source_order (test_binding.TestNarrowWaist.test_narrow_waist_order_is_the_source_order) ... ok
+test_ten_architectural_invariants_present (test_binding.TestNarrowWaist.test_ten_architectural_invariants_present) ... ok
+test_digest_changes_with_semantics (test_capability_contract.TestCapabilityContract.test_digest_changes_with_semantics) ... ok
+test_digest_is_stable_and_canonical (test_capability_contract.TestCapabilityContract.test_digest_is_stable_and_canonical) ... ok
+test_illegal_state_transition_rejected (test_capability_contract.TestCapabilityContract.test_illegal_state_transition_rejected) ... ok
+test_missing_required_field_is_contract_invalid (test_capability_contract.TestCapabilityContract.test_missing_required_field_is_contract_invalid) ... ok
+test_namespaced_extension_allowed_only_for_migration (test_capability_contract.TestCapabilityContract.test_namespaced_extension_allowed_only_for_migration) ... ok
+test_provider_side_semantic_write_is_authority_capture (test_capability_contract.TestCapabilityContract.test_provider_side_semantic_write_is_authority_capture) ... ok
+test_state_machine_advances_one_step (test_capability_contract.TestCapabilityContract.test_state_machine_advances_one_step) ... ok
+test_unknown_field_rejected_by_design_parser (test_capability_contract.TestCapabilityContract.test_unknown_field_rejected_by_design_parser) ... ok
+test_valid_contract_parses_and_validates (test_capability_contract.TestCapabilityContract.test_valid_contract_parses_and_validates) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.002s
+
+OK

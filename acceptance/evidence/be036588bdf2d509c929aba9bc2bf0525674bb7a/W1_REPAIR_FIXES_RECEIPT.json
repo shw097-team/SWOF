@@ -1,0 +1,87 @@
+{
+ "schema": "SWOF-W1-REPAIR-FIXES/1",
+ "at_utc": "2026-10-03T02:00:08Z",
+ "fixes": [
+  {
+   "id": "FIX-1",
+   "file": "src/capability/ledger.py",
+   "status": "FIXED"
+  },
+  {
+   "id": "FIX-2",
+   "file": "tests/test_w0_bootstrap.py",
+   "status": "FIXED",
+   "detail": "hardcoded W1_SUBSYSTEMS list replaced by a structural package invariant"
+  },
+  {
+   "id": "FIX-3",
+   "file": "tests/test_w0_bootstrap.py",
+   "status": "FIXED",
+   "detail": "the negative fixture no longer flags its own detection literals"
+  }
+ ],
+ "tests_after_fix": {
+  "ran": 98,
+  "fail": 1,
+  "error": 1,
+  "skip": 0,
+  "roots": {
+   "tests": {
+    "ran": 16,
+    "fail": 1,
+    "error": 1,
+    "skip": 0,
+    "rc": 1,
+    "log": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\raw_test_logs\\tests.log",
+    "log_sha256": "77643f7ace3d97cd961afadcb002c35b8579b73fa8a51b78dc1d0ddd2addf361"
+   },
+   "src/fabric/tests": {
+    "ran": 21,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "rc": 0,
+    "log": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\raw_test_logs\\src_fabric_tests.log",
+    "log_sha256": "417ba1a6b9654f6f504bb38f9b679de7d3258d7f692dee8c8e49ed2d55cba40f"
+   },
+   "src/knowledge/tests": {
+    "ran": 25,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "rc": 0,
+    "log": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\raw_test_logs\\src_knowledge_tests.log",
+    "log_sha256": "227e87ed950b3ccb1297319b6605f2125f1a648ec474843656494cf3baf2887a"
+   },
+   "src/admission/tests": {
+    "ran": 17,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "rc": 0,
+    "log": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\raw_test_logs\\src_admission_tests.log",
+    "log_sha256": "bb614afc2134979641029b72acbd52f75fedbe85d78b1d90b9e1ca09647e6d3b"
+   },
+   "src/profile/tests": {
+    "ran": 12,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "rc": 0,
+    "log": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\raw_test_logs\\src_profile_tests.log",
+    "log_sha256": "ca0703d3768782ac6cc2a29a1b5e11024250959c917d99b942b2c9d4039e87b1"
+   },
+   "src/capability/tests": {
+    "ran": 7,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "rc": 0,
+    "log": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\raw_test_logs\\src_capability_tests.log",
+    "log_sha256": "1ec383c324df762b7f44ba8187abef2de20ee299850a376bd0de56d40d65e06b"
+   }
+  },
+  "all_ok": false
+ },
+ "verdict": "FAIL"
+}

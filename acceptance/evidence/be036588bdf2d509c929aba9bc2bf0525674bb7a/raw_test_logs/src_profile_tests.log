@@ -1,0 +1,22 @@
+# command: C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s src/profile/tests -t src/profile/tests -v
+# cwd: C:\Projects\Agent_Workspace\SWOF
+# exit_code: 0
+
+test_execution_context_profile_is_not_memory_truth (test_context.TestHandoffAndQualification.test_execution_context_profile_is_not_memory_truth) ... ok
+test_handoff_requires_checkpoint_and_recovery (test_context.TestHandoffAndQualification.test_handoff_requires_checkpoint_and_recovery) ... ok
+test_handoff_valid (test_context.TestHandoffAndQualification.test_handoff_valid) ... ok
+test_projection_must_stay_provider_neutral (test_context.TestHandoffAndQualification.test_projection_must_stay_provider_neutral) ... ok
+test_qualification_handoff_cannot_self_award_pass (test_context.TestHandoffAndQualification.test_qualification_handoff_cannot_self_award_pass) ... ok
+test_denied_wins (test_context.TestPermissionEnvelope.test_denied_wins) ... ok
+test_granted_permission_effective (test_context.TestPermissionEnvelope.test_granted_permission_effective) ... ok
+test_tool_presence_does_not_grant_rights (test_context.TestPermissionEnvelope.test_tool_presence_does_not_grant_rights)
+PD-PKG-05: tool visibility / provider presence never increases rights. ... ok
+test_bad_lane_mode_rejected (test_context.TestTeamTopology.test_bad_lane_mode_rejected) ... ok
+test_design_topology_is_not_runtime_parallelism (test_context.TestTeamTopology.test_design_topology_is_not_runtime_parallelism) ... ok
+test_empty_topology_rejected (test_context.TestTeamTopology.test_empty_topology_rejected) ... ok
+test_topology_validate (test_context.TestTeamTopology.test_topology_validate) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.001s
+
+OK

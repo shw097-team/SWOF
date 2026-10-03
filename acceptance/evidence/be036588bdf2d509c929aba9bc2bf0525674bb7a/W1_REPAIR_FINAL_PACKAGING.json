@@ -1,0 +1,112 @@
+{
+ "schema": "SWOF-W1-REPAIR-FINAL-PACKAGING/1",
+ "at_utc": "2026-10-03T02:12:28Z",
+ "source_candidate_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "branch": "repair/w1-ext-001-008",
+ "clean": true,
+ "pack": {
+  "path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_narrow_repair\\SWOF_EVIDENCE_RETURN_PACK.json",
+  "sha256": "47001f27dc93d82c67fdf05bdf87a9d4dce08c0a4150ee541f563782cc94d708",
+  "items": 13,
+  "schema_ok": true,
+  "producer_ne_checker": true,
+  "secret_scan": "PASS"
+ },
+ "receipts": {
+  "local_closure": "17997452ea305e247956e392a698fa422d85c65d25decc30d3e216b8784dce7d",
+  "independent": "dd2153a4e17ce1e76d5c2dfae9f1c5b2f8836948376b4ee8be215ed45e74086f",
+  "redaction": "06907a58f4cb790cd18397250ae090a5450d1ac2efb0377b4c54e4eabeace42c",
+  "secret_scan": "1d6981728260c2dffe2f5ec8e1d3c80187d3a40e6dc6bd01cc9efc960d112ae2"
+ },
+ "candidate_push": {
+  "rc": 0,
+  "remote_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+  "readback_equals_subject": true
+ },
+ "evidence_push": {
+  "local_sha": "1296ebe7ca953855bd404a5e179dfb6c6f2a6258",
+  "remote_sha": "1296ebe7ca953855bd404a5e179dfb6c6f2a6258",
+  "readback_matches": true,
+  "neq_source": true,
+  "rc": 0
+ },
+ "remote_byte_recompute": {
+  "items": 13,
+  "mismatch_count": 13,
+  "mismatches": [
+   {
+    "path": "INDEPENDENT_RECEIPT.json",
+    "manifest": "dd2153a4e17ce1e76d5c2dfae9f1c5b2f8836948376b4ee8be215ed45e74086f",
+    "actual": "cb57cb985943d9a2567b4277683fa999edf45232a7a1e8735dcfae6823e4fa00"
+   },
+   {
+    "path": "LOCAL_CLOSURE_RECEIPT.json",
+    "manifest": "17997452ea305e247956e392a698fa422d85c65d25decc30d3e216b8784dce7d",
+    "actual": "b20d816113a774a188a03bd916bbcce2761c686eeb13875a55e6167d1343774b"
+   },
+   {
+    "path": "NAMED_CAPABILITY_CONSUMPTION_RECEIPT.json",
+    "manifest": "bdaa125e61a5200dce6d4d204c53ada4f8fb5ac632bb458a9f19193b1dc282cf",
+    "actual": "524c0a32f1761a6096df415a0096df8e661427a8b8169e568fe8e0d062ef1605"
+   },
+   {
+    "path": "pd04_packets/WO-SWOF-W1-REPAIR-001.json",
+    "manifest": "423b5715eeeb49b00f9d1ca213532cc7c7c4133ef0d7288c95572e8c6641f5fb",
+    "actual": "acd8f0fa22611e11c7ed4f52f813239b1202f2f2ffee5acd7b671043ed1e8b6d"
+   },
+   {
+    "path": "raw_test_logs/src_admission_tests.log",
+    "manifest": "bb614afc2134979641029b72acbd52f75fedbe85d78b1d90b9e1ca09647e6d3b",
+    "actual": "45eab28e44cf4d04be87908cc8cd7069c1e17dd4ce679883cc13bcea6720fdb0"
+   },
+   {
+    "path": "raw_test_logs/src_capability_tests.log",
+    "manifest": "1ec383c324df762b7f44ba8187abef2de20ee299850a376bd0de56d40d65e06b",
+    "actual": "bf39d233c0a10bf761b5160e9d00b6e066d2f6ac7fc5a4b314786f99c1433952"
+   },
+   {
+    "path": "raw_test_logs/src_fabric_tests.log",
+    "manifest": "417ba1a6b9654f6f504bb38f9b679de7d3258d7f692dee8c8e49ed2d55cba40f",
+    "actual": "4dbbc6804940a32b26ccf9d201d8465d20ef2af244e558908167cb6bba3979cc"
+   },
+   {
+    "path": "raw_test_logs/src_knowledge_tests.log",
+    "manifest": "227e87ed950b3ccb1297319b6605f2125f1a648ec474843656494cf3baf2887a",
+    "actual": "67f019d79a122d6019a7edf40faf6fd6e16b2d5c5656adf6849242c83f86c78d"
+   },
+   {
+    "path": "raw_test_logs/src_profile_tests.log",
+    "manifest": "f1e9c95eee88cc745e3d3c412ef3d1d70a67b9b5e5ac89cb738a2a1305bd1ffb",
+    "actual": "be48a67a7a55797c78dcea04652b8f32c33aba5ba9234d4deed4e6534cab65eb"
+   },
+   {
+    "path": "raw_test_logs/tests.log",
+    "manifest": "f56bd8f213eb542659d4d3a546b6f26f6f4a20e40d45a9396143dcd75dedc3e0",
+    "actual": "065c0214908e3ec03682bda65f2f13777e095c7b448e4dad59b23e83f2ec43dc"
+   },
+   {
+    "path": "W1_REPAIR_FIXES_R2_RECEIPT.json",
+    "manifest": "33bab0ab1817714ee7727ca97600bb2e8defa7b0d8f80157ee4de3065c949d8b",
+    "actual": "b2e82eacef2816fa457d098f231c32d23d645f701f0a873581f1e6eb189596bc"
+   },
+   {
+    "path": "W1_REPAIR_FIXES_RECEIPT.json",
+    "manifest": "fc09d7711dd2dacc67bd90c6c30cc2044f40969f8d92d2e0e07e372885b7df91",
+    "actual": "5fefd853f15c2e0037d0af14f7f415f9b580164ddca1cd9f8d536385b87c77b5"
+   },
+   {
+    "path": "W1_REPAIR_PART_B_RECEIPT.json",
+    "manifest": "ed6ac4ba6091c1de0b4283685b921f9dd4d4f39978bf59fc988498400d9d8202",
+    "actual": "87d18a6a187b73b45a5b589db62b0dc58472c6565ff7bd14120ed3bc0cf414df"
+   }
+  ]
+ },
+ "pull_request": {
+  "http": 201,
+  "number": 2,
+  "head_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+  "error": null
+ },
+ "pr_head_equals_source": true,
+ "verdict": "PARTIAL"
+}
