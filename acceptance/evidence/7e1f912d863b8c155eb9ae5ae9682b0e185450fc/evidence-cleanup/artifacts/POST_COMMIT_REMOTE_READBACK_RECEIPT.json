@@ -1,9 +1,9 @@
 {
  "schema": "SWOF-POST-COMMIT-REMOTE-READBACK-RECEIPT/1",
- "layer": "COMMIT_11_BINDING",
+ "layer": "BINDING_FOR_bbf51062",
  "repo": "shw097-team/SWOF",
  "evidence_branch": "evidence/w1-r4-evidence-cleanup",
- "bound_evidence_commit_sha": "1bd60ea0484ffdac2a3d882ce56fee57c7ecc707",
+ "bound_evidence_commit_sha": "bbf51062149eb1f3035e8ee8d3bb4e75e6ad4e4d",
  "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
  "source_branch_tip_at_readback": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
  "source_branch_unchanged_by_cleanup": true,
@@ -51,8 +51,8 @@
   "mismatch_count": 0,
   "mismatches": [],
   "empty_read_count": 0,
-  "remote_tip_git_fetch": "1bd60ea0484ffdac2a3d882ce56fee57c7ecc707",
-  "remote_tip_github_api": "1bd60ea0484ffdac2a3d882ce56fee57c7ecc707",
+  "remote_tip_git_fetch": "bbf51062149eb1f3035e8ee8d3bb4e75e6ad4e4d",
+  "remote_tip_github_api": "bbf51062149eb1f3035e8ee8d3bb4e75e6ad4e4d",
   "transports_agree": true
  },
  "committed_tree_secret_scan": {
