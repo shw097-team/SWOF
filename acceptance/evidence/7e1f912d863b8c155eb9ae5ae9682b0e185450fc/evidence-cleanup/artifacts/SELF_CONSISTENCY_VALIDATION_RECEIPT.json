@@ -1,7 +1,7 @@
 {
  "schema": "SWOF-SELF-CONSISTENCY-VALIDATION-RECEIPT/1",
  "validator": "validate_tree() in var/swof-w1-r4-evidence-cleanup/e13_final.py",
- "rule": "EXACT description of the implementation. Every 64-hex value (matched case-insensitively) in a file whose extension is .json (matched case-insensitively) is checked. For a value under key K the target is selected in this order: (1) NAME-AFFINE - if K ends with one of _sha256/_sha1/_sha/_hash/_digest, the target is the first present non-empty string among {stem}_ref, {stem}_path, {stem}_file, {stem}_artifact, {stem}_artifact_ref, {stem}_locator, {stem}, where stem is K without that suffix; when any is present the authoritative list in (2) is NOT consulted; (2) otherwise the first present non-empty string among the authoritative keys: path, file, target, artifact, artifact_ref, path_or_external_exact_ref, ref, historical_contract_ref, historical_compiled_prompt_ref, historical_calibration_artifact, proof_artifact, contract_path, rank1_authority_path, current_rank1_authority_path, plus K itself when K looks path-like (contains a slash, ends .json, or matches <hex>:<path>). The FIRST selected target that RESOLVES is authoritative: it must equal the value, and later targets are not examined. A selected target that does NOT resolve raises an error only if it is a relative path or a git reference AND no other selected target resolved. An absolute target whose basename is not uniquely in-tree is accepted when the value matches an in-tree or allowlisted blob. If no target resolved, the value must match the sha256 of some in-tree file or be in the external/historical allowlist. Failures inside a superseded/ scope are collected in superseded_scope_stale_references rather than raised.",
+ "rule": "Behavioural description. This is NOT a claim of sentence-exact correspondence with the code - the CODE is authoritative and this description is deliberately shorter than it. (1) SCOPE: every 64-hex string (case-insensitive) occurring in a file whose extension is .json (case-insensitive) is checked, whether it is a value under a dict key OR a bare element of a list. (2) TARGET SELECTION for a value under dict key K: if K ends with _sha256/_sha1/_sha/_hash/_digest, the NAME-AFFINE candidates are ALL present non-empty strings among {stem}_ref, {stem}_path, {stem}_file, {stem}_artifact, {stem}_artifact_ref, {stem}_locator, {stem} (stem = K without that suffix), and the authoritative key tuple is NOT consulted. Otherwise the candidates are ALL present non-empty strings among the PATHKEYS tuple - in that tuple's order, which is authoritative and is NOT restated here - plus K itself when K looks path-like (contains a slash, ends .json, or matches <hex>:<path>). (3) Of those candidates, the FIRST that RESOLVES is authoritative and must equal the value; later candidates are NOT examined. A candidate that does not resolve raises an error only when it is a relative path or a git reference AND no other candidate resolved. An absolute candidate whose basename is not uniquely in-tree is accepted when the value matches an in-tree or allowlisted blob. (4) If no candidate resolved - which is always the case for a bare list element, since it has no candidates - the value must equal the sha256 of some in-tree file or be in the external/historical allowlist. (5) Failures inside a superseded/ scope are collected in superseded_scope_stale_references rather than raised.",
  "known_limitations": [
   "path-like strings that are not SELECTED targets are not examined: repo slugs such as 'shw097-team/SWOF', a descriptive 'locator' like 'branch X @ <sha>', and the original-key metadata field - these carry no byte claim",
   "a declared value CAN be satisfied by allowlist membership (the historical commit's blobs, the out-of-tree contract, and named external control files) without the accompanying descriptive reference being independently verified",
@@ -22,22 +22,25 @@
    "fixture_2_non_sha256_key",
    "fixture_3_commit_path_wrong_blob",
    "fixture_4_unresolvable_named_target",
-   "fixture_5_uppercase_wrong_digest"
+   "fixture_5_uppercase_wrong_digest",
+   "fixture_6_bare_list_element"
   ],
   "caught": {
    "fixture_1_sibling_path_wrong_value": true,
    "fixture_2_non_sha256_key": true,
    "fixture_3_commit_path_wrong_blob": true,
    "fixture_4_unresolvable_named_target": true,
-   "fixture_5_uppercase_wrong_digest": true
+   "fixture_5_uppercase_wrong_digest": true,
+   "fixture_6_bare_list_element": true
   },
   "all_caught": true,
   "errors": [
    "artifacts/negative_fixture_1_sibling_path_wrong_value.json: artifact_sha256=000000000000... contradicts in-tree file artifacts/SWOF_EVIDENCE_RETURN_PACK.json",
    "artifacts/negative_fixture_2_non_sha256_key.json: checksum=000000000000... resolves to no in-tree file and no known external blob",
-   "artifacts/negative_fixture_3_commit_path_wrong_blob.json: artifact_sha256=9ecd3fc61653... does not match the blob at 206ab073:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/R4_CONTRACT.json",
-   "artifacts/negative_fixture_4_unresolvable_named_target.json: artifact_sha256=9ecd3fc61653... names an in-tree target that does not resolve: does/not/exist.json",
-   "artifacts/negative_fixture_5_uppercase_wrong_digest.json: artifact_sha256=AAAAAAAAAAAA... contradicts in-tree file artifacts/SWOF_EVIDENCE_RETURN_PACK.json"
+   "artifacts/negative_fixture_3_commit_path_wrong_blob.json: artifact_sha256=c34105d755ce... does not match the blob at 206ab073:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/R4_CONTRACT.json",
+   "artifacts/negative_fixture_4_unresolvable_named_target.json: artifact_sha256=c34105d755ce... names an in-tree target that does not resolve: does/not/exist.json",
+   "artifacts/negative_fixture_5_uppercase_wrong_digest.json: artifact_sha256=AAAAAAAAAAAA... contradicts in-tree file artifacts/SWOF_EVIDENCE_RETURN_PACK.json",
+   "artifacts/negative_fixture_6_bare_list_element.json: bare list element BBBBBBBBBBBB... resolves to no in-tree file and no known external blob"
   ]
  },
  "non_vacuous": true,

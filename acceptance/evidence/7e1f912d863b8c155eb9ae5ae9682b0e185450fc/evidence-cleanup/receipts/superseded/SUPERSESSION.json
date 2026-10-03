@@ -70,6 +70,8 @@
  "structural_fix": "generation/descriptive receipts were removed from the receipts/ directory of the immutable set (artifacts/ intentionally still holds descriptive artifacts, none of which is currently contradicted). A self-consistency validator is now implemented AND its non-vacuity is demonstrated in SELF_CONSISTENCY_VALIDATION_RECEIPT.json; the earlier claim that it already failed on contradictions was untrue and is corrected.",
  "generation_receipts_preserved_under": "receipts/superseded/",
  "superseded_evidence_commits": [
+  "c94ceb58386810ebeff4031911c6dc96262da4c1",
+  "4b199c99e2e9aeb16ef165e3c2cf2a44767ddc04",
   "00d55fe130c102270743b56be2faf6a4655a8eca",
   "b1c6183e2b5675a1ce036876eac1471c7f572a03",
   "8c5c7c98063cfd912d75379ffbcc94c3c292e6d2",
@@ -93,6 +95,6 @@
   "a45009bd7b459fa400a81f339b67e25ea9c051c2",
   "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f"
  ],
- "superseded_evidence_commits_count": 22,
+ "superseded_evidence_commits_count": 24,
  "superseded_evidence_commits_source": "DERIVED_FROM_BRANCH_HISTORY_NOT_HARDCODED - a hardcoded list previously omitted two commits produced by an earlier run of the same script, leaving an undisclosed superseded pair"
 }
