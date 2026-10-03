@@ -1,0 +1,62 @@
+{
+ "schema": "SWOF-POST-COMMIT-REMOTE-READBACK-RECEIPT/1",
+ "layer": "COMMIT_3_BINDING",
+ "repo": "shw097-team/SWOF",
+ "evidence_branch": "evidence/w1-r4-evidence-cleanup",
+ "bound_evidence_commit_sha": "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
+ "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "source_branch_tip_at_readback": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "source_branch_unchanged_by_cleanup": true,
+ "supersedes_binding_of": "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f",
+ "superseded_commits_retained_in_history": [
+  "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f",
+  "a45009bd7b459fa400a81f339b67e25ea9c051c2"
+ ],
+ "remote_readback": {
+  "file_count": 30,
+  "byte_and_hash_match_count": 29,
+  "mismatch_count": 1,
+  "mismatches": [
+   {
+    "path": "artifacts/superseded/POST_COMMIT_REMOTE_READBACK_RECEIPT.bound-fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f.json",
+    "remote_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "remote_bytes": 0,
+    "byte_match": false,
+    "sha256_match": false
+   }
+  ],
+  "remote_tip_git_fetch": "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
+  "remote_tip_github_api": "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
+  "transports_agree": true,
+  "github_contents_api_spot_check": {
+   "path": "artifacts/SWOF_EVIDENCE_RETURN_PACK.json",
+   "api_sha256": "2274852243bee8ffc4cc1d1246651d21986839ea56e39d3ac0901044525e4fbc",
+   "remote_sha256": "2274852243bee8ffc4cc1d1246651d21986839ea56e39d3ac0901044525e4fbc",
+   "match": true
+  }
+ },
+ "manifest_readback": {
+  "evidence_item_count": 37,
+  "calibration_gates": 8,
+  "calibration_gates_required": 8,
+  "missing_required_evidence": [],
+  "linkage_mode_counts": {
+   "COMPILER_CONTRACT_BOUND": 10,
+   "DIRECT_FINAL_SUBJECT": 1,
+   "HISTORICAL_SUPERSEDED": 3,
+   "WORKORDER_CHECKPOINT": 3,
+   "TRANSITIVE_PRE_MUTATION_LINEAGE": 20
+  }
+ },
+ "g_r4_1_grounding_readback": {
+  "read_at_head": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+  "captured_before_mutation": true,
+  "source_mutation_started": false,
+  "workorder_id": "WO-SWOF-W1-REPAIR-R4-001",
+  "null_observed_fields": [],
+  "grounding_fix_verified": true
+ },
+ "evidence_commit_neq_source": true,
+ "evidence_commit_neq_historical": true,
+ "verdict": "FAIL"
+}
