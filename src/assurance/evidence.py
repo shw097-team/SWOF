@@ -291,24 +291,32 @@ def validate_plan(plan, items, *, resolver=None):
     }
 
 
+def _superseded(gate, axis, changed):
+    """One direction for every identity axis.
+
+    A gate is invalidated when the identity it was BOUND to is no longer the current one,
+    i.e. `bound != changed`. A gate that carries no binding for the axis (bound is None) is
+    not invalidated by that axis. The same rule is used for every axis, so a gate bound to the
+    NEW identity is never the one invalidated - the superseded bindings are.
+    """
+    bound = _field(gate, axis, None)
+    if bound is None:
+        return False
+    return bound != changed[axis]
+
+
 def invalidate(plan, *, changed_identity, gates):
     """Return the invalidation cone: gates whose evidence a changed identity rejects."""
     changed = dict(changed_identity or {})
     affected = []
     for gate in sorted(gates or (), key=lambda g: str(_field(g, "gate_id", ""))):
         reasons = []
-        if "subject_sha" in changed:
-            bound = _field(gate, "subject_sha", None)
-            if bound is None or bound != changed["subject_sha"]:
-                reasons.append("SUBJECT_SHA_CHANGED")
-        if "oracle_id" in changed:
-            bound = _field(gate, "oracle_id", None)
-            if bound is None or bound == changed["oracle_id"]:
-                reasons.append("ORACLE_ID_CHANGED")
-        if "environment" in changed:
-            bound = _field(gate, "environment", None)
-            if bound is None or bound == changed["environment"]:
-                reasons.append("ENVIRONMENT_CHANGED")
+        if "subject_sha" in changed and _superseded(gate, "subject_sha", changed):
+            reasons.append("SUBJECT_SHA_CHANGED")
+        if "oracle_id" in changed and _superseded(gate, "oracle_id", changed):
+            reasons.append("ORACLE_ID_CHANGED")
+        if "environment" in changed and _superseded(gate, "environment", changed):
+            reasons.append("ENVIRONMENT_CHANGED")
         if "security_config" in changed or changed.get("security_relevant"):
             reasons.append("SECURITY_CONFIG_CHANGED")
         if reasons:

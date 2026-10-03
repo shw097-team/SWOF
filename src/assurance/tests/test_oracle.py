@@ -38,6 +38,14 @@ def item(kind="TEST_RUN", item_id="item-1", subject_id="SUBJ-1", negative_fixtur
     }
 
 
+MANIFEST = {"NEG-1": "NEGATIVE_FIXTURE_PROOF"}
+
+
+def proof_item(item_id="proof-1"):
+    return {"item_id": item_id, "kind": "NEGATIVE_FIXTURE_PROOF", "subject_id": "SUBJ-1",
+            "sha256": "b" * 64}
+
+
 class TestDefinedOracle(unittest.TestCase):
     def test_required_kinds_come_from_rules(self):
         self.assertIn("TEST_RUN", Oracle(ORACLE_ID).required_kinds())
@@ -56,7 +64,8 @@ class TestDefinedOracle(unittest.TestCase):
 
 class TestFirstFailure(unittest.TestCase):
     def test_passing_verdict(self):
-        verdict = Oracle(ORACLE_ID).decide(predicate(), [item()])
+        verdict = Oracle(ORACLE_ID, negative_fixture_manifest=MANIFEST).decide(
+            predicate(), [proof_item(), item()])
         self.assertIsInstance(verdict, OracleVerdict)
         self.assertTrue(verdict.passed)
         self.assertIsNone(verdict.first_failure)
@@ -88,21 +97,40 @@ class TestFirstFailure(unittest.TestCase):
             Oracle(ORACLE_ID).decide(predicate(), [item(item_id="a"), item(item_id="b")]).reason_code,
             Oracle(ORACLE_ID).decide(predicate(), [item(subject_id="S")]).reason_code,
             Oracle(ORACLE_ID).decide(predicate(), [item(item_id="b"), item(item_id="a")]).reason_code,
-            Oracle(ORACLE_ID).decide(predicate(), [item()]).reason_code,
+            Oracle(ORACLE_ID, negative_fixture_manifest=MANIFEST).decide(
+                predicate(), [proof_item(), item()]).reason_code,
         }
         self.assertEqual(seen, {"MISSING_EVIDENCE_KIND", "DUPLICATE_EVIDENCE_KIND",
                                 "WRONG_SUBJECT", "NON_DETERMINISTIC_ORDER", "PASS"})
 
 
 class TestNegativeRepresentation(unittest.TestCase):
-    def test_unrepresented_negative_fixture_does_not_pass(self):
-        verdict = Oracle(ORACLE_ID).decide(predicate(), [item(negative_fixtures=())])
+    def test_self_declared_negative_fixture_does_not_pass(self):
+        items = [item(negative_fixtures=("NEG-1",))]
+        verdict = Oracle(ORACLE_ID).decide(predicate(), items)
         self.assertFalse(verdict.passed)
         self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_UNREPRESENTED")
 
-    def test_represented_negative_fixture_passes(self):
-        verdict = Oracle(ORACLE_ID).decide(predicate(), [item(negative_fixtures=("NEG-1",))])
+    def test_self_declared_field_alone_is_not_a_proof(self):
+        ordinary = Oracle(ORACLE_ID).decide(predicate(), [item()])
+        proving = Oracle(ORACLE_ID, negative_fixture_manifest=MANIFEST).decide(
+            predicate(), [proof_item(), item()])
+        self.assertFalse(ordinary.passed)
+        self.assertTrue(proving.passed)
+
+    def test_genuinely_represented_fixture_passes(self):
+        verdict = Oracle(ORACLE_ID, negative_fixture_manifest=MANIFEST).decide(
+            predicate(), [proof_item(), item()])
         self.assertTrue(verdict.passed)
+        self.assertIsNone(verdict.first_failure)
+
+    def test_manifest_without_the_matching_kind_does_not_pass(self):
+        items = [proof_item(), item()]
+        wrong_kind = Oracle(ORACLE_ID,
+                            negative_fixture_manifest={"NEG-1": "SOME_OTHER_KIND"})
+        verdict = wrong_kind.decide(predicate(), items)
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_UNREPRESENTED")
 
 
 class TestPurity(unittest.TestCase):

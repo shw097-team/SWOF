@@ -15,7 +15,7 @@ from effect.compensation import (  # noqa: E402
     IrreversibleEffect, assert_compensable, plan_compensation,
 )
 from effect.idempotency import (  # noqa: E402
-    DuplicateAttemptDetected, RetryRefused, assert_retryable, attempt_key,
+    DuplicateAttemptDetected, RetryRefused, assert_retryable, attempt_key, plan_retry,
 )
 from effect.state import EffectTransitionRefused, assert_transition  # noqa: E402
 from effect.substrate import (  # noqa: E402
@@ -144,6 +144,37 @@ class TestAdversarial(unittest.TestCase):
         stale = readback(observed(), payload={"op": "create"}, expected={"op": "create"},
                          at="t2", stale=True)
         self.assertFalse(is_success(finalize(stale)))
+
+    def test_13_retry_is_recordable_through_the_public_api(self):
+        record = intended()
+        record = record_attempt(record, actor="agent-7", permission_allowed=True,
+                                attempt_key=key_for(record, 1), at="t0")
+        record = observe(record, payload={"status": "denied"}, provider_success=False, at="t1")
+        record = readback(record, payload={"op": "other"}, expected={"op": "create"}, at="t2")
+        record = reconcile(record, at="t3")
+        self.assertEqual(record.state, "UNKNOWN_EFFECT")
+        plan = plan_retry(record)
+        self.assertTrue(plan.allowed)
+        record = record_attempt(record, actor="agent-7", permission_allowed=True,
+                                attempt_key=plan.idempotency_key, at="t4")
+        self.assertEqual(record.state, "ATTEMPTED")
+        self.assertEqual(len(record.attempts), 2)
+        record = observe(record, payload={"status": "ok"}, provider_success=True, at="t5")
+        record = readback(record, payload={"op": "create"}, expected={"op": "create"}, at="t6")
+        record = reconcile(record, at="t7")
+        self.assertEqual(record.state, "RECONCILED")
+        self.assertTrue(is_success(record))
+
+    def test_14_reconciled_record_cannot_be_retried_through_the_public_api(self):
+        record = readback(observed(), payload={"op": "create"}, expected={"op": "create"},
+                          at="t2")
+        record = reconcile(record, at="t3")
+        self.assertEqual(record.state, "RECONCILED")
+        with self.assertRaises(EffectTransitionRefused):
+            record_attempt(record, actor="agent-7", permission_allowed=True,
+                           attempt_key=key_for(record, 2), at="t4")
+        with self.assertRaises(RetryRefused):
+            assert_retryable(record, attempt_no=2)
 
 
 if __name__ == "__main__":

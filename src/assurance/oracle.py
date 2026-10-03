@@ -82,15 +82,50 @@ def _item_key(item):
     )
 
 
-def _negative_fixtures_of(item):
-    raw = _item_field(item, "negative_fixtures", None)
-    if raw is None:
-        raw = _item_field(item, "negative_cases", None)
-    if raw is None:
-        return ()
-    if isinstance(raw, str):
-        return (raw,)
-    return tuple(sorted(str(x) for x in raw))
+def _manifest_kinds(fixture_manifest, oracle_id, fixture):
+    """The evidence KIND(S) the plan-level declaration binds to one negative fixture.
+
+    The manifest is keyed by fixture id (optionally nested under the oracle id); each value is
+    the evidence kind, or a collection of kinds, that genuinely represents the fixture. It may
+    also be a callable taking the fixture id. A fixture the manifest does not name - or a
+    manifest that is absent - has NO representation, so a self-declared field on an item can
+    never supply one.
+    """
+    declared = None
+    if isinstance(fixture_manifest, dict):
+        table = fixture_manifest.get(oracle_id, fixture_manifest)
+        if isinstance(table, dict):
+            declared = table.get(fixture)
+    elif callable(fixture_manifest):
+        declared = fixture_manifest(fixture)
+    if declared is None:
+        return frozenset()
+    if isinstance(declared, str):
+        return frozenset({declared})
+    if isinstance(declared, (frozenset, set, tuple, list)):
+        return frozenset(str(x) for x in declared)
+    return frozenset()
+
+
+def _fixtures_declared_by_items(items):
+    """The fixtures items CLAIM, collected only so the verdict can name the rejected claim.
+
+    These are NOT proofs of representation; representation is derived from the evidence
+    kinds/ids actually present. This is used to reject self-declared-but-unproven fixtures
+    explicitly rather than silently ignoring the field.
+    """
+    claimed = set()
+    for item in items:
+        raw = _item_field(item, "negative_fixtures", None)
+        if raw is None:
+            raw = _item_field(item, "negative_cases", None)
+        if raw is None:
+            continue
+        if isinstance(raw, str):
+            claimed.add(raw)
+        else:
+            claimed.update(str(x) for x in raw)
+    return claimed
 
 
 def _validate_items_shape(items):
@@ -104,9 +139,10 @@ def _validate_items_shape(items):
 
 
 class Oracle:
-    def __init__(self, oracle_id):
+    def __init__(self, oracle_id, *, negative_fixture_manifest=None):
         self.oracle_id = oracle_id
         self._rules = _ORACLE_RULES.get(oracle_id)
+        self._negative_fixture_manifest = negative_fixture_manifest
 
     def required_kinds(self):
         if self._rules is None:
@@ -185,16 +221,31 @@ class Oracle:
                 "MISSING_EVIDENCE_KIND")
 
 
-        represented = set()
-        for item in items:
-            represented.update(_negative_fixtures_of(item))
-        unrepresented = sorted(set(predicate.negative_fixtures) - represented)
-        if unrepresented and self._rules.get("require_negative_representation", True):
-            return OracleVerdict(
-                False, "NEGATIVE_FIXTURE_UNREPRESENTED", checked,
-                tuple("negative fixture %s is unrepresented in the checked set" % f
-                      for f in unrepresented),
-                "NEGATIVE_FIXTURE_UNREPRESENTED")
+        if self._rules.get("require_negative_representation", True):
+            manifest = self._negative_fixture_manifest
+            present_kinds = {str(kind) for kind in kinds if kind is not None}
+            present_ids = {str(_item_field(item, "item_id", "")) for item in items}
+            claimed = _fixtures_declared_by_items(items)
+            unrepresented = []
+            for fixture in sorted(set(predicate.negative_fixtures)):
+                proof_kinds = _manifest_kinds(manifest, self.oracle_id, fixture)
+                proven = bool(proof_kinds & present_kinds) or fixture in present_ids
+                if not proven:
+                    unrepresented.append(fixture)
+            if unrepresented:
+                failures = []
+                for fixture in unrepresented:
+                    if fixture in claimed:
+                        failures.append(
+                            "negative fixture %s is self-declared on an item but not "
+                            "represented by any evidence kind (a claim is not proof)" % fixture)
+                    else:
+                        failures.append(
+                            "negative fixture %s is unrepresented by the checked evidence"
+                            % fixture)
+                return OracleVerdict(
+                    False, "NEGATIVE_FIXTURE_UNREPRESENTED", checked, tuple(failures),
+                    "NEGATIVE_FIXTURE_UNREPRESENTED")
 
         return OracleVerdict(True, None, checked, (), "PASS")
 

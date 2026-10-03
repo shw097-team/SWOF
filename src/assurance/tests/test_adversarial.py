@@ -139,6 +139,59 @@ class TestA5EvidenceTamper(unittest.TestCase):
             journal.verify()
         self.assertEqual(ctx.exception.reason_code, "SEQ_GAP")
 
+    def test_reordered_entries_are_prev_digest_mismatch_not_seq_gap(self):
+        journal = self._journal()
+        entries = list(journal.entries)
+        entries[0], entries[1] = entries[1], entries[0]
+        journal.entries = entries
+        with self.assertRaises(JournalTamperDetected) as ctx:
+            journal.verify()
+        self.assertEqual(ctx.exception.reason_code, "PREV_DIGEST_MISMATCH")
+        self.assertNotEqual(ctx.exception.reason_code, "SEQ_GAP")
+
+    def test_deletion_and_reorder_collapse_to_distinct_reasons(self):
+        deleted = self._journal()
+        deleted.entries = [deleted.entries[1]]
+        swapped = self._journal()
+        entries = list(swapped.entries)
+        entries[0], entries[1] = entries[1], entries[0]
+        swapped.entries = entries
+        deleted_reason = None
+        swapped_reason = None
+        with self.assertRaises(JournalTamperDetected) as ctx:
+            deleted.verify()
+        deleted_reason = ctx.exception.reason_code
+        with self.assertRaises(JournalTamperDetected) as ctx:
+            swapped.verify()
+        swapped_reason = ctx.exception.reason_code
+        self.assertEqual(deleted_reason, "SEQ_GAP")
+        self.assertEqual(swapped_reason, "PREV_DIGEST_MISMATCH")
+        self.assertNotEqual(deleted_reason, swapped_reason)
+
+    def test_foreign_chain_splice_is_chain_id_mismatch(self):
+        journal = self._journal()
+        foreign = DigestChainJournal("FOREIGN-CHAIN")
+        foreign.append(event_id="X", payload={"rowid": 9})
+        entries = list(journal.entries)
+        entries[0] = foreign.entries[0]
+        journal.entries = entries
+        with self.assertRaises(JournalTamperDetected) as ctx:
+            journal.verify()
+        self.assertEqual(ctx.exception.reason_code, "CHAIN_ID_MISMATCH")
+
+    def test_header_tamper_is_header_mismatch(self):
+        journal = self._journal()
+        journal.header["final_digest"] = "0" * 64
+        with self.assertRaises(JournalTamperDetected) as ctx:
+            journal.verify()
+        self.assertEqual(ctx.exception.reason_code, "HEADER_MISMATCH")
+
+    def test_untouched_chain_is_intact(self):
+        journal = self._journal()
+        verdict = journal.verify()
+        self.assertTrue(verdict["intact"])
+        self.assertEqual(verdict["reason_code"], "INTACT")
+
 
 class TestA6StaleDirectFinal(unittest.TestCase):
     def test_stale_pre_mutation_sold_as_direct_final(self):
@@ -184,6 +237,32 @@ class TestA8UnfalsifiableOracle(unittest.TestCase):
         verdict = Oracle(ORACLE_ID).decide(predicate, items)
         self.assertFalse(verdict.passed)
         self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_UNREPRESENTED")
+
+    def test_self_declared_negative_fixture_cannot_satisfy_the_law(self):
+        predicate = validate({
+            "predicate_id": "P-ADV", "subject_id": "SUBJ-ADV", "subject_type": "DELIVERABLE",
+            "required_evidence_kinds": frozenset({"TEST_RUN"}), "oracle_id": ORACLE_ID,
+            "terminal_states": ("PASS", "FAIL"), "negative_fixtures": ("NEG-X",),
+        })
+        lying = [{"item_id": "i", "kind": "TEST_RUN", "subject_id": "SUBJ-ADV",
+                  "sha256": "a" * 64, "negative_fixtures": ("NEG-X",)}]
+        verdict = Oracle(ORACLE_ID).decide(predicate, lying)
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_UNREPRESENTED")
+
+    def test_genuinely_represented_fixture_passes(self):
+        predicate = validate({
+            "predicate_id": "P-ADV", "subject_id": "SUBJ-ADV", "subject_type": "DELIVERABLE",
+            "required_evidence_kinds": frozenset({"TEST_RUN"}), "oracle_id": ORACLE_ID,
+            "terminal_states": ("PASS", "FAIL"), "negative_fixtures": ("NEG-X",),
+        })
+        proof = {"item_id": "proof", "kind": "NEGATIVE_FIXTURE_PROOF", "subject_id": "SUBJ-ADV",
+                 "sha256": "b" * 64}
+        item = {"item_id": "i", "kind": "TEST_RUN", "subject_id": "SUBJ-ADV",
+                "sha256": "a" * 64}
+        oracle = Oracle(ORACLE_ID, negative_fixture_manifest={"NEG-X": "NEGATIVE_FIXTURE_PROOF"})
+        verdict = oracle.decide(predicate, [proof, item])
+        self.assertTrue(verdict.passed)
 
 
 class TestA9PlanPartialFailure(unittest.TestCase):

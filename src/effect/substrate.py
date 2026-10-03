@@ -107,8 +107,20 @@ def intend(effect_id, subject_id, intent, *, environment="local") -> EffectRecor
                         intent_digest=digest, state="INTENDED", environment=environment)
 
 
+# A fresh attempt supersedes the previous observation cycle. Retry is recordable from these
+# states when the attempt_key is NEW; every terminal state outside this set (RECONCILED,
+# DENIED, FAILED, COMPENSATED, IRREVERSIBLE) still refuses.
+RETRY_FROM_STATES = ("ATTEMPTED", "OBSERVED", "READBACK", "UNKNOWN_EFFECT", "PARTIAL_EFFECT")
+
+
 def record_attempt(record, *, actor, permission_allowed, attempt_key, at) -> EffectRecord:
-    """Record an attempt, or DENY the effect. A denied attempt is never recorded."""
+    """Record an attempt, or DENY the effect. A denied attempt is never recorded.
+
+    A NEW attempt_key on a retryable state records a fresh attempt: the record returns to
+    ATTEMPTED and the superseded observation cycle (observations/readbacks) is dropped, so a
+    retry can only be reconciled by a readback of THAT attempt. A repeated attempt_key raises
+    DuplicateAttemptDetected, and any other terminal state refuses with a typed error.
+    """
     if not permission_allowed:
         assert_transition(record.state, "DENIED")
         return replace(record, state="DENIED", reason_code="PERMISSION_DENIED")
@@ -117,8 +129,11 @@ def record_attempt(record, *, actor, permission_allowed, attempt_key, at) -> Eff
         raise DuplicateAttemptDetected(
             "attempt_key %r already recorded for effect %r (duplicate side effect refused)"
             % (attempt_key, record.effect_id))
-    assert_transition(record.state, "ATTEMPTED")
     attempt = Attempt(actor=actor, attempt_key=attempt_key, at=at)
+    if record.state in RETRY_FROM_STATES:
+        return replace(record, state="ATTEMPTED", attempts=record.attempts + (attempt,),
+                       observations=(), readbacks=(), provider_success=None, reason_code="")
+    assert_transition(record.state, "ATTEMPTED")
     return replace(record, state="ATTEMPTED", attempts=record.attempts + (attempt,))
 
 

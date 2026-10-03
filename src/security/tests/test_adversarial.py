@@ -11,7 +11,8 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
 
 from security.classification import (  # noqa: E402
-    SecretExfiltrationBlocked, assert_no_secret, classify, sanitize_evidence,
+    REAL_WORLD_SECRET_SAMPLES, SecretExfiltrationBlocked, assert_no_secret, classify,
+    redact, sanitize_evidence,
 )
 from security.injection import (  # noqa: E402
     QuarantineError, assert_not_quarantined, scan_tool_output,
@@ -108,6 +109,24 @@ class TestAdversarial(unittest.TestCase):
     def test_10_malformed_envelope_fails_closed(self):
         with self.assertRaises(UnknownPermissionTarget):
             authorize(PermissionEnvelope("svc-a", {"read"}), "read")
+
+    def test_11_independent_lane_secret_shapes_are_blocked(self):
+        for sample in REAL_WORLD_SECRET_SAMPLES:
+            self.assertEqual(classify(sample), "SECRET", sample)
+            self.assertIn("[REDACTED:SECRET]", redact(sample), sample)
+            with self.assertRaises(SecretExfiltrationBlocked):
+                assert_no_secret({"evidence": {"blob": sample}})
+            clean, receipt = sanitize_evidence({"evidence": {"blob": sample}})
+            self.assertNotIn(sample, str(clean))
+            self.assertIn("SECRET", receipt["classes_present"])
+
+    def test_12_json_mapping_credential_is_blocked(self):
+        payload = {"access_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.AAAABBBBCCCCDDDD"}
+        with self.assertRaises(SecretExfiltrationBlocked):
+            assert_no_secret(payload)
+        clean, receipt = sanitize_evidence(payload)
+        self.assertNotIn("eyJhbGciOiJIUzI1NiJ9", str(clean))
+        self.assertFalse(receipt["clean"])
 
 
 if __name__ == "__main__":

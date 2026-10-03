@@ -190,11 +190,46 @@ class TestInvalidate(unittest.TestCase):
         ids = [entry["gate_id"] for entry in affected]
         self.assertEqual(ids, ["G-1"])
 
-    def test_oracle_change_invalidates_bound_gate(self):
-        gates = [{"gate_id": "G-1", "oracle_id": "ORACLE.SWOF.STD/1"}]
+    def test_oracle_change_invalidates_the_superseded_gate_only(self):
+        gates = [
+            {"gate_id": "G-OLD", "oracle_id": "ORACLE.SWOF.STD/1",
+             "environment": "ENV-OLD"},
+            {"gate_id": "G-NEW", "oracle_id": "ORACLE.SWOF.STD/2",
+             "environment": "ENV-NEW"},
+        ]
+        affected = invalidate(
+            plan(), changed_identity={"oracle_id": "ORACLE.SWOF.STD/2",
+                                      "environment": "ENV-NEW"}, gates=gates)
+        self.assertEqual([entry["gate_id"] for entry in affected], ["G-OLD"])
+        self.assertEqual(affected[0]["reason_codes"],
+                         ["ORACLE_ID_CHANGED", "ENVIRONMENT_CHANGED"])
+
+    def test_unrelated_axis_change_invalidates_nothing(self):
+        gates = [
+            {"gate_id": "G-1", "subject_sha": "sha-1", "oracle_id": "ORACLE.SWOF.STD/1",
+             "environment": "ENV-1"},
+            {"gate_id": "G-2", "subject_sha": "sha-2", "oracle_id": "ORACLE.SWOF.STD/2",
+             "environment": "ENV-2"},
+        ]
         affected = invalidate(plan(), changed_identity={"oracle_id": "ORACLE.SWOF.STD/1"},
                               gates=gates)
+        self.assertEqual([entry["gate_id"] for entry in affected], ["G-2"])
         self.assertEqual(affected[0]["reason_codes"], ["ORACLE_ID_CHANGED"])
+
+    def test_gate_without_a_binding_is_not_invalidated_by_that_axis(self):
+        gates = [{"gate_id": "G-UNBOUND"}]
+        affected = invalidate(plan(), changed_identity={"environment": "ENV-2"}, gates=gates)
+        self.assertEqual(affected, [])
+
+    def test_unchanged_identity_invalidates_nothing(self):
+        gates = [
+            {"gate_id": "G-1", "subject_sha": "sha-1", "oracle_id": "ORACLE.SWOF.STD/1",
+             "environment": "ENV-1"},
+        ]
+        affected = invalidate(plan(), changed_identity={"subject_sha": "sha-1",
+                                                        "oracle_id": "ORACLE.SWOF.STD/1",
+                                                        "environment": "ENV-1"}, gates=gates)
+        self.assertEqual(affected, [])
 
     def test_no_change_no_cone(self):
         gates = [{"gate_id": "G-1", "subject_sha": "x"}]

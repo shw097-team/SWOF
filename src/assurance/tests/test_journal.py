@@ -80,7 +80,17 @@ class TestTamperDetection(unittest.TestCase):
         journal.entries = entries
         with self.assertRaises(JournalTamperDetected) as ctx:
             journal.verify()
-        self.assertIn(ctx.exception.reason_code, ("PREV_DIGEST_MISMATCH", "SEQ_GAP"))
+        self.assertEqual(ctx.exception.reason_code, "PREV_DIGEST_MISMATCH")
+
+    def test_swapped_middle_entries_is_prev_digest_mismatch(self):
+        journal = built()
+        journal.append(event_id="T4", payload={"rowid": 4})
+        entries = list(journal.entries)
+        entries[1], entries[2] = entries[2], entries[1]
+        journal.entries = entries
+        with self.assertRaises(JournalTamperDetected) as ctx:
+            journal.verify()
+        self.assertEqual(ctx.exception.reason_code, "PREV_DIGEST_MISMATCH")
 
     def test_foreign_chain_splice_is_chain_id_mismatch(self):
         journal = built()
@@ -114,6 +124,67 @@ class TestTamperDetection(unittest.TestCase):
         with self.assertRaises(JournalTamperDetected) as ctx:
             journal.verify()
         self.assertEqual(ctx.exception.reason_code, "SEQ_GAP")
+
+
+class TestDistinctReasons(unittest.TestCase):
+    def _reason(self, entries):
+        journal = built()
+        journal.entries = entries
+        with self.assertRaises(JournalTamperDetected) as ctx:
+            journal.verify()
+        return ctx.exception.reason_code
+
+    def test_untouched_chain_is_intact(self):
+        journal = built()
+        self.assertTrue(journal.verify()["intact"])
+        self.assertEqual(journal.verify()["reason_code"], "INTACT")
+
+    def test_payload_mutation_reason(self):
+        journal = built()
+        entries = list(journal.entries)
+        entries[1] = JournalEntry(seq=entries[1].seq, event_id=entries[1].event_id,
+                                  payload={"rowid": 2, "to_state": "FORGED"},
+                                  prev_digest=entries[1].prev_digest,
+                                  entry_digest=entries[1].entry_digest)
+        self.assertEqual(self._reason(entries), "ENTRY_DIGEST_MISMATCH")
+
+    def test_deletion_reason(self):
+        journal = built()
+        entries = [journal.entries[0], journal.entries[2]]
+        self.assertEqual(self._reason(entries), "SEQ_GAP")
+
+    def test_truncation_reason(self):
+        journal = built()
+        self.assertEqual(self._reason(journal.entries[:2]), "SEQ_GAP")
+
+    def test_reorder_reason(self):
+        journal = built()
+        entries = list(journal.entries)
+        entries[0], entries[1] = entries[1], entries[0]
+        self.assertEqual(self._reason(entries), "PREV_DIGEST_MISMATCH")
+
+    def test_foreign_chain_reason(self):
+        journal = built()
+        foreign = DigestChainJournal("SOME-OTHER-CHAIN")
+        foreign.append(event_id="X", payload={"rowid": 99})
+        entries = list(journal.entries)
+        entries[0] = foreign.entries[0]
+        self.assertEqual(self._reason(entries), "CHAIN_ID_MISMATCH")
+
+    def test_header_tamper_reason(self):
+        journal = built()
+        journal.header["final_digest"] = "0" * 64
+        with self.assertRaises(JournalTamperDetected) as ctx:
+            journal.verify()
+        self.assertEqual(ctx.exception.reason_code, "HEADER_MISMATCH")
+
+    def test_deletion_and_reorder_reasons_are_distinct(self):
+        journal = built()
+        deleted = self._reason([journal.entries[0], journal.entries[2]])
+        swapped = self._reason([journal.entries[1], journal.entries[0], journal.entries[2]])
+        self.assertEqual(deleted, "SEQ_GAP")
+        self.assertEqual(swapped, "PREV_DIGEST_MISMATCH")
+        self.assertNotEqual(deleted, swapped)
 
 
 class TestManifest(unittest.TestCase):

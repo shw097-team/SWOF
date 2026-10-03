@@ -11,8 +11,9 @@ Each entry's digest binds the chain identity:
     entry_digest = sha256(chain_id | seq | event_id | prev_digest | canonical_json(payload))
 
 so an entry lifted from another chain cannot be spliced in (`CHAIN_ID_MISMATCH`), a mutated
-payload shows as `ENTRY_DIGEST_MISMATCH`, a removed/truncated entry as `SEQ_GAP`, a renumbered
-but reordered entry as `PREV_DIGEST_MISMATCH`, and a tampered header as `HEADER_MISMATCH`.
+payload shows as `ENTRY_DIGEST_MISMATCH`, a removed/truncated entry as `SEQ_GAP`, a reordered
+entry as `PREV_DIGEST_MISMATCH` (the `prev_digest` linkage is checked independently of `seq`),
+and a tampered header as `HEADER_MISMATCH`.
 
 The chain genesis is chain-bound (sha256 over the chain id), which is what makes a foreign
 splice distinguishable from an in-chain payload edit: a foreign seq-1 entry carries a foreign
@@ -116,16 +117,48 @@ class DigestChainJournal:
         self.header["final_digest"] = entry_digest
         return entry
 
+    def _is_deletion_not_reorder(self):
+        """True when the surviving seq numbers are strictly increasing but fall short of the
+        header's declared count - i.e. entries were removed rather than reordered.
+
+        A deletion or truncation leaves strictly increasing, unique seq numbers (a subsequence
+        of the range); a naive swap leaves the full multiset of seq numbers but out of order.
+        That difference is what separates SEQ_GAP from PREV_DIGEST_MISMATCH.
+        """
+        seqs = [entry.seq for entry in self.entries]
+        if not seqs:
+            return True
+        if len(set(seqs)) != len(seqs):
+            return False
+        if any(seqs[index] >= seqs[index + 1] for index in range(len(seqs) - 1)):
+            return False
+        declared = self.header.get("entry_count")
+        if declared is None:
+            return True
+        return len(seqs) < declared
+
     def verify(self):
-        """Detect tampering in the current (possibly modified) entry list; raise on break."""
+        """Detect tampering in the current (possibly modified) entry list; raise on break.
+
+        Each tamper class maps to its own reason: a mutated payload to ENTRY_DIGEST_MISMATCH, a
+        removed or truncated entry to SEQ_GAP, a reordered entry to PREV_DIGEST_MISMATCH, a
+        foreign chain splice to CHAIN_ID_MISMATCH and a tampered header to HEADER_MISMATCH. The
+        `prev_digest` linkage is checked independently of `seq`, so a swap that leaves the seq
+        numbers a permutation of the range is still caught as a linkage break.
+        """
         prev_digest = self.genesis_digest
+        deleted = self._is_deletion_not_reorder()
 
         for index, entry in enumerate(self.entries):
             expected_seq = index + 1
             if entry.seq != expected_seq:
-                self._fail("SEQ_GAP", expected_seq,
-                           "expected seq %d, found %d (entry removed, truncated or "
-                           "reordered)" % (expected_seq, entry.seq))
+                if deleted:
+                    self._fail("SEQ_GAP", expected_seq,
+                               "expected seq %d, found %d (entry removed or stream "
+                               "truncated)" % (expected_seq, entry.seq))
+                self._fail("PREV_DIGEST_MISMATCH", entry.seq,
+                           "entry seq %d is out of order at position %d (entries reordered)"
+                           % (entry.seq, expected_seq))
 
             if entry.prev_digest != prev_digest:
                 if index == 0:
