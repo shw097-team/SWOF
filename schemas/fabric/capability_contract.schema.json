@@ -1,0 +1,60 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/fabric/capability_contract.schema.json",
+ "title": "CapabilityContract (PI-PKG-04 §9.1)",
+ "type": "object",
+ "required": [
+  "contract_id",
+  "semantic_subject_ref",
+  "mission_ref",
+  "taskspec_ref",
+  "ecp_design_ref",
+  "capability_id",
+  "capability_version",
+  "input_schema_ref",
+  "output_schema_ref",
+  "error_schema_ref",
+  "required_effect_class",
+  "requested_permissions",
+  "denied_permissions",
+  "budget",
+  "timeout_policy",
+  "retry_policy",
+  "idempotency_class",
+  "evidence_contract_ref",
+  "compatibility_range"
+ ],
+ "properties": {
+  "provider_binding_ref": {
+   "type": [
+    "string",
+    "null"
+   ],
+   "description": "optional_late_bound; an empty value never means 'any provider'"
+  },
+  "owner": {
+   "const": "ROLE-PROV-001"
+  },
+  "semantic_writer": {
+   "const": "FORBIDDEN_PROVIDER_SIDE"
+  },
+  "design_state": {
+   "enum": [
+    "PROPOSED",
+    "VALIDATED",
+    "SLOT_BOUND",
+    "QUALIFICATION_PLANNED"
+   ]
+  },
+  "budget": {
+   "type": "object",
+   "required": [
+    "time_ms",
+    "token_or_compute",
+    "money_ceiling",
+    "retry_budget"
+   ]
+  }
+ },
+ "additionalProperties": false
+}

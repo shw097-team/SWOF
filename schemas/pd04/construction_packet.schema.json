@@ -1,0 +1,72 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/pd04/construction_packet.schema.json",
+ "title": "PD04 construction packet (RBWI 10.1 / 10.4)",
+ "type": "object",
+ "required": [
+  "schema",
+  "workorder_id",
+  "wave",
+  "task_spec_seed",
+  "task_spec",
+  "workorder",
+  "ecp",
+  "fresh_repocontext_ref",
+  "pd04_packet_ref",
+  "taskspec_ref",
+  "ecp_ref",
+  "source_requirement_edges",
+  "acceptance_edges",
+  "evidence_edges"
+ ],
+ "properties": {
+  "schema": {
+   "const": "PD04-CONSTRUCTION-PACKET/1"
+  },
+  "workorder_id": {
+   "type": "string"
+  },
+  "wave": {
+   "enum": [
+    "W0",
+    "W1",
+    "W2",
+    "W3",
+    "W4",
+    "W5"
+   ]
+  },
+  "execution_binding": {
+   "type": "null"
+  },
+  "fresh_repocontext_ref": {
+   "type": "string",
+   "minLength": 1
+  },
+  "pd04_packet_ref": {
+   "type": "string",
+   "minLength": 1
+  },
+  "taskspec_ref": {
+   "type": "string",
+   "minLength": 1
+  },
+  "ecp_ref": {
+   "type": "string",
+   "minLength": 1
+  },
+  "source_requirement_edges": {
+   "type": "array",
+   "minItems": 1
+  },
+  "acceptance_edges": {
+   "type": "array",
+   "minItems": 1
+  },
+  "evidence_edges": {
+   "type": "array",
+   "minItems": 1
+  }
+ },
+ "additionalProperties": true
+}

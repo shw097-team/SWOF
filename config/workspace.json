@@ -1,0 +1,24 @@
+{
+ "schema": "SWOF-WORKSPACE-CONFIG/1",
+ "order_id": "SWOF-CONSTRUCTION-002",
+ "workorder_id": "WO-SWOF-W0-002",
+ "repo_role": "PRODUCT_ROOT_UNDER_HGK_GOVERNANCE",
+ "semantic_authority": false,
+ "test_entrypoint": "python -m unittest discover -s tests -t .",
+ "write_set_policy": {
+  "rule": "a WorkOrder may mutate only paths inside its admitted proposed_bounded_write_set",
+  "w0_002_admitted": [
+   "SWOF/.gitignore",
+   "SWOF/pyproject.toml",
+   "SWOF/README.md",
+   "SWOF/tests/",
+   "SWOF/config/*"
+  ],
+  "remediation_note": "Defect W0-002-WS-001: an earlier pass wrote src/ and tools/ outside this write-set; those files were deleted and are recorded in the corrective receipt."
+ },
+ "invariants": [
+  "no second semantic root (PI-PKG-00 2.3)",
+  "provider/execution state is never semantic authority (PI-PKG-00 2.4)",
+  "no credential capture in this repository"
+ ]
+}
