@@ -1,0 +1,50 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/security/permission_envelope.schema.json",
+ "title": "PermissionEnvelope - least-privilege envelope (fail-closed)",
+ "description": "Shape of a permission envelope. Decision law enforced in src/security/permissions.py and NOT expressible here: explicit deny always beats allow, an action that is neither explicitly allowed nor explicitly denied is UNKNOWN and is DENIED (UNKNOWN_ACTION_FAIL_CLOSED), and an action in human_gate_actions is never directly usable. This schema is closed: unknown properties are rejected.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "subject",
+  "allowed_actions",
+  "default"
+ ],
+ "properties": {
+  "subject": {
+   "type": "string",
+   "minLength": 1
+  },
+  "allowed_actions": {
+   "type": "array",
+   "uniqueItems": true,
+   "items": {
+    "type": "string",
+    "minLength": 1
+   }
+  },
+  "denied_actions": {
+   "type": "array",
+   "uniqueItems": true,
+   "items": {
+    "type": "string",
+    "minLength": 1
+   }
+  },
+  "human_gate_actions": {
+   "type": "array",
+   "uniqueItems": true,
+   "items": {
+    "type": "string",
+    "minLength": 1
+   }
+  },
+  "default": {
+   "enum": [
+    "DENY",
+    "ALLOW"
+   ],
+   "description": "Any value other than ALLOW is treated as DENY by the runtime guard."
+  }
+ }
+}
