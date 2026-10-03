@@ -1,0 +1,16 @@
+# command : C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s src/fabric/tests -t src/fabric/tests
+# cwd     : C:\Projects\Agent_Workspace\SWOF
+# git HEAD: 8689e583bab5198be11fb31442f5ac95d8490c00
+# branch  : repair/w1-ext-001-008
+# python  : 3.12.14
+# started : 2026-10-03T03:00:53Z
+# duration: 0.102s
+# exit_code: 0
+------------------------------------------------------------------------------
+
+.....................
+----------------------------------------------------------------------
+Ran 21 tests in 0.002s
+
+OK
+

@@ -1,0 +1,226 @@
+{
+ "schema": "SWOF-EVIDENCE-RETURN-PACK/1",
+ "workorder_id": "WO-SWOF-W1-REPAIR-R2-001",
+ "repo": "shw097-team/SWOF",
+ "source_candidate_sha": "8689e583bab5198be11fb31442f5ac95d8490c00",
+ "local_checkpoint_id": "CKPT-SWOF-W1-REPAIR-R2-001",
+ "producer_identity": "hermes-orchestrator (HG-KSEOS bounded runtime)",
+ "checker_identity": "fresh-context VERIFY_ONLY lanes deleg_61ad0af6 + deleg_f263a6db",
+ "local_closure_receipt_sha256": "d6e67ee672557562b20aec608f9cdff7e9806fb752a92de4e22d9df24ff73d64",
+ "independent_receipt_sha256": "3f688449d3d6b9fb99d1d7d8bdb887d41d4d63b65cc178e227e402941340de37",
+ "redaction_receipt_sha256": "20874add405e27a65a88e83185f65cd62f4ef7e1ded97b7efedd337f9ce3896c",
+ "secret_scan_receipt_sha256": "8ea60569b42a3a469951dc933c028ecc4357439035f42fe6e85dfa9ba15d73a0",
+ "named_capability_consumption_receipt_sha256": "782b92599b8f5dcfe50e16c15230b7b1efde46c351f239a081585d84a4982fef",
+ "execution_binding_lineage_sha256": "2971b34d6294f43cfbb24730c94c9bd0a193d28a36ba1a1f43e4b8a0c613b1ae",
+ "exact_head_qualification_sha256": "9145c72d4c7209a4ad609c28a76c438e8bd2ae50d741edde451949fef1a57b4a",
+ "evidence_items": [
+  {
+   "id": "E-001",
+   "type": "runtime_receipt",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/EXACT_HEAD_QUALIFICATION.json",
+   "sha256": "9145c72d4c7209a4ad609c28a76c438e8bd2ae50d741edde451949fef1a57b4a",
+   "bytes": 2080,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE"
+  },
+  {
+   "id": "E-002",
+   "type": "runtime_receipt",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/EXECUTION_BINDING_LINEAGE.json",
+   "sha256": "2971b34d6294f43cfbb24730c94c9bd0a193d28a36ba1a1f43e4b8a0c613b1ae",
+   "bytes": 2638,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE"
+  },
+  {
+   "id": "E-003",
+   "type": "independent_receipt",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/INDEPENDENT_RECEIPT.json",
+   "sha256": "3f688449d3d6b9fb99d1d7d8bdb887d41d4d63b65cc178e227e402941340de37",
+   "bytes": 1579,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE"
+  },
+  {
+   "id": "E-004",
+   "type": "local_closure_receipt",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/LOCAL_CLOSURE_RECEIPT.json",
+   "sha256": "d6e67ee672557562b20aec608f9cdff7e9806fb752a92de4e22d9df24ff73d64",
+   "bytes": 930,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE"
+  },
+  {
+   "id": "E-005",
+   "type": "runtime_receipt",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/NAMED_CAPABILITY_CONSUMPTION_RECEIPT.json",
+   "sha256": "782b92599b8f5dcfe50e16c15230b7b1efde46c351f239a081585d84a4982fef",
+   "bytes": 10965,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE"
+  },
+  {
+   "id": "E-006",
+   "type": "runtime_receipt",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/pd04_packets/WO-SWOF-W1-REPAIR-R2-001.json",
+   "sha256": "0e9f5481961da1c5f77233b6621daff77719c2ae20b47dd52c2cc039e39eb60a",
+   "bytes": 2435,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE"
+  },
+  {
+   "id": "E-007",
+   "type": "test_log",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/raw_test_logs/src_admission_tests.log",
+   "sha256": "ab95323b110eadaa84dbe0f1124b8a311862075452fe1dfc6234c7cb705ba03c",
+   "bytes": 557,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE",
+   "internal_subject_source": "log_header_git_head"
+  },
+  {
+   "id": "E-008",
+   "type": "test_log",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/raw_test_logs/src_capability_tests.log",
+   "sha256": "8eac1d243746474ea8a25119e2a46027bf3e7324391c35a3375888673bd9f32f",
+   "bytes": 564,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE",
+   "internal_subject_source": "log_header_git_head"
+  },
+  {
+   "id": "E-009",
+   "type": "test_log",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/raw_test_logs/src_fabric_tests.log",
+   "sha256": "8e465b12a37ea1404a4fd0234b84f027876cf09049bcb95d20bda8dca15bbd98",
+   "bytes": 555,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE",
+   "internal_subject_source": "log_header_git_head"
+  },
+  {
+   "id": "E-010",
+   "type": "test_log",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/raw_test_logs/src_knowledge_tests.log",
+   "sha256": "06436847a6faa03af734b8df823716d968eafa7153768cd96917d58e825f8274",
+   "bytes": 565,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE",
+   "internal_subject_source": "log_header_git_head"
+  },
+  {
+   "id": "E-011",
+   "type": "test_log",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/raw_test_logs/src_profile_tests.log",
+   "sha256": "21e2b303be101b12ac4fe9dfdc75fd44d48b8e851a0aea168945aacd6f43a1a0",
+   "bytes": 548,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE",
+   "internal_subject_source": "log_header_git_head"
+  },
+  {
+   "id": "E-012",
+   "type": "test_log",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/raw_test_logs/tests.log",
+   "sha256": "4425cff4daf1d71ad90d1652b0e334c9597a9969ef455868f7f3e3b7398167a4",
+   "bytes": 524,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE",
+   "internal_subject_source": "log_header_git_head"
+  },
+  {
+   "id": "E-013",
+   "type": "runtime_receipt",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/SECRET_SCAN_RECEIPT.json",
+   "sha256": "8ea60569b42a3a469951dc933c028ecc4357439035f42fe6e85dfa9ba15d73a0",
+   "bytes": 176,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE"
+  },
+  {
+   "id": "E-014",
+   "type": "runtime_receipt",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/W1_REPAIR_R2_FINAL_PACKAGING.json",
+   "sha256": "e3c26ab734d5cc63b80a1405fe0eeb5ec8e8eed7073374cc88ead1b401c4f529",
+   "bytes": 3863,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE"
+  },
+  {
+   "id": "E-015",
+   "type": "runtime_receipt",
+   "subject": "subject=8689e583bab5198be11fb31442f5ac95d8490c00",
+   "path": "acceptance/evidence/8689e583bab5198be11fb31442f5ac95d8490c00/W1_REPAIR_R2_VERDICTS.json",
+   "sha256": "150c81eb03cb008863386ffd554a6a1529730d3e15b1b66b999c45e266f7deab",
+   "bytes": 2940,
+   "internal_subject_ok": true,
+   "redaction": "NONE",
+   "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE"
+  }
+ ],
+ "environment_identity": {
+  "os": "Windows 11",
+  "runner_or_host": "local HGK host (git-bash)",
+  "toolchain": {
+   "python": "3.12.14",
+   "sqlite": "3.53.1",
+   "git": "git version 2.53.0.windows.1"
+  },
+  "lockfile_digests": {}
+ },
+ "invalidation": [
+  "ON_NEW_SOURCE_CANDIDATE",
+  "ON_CHECKER_CHANGE",
+  "ON_REQUIRED_FIXTURE_CHANGE",
+  "ON_ENVIRONMENT_IDENTITY_CHANGE_WHERE_RELEVANT"
+ ],
+ "manifest_hash_source": "COMMITTED_GIT_BLOB_BYTES",
+ "internal_subject_check": "each item's own subject identity is compared to the manifest subject",
+ "claim_ceiling": "W1_REPAIRED_LOCAL_CANDIDATE_WITH_SUBJECT_BOUND_INDEPENDENT_EVIDENCE",
+ "non_claims": [
+  "NOT_EXTERNALLY_ACCEPTED",
+  "NO_REMOTE_MERGE",
+  "NO_RELEASE",
+  "NO_PRODUCTION",
+  "W2_W5_NOT_COMPLETED_BY_THIS_REPAIR"
+ ],
+ "superseded_prior_subject": {
+  "source_candidate_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+  "evidence_commit_sha": "0c6278175f296ff41ef7d130199c57c1052eee40",
+  "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+ },
+ "historical_failed_subject": {
+  "source_candidate_sha": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b",
+  "evidence_commit_sha": "7c0fa362347ff59bd6faaff08da96c5ca2ad7cf3",
+  "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+ },
+ "generated_at_utc": "2026-10-03T03:06:11Z"
+}

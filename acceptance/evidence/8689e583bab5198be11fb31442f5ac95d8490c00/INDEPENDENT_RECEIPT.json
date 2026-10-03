@@ -1,0 +1,39 @@
+{
+ "schema": "SWOF-INDEPENDENT-RECEIPT/1",
+ "order_id": "SWOF-CONSTRUCTION-002",
+ "changeset": "NARROW_REPAIR",
+ "repair_workorder_id": "WO-SWOF-W1-REPAIR-R2-001",
+ "local_checkpoint_id": "CKPT-SWOF-W1-REPAIR-R2-001",
+ "source_candidate_sha": "8689e583bab5198be11fb31442f5ac95d8490c00",
+ "branch": "repair/w1-ext-001-008",
+ "maker_identity": "hermes-orchestrator (HG-KSEOS bounded runtime)",
+ "checker_identity": "fresh-context VERIFY_ONLY lanes deleg_61ad0af6 + deleg_f263a6db",
+ "checker_ne_maker": true,
+ "checker_did_not_mutate_subject": true,
+ "verdict": "PASS",
+ "falsification": {
+  "maker_checker_separated": true,
+  "checker_did_not_mutate_subject": true,
+  "execution_label_as_source_disposition_refused": true,
+  "verbatim_guard_falsified": true,
+  "canonical_locators_verified_in_source_corpus": true,
+  "receipt_matches_live_spine_rows": true,
+  "logs_bind_git_head": true,
+  "all_six_roots_rerun_by_checker": true,
+  "schema_rejects_coercion": true,
+  "no_secrets_in_diff": true,
+  "readme_accurate": true,
+  "prior_rejected_shas_absent_from_tracked_files": true
+ },
+ "superseded_prior_subject": {
+  "source_candidate_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+  "evidence_commit_sha": "0c6278175f296ff41ef7d130199c57c1052eee40",
+  "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+ },
+ "historical_failed_subject": {
+  "source_candidate_sha": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b",
+  "evidence_commit_sha": "7c0fa362347ff59bd6faaff08da96c5ca2ad7cf3",
+  "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+ },
+ "generated_at_utc": "2026-10-03T03:06:11Z"
+}

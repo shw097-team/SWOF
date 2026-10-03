@@ -1,0 +1,51 @@
+{
+ "schema": "SWOF-HGK-EXECUTION-BINDING-LINEAGE/1",
+ "workorder_id": "WO-SWOF-W1-REPAIR-R2-001",
+ "checkpoint_id": "CKPT-SWOF-W1-REPAIR-R2-001",
+ "spine_backed_entities": {
+  "requirement_id": "REQ-HGK-SWOF-W1-REPAIR-R2-001",
+  "acceptance_id": "ACC-SWOF-W1-REPAIR-R2-001",
+  "taskspec_id": "TS-SWOF-W1-REPAIR-R2-001",
+  "workorder_id": "WO-SWOF-W1-REPAIR-R2-001",
+  "checkpoint_id": "CKPT-SWOF-W1-REPAIR-R2-001",
+  "all_backed_by_live_rows": true
+ },
+ "adjacent_identifiers": {
+  "ecp_id": "ECP-WO-SWOF-W1-REPAIR-R2-001",
+  "pd04_packet_ref": "PD04::WO-SWOF-W1-REPAIR-R2-001",
+  "spine_backed": false,
+  "note": "The HGK spine schema contains no ECP/PD04 table; these are document-level identifiers carried from the PD04 packet and are deliberately NOT presented as spine rows. Tables matching ecp/pd04 in this spine: []"
+ },
+ "spine_state": {
+  "requirement_state": "FROZEN",
+  "requirement_version": 1,
+  "taskspec_state": "ADMITTED",
+  "workorder_state": "CREATED",
+  "workorder_writer": "codex (tracked mutation writer)",
+  "workorder_base_head": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+  "workorder_worktree": "C:\\Projects\\Agent_Workspace\\SWOF",
+  "checkpoint_wave": "W1",
+  "checkpoint_repo_head": "8689e583bab5198be11fb31442f5ac95d8490c00",
+  "checkpoint_state_digest": "d9e8086b5af1249a7b2846e1459c9d52161f167c68311429cfd44d6c80ce1a87",
+  "checkpoint_rollback_pointer": "RB-WO-SWOF-W1-REPAIR-R2-001"
+ },
+ "canonical_events": [
+  {
+   "event_id": "EVT-f9805445abc33316",
+   "entity_type": "requirement",
+   "entity_id": "REQ-HGK-SWOF-W1-REPAIR-R2-001",
+   "from_state": "CANDIDATE",
+   "to_state": "FROZEN",
+   "actor": "codex (tracked mutation writer)",
+   "resulting_version": 1,
+   "evidence_ref": "Challenge Report W1 修補後外部再驗收報告 (FAIL_CHALLENGE)",
+   "created_at": "2026-10-03T02:58:00.436087Z"
+  }
+ ],
+ "source_candidate_sha": "8689e583bab5198be11fb31442f5ac95d8490c00",
+ "execution_binding_is_null": false,
+ "dispatched": true,
+ "sequencing_disclosure": "The src/capability/ledger.py semantic edit that produced the current HEAD was applied while closing the officer's R2-002 finding and therefore PRECEDED this spine registration. Disclosed rather than reordered: the spine timestamps show the registration time and the workorder base_head is the rejected subject the repair started from. The lifecycle is real (states and events are read back from the spine), but this registration is not a claim that admission preceded the first source edit.",
+ "generated_at_utc": "2026-10-03T03:03:36Z",
+ "spine_db": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-construction-002\\hgk_spine.sqlite3"
+}

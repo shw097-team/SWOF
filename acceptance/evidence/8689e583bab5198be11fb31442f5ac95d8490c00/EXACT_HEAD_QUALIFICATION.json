@@ -1,0 +1,82 @@
+{
+ "schema": "SWOF-W1-EXACT-HEAD-QUALIFICATION/1",
+ "source_candidate_sha": "8689e583bab5198be11fb31442f5ac95d8490c00",
+ "branch": "repair/w1-ext-001-008",
+ "toolchain": {
+  "python": "3.12.14"
+ },
+ "tested_bytes_are_the_claimed_candidate": true,
+ "head_recorded_in_every_raw_log": true,
+ "roots": {
+  "tests": {
+   "ran": 16,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/tests.log",
+   "log_sha256": "4425cff4daf1d71ad90d1652b0e334c9597a9969ef455868f7f3e3b7398167a4",
+   "duration_s": 0.234
+  },
+  "src/fabric/tests": {
+   "ran": 21,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_fabric_tests.log",
+   "log_sha256": "8e465b12a37ea1404a4fd0234b84f027876cf09049bcb95d20bda8dca15bbd98",
+   "duration_s": 0.102
+  },
+  "src/knowledge/tests": {
+   "ran": 25,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_knowledge_tests.log",
+   "log_sha256": "06436847a6faa03af734b8df823716d968eafa7153768cd96917d58e825f8274",
+   "duration_s": 0.095
+  },
+  "src/admission/tests": {
+   "ran": 17,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_admission_tests.log",
+   "log_sha256": "ab95323b110eadaa84dbe0f1124b8a311862075452fe1dfc6234c7cb705ba03c",
+   "duration_s": 0.092
+  },
+  "src/profile/tests": {
+   "ran": 12,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_profile_tests.log",
+   "log_sha256": "21e2b303be101b12ac4fe9dfdc75fd44d48b8e851a0aea168945aacd6f43a1a0",
+   "duration_s": 0.091
+  },
+  "src/capability/tests": {
+   "ran": 22,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_capability_tests.log",
+   "log_sha256": "8eac1d243746474ea8a25119e2a46027bf3e7324391c35a3375888673bd9f32f",
+   "duration_s": 0.229
+  }
+ },
+ "total": {
+  "ran": 113,
+  "fail": 0,
+  "error": 0,
+  "skip": 0
+ },
+ "all_roots_rc_zero": true,
+ "receipt_schema_valid": true,
+ "receipt_subject_equals_head": true,
+ "generated_at_utc": "2026-10-03T03:00:54Z"
+}

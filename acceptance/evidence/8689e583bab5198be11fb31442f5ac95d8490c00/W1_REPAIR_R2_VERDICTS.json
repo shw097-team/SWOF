@@ -1,0 +1,55 @@
+{
+ "schema": "SWOF-W1-REPAIR-R2-VERDICTS/1",
+ "source_candidate_sha": "8689e583bab5198be11fb31442f5ac95d8490c00",
+ "branch": "repair/w1-ext-001-008",
+ "verdict": "PASS",
+ "checks": {
+  "maker_checker_separated": true,
+  "checker_did_not_mutate_subject": true,
+  "execution_label_as_source_disposition_refused": true,
+  "verbatim_guard_falsified": true,
+  "canonical_locators_verified_in_source_corpus": true,
+  "receipt_matches_live_spine_rows": true,
+  "logs_bind_git_head": true,
+  "all_six_roots_rerun_by_checker": true,
+  "schema_rejects_coercion": true,
+  "no_secrets_in_diff": true,
+  "readme_accurate": true,
+  "prior_rejected_shas_absent_from_tracked_files": true
+ },
+ "lanes": [
+  {
+   "lane": "deleg_61ad0af6",
+   "mandate": "falsify R2-001 / R2-002 / R2-003 / R2-EG-001 at frozen HEAD 8689e583",
+   "verdict": "PASS",
+   "blocking_findings": [],
+   "note": "Read the requirements/taskspecs/workorders/canonical_events rows directly from hgk_spine.sqlite3 and re-ran all six roots itself: 16+21+25+17+12+22 = 113, rc=0 each. Confirmed all six canonical locators verbatim at L3595/3597/3599/3601/3603 and L10618 of the 13,871-line corpus file.",
+   "residual_weaknesses": [
+    "EXECUTION_BINDING_LINEAGE named a checkpoint_id and ecp_id with no backing spine row - chain-label vs spine-row completeness gap, judged non-blocking by the lane"
+   ]
+  },
+  {
+   "lane": "deleg_f263a6db",
+   "mandate": "re-verify the lineage-residual correction and confirm the source HEAD is unchanged",
+   "verdict": "PASS",
+   "blocking_findings": [],
+   "note": "Independently confirmed the checkpoints row exists with repo_head == live HEAD and a state_digest that recomputes exactly (d9e8086b...), that the spine really has no ecp/pd04 table (queried sqlite_master rather than trusting the file), that ECP/PD04 are listed as spine_backed:false, that no unsupported entity is named anywhere, and that the source HEAD is unchanged.",
+   "residual_weaknesses": [
+    "sequencing_disclosure could not be byte-diffed against a prior copy because no earlier version was retained; its content is honest on its face"
+   ]
+  }
+ ],
+ "residual_weaknesses_open": [
+  "sequencing_disclosure: the src/capability/ledger.py edit (5f0ac73) factually preceded the spine registration. Disclosed explicitly in the lineage receipt rather than reordered; the live states and events are real. Judged non-blocking by the independent lane, but it remains true that admission did not gate the first source edit.",
+  "No remote CI runs exist for the source SHA; remote CI is only required where portable checks are applicable.",
+  "W1 exit predicate `fallback/provider-off available` is contract-enforced but a full provider-off runtime drill was not executed in this repair."
+ ],
+ "non_claims": [
+  "NOT_EXTERNALLY_ACCEPTED",
+  "NO_REMOTE_MERGE",
+  "NO_RELEASE",
+  "NO_PRODUCTION",
+  "W2_W5_NOT_COMPLETED_BY_THIS_REPAIR"
+ ],
+ "generated_at_utc": "2026-10-03T03:20:00Z"
+}

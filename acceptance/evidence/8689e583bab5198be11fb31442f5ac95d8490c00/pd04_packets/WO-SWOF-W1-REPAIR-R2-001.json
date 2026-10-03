@@ -1,0 +1,64 @@
+{
+ "schema": "SWOF-PD04-CONSTRUCTION-PACKET/1",
+ "workorder_id": "WO-SWOF-W1-REPAIR-R2-001",
+ "wave": "W1",
+ "state": "CREATED",
+ "execution_binding": {
+  "kind": "HGK_SHARED_SPINE_LIFECYCLE",
+  "receipt_path": "EXECUTION_BINDING_LINEAGE.json",
+  "requirement_id": "REQ-HGK-SWOF-W1-REPAIR-R2-001",
+  "taskspec_id": "TS-SWOF-W1-REPAIR-R2-001",
+  "workorder_id": "WO-SWOF-W1-REPAIR-R2-001",
+  "checkpoint_id": "CKPT-SWOF-W1-REPAIR-R2-001",
+  "taskspec_state": "ADMITTED",
+  "workorder_state": "CREATED",
+  "workorder_writer": "codex (tracked mutation writer)",
+  "base_head": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+  "canonical_events": [
+   {
+    "event_id": "EVT-f9805445abc33316",
+    "to_state": "FROZEN",
+    "created_at": "2026-10-03T02:58:00.436087Z"
+   }
+  ],
+  "spine_db": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-construction-002\\hgk_spine.sqlite3",
+  "note": "The HGK spine schema has no ECP/PD04 table; ecp_ref/pd04_packet_ref below are document-level identifiers, not spine rows."
+ },
+ "base_head": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "source_candidate_sha": "8689e583bab5198be11fb31442f5ac95d8490c00",
+ "fresh_repocontext_ref": "var/swof-precon-001/pd03_repocontext.json",
+ "pd04_packet_ref": "PD04::WO-SWOF-W1-REPAIR-R2-001",
+ "taskspec_ref": "TS-SWOF-W1-REPAIR-R2-001",
+ "ecp_ref": "ECP-WO-SWOF-W1-REPAIR-R2-001",
+ "source_requirement_edges": [
+  {
+   "requirement_id": "REQ-HGK-SWOF-W1-REPAIR-R2-001",
+   "source_locator": "PI-PKG-05_2026-09-14_r2_FULL_REPAIR.md §19.1 L3595-L3605",
+   "acceptance_id": "ACC-SWOF-W1-REPAIR-R2-001"
+  }
+ ],
+ "acceptance_edges": [
+  {
+   "acceptance_id": "ACC-SWOF-W1-REPAIR-R2-001",
+   "oracle": "canonical source disposition preserved verbatim and never collapsed into an execution label",
+   "negative_fixture": "test_opa_selected_for_predev_cannot_be_serialized_as_deferred"
+  }
+ ],
+ "evidence_edges": [
+  "NAMED_CAPABILITY_CONSUMPTION_RECEIPT.json",
+  "EXECUTION_BINDING_LINEAGE.json",
+  "EXACT_HEAD_QUALIFICATION.json",
+  "LOCAL_CLOSURE_RECEIPT.json",
+  "INDEPENDENT_RECEIPT.json"
+ ],
+ "bounded_write_set": [
+  "SWOF/src/capability/**",
+  "SWOF/schemas/capability/**",
+  "SWOF/src/capability/tests/**",
+  "SWOF/README.md"
+ ],
+ "route_profile_identity": "ROUTE_DEFAULT_NATIVE / hermes-orchestrator + codex writer",
+ "checkpoint_ref": "CKPT-SWOF-W1-REPAIR-R2-001",
+ "rollback_ref": "RB-WO-SWOF-W1-REPAIR-R2-001",
+ "generated_at_utc": "2026-10-03T03:06:07Z"
+}
