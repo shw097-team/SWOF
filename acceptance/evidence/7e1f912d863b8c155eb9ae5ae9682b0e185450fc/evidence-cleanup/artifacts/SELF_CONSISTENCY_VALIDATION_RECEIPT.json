@@ -1,10 +1,12 @@
 {
  "schema": "SWOF-SELF-CONSISTENCY-VALIDATION-RECEIPT/1",
  "validator": "validate_tree() in var/swof-w1-r4-evidence-cleanup/e13_final.py",
- "rule": "EVERY 64-hex value in a JSON file, whatever its key is named, must resolve: (a) if the enclosing object names a target via a path-like sibling key, OR the key itself is path-like, the value must equal the bytes of that target - an in-tree relative path, a <commit>:<path> git reference verified against THAT commit's blob, or an absolute workspace path matched by unique in-tree basename; (b) otherwise the value must equal the sha256 of some in-tree file or be in the external/historical allowlist. A named target that does not resolve is an error. Failures inside an explicit superseded/ scope are disclosed and counted rather than raised.",
+ "rule": "EVERY 64-hex value in a JSON file (matched case-insensitively, whatever its key is named) must resolve. Resolution: (a) if the enclosing object carries an AUTHORITATIVE target key (path, file, target, artifact, artifact_ref, path_or_external_exact_ref, ref, historical_contract_ref, historical_compiled_prompt_ref, historical_calibration_artifact, proof_artifact, contract_path, rank1_authority_path, current_rank1_authority_path) or the KEY ITSELF is path-like, the value must equal the bytes of that target: an in-tree relative path, a <commit>:<path> reference verified against the blob AT THAT PATH in that commit, or an absolute workspace path matched by unique in-tree basename; a named RELATIVE target or a named git reference that does not resolve is an error; (b) otherwise the value must equal the sha256 of some in-tree file or be in the external/historical allowlist. Failures inside an explicit superseded/ scope are disclosed and counted, not raised.",
  "known_limitations": [
-  "the allowlist is a minimal external-reference set (historical commit blobs + named external control files + the out-of-tree contract); it is not a general escape hatch",
-  "an absolute path whose basename is ambiguous in-tree is treated as unresolved rather than guessed"
+  "path-like strings that are NOT authoritative targets are not treated as targets: repo slugs such as 'shw097-team/SWOF', a descriptive 'locator' like 'branch X @ <sha>', and the original-key metadata field - these carry no byte claim",
+  "a declared hash CAN be satisfied by allowlist membership (the historical commit's blobs, the out-of-tree contract, and named external control files) without the accompanying descriptive reference being independently verified",
+  "an ABSOLUTE path whose basename is not uniquely in-tree is accepted if the value matches an in-tree or allowlisted blob - this is the deliberate external-control-file allowance, and it is the one remaining way a contradiction could in principle be absorbed",
+  "the allowlist is a minimal, enumerated external-reference set, not a general escape hatch"
  ],
  "clean_tree": {
   "errors": [],
@@ -17,20 +19,23 @@
    "fixture_1_sibling_path_wrong_value",
    "fixture_2_non_sha256_key",
    "fixture_3_commit_path_wrong_blob",
-   "fixture_4_unresolvable_named_target"
+   "fixture_4_unresolvable_named_target",
+   "fixture_5_uppercase_wrong_digest"
   ],
   "caught": {
    "fixture_1_sibling_path_wrong_value": true,
    "fixture_2_non_sha256_key": true,
    "fixture_3_commit_path_wrong_blob": true,
-   "fixture_4_unresolvable_named_target": true
+   "fixture_4_unresolvable_named_target": true,
+   "fixture_5_uppercase_wrong_digest": true
   },
   "all_caught": true,
   "errors": [
    "artifacts/negative_fixture_1_sibling_path_wrong_value.json: artifact_sha256=000000000000... contradicts in-tree file artifacts/SWOF_EVIDENCE_RETURN_PACK.json",
    "artifacts/negative_fixture_2_non_sha256_key.json: checksum=000000000000... resolves to no in-tree file and no known external blob",
-   "artifacts/negative_fixture_3_commit_path_wrong_blob.json: artifact_sha256=03f0334ed262... does not match the blob at 206ab073:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/R4_CONTRACT.json",
-   "artifacts/negative_fixture_4_unresolvable_named_target.json: artifact_sha256=03f0334ed262... names an in-tree target that does not resolve: does/not/exist.json"
+   "artifacts/negative_fixture_3_commit_path_wrong_blob.json: artifact_sha256=01a9d0ac50d3... does not match the blob at 206ab073:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/R4_CONTRACT.json",
+   "artifacts/negative_fixture_4_unresolvable_named_target.json: artifact_sha256=01a9d0ac50d3... names an in-tree target that does not resolve: does/not/exist.json",
+   "artifacts/negative_fixture_5_uppercase_wrong_digest.json: artifact_sha256=AAAAAAAAAAAA... contradicts in-tree file artifacts/SWOF_EVIDENCE_RETURN_PACK.json"
   ]
  },
  "non_vacuous": true,
