@@ -1,0 +1,49 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/knowledge/source_validity_vector.schema.json",
+ "title": "SourceValidityVector - four ORTHOGONAL trust facets (PI-PKG-05)",
+ "type": "object",
+ "required": [
+  "rights",
+  "freshness",
+  "revocation",
+  "provenance",
+  "generation"
+ ],
+ "properties": {
+  "rights": {
+   "enum": [
+    "GRANTED",
+    "DENIED"
+   ]
+  },
+  "freshness": {
+   "enum": [
+    "CURRENT",
+    "STALE"
+   ]
+  },
+  "revocation": {
+   "enum": [
+    "LIVE",
+    "REVOKED",
+    "DELETED"
+   ]
+  },
+  "provenance": {
+   "enum": [
+    "VERIFIED",
+    "UNVERIFIED"
+   ]
+  },
+  "generation": {
+   "type": "integer",
+   "minimum": 1
+  },
+  "purpose": {
+   "type": "string"
+  }
+ },
+ "description": "Facets are orthogonal: a revoke is never rewritten as staleness (ORTHOGONAL_TRUST_FACETS).",
+ "additionalProperties": true
+}
