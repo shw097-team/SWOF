@@ -1,0 +1,53 @@
+{
+ "schema": "SWOF-INDEPENDENT-RECEIPT/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W1-REPAIR-R3",
+ "changeset": "NARROW_REPAIR",
+ "repair_workorder_id": "WO-SWOF-W1-REPAIR-R3-001",
+ "local_checkpoint_id": "CKPT-SWOF-W1-REPAIR-R3-001",
+ "source_candidate_sha": "ed28b784fcae651897fe261120db7840134d0028",
+ "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "branch": "repair/w1-r3-admission-order",
+ "maker_identity": "hermes-orchestrator (HG-KSEOS bounded runtime)",
+ "checker_identity": "fresh-context VERIFY_ONLY lane deleg_487fb460",
+ "checker_ne_maker": true,
+ "checker_did_not_mutate_subject": true,
+ "verdict": "PASS",
+ "falsification": {
+  "compiler_lint_activation_acceptance_compile_pass": true,
+  "compiler_duplication_below_threshold": true,
+  "clean_pre_r2_baseline_proved": true,
+  "parent_commit_is_baseline": true,
+  "diff_within_admitted_write_set": true,
+  "byte_identical_to_reviewed_r2_surface": true,
+  "admission_preceded_mutation": true,
+  "receipt_not_backdated": true,
+  "no_event_later_than_commit": true,
+  "workorder_base_head_equals_baseline": true,
+  "r2_semantics_intact": true,
+  "exact_head_logs_bind_git_head": true,
+  "maker_checker_separated": true,
+  "checker_did_not_mutate_subject": true,
+  "consumption_receipt_subject_ok": true,
+  "locator_precision_exact_with_digest": true,
+  "no_secrets_in_diff": true,
+  "no_history_rewrite_of_rejected_pr": true
+ },
+ "superseded_prior_subjects": [
+  {
+   "source_candidate_sha": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b",
+   "evidence_commit_sha": "7c0fa362347ff59bd6faaff08da96c5ca2ad7cf3",
+   "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+  },
+  {
+   "source_candidate_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "evidence_commit_sha": "0c6278175f296ff41ef7d130199c57c1052eee40",
+   "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+  },
+  {
+   "source_candidate_sha": "8689e583bab5198be11fb31442f5ac95d8490c00",
+   "evidence_commit_sha": "2105e08f920414ba8093c0303b77bfada1cfa6df",
+   "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+  }
+ ],
+ "generated_at_utc": "2026-10-03T03:43:36Z"
+}

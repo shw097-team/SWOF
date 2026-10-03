@@ -1,0 +1,31 @@
+{
+ "schema": "SWOF-R3-FIRST-MUTATION-ORDERING-RECEIPT/1",
+ "branch": "repair/w1-r3-admission-order",
+ "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "pre_mutation_admission_receipt_path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_r3_admission_order\\PRE_MUTATION_ADMISSION_RECEIPT.json",
+ "pre_mutation_admission_receipt_sha256": "56a9fcb398d218acedb8e91fa0a3709c55622a50b4907c38ec5c454a01751d73",
+ "last_pre_mutation_event": "EVT-fdfb4961601c4774",
+ "last_pre_mutation_event_time_utc": "2026-10-03T03:35:25.238182Z",
+ "admission_receipt_frozen_at_utc": "2026-10-03T03:35:25Z",
+ "first_source_mutation_writer_start_utc": "2026-10-03T03:36:19Z",
+ "first_source_mutation_writer_start_seq_ns": 1790998579770129600,
+ "first_source_mutation_commit_sha": "ed28b784fcae651897fe261120db7840134d0028",
+ "first_source_mutation_commit_time_utc": "2026-10-03T11:36:19+08:00",
+ "first_source_mutation_commit_epoch": 1790998579,
+ "source_candidate_sha": "ed28b784fcae651897fe261120db7840134d0028",
+ "changed_files": [
+  "README.md",
+  "schemas/capability/_conformance_sample.json",
+  "schemas/capability/named_consumption.schema.json",
+  "src/capability/ledger.py",
+  "src/capability/tests/test_ledger.py"
+ ],
+ "changed_files_match_admitted_write_set": true,
+ "head_before_mutation": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "admission_preceded_mutation": true,
+ "ordering_oracles": {
+  "primary": "spine canonical event timestamp vs git commit timestamp",
+  "supporting": "git commit epoch; admission receipt frozen_at precedes writer start",
+  "wall_clock_only": false
+ }
+}

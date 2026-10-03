@@ -1,0 +1,16 @@
+# command : C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s tests -t .
+# cwd     : C:\Projects\Agent_Workspace\SWOF
+# git HEAD: ed28b784fcae651897fe261120db7840134d0028
+# branch  : repair/w1-r3-admission-order
+# python  : 3.12.14
+# started : 2026-10-03T03:38:33Z
+# duration: 0.242s
+# exit_code: 0
+------------------------------------------------------------------------------
+
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.127s
+
+OK
+

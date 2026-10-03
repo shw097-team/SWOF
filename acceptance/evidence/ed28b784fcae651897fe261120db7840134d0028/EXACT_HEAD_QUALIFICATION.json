@@ -1,0 +1,94 @@
+{
+ "schema": "SWOF-W1-R3-EXACT-HEAD-QUALIFICATION/1",
+ "source_candidate_sha": "ed28b784fcae651897fe261120db7840134d0028",
+ "branch": "repair/w1-r3-admission-order",
+ "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "toolchain": {
+  "python": "3.12.14"
+ },
+ "byte_identical_to_reviewed_r2_surface": true,
+ "per_file_identity": {
+  "README.md": true,
+  "schemas/capability/_conformance_sample.json": true,
+  "schemas/capability/named_consumption.schema.json": true,
+  "src/capability/ledger.py": true,
+  "src/capability/tests/test_ledger.py": true
+ },
+ "head_recorded_in_every_raw_log": true,
+ "tested_bytes_are_the_claimed_candidate": true,
+ "head_unchanged_after_tests": true,
+ "bounded_diff_files": [
+  "README.md",
+  "schemas/capability/_conformance_sample.json",
+  "schemas/capability/named_consumption.schema.json",
+  "src/capability/ledger.py",
+  "src/capability/tests/test_ledger.py"
+ ],
+ "bounded_diff_within_admitted_write_set": true,
+ "roots": {
+  "tests": {
+   "ran": 16,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/tests.log",
+   "log_sha256": "9cb6291f7242cb0059f9490d85f3f08f18a5f9dd7c95749f265ed58cf6337f00"
+  },
+  "src/fabric/tests": {
+   "ran": 21,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_fabric_tests.log",
+   "log_sha256": "bf578e70f9a47f2ef3d856d930cb9dd9cf355b89bc31fa979d274520d006b6a8"
+  },
+  "src/knowledge/tests": {
+   "ran": 25,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_knowledge_tests.log",
+   "log_sha256": "a5733295393ec3af409a105622cb765ff7c7e949b951b902b4a057b4849baf77"
+  },
+  "src/admission/tests": {
+   "ran": 17,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_admission_tests.log",
+   "log_sha256": "8c52409215d9e3afbb8a46cb03fda64dd51bc6f91b020cdcba32e4a49e246fb4"
+  },
+  "src/profile/tests": {
+   "ran": 12,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_profile_tests.log",
+   "log_sha256": "f36da18debee51bb9b1d7511558d9f1faa02a10386a51485fd8a355f27220cfd"
+  },
+  "src/capability/tests": {
+   "ran": 22,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_capability_tests.log",
+   "log_sha256": "32af262644848c834c7f7d17b482ef952e6f849cf13fd0cfe7d94799ecfb64ae"
+  }
+ },
+ "total": {
+  "ran": 113,
+  "fail": 0,
+  "error": 0,
+  "skip": 0
+ },
+ "all_roots_rc_zero": true,
+ "receipt_subject_equals_head": true,
+ "receipt_schema_valid": true,
+ "generated_at_utc": "2026-10-03T03:38:34Z"
+}

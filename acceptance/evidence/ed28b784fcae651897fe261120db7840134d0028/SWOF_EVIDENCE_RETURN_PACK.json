@@ -1,0 +1,248 @@
+{
+ "schema": "SWOF-EVIDENCE-RETURN-PACK/1",
+ "workorder_id": "WO-SWOF-W1-REPAIR-R3-001",
+ "repo": "shw097-team/SWOF",
+ "source_candidate_sha": "ed28b784fcae651897fe261120db7840134d0028",
+ "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "local_checkpoint_id": "CKPT-SWOF-W1-REPAIR-R3-001",
+ "producer_identity": "hermes-orchestrator (HG-KSEOS bounded runtime)",
+ "checker_identity": "fresh-context VERIFY_ONLY lane deleg_487fb460",
+ "local_closure_receipt_sha256": "c21d6dfc850a5df5a9c7d8194ac7f1a96ac3d0d0a56115dddb10f8773b21f538",
+ "independent_receipt_sha256": "68ef17883d48f20cdd3e933956fa8cc5a23b6e0d4965815020e05eeb3bf37a3f",
+ "redaction_receipt_sha256": "e5ce6da6754ec2c24240ede61bf4388c026dc32040ba46fed8b11cdfc1d1e429",
+ "secret_scan_receipt_sha256": "66d7027f9c5c6b8fb5d52f983779daff045d7c75fb8d8ad2f3434a4cb54b7c7b",
+ "pre_mutation_admission_receipt_sha256": "56a9fcb398d218acedb8e91fa0a3709c55622a50b4907c38ec5c454a01751d73",
+ "first_mutation_ordering_receipt_sha256": "7542c36aee9c883c3eb91ebf22de32210078cfcc9645a3fe2a72b51b05f55e70",
+ "named_capability_consumption_receipt_sha256": "a768d27a2fe769b5b6510dba00eb80c2e0d5a8638c63af2c707f07542c4c7858",
+ "exact_head_qualification_sha256": "868c31f7b1f23f727bcb2bdf73b175066bef846d13c52a7c74e25964c8988610",
+ "evidence_items": [
+  {
+   "id": "E-001",
+   "type": "runtime_receipt",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/EXACT_HEAD_QUALIFICATION.json",
+   "sha256": "868c31f7b1f23f727bcb2bdf73b175066bef846d13c52a7c74e25964c8988610",
+   "bytes": 2604,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE"
+  },
+  {
+   "id": "E-002",
+   "type": "ordering_receipt",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/FIRST_MUTATION_ORDERING_RECEIPT.json",
+   "sha256": "7542c36aee9c883c3eb91ebf22de32210078cfcc9645a3fe2a72b51b05f55e70",
+   "bytes": 1615,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE"
+  },
+  {
+   "id": "E-003",
+   "type": "independent_receipt",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/INDEPENDENT_RECEIPT.json",
+   "sha256": "68ef17883d48f20cdd3e933956fa8cc5a23b6e0d4965815020e05eeb3bf37a3f",
+   "bytes": 2089,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE"
+  },
+  {
+   "id": "E-004",
+   "type": "local_closure_receipt",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/LOCAL_CLOSURE_RECEIPT.json",
+   "sha256": "c21d6dfc850a5df5a9c7d8194ac7f1a96ac3d0d0a56115dddb10f8773b21f538",
+   "bytes": 1011,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE"
+  },
+  {
+   "id": "E-005",
+   "type": "runtime_receipt",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/NAMED_CAPABILITY_CONSUMPTION_RECEIPT.json",
+   "sha256": "a768d27a2fe769b5b6510dba00eb80c2e0d5a8638c63af2c707f07542c4c7858",
+   "bytes": 11805,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE"
+  },
+  {
+   "id": "E-006",
+   "type": "ordering_receipt",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/PRE_MUTATION_ADMISSION_RECEIPT.json",
+   "sha256": "56a9fcb398d218acedb8e91fa0a3709c55622a50b4907c38ec5c454a01751d73",
+   "bytes": 1925,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE"
+  },
+  {
+   "id": "E-007",
+   "type": "test_log",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/raw_test_logs/src_admission_tests.log",
+   "sha256": "8c52409215d9e3afbb8a46cb03fda64dd51bc6f91b020cdcba32e4a49e246fb4",
+   "bytes": 563,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE",
+   "internal_subject_source": "log_header_git_head"
+  },
+  {
+   "id": "E-008",
+   "type": "test_log",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/raw_test_logs/src_capability_tests.log",
+   "sha256": "32af262644848c834c7f7d17b482ef952e6f849cf13fd0cfe7d94799ecfb64ae",
+   "bytes": 570,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE",
+   "internal_subject_source": "log_header_git_head"
+  },
+  {
+   "id": "E-009",
+   "type": "test_log",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/raw_test_logs/src_fabric_tests.log",
+   "sha256": "bf578e70f9a47f2ef3d856d930cb9dd9cf355b89bc31fa979d274520d006b6a8",
+   "bytes": 562,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE",
+   "internal_subject_source": "log_header_git_head"
+  },
+  {
+   "id": "E-010",
+   "type": "test_log",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/raw_test_logs/src_knowledge_tests.log",
+   "sha256": "a5733295393ec3af409a105622cb765ff7c7e949b951b902b4a057b4849baf77",
+   "bytes": 572,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE",
+   "internal_subject_source": "log_header_git_head"
+  },
+  {
+   "id": "E-011",
+   "type": "test_log",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/raw_test_logs/src_profile_tests.log",
+   "sha256": "f36da18debee51bb9b1d7511558d9f1faa02a10386a51485fd8a355f27220cfd",
+   "bytes": 555,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE",
+   "internal_subject_source": "log_header_git_head"
+  },
+  {
+   "id": "E-012",
+   "type": "test_log",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/raw_test_logs/tests.log",
+   "sha256": "9cb6291f7242cb0059f9490d85f3f08f18a5f9dd7c95749f265ed58cf6337f00",
+   "bytes": 531,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE",
+   "internal_subject_source": "log_header_git_head"
+  },
+  {
+   "id": "E-013",
+   "type": "runtime_receipt",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/SECRET_SCAN_RECEIPT.json",
+   "sha256": "66d7027f9c5c6b8fb5d52f983779daff045d7c75fb8d8ad2f3434a4cb54b7c7b",
+   "bytes": 176,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE"
+  },
+  {
+   "id": "E-014",
+   "type": "runtime_receipt",
+   "subject": "subject=ed28b784fcae651897fe261120db7840134d0028",
+   "path": "acceptance/evidence/ed28b784fcae651897fe261120db7840134d0028/W1_R3_VERDICTS.json",
+   "sha256": "48197d674657b353574d68a0d82a0078dc40135b1000dbf65b3cc5c4a746718a",
+   "bytes": 5540,
+   "internal_subject_ok": true,
+   "packaging_status": "CURRENT",
+   "redaction": "NONE",
+   "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE"
+  }
+ ],
+ "environment_identity": {
+  "os": "Windows 11",
+  "runner_or_host": "local HGK host (git-bash)",
+  "toolchain": {
+   "python": "3.12.14",
+   "sqlite": "3.53.1",
+   "git": "git version 2.53.0.windows.1"
+  },
+  "lockfile_digests": {}
+ },
+ "invalidation": [
+  "ON_NEW_SOURCE_CANDIDATE",
+  "ON_CHECKER_CHANGE",
+  "ON_REQUIRED_FIXTURE_CHANGE",
+  "ON_ENVIRONMENT_IDENTITY_CHANGE_WHERE_RELEVANT"
+ ],
+ "manifest_hash_source": "COMMITTED_GIT_BLOB_BYTES",
+ "internal_subject_check": "each item's own subject identity compared to the manifest subject",
+ "packaging_hygiene": {
+  "intermediate_artifacts_excluded": [
+   "REDACTION_RECEIPT.json",
+   "SWOF_EVIDENCE_RETURN_PACK.json",
+   "W1_REPAIR_R2_FINAL_PACKAGING.json",
+   "W1_REPAIR_R2_VERDICTS.json"
+  ],
+  "policy": "W1-R3-OBS-001: no intermediate PARTIAL / stale-evidence-SHA packaging artifact is shipped as current acceptance evidence"
+ },
+ "claim_ceiling": "W1_R3_LOCAL_REPAIR_CANDIDATE_WITH_PRE_ADMITTED_EXECUTION_LINEAGE_AND_SUBJECT_BOUND_EVIDENCE",
+ "non_claims": [
+  "NOT_EXTERNALLY_ACCEPTED",
+  "NO_REMOTE_MERGE",
+  "NO_RELEASE",
+  "NO_PRODUCTION",
+  "NO_WORLD_EFFECT_ACCEPTANCE",
+  "W2_W5_NOT_COMPLETED_BY_THIS_REPAIR"
+ ],
+ "superseded_prior_subjects": [
+  {
+   "source_candidate_sha": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b",
+   "evidence_commit_sha": "7c0fa362347ff59bd6faaff08da96c5ca2ad7cf3",
+   "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+  },
+  {
+   "source_candidate_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "evidence_commit_sha": "0c6278175f296ff41ef7d130199c57c1052eee40",
+   "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+  },
+  {
+   "source_candidate_sha": "8689e583bab5198be11fb31442f5ac95d8490c00",
+   "evidence_commit_sha": "2105e08f920414ba8093c0303b77bfada1cfa6df",
+   "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+  }
+ ],
+ "generated_at_utc": "2026-10-03T03:43:36Z"
+}

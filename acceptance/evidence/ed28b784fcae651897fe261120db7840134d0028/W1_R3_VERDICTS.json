@@ -1,0 +1,85 @@
+{
+ "schema": "SWOF-W1-R3-VERDICTS/1",
+ "source_candidate_sha": "ed28b784fcae651897fe261120db7840134d0028",
+ "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "branch": "repair/w1-r3-admission-order",
+ "verdict": "PASS",
+ "defect_closed": "W1-R3-EXT-001_FIRST_SOURCE_MUTATION_PRECEDED_HGK_PD04_ADMISSION_AND_EXECUTION_BINDING",
+ "checks": {
+  "compiler_lint_activation_acceptance_compile_pass": true,
+  "compiler_duplication_below_threshold": true,
+  "clean_pre_r2_baseline_proved": true,
+  "parent_commit_is_baseline": true,
+  "diff_within_admitted_write_set": true,
+  "byte_identical_to_reviewed_r2_surface": true,
+  "admission_preceded_mutation": true,
+  "receipt_not_backdated": true,
+  "no_event_later_than_commit": true,
+  "workorder_base_head_equals_baseline": true,
+  "r2_semantics_intact": true,
+  "exact_head_logs_bind_git_head": true,
+  "maker_checker_separated": true,
+  "checker_did_not_mutate_subject": true,
+  "consumption_receipt_subject_ok": true,
+  "locator_precision_exact_with_digest": true,
+  "no_secrets_in_diff": true,
+  "no_history_rewrite_of_rejected_pr": true
+ },
+ "ordering_proof": {
+  "last_pre_mutation_event": "EVT-fdfb4961601c4774",
+  "spine_event_time_utc": "2026-10-03T03:35:25.238182Z",
+  "admission_receipt_frozen_at_utc": "2026-10-03T03:35:25Z",
+  "admission_receipt_mtime": "2026-10-03T11:35:25.292+08:00 (=03:35:25Z, 54s before commit)",
+  "first_source_mutation_commit": "ed28b784fcae651897fe261120db7840134d0028",
+  "first_source_mutation_commit_time_utc": "2026-10-03T03:36:19Z",
+  "commit_epoch": 1790998579,
+  "admission_preceded_mutation": true,
+  "gap_seconds": 54,
+  "timezone_reconciled": true
+ },
+ "lanes": [
+  {
+   "lane": "deleg_56bfc2e3",
+   "mandate": "first pass at the ordering check",
+   "verdict": "INTERRUPTED_BY_MAKER",
+   "note": "Deliberately stopped. The maker was about to apply the OBS-002 locator-precision cleanup to an artifact this lane reads; letting it continue would have produced a nondeterministic read of a half-edited artifact. Replaced by deleg_487fb460 after the cleanup."
+  },
+  {
+   "lane": "deleg_487fb460",
+   "mandate": "falsify admission-before-mutation at frozen HEAD ed28b784 and re-verify the R2 surface",
+   "verdict": "PASS",
+   "blocking_findings": [],
+   "note": "Chronology attack executed and failed to break the claim. Independently queried the live spine rows, reconciled UTC vs +08:00, verified the receipt mtime is 54s before the commit, confirmed HEAD is a genuine child of the baseline, and re-ran all six roots itself (113).",
+   "residual_weaknesses": [
+    "Ordering rests on host-clock consistency: spine created_at and git commit time share one machine clock; there is no external/notarized timestamp. Mitigated by the 54s gap, corroborating file mtimes, and 5 admission rows within 45ms.",
+    "'ExecutionBinding' is represented by the spine lifecycle (requirement FROZEN + lease + workorder CREATED + checkpoint), not a dedicated binding row. See execution_binding_convention below."
+   ]
+  }
+ ],
+ "execution_binding_convention": {
+  "statement": "The current HG-KSEOS lifecycle expresses ExecutionBinding/Profile as the spine lifecycle: requirement FROZEN, holder lease, workorder CREATED against the baseline, and a checkpoint row. There is no dedicated execution-binding table.",
+  "provider_bindings_table_is_not_it": "The spine's provider_bindings table is for EXTERNAL provider bindings (provider_id/slot/xor_group/disposition/pin/state). It is empty because no external provider is bound, which the source requires (OPA/OpenLineage/OpenFGA stay DEFERRED). Writing a row there would be both the wrong table and a false provider-bound claim.",
+  "why_no_row_was_added_now": "Creating any binding artifact after the mutation would itself be the retroactive registration that W1-R3-EXT-001 forbids. The honest position is to use the real current lifecycle vocabulary and disclose the convention, not to fabricate a BOUND entity.",
+  "prompt_basis": "SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1 section 4.A: use the real current vocabulary and raw readback; do not fabricate ADMITTED/BOUND/DISPATCHED or equivalent labels."
+ },
+ "non_blocking_observations_disposition": {
+  "W1-R3-OBS-001_STALE_INTERMEDIATE_PACKAGING": "ADDRESSED - the R3 pack excludes intermediate PARTIAL / stale-SHA packaging artifacts and carries an explicit packaging_hygiene declaration.",
+  "W1-R3-OBS-002_LOCATOR_PRECISION": "ADDRESSED - consumption-row locators now carry the exact physical corpus filename + sha256 digest + line range, plus a corpus_identity block. Source bytes were deliberately NOT changed, preserving byte-identity with the reviewed R2 surface.",
+  "W1-R3-OBS-003_PROVIDER_OFF_RUNTIME_DEPTH": "PRESERVED - no provider is activated or bound by this repair; the provider rows remain DEFERRED/unbound and no runtime provider-off success is claimed."
+ },
+ "residual_weaknesses_open": [
+  "Host-clock-only ordering oracle (no external/notarized timestamp); mitigated as above.",
+  "ExecutionBinding is a lifecycle convention rather than a dedicated artifact row; disclosed, not fabricated.",
+  "No remote CI runs exist for the source SHA; remote CI is only required where portable checks are applicable.",
+  "A full provider-off runtime drill was not executed; no active provider runtime claim is made."
+ ],
+ "non_claims": [
+  "NOT_EXTERNALLY_ACCEPTED",
+  "NO_REMOTE_MERGE",
+  "NO_RELEASE",
+  "NO_PRODUCTION",
+  "NO_WORLD_EFFECT_ACCEPTANCE",
+  "W2_W5_NOT_COMPLETED_BY_THIS_REPAIR"
+ ],
+ "generated_at_utc": "2026-10-03T03:45:00Z"
+}
