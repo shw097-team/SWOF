@@ -1,46 +1,84 @@
 {
  "schema": "SWOF-POST-COMMIT-REMOTE-READBACK-RECEIPT/1",
- "layer": "COMMIT_9_BINDING",
+ "layer": "BINDING_FOR_4b199c99",
  "repo": "shw097-team/SWOF",
  "evidence_branch": "evidence/w1-r4-evidence-cleanup",
- "bound_evidence_commit_sha": "b1c6183e2b5675a1ce036876eac1471c7f572a03",
+ "bound_evidence_commit_sha": "4b199c99e2e9aeb16ef165e3c2cf2a44767ddc04",
  "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
  "source_branch_tip_at_readback": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
  "source_branch_unchanged_by_cleanup": true,
- "supersedes_binding_of": "8731c34308e8a619ed26384d33cbf56b20e3b4bd",
+ "supersedes_binding_of": "1d3b4e3799af89cbb98d7059f559767752400851",
  "superseded_commits_retained_in_history": [
-  "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f",
-  "a45009bd7b459fa400a81f339b67e25ea9c051c2",
-  "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
-  "0a34440f786cc1bedc5eac75167e233884623f87",
-  "39ba9e03cfd16cda840ed367d00a09e913bae4ce",
-  "cf553b6f373e45fd95647b742079434f7f3c5acb",
+  "00d55fe130c102270743b56be2faf6a4655a8eca",
+  "b1c6183e2b5675a1ce036876eac1471c7f572a03",
+  "8c5c7c98063cfd912d75379ffbcc94c3c292e6d2",
+  "8b8782a48bbb8f95a79a5517ac44a78d06e796eb",
+  "223f8a7d3120472158c1b5998df865cd61f754a8",
+  "d2601411023c3ffaca33eba2e67961b2c30fa05c",
+  "ca97aa23a14379a33e3831ad62ab80dbc9e6ba8b",
+  "e69454f047437337c89d376bf533b0d0ac97d51c",
+  "5672810e41117d77ccc15ec8bc5899be2da3d147",
+  "bbf51062149eb1f3035e8ee8d3bb4e75e6ad4e4d",
+  "470812c1b8d6134d29cdd7a9d2226009d6eff961",
+  "1bd60ea0484ffdac2a3d882ce56fee57c7ecc707",
+  "f79111293d272ac59654874deef2ee70b7ad63ff",
+  "1d3b4e3799af89cbb98d7059f559767752400851",
+  "ece3010e49b9bdbfd9df90d5fb299597ace4907f",
   "8731c34308e8a619ed26384d33cbf56b20e3b4bd",
-  "ece3010e49b9bdbfd9df90d5fb299597ace4907f"
+  "cf553b6f373e45fd95647b742079434f7f3c5acb",
+  "39ba9e03cfd16cda840ed367d00a09e913bae4ce",
+  "0a34440f786cc1bedc5eac75167e233884623f87",
+  "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
+  "a45009bd7b459fa400a81f339b67e25ea9c051c2",
+  "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f"
  ],
  "readback_method": "PATH_INDEPENDENT blob-SHA readback; an empty read is a hard error.",
  "residual_closure": {
   "R-1": {
-   "state": "CLOSED",
-   "record": "receipts/superseded/SUPERSESSION.json"
+   "state": "CLOSED"
   },
   "R-2": {
    "state": "CLOSED",
-   "all_fixtures_demonstrated": true
+   "injected_fixture_is_in_tree_artifact": "W2_GUARD_INJECTED_CONTRACT_NEGATIVE_FIXTURE.json"
   },
   "R-3": {
    "state": "CLOSED",
+   "scan_scope_stated_explicitly": true,
    "committed_tree_files_scanned": 36
   },
-  "R-4_class_elimination": {
-   "state": "CLOSED_STRUCTURALLY",
-   "instances_found_and_fixed": 3,
-   "descriptive_receipts_removed_from_immutable_set": true,
-   "self_consistency_validator": {
-    "declared_hashes_checked": 153,
-    "files": 36,
-    "contradictions": 0
-   }
+  "R-4_vacuous_validator": {
+   "state": "CLOSED",
+   "previous_defect": "self_consistency() initialised errs=[] and never appended -> could never fail",
+   "corrected": true,
+   "non_vacuity_demonstrated": true,
+   "clean_tree_errors": [],
+   "injected_contradiction_caught": true,
+   "injection_shapes_caught": {
+    "fixture_1_sibling_path_wrong_value": true,
+    "fixture_2_non_sha256_key": true,
+    "fixture_3_commit_path_wrong_blob": true,
+    "fixture_4_unresolvable_named_target": true,
+    "fixture_5_uppercase_wrong_digest": true
+   },
+   "hashes_checked": 162,
+   "superseded_scope_stale_reference_count": 14,
+   "superseded_scope_stale_references": [
+    "artifacts/superseded/POST_COMMIT_REMOTE_READBACK_RECEIPT.bound-fcd991b5.json: api_sha256=3979209ee19f... contradicts in-tree file artifacts/SWOF_EVIDENCE_RETURN_PACK.json",
+    "artifacts/superseded/POST_COMMIT_REMOTE_READBACK_RECEIPT.bound-fcd991b5.json: remote_sha256=3979209ee19f... contradicts in-tree file artifacts/SWOF_EVIDENCE_RETURN_PACK.json",
+    "receipts/superseded/E1_CONTRACT_RECEIPT.json: current_task_prompt_sha256=7bfe828691b3... does not match in-tree EVIDENCE_ONLY_CONTRACT.json (resolved from absolute path)",
+    "receipts/superseded/E1_CONTRACT_RECEIPT.json: current_decision_report_sha256=6868a088c868... does not match in-tree EVIDENCE_ONLY_CONTRACT.json (resolved from absolute path)",
+    "receipts/superseded/E1_CONTRACT_RECEIPT.json: rbwi_sha256=b9a26f959233... does not match in-tree EVIDENCE_ONLY_CONTRACT.json (resolved from absolute path)",
+    "receipts/superseded/E1_CONTRACT_RECEIPT.json: compiler_skill_sha256=48a3fdc5a0c6... does not match in-tree EVIDENCE_ONLY_CONTRACT.json (resolved from absolute path)",
+    "receipts/superseded/E1_CONTRACT_RECEIPT.json: compiler_script_sha256=2c282ad6539a... does not match in-tree EVIDENCE_ONLY_CONTRACT.json (resolved from absolute path)",
+    "receipts/superseded/E2_CALIBRATION_RECEIPT.json: artifact_sha256=f8a45c8435a7... does not match in-tree artifacts/GATE_CALIBRATION_ROWS_R4_EVIDENCE_CLEANUP.json (resolved from absolute path)",
+    "receipts/superseded/E3_LINKAGE_RECEIPT.json: artifact_sha256=ae15b871cfb6... does not match in-tree artifacts/EVIDENCE_LINKAGE_RECLASSIFICATION.json (resolved from absolute path)",
+    "receipts/superseded/E6_PACK_RECEIPT.json: return_pack_sha256=2274852243be... does not match in-tree artifacts/SWOF_EVIDENCE_RETURN_PACK.json (resolved from absolute path)",
+    "receipts/superseded/E8_FINAL_RECEIPT.bound-a45009bd.json: final_readback_sha256=822d5a2738ce... absolute target resolves neither in-tree nor in the external allowlist: C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_r4_evidence_cleanup\\FINAL_EVIDENCE_CLEANUP_READBACK.json",
+    "receipts/superseded/E8_FINAL_RECEIPT.bound-a45009bd.json: readset_sha256=2ef9f4d8f8ba... does not match in-tree artifacts/SWOF_EXTERNAL_ACCEPTANCE_READSET.json (resolved from absolute path)",
+    "receipts/superseded/SUPERSESSION.json: final_readback_sha256=822d5a2738ce... resolves to no in-tree file and no known external blob",
+    "receipts/superseded/SUPERSESSION.json: readset_sha256=2ef9f4d8f8ba... resolves to no in-tree file and no known external blob"
+   ],
+   "proof_artifact": "artifacts/SELF_CONSISTENCY_VALIDATION_RECEIPT.json"
   }
  },
  "remote_readback": {
@@ -49,8 +87,8 @@
   "mismatch_count": 0,
   "mismatches": [],
   "empty_read_count": 0,
-  "remote_tip_git_fetch": "b1c6183e2b5675a1ce036876eac1471c7f572a03",
-  "remote_tip_github_api": "b1c6183e2b5675a1ce036876eac1471c7f572a03",
+  "remote_tip_git_fetch": "4b199c99e2e9aeb16ef165e3c2cf2a44767ddc04",
+  "remote_tip_github_api": "4b199c99e2e9aeb16ef165e3c2cf2a44767ddc04",
   "transports_agree": true
  },
  "committed_tree_secret_scan": {
