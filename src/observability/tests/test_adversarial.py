@@ -83,6 +83,19 @@ class TestGateCannotBeSatisfiedVacuously(unittest.TestCase):
         self.assertIsNone(assert_log_safe(safe))
 
 
+class TestReceiptDoesNotHideDestroyedBytes(unittest.TestCase):
+    def test_destroyed_bytes_are_counted_and_never_reported_safe(self):
+        clean, receipt = redact_event({"note": "ordinary", "blob": b"benign bytes here"})
+        self.assertGreaterEqual(receipt["unscannable_bytes"], 1)
+        self.assertFalse(receipt["safe"])
+        self.assertIn("[REDACTED:UNSCANNABLE_BYTES]", json.dumps(clean))
+
+    def test_scannable_clean_payload_is_safe_with_zero_unscannable(self):
+        clean, receipt = redact_event({"note": "no secret and nothing unscannable"})
+        self.assertTrue(receipt["safe"])
+        self.assertEqual(receipt["unscannable_bytes"], 0)
+
+
 class TestForgedOrderingAndKind(unittest.TestCase):
     def test_caller_supplied_seq_is_rejected_by_signature(self):
         bus = HookBus()

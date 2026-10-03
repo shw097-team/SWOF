@@ -13,12 +13,17 @@ cannot pass by blanking the input.
 Dict KEYS are checked too. `sanitize_evidence` redacts values only, so a credential used as a
 key name would otherwise survive straight into the sink; a key that classifies SECRET is
 refused rather than rewritten, because silently renaming a field corrupts the event shape.
+
+A value that cannot be scanned (bytes/bytearray) is DESTROYED rather than passed through, and
+the receipt reports it: `unscannable_bytes: N` with `safe: False`. A receipt never claims a
+value it destroyed was safe.
 """
 from __future__ import annotations
 
 import security.classification as classification
 
 SINK_SAFE = "[REDACTED:SECRET]"
+UNSCANNABLE_MARKER = "[REDACTED:UNSCANNABLE_BYTES]"
 
 _BENIGN_SCALARS = (bool, int, float, type(None))
 
@@ -33,24 +38,25 @@ class LogUnsafe(Exception):
         self.class_name = class_name
 
 
-def _receipt(redactions, scanned):
+def _receipt(redactions, scanned, unscannable_bytes=0):
     total = sum(redactions.values())
     return {
         "redactions": dict(redactions),
         "scanned_items": scanned,
         "redacted_total": total,
-        "safe": total == 0,
+        "unscannable_bytes": unscannable_bytes,
+        "safe": total == 0 and unscannable_bytes == 0,
     }
 
 
 def _redact_str(text):
     found = classification._hits(text)
     if not found:
-        return text, {}
+        return text, {}, 0
     counts = {}
     for _, _, class_name, _, _ in found:
         counts[class_name] = counts.get(class_name, 0) + 1
-    return classification.redact(text, replacement=SINK_SAFE), counts
+    return classification.redact(text, replacement=SINK_SAFE), counts, 0
 
 
 def redact_line(line):
@@ -63,8 +69,8 @@ def redact_line(line):
         raise LogUnsafe(
             "log line is %s, not a string: an unscannable value cannot be certified safe"
             % type(line).__name__)
-    safe_line, counts = _redact_str(line)
-    return safe_line, _receipt(counts, 1)
+    safe_line, counts, unscannable = _redact_str(line)
+    return safe_line, _receipt(counts, 1, unscannable)
 
 
 def redact_event(payload):
@@ -73,13 +79,18 @@ def redact_event(payload):
     Returns `(clean_payload, receipt)`. Any SECRET that survives (a secret in a dict key, or an
     unscannable value) is a hard failure: an unredacted secret must never reach a log sink. An
     empty top-level payload is refused, because "nothing was checked" is not "nothing was found".
+
+    An unscannable value (bytes/bytearray) is DESTROYED - replaced with a marker - and the
+    receipt carries `unscannable_bytes: N` with `safe: False`, because a destroyed value that
+    could not be scanned is exactly the thing that must never be certified safe.
     """
     _reject_keys(payload)
     clean, receipt = classification.sanitize_evidence(payload)
     _reject_survivors(clean)
     counts = dict(receipt.get("redactions", {}))
     scanned = receipt.get("scanned_items", 1)
-    return clean, _receipt(counts, scanned)
+    unscannable = receipt.get("unscannable_bytes", 0)
+    return clean, _receipt(counts, scanned, unscannable)
 
 
 def assert_log_safe(line):

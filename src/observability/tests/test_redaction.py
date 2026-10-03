@@ -95,7 +95,26 @@ class TestRedactEvent(unittest.TestCase):
     def test_clean_payload_is_safe(self):
         clean, receipt = redact_event({"note": "ordinary"})
         self.assertTrue(receipt["safe"])
+        self.assertEqual(receipt["unscannable_bytes"], 0)
         self.assertEqual(clean, {"note": "ordinary"})
+
+    def test_benign_bytes_are_destroyed_and_reported_unsafe(self):
+        clean, receipt = redact_event({"note": "plain operational note",
+                                       "blob": b"benign-but-unscannable"})
+        self.assertNotIn(b"benign-but-unscannable", str(clean).encode("utf-8", "ignore"))
+        self.assertIn("[REDACTED:UNSCANNABLE_BYTES]", str(clean))
+        self.assertGreaterEqual(receipt["unscannable_bytes"], 1)
+        self.assertFalse(receipt["safe"])
+
+    def test_bytes_destroyed_even_when_no_secret_and_reported_unsafe(self):
+        clean, receipt = redact_event({"a": "ordinary text", "raw": bytearray(b"nothing secret")})
+        self.assertEqual(receipt["redactions"], {})
+        self.assertEqual(receipt["unscannable_bytes"], 1)
+        self.assertFalse(receipt["safe"])
+
+    def test_receipt_carries_unscannable_bytes_key(self):
+        _, receipt = redact_event({"note": "ordinary"})
+        self.assertIn("unscannable_bytes", receipt)
 
 
 if __name__ == "__main__":
