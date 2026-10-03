@@ -54,8 +54,8 @@ class TestDuplicate(unittest.TestCase):
     def test_existing_key_is_duplicate(self):
         self.assertEqual(classify_retry(attempted(), attempt_no=1), "DUPLICATE")
 
-    def test_new_key_is_new(self):
-        self.assertEqual(classify_retry(attempted(), attempt_no=2), "NEW")
+    def test_mid_flight_key_is_refused_not_new(self):
+        self.assertEqual(classify_retry(attempted(), attempt_no=2), "REFUSED")
 
     def test_duplicate_attempt_raises(self):
         with self.assertRaises(DuplicateAttemptDetected) as ctx:
@@ -67,6 +67,36 @@ class TestDuplicate(unittest.TestCase):
         with self.assertRaises(DuplicateAttemptDetected):
             record_attempt(record, actor="agent-7", permission_allowed=True,
                            attempt_key=key_for(record, 1), at="t1")
+
+
+class TestMidFlightRetryRefused(unittest.TestCase):
+    def test_plan_retry_refuses_attempted(self):
+        plan = plan_retry(attempted())
+        self.assertFalse(plan.allowed)
+        self.assertEqual(plan.reason_code, "RETRY_REFUSED_MID_FLIGHT")
+
+    def test_plan_retry_refuses_observed(self):
+        record = observe(attempted(), payload={"status": "ok"}, provider_success=True, at="t1")
+        self.assertEqual(record.state, "OBSERVED")
+        plan = plan_retry(record)
+        self.assertFalse(plan.allowed)
+        self.assertEqual(plan.reason_code, "RETRY_REFUSED_MID_FLIGHT")
+
+    def test_plan_retry_refuses_readback(self):
+        record = readback(observe(attempted(), payload={"status": "ok"},
+                                  provider_success=True, at="t1"),
+                          payload={"op": "create"}, expected={"op": "create"}, at="t2")
+        self.assertEqual(record.state, "READBACK")
+        plan = plan_retry(record)
+        self.assertFalse(plan.allowed)
+        self.assertEqual(plan.reason_code, "RETRY_REFUSED_MID_FLIGHT")
+
+    def test_assert_retryable_raises_for_mid_flight(self):
+        with self.assertRaises(RetryRefused):
+            assert_retryable(attempted(), attempt_no=2)
+
+    def test_classify_retry_refuses_mid_flight(self):
+        self.assertEqual(classify_retry(attempted(), attempt_no=2), "REFUSED")
 
 
 class TestRetryRefusals(unittest.TestCase):

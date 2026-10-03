@@ -138,5 +138,15 @@ class TestAdversarial(unittest.TestCase):
         self.assertIn("[REDACTED:UNSCANNABLE_BYTES]", str(clean))
 
 
+    def test_14_ordinary_operational_text_is_not_flagged_as_pii(self):
+        for text in ("the build tag is B123456789 and it is public",
+                     "order reference 1234567890123456 is recorded in the quarterly ledger"):
+            self.assertEqual(classify(text), "PUBLIC", text)
+            self.assertEqual(redact(text), text, text)
+            clean, receipt = sanitize_evidence({"note": text})
+            self.assertTrue(receipt["clean"], text)
+        self.assertEqual(classify("4012888888881881"), "PII")
+
+
 if __name__ == "__main__":
     unittest.main()

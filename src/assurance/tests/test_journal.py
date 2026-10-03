@@ -273,5 +273,40 @@ class TestUnauthenticatedHeader(unittest.TestCase):
         self.assertTrue(verdict["header_is_authoritative"])
 
 
+class TestEmptyChainIsNotVerifiable(unittest.TestCase):
+    def _emptied(self):
+        journal = built()
+        journal.entries = []
+        journal.header["entry_count"] = 0
+        journal.header["final_digest"] = journal.genesis_digest
+        return journal
+
+    def test_emptied_chain_with_rewritten_header_is_not_intact(self):
+        verdict = self._emptied().verify()
+        self.assertFalse(verdict["intact"])
+        self.assertEqual(verdict["reason_code"], "EMPTY_CHAIN_NOT_VERIFIABLE")
+        self.assertEqual(verdict["checked"], 0)
+        self.assertFalse(verdict["header_is_authoritative"])
+
+    def test_emptied_chain_is_not_authoritative_when_anchored(self):
+        journal = self._emptied()
+        anchored = journal.verify_against_manifest(journal.export_manifest())
+        self.assertFalse(anchored["intact"])
+        self.assertNotEqual(anchored["reason_code"], "INTACT")
+
+    def test_a_chain_with_entries_verifies_intact(self):
+        journal = from_lifecycle_rows([ROWS[0]])
+        verdict = journal.verify()
+        self.assertTrue(verdict["intact"])
+        self.assertEqual(verdict["reason_code"], "INTACT")
+
+    def test_an_emptied_chain_against_a_coherent_empty_manifest_is_not_verifiable(self):
+        journal = self._emptied()
+        anchored = journal.verify_against_manifest(journal.export_manifest())
+        self.assertFalse(anchored["intact"])
+        self.assertEqual(anchored["reason_code"], "EMPTY_CHAIN_NOT_VERIFIABLE")
+        self.assertTrue(anchored["header_is_authoritative"])
+
+
 if __name__ == "__main__":
     unittest.main()

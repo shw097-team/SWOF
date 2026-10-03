@@ -19,7 +19,10 @@ ATTEMPT_KEY_DOMAIN = "swof.effect.attempt.v1"
 
 # Retry is allowed ONLY from UNKNOWN_EFFECT, where no effect has been confirmed applied. A
 # PARTIAL_EFFECT has confirmed part of the intent, so a second side effect would compound it;
-# its recovery route is a fresh readback (plan_reobserve) plus the compensation pointer.
+# its recovery route is a fresh readback (plan_reobserve) plus the compensation pointer. A
+# MID-FLIGHT state (ATTEMPTED/OBSERVED/READBACK) may already have a side effect in the world, so
+# it too is refused: the documented path is finalize() (which normalises it to UNKNOWN_EFFECT)
+# and then a retry, or a re-observe.
 RETRYABLE_STATES = ("UNKNOWN_EFFECT",)
 
 
@@ -51,12 +54,22 @@ def _existing_keys(record) -> set:
     return {attempt.attempt_key for attempt in record.attempts}
 
 
+def _is_retry_refused(record) -> bool:
+    """True unless the record is in a state from which a retry may be planned.
+
+    A retry is allowed ONLY from UNKNOWN_EFFECT. Every other state is refused: a terminal state
+    outside RETRYABLE_STATES has already decided the effect, and a non-terminal (mid-flight)
+    state may already have a side effect applied.
+    """
+    return record.state not in RETRYABLE_STATES
+
+
 def classify_retry(record, *, attempt_no) -> str:
     """Classify a requested attempt: "NEW", "DUPLICATE" or "REFUSED"."""
     key = attempt_key(record.effect_id, record.subject_id, record.intent_digest, attempt_no)
     if key in _existing_keys(record):
         return "DUPLICATE"
-    if record.state in TERMINAL_STATES and record.state not in RETRYABLE_STATES:
+    if _is_retry_refused(record):
         return "REFUSED"
     return "NEW"
 
@@ -76,11 +89,18 @@ def _next_attempt_no(record) -> int:
 
 
 def plan_retry(record, *, max_retries=3) -> RetryPlan:
-    """Plan the next attempt, or refuse with a typed reason. Never executes anything."""
+    """Plan the next attempt, or refuse with a typed reason. Never executes anything.
+
+    A retry is allowed ONLY from UNKNOWN_EFFECT. A terminal state outside RETRYABLE_STATES is
+    refused as RETRY_REFUSED_<state>; a mid-flight state (ATTEMPTED/OBSERVED/READBACK) is
+    refused as RETRY_REFUSED_MID_FLIGHT.
+    """
     attempt_no = _next_attempt_no(record)
     key = attempt_key(record.effect_id, record.subject_id, record.intent_digest, attempt_no)
-    if record.state in TERMINAL_STATES and record.state not in RETRYABLE_STATES:
-        return RetryPlan(False, attempt_no, "RETRY_REFUSED_%s" % record.state, key)
+    if _is_retry_refused(record):
+        if record.state in TERMINAL_STATES:
+            return RetryPlan(False, attempt_no, "RETRY_REFUSED_%s" % record.state, key)
+        return RetryPlan(False, attempt_no, "RETRY_REFUSED_MID_FLIGHT", key)
     if len(record.attempts) >= max_retries:
         return RetryPlan(False, attempt_no, "RETRY_LIMIT_EXCEEDED", key)
     if key in _existing_keys(record):
@@ -89,16 +109,24 @@ def plan_retry(record, *, max_retries=3) -> RetryPlan:
 
 
 def assert_retryable(record, *, attempt_no, max_retries=3) -> RetryPlan:
-    """Plan a retry for an explicit attempt_no or raise the exact typed refusal."""
+    """Plan a retry for an explicit attempt_no or raise the exact typed refusal.
+
+    A retry is allowed ONLY from UNKNOWN_EFFECT. A duplicate key raises DuplicateAttemptDetected;
+    a terminal state outside RETRYABLE_STATES or a mid-flight state raises RetryRefused.
+    """
     key = attempt_key(record.effect_id, record.subject_id, record.intent_digest, attempt_no)
     if key in _existing_keys(record):
         raise DuplicateAttemptDetected(
             "attempt %d for effect %r already exists (duplicate side effect refused)"
             % (attempt_no, record.effect_id))
-    if record.state in TERMINAL_STATES and record.state not in RETRYABLE_STATES:
+    if _is_retry_refused(record):
+        if record.state in TERMINAL_STATES:
+            raise RetryRefused(
+                "retry refused for terminal state %s (cannot justify a second side effect)"
+                % record.state)
         raise RetryRefused(
-            "retry refused for terminal state %s (cannot justify a second side effect)"
-            % record.state)
+            "retry refused for mid-flight state %s (a side effect may already be applied; "
+            "finalize it to UNKNOWN_EFFECT, then retry, or re-observe)" % record.state)
     if attempt_no > max_retries:
         raise RetryRefused(
             "retry refused: attempt_no %d exceeds max_retries %d (hard ceiling)"

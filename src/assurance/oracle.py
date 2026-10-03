@@ -11,6 +11,11 @@ predicate is not yet decidable.
 `OracleVerdict` is a pure function of (predicate, items): identical inputs produce
 identical verdicts, including the order of `checked` and `failures`. Inputs are sorted by
 a stable key, so no dict/set iteration order can leak into a decision.
+
+A negative fixture is represented ONLY through a plan-level manifest that binds it to a
+DEDICATED proof kind actually present in the evidence - a kind that is neither the fixture's own
+id nor one of the plan's `required_evidence_kinds`. A manifest whose binding is non-dedicated is
+UNCONSTRAINED and fails closed (`NEGATIVE_FIXTURE_MANIFEST_UNCONSTRAINED`).
 """
 from __future__ import annotations
 
@@ -226,15 +231,35 @@ class Oracle:
             present_kinds = {str(kind) for kind in kinds if kind is not None}
             claimed = _fixtures_declared_by_items(items)
             unrepresented = []
+            unconstrained = []
             for fixture in sorted(set(predicate.negative_fixtures)):
                 proof_kinds = _manifest_kinds(manifest, self.oracle_id, fixture)
                 # A negative fixture is represented ONLY through a plan-level manifest that
-                # binds it to a proof KIND actually present in the checked evidence. A bare
-                # item_id equal to the fixture, or any other caller-chosen field on an
-                # item, is NEVER a representation.
-                proven = bool(proof_kinds & present_kinds)
+                # binds it to a DEDICATED proof KIND actually present in the checked evidence.
+                # "Dedicated" means the bound kind is neither the fixture's own id nor a kind
+                # the plan already requires: a kind the plan already requires (or the fixture
+                # id itself) proves nothing about THIS fixture. A manifest whose only bindings
+                # are non-dedicated is UNCONSTRAINED, so the fixture is treated as
+                # unrepresented and the verdict fails closed with a distinct reason_code. A
+                # bare item_id equal to the fixture, or any other caller-chosen field on an
+                # item, is NEVER a representation either.
+                dedicated = frozenset(kind for kind in proof_kinds
+                                      if kind != fixture and kind not in required)
+                if proof_kinds and not dedicated:
+                    unconstrained.append(fixture)
+                    continue
+                proven = bool(dedicated & present_kinds)
                 if not proven:
                     unrepresented.append(fixture)
+            if unconstrained:
+                failures = tuple(
+                    "negative fixture %s is bound to a non-dedicated kind (the fixture id "
+                    "itself, or a kind the plan already requires): the manifest is "
+                    "unconstrained, not a representation" % fixture
+                    for fixture in unconstrained)
+                return OracleVerdict(
+                    False, "NEGATIVE_FIXTURE_UNREPRESENTED", checked, failures,
+                    "NEGATIVE_FIXTURE_MANIFEST_UNCONSTRAINED")
             if unrepresented:
                 failures = []
                 for fixture in unrepresented:

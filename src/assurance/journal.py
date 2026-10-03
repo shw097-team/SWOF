@@ -18,6 +18,13 @@ and a tampered header as `HEADER_MISMATCH`.
 The chain genesis is chain-bound (sha256 over the chain id), which is what makes a foreign
 splice distinguishable from an in-chain payload edit: a foreign seq-1 entry carries a foreign
 genesis and fails as CHAIN_ID_MISMATCH before any digest is recomputed.
+
+An EMPTY chain is NOT verifiable: with no entry to check there is nothing to be intact, so
+`verify()` on an emptied list - even one whose header has been rewritten to `entry_count=0` /
+`final_digest=genesis` - returns `intact=False` with `EMPTY_CHAIN_NOT_VERIFIABLE` rather than an
+unqualified INTACT. The manifest comparison (`verify_against_manifest` / `verify_manifest`)
+treats an empty entry list the same way: an empty export is NOT_VERIFIABLE, not INTACT. Only the
+external manifest is an anchor.
 """
 from __future__ import annotations
 
@@ -37,6 +44,7 @@ THREAT_SCHEMA = "SWOF-W2-JOURNAL-INTEGRITY-ASSESSMENT/1"
 UNAUTHENTICATED_HEADER_NOTE = (
     "COHERENT_HEADER_AND_ENTRY_REWRITE_UNDETECTABLE_WITHOUT_EXTERNAL_ANCHOR")
 MANIFEST_IS_ANCHOR_NOTE = "MANIFEST_IS_THE_EXTERNAL_ANCHOR"
+EMPTY_CHAIN_NOTE = "EMPTY_EXPORT_HAS_NO_ENTRY_TO_VERIFY"
 
 
 class JournalTamperDetected(Exception):
@@ -155,7 +163,16 @@ class DigestChainJournal:
         foreign chain splice to CHAIN_ID_MISMATCH and a tampered header to HEADER_MISMATCH. The
         `prev_digest` linkage is checked independently of `seq`, so a swap that leaves the seq
         numbers a permutation of the range is still caught as a linkage break.
+
+        An EMPTY entry list is NOT an intact chain: there is nothing to verify, so it returns
+        `intact=False` with EMPTY_CHAIN_NOT_VERIFIABLE (never an unqualified INTACT). A rewritten
+        header (`entry_count=0` / `final_digest=genesis`) does not change that.
         """
+        if not self.entries:
+            return _verdict(False, 0, "EMPTY_CHAIN_NOT_VERIFIABLE", None,
+                            header_is_authoritative=False,
+                            anchor_reason_code=EMPTY_CHAIN_NOTE)
+
         prev_digest = self.genesis_digest
         deleted = self._is_deletion_not_reorder()
 
@@ -254,6 +271,11 @@ class DigestChainJournal:
         entries = list(entries or ())
         chain_id = manifest.get("chain_id")
         checked = len(entries)
+
+        if not entries:
+            # An empty export has no entry to verify. Even with a coherent (empty) manifest
+            # there is nothing to be intact, so this is NOT an INTACT verdict.
+            return _verdict(False, 0, "EMPTY_CHAIN_NOT_VERIFIABLE", None)
 
         if entries and manifest.get("genesis_digest") != entries[0].prev_digest:
             return _verdict(False, checked, "CHAIN_ID_MISMATCH", entries[0].seq)

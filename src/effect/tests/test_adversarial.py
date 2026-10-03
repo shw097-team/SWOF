@@ -19,8 +19,8 @@ from effect.idempotency import (  # noqa: E402
 )
 from effect.state import EffectTransitionRefused, assert_transition  # noqa: E402
 from effect.substrate import (  # noqa: E402
-    EffectStateError, SuccessInferenceRefused, assert_no_success_inference, finalize, intend,
-    is_success, observe, readback, reconcile, record_attempt,
+    EffectStateError, FreshAttemptRefused, SuccessInferenceRefused, assert_no_success_inference,
+    finalize, intend, is_success, observe, readback, reconcile, record_attempt,
 )
 
 PARTS = [{"part": "debit"}, {"part": "credit"}]
@@ -188,6 +188,32 @@ class TestAdversarial(unittest.TestCase):
         self.assertEqual(plan.reason_code, "RETRY_REFUSED_PARTIAL_EFFECT")
         with self.assertRaises(RetryRefused):
             assert_retryable(record, attempt_no=2)
+
+    def test_16_partial_effect_cannot_be_re_armed_by_a_fresh_attempt(self):
+        record = record_attempt(intended({"op": "transfer", "parts": PARTS}), actor="agent-7",
+                                permission_allowed=True, attempt_key="k1", at="t0")
+        record = observe(record, payload={"part": "debit"}, provider_success=True, at="t1")
+        record = readback(record, payload={"part": "debit"}, expected=PARTS, at="t2")
+        record = reconcile(record, at="t3")
+        self.assertEqual(record.state, "PARTIAL_EFFECT")
+        with self.assertRaises(FreshAttemptRefused) as ctx:
+            record_attempt(record, actor="agent-7", permission_allowed=True,
+                           attempt_key=key_for(record, 2), at="t4")
+        self.assertEqual(ctx.exception.reason_code, "FRESH_ATTEMPT_REFUSED_PARTIAL_EFFECT")
+        self.assertEqual(record.state, "PARTIAL_EFFECT")
+        self.assertEqual(len(record.attempts), 1)
+
+    def test_17_mid_flight_retry_is_refused_and_finalize_is_the_path(self):
+        record = attempted()
+        with self.assertRaises(RetryRefused) as ctx:
+            assert_retryable(record, attempt_no=2)
+        self.assertEqual(str(ctx.exception).find("mid-flight") >= 0, True)
+        plan = plan_retry(record)
+        self.assertFalse(plan.allowed)
+        self.assertEqual(plan.reason_code, "RETRY_REFUSED_MID_FLIGHT")
+        swept = finalize(record)
+        self.assertEqual(swept.state, "UNKNOWN_EFFECT")
+        self.assertTrue(plan_retry(swept).allowed)
 
 
 if __name__ == "__main__":

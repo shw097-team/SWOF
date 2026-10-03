@@ -7,6 +7,10 @@ world-state truth: `observe(provider_success=True)` moves ATTEMPTED -> OBSERVED 
 more. Only a fresh readback whose payload matches the intended effect can reach RECONCILED.
 When that cannot be established the record fails closed into UNKNOWN_EFFECT (or PARTIAL_EFFECT
 when only part of the intent is proven) - first-class terminal states, not errors to retry away.
+A fresh attempt (`record_attempt` with a new attempt_key) is accepted ONLY from INTENDED and
+UNKNOWN_EFFECT, the states where no effect is known to have been applied: a PARTIAL_EFFECT, or
+an already OBSERVED/READBACK/DENIED/RECONCILED effect, refuses a fresh attempt with a typed
+error rather than re-arming the state machine over an effect that may already exist.
 Each function accepts an injected `at`, so no wall-clock enters a decision.
 """
 from __future__ import annotations
@@ -16,7 +20,7 @@ import json
 from dataclasses import dataclass, replace
 
 from effect.idempotency import DuplicateAttemptDetected
-from effect.state import assert_transition, is_terminal
+from effect.state import EffectTransitionRefused, assert_transition, is_terminal
 
 INTENT_DIGEST_DOMAIN = "swof.effect.intent.v1"
 
@@ -42,6 +46,19 @@ class SuccessInferenceRefused(Exception):
     """Someone tried to infer success from anything other than a RECONCILED record."""
 
     code = "ERR_SUCCESS_INFERENCE_REFUSED"
+
+
+class FreshAttemptRefused(EffectStateError, EffectTransitionRefused):
+    """A fresh attempt was offered from a state where an effect may already be applied.
+
+    A fresh attempt is accepted ONLY from INTENDED and UNKNOWN_EFFECT - states where no effect
+    is known to have been applied. PARTIAL_EFFECT, OBSERVED, READBACK, DENIED, RECONCILED,
+    IRREVERSIBLE and every other state refuse a fresh attempt here, so a partially-applied or
+    already-observed effect cannot be re-armed by a new side effect. This is a typed refusal
+    (an EffectStateError and an EffectTransitionRefused) carrying a specific reason_code.
+    """
+
+    code = "ERR_FRESH_ATTEMPT_REFUSED"
 
 
 @dataclass(frozen=True)
@@ -107,21 +124,27 @@ def intend(effect_id, subject_id, intent, *, environment="local") -> EffectRecor
                         intent_digest=digest, state="INTENDED", environment=environment)
 
 
-# A fresh attempt supersedes the previous observation cycle (a mechanical re-arm of the state
-# machine). The RETRY GATE is effect.idempotency.plan_retry / assert_retryable, and it allows a
-# PLANNED retry ONLY from UNKNOWN_EFFECT: a planned retry from PARTIAL_EFFECT is refused with
-# RETRY_REFUSED_PARTIAL_EFFECT. Every terminal state outside this set (RECONCILED, DENIED,
-# FAILED, COMPENSATED, IRREVERSIBLE) refuses at the mechanical layer too.
-RETRY_FROM_STATES = ("ATTEMPTED", "OBSERVED", "READBACK", "UNKNOWN_EFFECT", "PARTIAL_EFFECT")
+# A fresh attempt is accepted ONLY from states where no effect is known to have been applied:
+# INTENDED and UNKNOWN_EFFECT. The RETRY GATE is effect.idempotency.plan_retry /
+# assert_retryable, and it too allows a retry ONLY from UNKNOWN_EFFECT. Every other state -
+# PARTIAL_EFFECT, OBSERVED, READBACK, DENIED, RECONCILED, IRREVERSIBLE, FAILED, COMPENSATED -
+# refuses a fresh attempt with a typed error and a specific reason_code, so a partially-applied
+# or already-observed effect cannot be re-armed by a new side effect.
+FRESH_ATTEMPT_STATES = ("INTENDED", "UNKNOWN_EFFECT")
 
 
 def record_attempt(record, *, actor, permission_allowed, attempt_key, at) -> EffectRecord:
     """Record an attempt, or DENY the effect. A denied attempt is never recorded.
 
-    A NEW attempt_key on a retryable state records a fresh attempt: the record returns to
-    ATTEMPTED and the superseded observation cycle (observations/readbacks) is dropped, so a
-    retry can only be reconciled by a readback of THAT attempt. A repeated attempt_key raises
-    DuplicateAttemptDetected, and any other terminal state refuses with a typed error.
+    A fresh attempt (a new attempt_key) is accepted ONLY from INTENDED and UNKNOWN_EFFECT -
+    states where no effect is known to have been applied. On UNKNOWN_EFFECT the record returns
+    to ATTEMPTED and the superseded observation cycle (observations/readbacks) is dropped, so
+    the retry can only be reconciled by a readback of THAT attempt. From PARTIAL_EFFECT,
+    OBSERVED, READBACK, DENIED, RECONCILED, IRREVERSIBLE (and any other state) a fresh attempt
+    is REFUSED with FreshAttemptRefused and a specific reason_code
+    (FRESH_ATTEMPT_REFUSED_PARTIAL_EFFECT for the partial case). A repeated attempt_key raises
+    DuplicateAttemptDetected, and duplicate-key detection fires before any state check, so a
+    duplicate is never misreported as a fresh-attempt refusal.
     """
     if not permission_allowed:
         assert_transition(record.state, "DENIED")
@@ -131,11 +154,16 @@ def record_attempt(record, *, actor, permission_allowed, attempt_key, at) -> Eff
         raise DuplicateAttemptDetected(
             "attempt_key %r already recorded for effect %r (duplicate side effect refused)"
             % (attempt_key, record.effect_id))
+    if record.state not in FRESH_ATTEMPT_STATES:
+        raise FreshAttemptRefused(
+            "fresh attempt refused from state %s for effect %r: a fresh attempt is accepted "
+            "only from %s (no effect is known to have been applied there)"
+            % (record.state, record.effect_id, ", ".join(FRESH_ATTEMPT_STATES)),
+            reason_code="FRESH_ATTEMPT_REFUSED_%s" % record.state)
     attempt = Attempt(actor=actor, attempt_key=attempt_key, at=at)
-    if record.state in RETRY_FROM_STATES:
+    if record.state == "UNKNOWN_EFFECT":
         return replace(record, state="ATTEMPTED", attempts=record.attempts + (attempt,),
                        observations=(), readbacks=(), provider_success=None, reason_code="")
-    assert_transition(record.state, "ATTEMPTED")
     return replace(record, state="ATTEMPTED", attempts=record.attempts + (attempt,))
 
 

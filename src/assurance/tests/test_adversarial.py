@@ -305,5 +305,54 @@ class TestA10CoherentJournalRewrite(unittest.TestCase):
         self.assertTrue(anchored["header_is_authoritative"])
 
 
+class TestA11EmptiedChainIsNotIntact(unittest.TestCase):
+    def test_emptied_chain_with_rewritten_header_fails_closed(self):
+        journal = from_lifecycle_rows([
+            {"rowid": 1, "transition_id": "T1", "from_state": "A", "to_state": "B",
+             "created_at": "t1"},
+            {"rowid": 2, "transition_id": "T2", "from_state": "B", "to_state": "C",
+             "created_at": "t2"},
+        ])
+        journal.entries = []
+        journal.header["entry_count"] = 0
+        journal.header["final_digest"] = journal.genesis_digest
+        verdict = journal.verify()
+        self.assertFalse(verdict["intact"])
+        self.assertEqual(verdict["reason_code"], "EMPTY_CHAIN_NOT_VERIFIABLE")
+        self.assertFalse(verdict["header_is_authoritative"])
+
+
+class TestA12UnconstrainedNegativeManifest(unittest.TestCase):
+    def _predicate(self):
+        return validate({
+            "predicate_id": "P-ADV", "subject_id": "SUBJ-ADV", "subject_type": "DELIVERABLE",
+            "required_evidence_kinds": frozenset({"TEST_RUN"}), "oracle_id": ORACLE_ID,
+            "terminal_states": ("PASS", "FAIL"), "negative_fixtures": ("NEG-X",),
+        })
+
+    def _items(self):
+        return [{"item_id": "proof", "kind": "NEGATIVE_FIXTURE_PROOF", "subject_id": "SUBJ-ADV",
+                 "sha256": "b" * 64},
+                {"item_id": "i", "kind": "TEST_RUN", "subject_id": "SUBJ-ADV",
+                 "sha256": "a" * 64}]
+
+    def test_binding_a_plan_required_kind_fails_closed(self):
+        oracle = Oracle(ORACLE_ID, negative_fixture_manifest={"NEG-X": "TEST_RUN"})
+        verdict = oracle.decide(self._predicate(), self._items())
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_MANIFEST_UNCONSTRAINED")
+
+    def test_binding_the_fixture_id_itself_fails_closed(self):
+        oracle = Oracle(ORACLE_ID, negative_fixture_manifest={"NEG-X": "NEG-X"})
+        verdict = oracle.decide(self._predicate(), self._items())
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_MANIFEST_UNCONSTRAINED")
+
+    def test_binding_a_dedicated_present_kind_passes(self):
+        oracle = Oracle(ORACLE_ID, negative_fixture_manifest={"NEG-X": "NEGATIVE_FIXTURE_PROOF"})
+        verdict = oracle.decide(self._predicate(), self._items())
+        self.assertTrue(verdict.passed)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -192,5 +192,58 @@ class TestNegativeFixtureHardening(unittest.TestCase):
         self.assertEqual(verdict.reason_code, "PASS")
 
 
+class TestUnconstrainedNegativeManifest(unittest.TestCase):
+    def test_binding_the_plan_required_kind_is_unconstrained(self):
+        oracle = Oracle(ORACLE_ID, negative_fixture_manifest={"NEG-1": "TEST_RUN"})
+        verdict = oracle.decide(predicate(), [proof_item(), item()])
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_MANIFEST_UNCONSTRAINED")
+
+    def test_binding_the_fixture_id_itself_is_unconstrained(self):
+        oracle = Oracle(ORACLE_ID, negative_fixture_manifest={"NEG-1": "NEG-1"})
+        verdict = oracle.decide(predicate(), [proof_item(), item()])
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_MANIFEST_UNCONSTRAINED")
+
+    def test_binding_a_dedicated_present_kind_still_passes(self):
+        oracle = Oracle(ORACLE_ID, negative_fixture_manifest={"NEG-1": "NEGATIVE_FIXTURE_PROOF"})
+        verdict = oracle.decide(predicate(), [proof_item(), item()])
+        self.assertTrue(verdict.passed)
+        self.assertEqual(verdict.reason_code, "PASS")
+
+    def test_round3_absent_kind_is_unrepresented(self):
+        oracle = Oracle(ORACLE_ID, negative_fixture_manifest={"NEG-1": "SOME_ABSENT_KIND"})
+        verdict = oracle.decide(predicate(), [proof_item(), item()])
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_UNREPRESENTED")
+
+    def test_round3_empty_manifest_is_unrepresented(self):
+        oracle = Oracle(ORACLE_ID, negative_fixture_manifest={})
+        verdict = oracle.decide(predicate(), [proof_item(), item()])
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_UNREPRESENTED")
+
+    def test_round3_substring_item_id_is_unrepresented(self):
+        items = [item(item_id="NEG-1-suffix", kind="NEGATIVE_FIXTURE_PROOF",
+                      negative_fixtures=()),
+                 item(negative_fixtures=())]
+        verdict = Oracle(ORACLE_ID).decide(predicate(), items)
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_UNREPRESENTED")
+
+    def test_round3_mis_nested_manifest_is_unrepresented(self):
+        mis_nested = {"WRONG.ORACLE/9": {"NEG-1": "NEGATIVE_FIXTURE_PROOF"}}
+        oracle = Oracle(ORACLE_ID, negative_fixture_manifest=mis_nested)
+        verdict = oracle.decide(predicate(), [proof_item(), item()])
+        self.assertFalse(verdict.passed)
+        self.assertEqual(verdict.reason_code, "NEGATIVE_FIXTURE_UNREPRESENTED")
+
+    def test_explicitly_nested_manifest_binding_a_dedicated_kind_passes(self):
+        nested = {ORACLE_ID: {"NEG-1": "NEGATIVE_FIXTURE_PROOF"}}
+        oracle = Oracle(ORACLE_ID, negative_fixture_manifest=nested)
+        verdict = oracle.decide(predicate(), [proof_item(), item()])
+        self.assertTrue(verdict.passed)
+
+
 if __name__ == "__main__":
     unittest.main()

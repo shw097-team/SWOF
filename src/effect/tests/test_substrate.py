@@ -11,7 +11,7 @@ from effect.idempotency import (  # noqa: E402
 )
 from effect.state import EffectTransitionRefused  # noqa: E402
 from effect.substrate import (  # noqa: E402
-    EffectRecord, EffectStateError, SuccessInferenceRefused,
+    EffectRecord, EffectStateError, FreshAttemptRefused, SuccessInferenceRefused,
     assert_no_success_inference, finalize, intend, is_success, observe, readback, reconcile,
     record_attempt,
 )
@@ -186,21 +186,36 @@ class TestRetryThroughPublicApi(unittest.TestCase):
 
     def test_retry_drops_the_superseded_observation_cycle(self):
         record = observe(attempted(), payload={"status": "ok"}, provider_success=True, at="t1")
+        record = readback(record, payload={"op": "other"}, expected={"op": "create"}, at="t2")
+        record = reconcile(record, at="t3")
+        self.assertEqual(record.state, "UNKNOWN_EFFECT")
+        self.assertTrue(record.observations)
+        self.assertTrue(record.readbacks)
         record = record_attempt(record, actor="agent-7", permission_allowed=True,
-                                attempt_key=key_for(record, 2), at="t2")
+                                attempt_key=key_for(record, 2), at="t4")
         self.assertEqual(record.state, "ATTEMPTED")
         self.assertEqual(len(record.attempts), 2)
         self.assertEqual(record.observations, ())
         self.assertEqual(record.readbacks, ())
         self.assertIsNone(record.provider_success)
 
-    def test_retry_from_readback_state_is_recordable(self):
+    def test_fresh_attempt_from_readback_state_is_refused(self):
         record = readback(observed(), payload={"op": "create"}, expected={"op": "create"},
                           at="t2")
-        record = record_attempt(record, actor="agent-7", permission_allowed=True,
-                                attempt_key=key_for(record, 2), at="t3")
-        self.assertEqual(record.state, "ATTEMPTED")
-        self.assertEqual(len(record.attempts), 2)
+        with self.assertRaises(FreshAttemptRefused) as ctx:
+            record_attempt(record, actor="agent-7", permission_allowed=True,
+                           attempt_key=key_for(record, 2), at="t3")
+        self.assertEqual(ctx.exception.reason_code, "FRESH_ATTEMPT_REFUSED_READBACK")
+        self.assertEqual(record.state, "READBACK")
+        self.assertEqual(len(record.attempts), 1)
+
+    def test_fresh_attempt_from_observed_state_is_refused(self):
+        record = observed(provider_success=True)
+        with self.assertRaises(FreshAttemptRefused) as ctx:
+            record_attempt(record, actor="agent-7", permission_allowed=True,
+                           attempt_key=key_for(record, 2), at="t3")
+        self.assertEqual(ctx.exception.reason_code, "FRESH_ATTEMPT_REFUSED_OBSERVED")
+        self.assertEqual(record.state, "OBSERVED")
 
     def test_retry_from_unknown_effect_is_recordable(self):
         record = finalize(attempted())
@@ -210,7 +225,18 @@ class TestRetryThroughPublicApi(unittest.TestCase):
         self.assertEqual(record.state, "ATTEMPTED")
         self.assertEqual(len(record.attempts), 2)
 
-    def test_retry_from_partial_effect_is_recordable(self):
+    def test_retry_from_unknown_effect_reaches_reconciled(self):
+        record = finalize(attempted())
+        self.assertEqual(record.state, "UNKNOWN_EFFECT")
+        record = record_attempt(record, actor="agent-7", permission_allowed=True,
+                                attempt_key=key_for(record, 2), at="t2")
+        record = observe(record, payload={"status": "ok"}, provider_success=True, at="t3")
+        record = readback(record, payload={"op": "create"}, expected={"op": "create"}, at="t4")
+        record = reconcile(record, at="t5")
+        self.assertEqual(record.state, "RECONCILED")
+        self.assertTrue(is_success(record))
+
+    def test_fresh_attempt_from_partial_effect_is_refused(self):
         record = record_attempt(intended(intent={"op": "transfer", "parts": PARTS}),
                                 actor="agent-7", permission_allowed=True, attempt_key="k1",
                                 at="t0")
@@ -218,10 +244,33 @@ class TestRetryThroughPublicApi(unittest.TestCase):
         record = readback(record, payload={"part": "debit"}, expected=PARTS, at="t2")
         record = reconcile(record, at="t3")
         self.assertEqual(record.state, "PARTIAL_EFFECT")
-        record = record_attempt(record, actor="agent-7", permission_allowed=True,
-                                attempt_key=key_for(record, 2), at="t4")
-        self.assertEqual(record.state, "ATTEMPTED")
-        self.assertEqual(len(record.attempts), 2)
+        with self.assertRaises(FreshAttemptRefused) as ctx:
+            record_attempt(record, actor="agent-7", permission_allowed=True,
+                           attempt_key=key_for(record, 2), at="t4")
+        self.assertEqual(ctx.exception.reason_code, "FRESH_ATTEMPT_REFUSED_PARTIAL_EFFECT")
+        self.assertEqual(record.state, "PARTIAL_EFFECT")
+        self.assertEqual(len(record.attempts), 1)
+
+    def test_duplicate_key_is_reported_before_a_state_refusal(self):
+        record = record_attempt(intended(intent={"op": "transfer", "parts": PARTS}),
+                                actor="agent-7", permission_allowed=True, attempt_key="k1",
+                                at="t0")
+        record = observe(record, payload={"part": "debit"}, provider_success=True, at="t1")
+        record = readback(record, payload={"part": "debit"}, expected=PARTS, at="t2")
+        record = reconcile(record, at="t3")
+        self.assertEqual(record.state, "PARTIAL_EFFECT")
+        with self.assertRaises(DuplicateAttemptDetected):
+            record_attempt(record, actor="agent-7", permission_allowed=True,
+                           attempt_key="k1", at="t4")
+
+    def test_fresh_attempt_from_denied_is_refused(self):
+        record = record_attempt(intended(), actor="agent-7", permission_allowed=False,
+                                attempt_key="k1", at="t0")
+        self.assertEqual(record.state, "DENIED")
+        with self.assertRaises(FreshAttemptRefused) as ctx:
+            record_attempt(record, actor="agent-7", permission_allowed=True,
+                           attempt_key="k2", at="t1")
+        self.assertEqual(ctx.exception.reason_code, "FRESH_ATTEMPT_REFUSED_DENIED")
 
     def test_retry_with_existing_key_still_raises(self):
         record = intended()
@@ -237,6 +286,10 @@ class TestRetryThroughPublicApi(unittest.TestCase):
                           at="t2")
         record = reconcile(record, at="t3")
         self.assertEqual(record.state, "RECONCILED")
+        with self.assertRaises(FreshAttemptRefused) as ctx:
+            record_attempt(record, actor="agent-7", permission_allowed=True,
+                           attempt_key=key_for(record, 2), at="t4")
+        self.assertEqual(ctx.exception.reason_code, "FRESH_ATTEMPT_REFUSED_RECONCILED")
         with self.assertRaises(EffectTransitionRefused):
             record_attempt(record, actor="agent-7", permission_allowed=True,
                            attempt_key=key_for(record, 2), at="t4")

@@ -294,5 +294,50 @@ class TestUnscannableBytes(unittest.TestCase):
         assert_no_secret(payload)
 
 
+class TestPrincipledPiiDetectors(unittest.TestCase):
+    def test_luhn_valid_card_number_is_pii(self):
+        self.assertEqual(classify("4012888888881881"), "PII")
+        self.assertEqual(classify("4111 1111 1111 1111"), "PII")
+        self.assertIn("[REDACTED:PII]", redact("card 4012888888881881 on file"))
+
+    def test_random_16_digit_order_reference_is_public(self):
+        text = "order reference 1234567890123456 is recorded in the ledger"
+        self.assertEqual(classify(text), "PUBLIC")
+        self.assertEqual(redact(text), text)
+
+    def test_build_tag_of_taiwan_id_shape_stays_public(self):
+        self.assertEqual(classify("the build tag is B123456789 and it is public"), "PUBLIC")
+        self.assertEqual(classify("B123456789"), "PUBLIC")
+
+    def test_real_taiwan_id_is_still_pii(self):
+        self.assertEqual(classify("A123456789"), "PII")
+        self.assertEqual(redact("id A123456789"), "id [REDACTED:PII]")
+
+    def test_build_tag_inside_an_identifier_is_not_pii(self):
+        self.assertEqual(classify("build-B123456789"), "PUBLIC")
+
+    def test_sanitize_build_tag_and_order_reference_stay_clean(self):
+        clean, receipt = sanitize_evidence(
+            {"note": "the build tag is B123456789 and it is public"})
+        self.assertTrue(receipt["clean"])
+        self.assertNotIn("PII", receipt["classes_present"])
+        self.assertEqual(clean["note"], "the build tag is B123456789 and it is public")
+        clean, receipt = sanitize_evidence(
+            {"note": "order reference 1234567890123456 is recorded in the ledger"})
+        self.assertTrue(receipt["clean"])
+        self.assertEqual(receipt["unscannable_bytes"], 0)
+
+    def test_selftest_fails_when_a_luhn_valid_card_is_declared_benign(self):
+        from security import classification
+
+        original = classification.BENIGN_SAMPLES
+        classification.BENIGN_SAMPLES = original + ("4012888888881881",)
+        try:
+            with self.assertRaises(SecretExfiltrationBlocked):
+                classification.detector_selftest()
+        finally:
+            classification.BENIGN_SAMPLES = original
+
+
 if __name__ == "__main__":
     unittest.main()

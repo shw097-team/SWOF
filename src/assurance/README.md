@@ -33,9 +33,12 @@ manifest intact   != DB tamper-proof
   raises `OracleAmbiguous`. Missing kind, duplicate kind, wrong subject and non-deterministic
   ordering each return a distinct `reason_code`. `decide` never returns passed=True while any
   declared negative fixture is unrepresented in the checked set: a fixture is represented ONLY
-  through a plan-level manifest that binds it to a proof KIND actually present in the evidence -
-  an `item_id` that merely equals the fixture, or any self-declared `negative_fixtures` /
-  `negative_cases` field, is never a representation.
+  through a plan-level manifest that binds it to a DEDICATED proof KIND actually present in the
+  evidence. "Dedicated" means the bound kind is neither the fixture's own id nor one of the
+  plan's `required_evidence_kinds`; a manifest whose bindings are all non-dedicated is
+  UNCONSTRAINED and fails closed with `NEGATIVE_FIXTURE_MANIFEST_UNCONSTRAINED`. An `item_id`
+  that merely equals the fixture, or any self-declared `negative_fixtures` / `negative_cases`
+  field, is never a representation either.
 - `evidence.py` - raw-proof, subject, environment and linkage binding. A summary boolean with no
   raw artifact is `FORGED_SUMMARY`; a plausible artifact with the wrong hash is `HASH_MISMATCH`;
   a pre-mutation object sold as direct-final is `DIRECT_FINAL_CLAIM_ON_PRE_MUTATION`; a moving
@@ -58,10 +61,16 @@ manifest intact   != DB tamper-proof
   and the genesis is chain-bound, so a foreign chain cannot be spliced in. `verify` distinguishes
   payload mutation (`ENTRY_DIGEST_MISMATCH`), removal/truncation (`SEQ_GAP`), reordering
   (`PREV_DIGEST_MISMATCH`), foreign chain (`CHAIN_ID_MISMATCH`) and header tampering
-  (`HEADER_MISMATCH`). `verify()` reports `header_is_authoritative` as false: the header carries no
-  signature, so a coherent rewrite of both the entries and the header is undetectable without an
-  external anchor. `verify_against_manifest(manifest)` IS authoritative and catches that rewrite
-  (the manifest is the anchor). It never writes to HGK.
+  (`HEADER_MISMATCH`). An EMPTY entry list is NOT an intact chain: with no entry to check there is
+  nothing to be intact, so `verify()` on an emptied list - even one whose header was rewritten to
+  `entry_count=0` / `final_digest=genesis` - returns `intact=False` with
+  `EMPTY_CHAIN_NOT_VERIFIABLE` rather than an unqualified INTACT; the manifest comparison
+  (`verify_against_manifest` / `verify_manifest`) treats an empty entry list the same way.
+  `verify()` also reports
+  `header_is_authoritative` as false: the header carries no signature, so a coherent rewrite of
+  both the entries and the header is undetectable without an external anchor.
+  `verify_against_manifest(manifest)` IS authoritative and catches that rewrite (the manifest is
+  the anchor). It never writes to HGK.
 
 ## The journal envelope is DETECTION-ONLY (non-claims)
 

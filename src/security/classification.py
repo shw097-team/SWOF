@@ -10,6 +10,12 @@ The detector table is covered by `detector_selftest()`, which fails closed if an
 vacuous, if any real-world credential shape is missed, or if any benign prose sample is
 flagged. A detector that cannot fire, or that fires on ordinary text, is a defect: the first
 lets a secret through and the second destroys evidence. Neither is allowed to be silent.
+
+The two PII detectors are deliberately PRINCIPLED, not length/shape-only: a card-like run must
+pass the Luhn check digit, and a Taiwan national id must be a standalone token that passes the
+weighted checksum. Ordinary operational text - a build tag, a long order reference, a version
+string, a UUID, a commit sha, an idempotency key - therefore stays PUBLIC instead of being
+destroyed as PII.
 """
 from __future__ import annotations
 
@@ -39,12 +45,71 @@ class _Detector:
     benign: str
     positive_extra: tuple = ()
     benign_extra: tuple = ()
+    # Optional second-stage predicate over a regex match. A shape-only regex is not enough for
+    # a PII detector: it over-flags ordinary operational text. When a validator is present it
+    # must ALSO accept the matched text for the hit to count (e.g. a Luhn-valid card run, or a
+    # checksum-valid Taiwan id).
+    validator: object = None
 
     def positive_samples(self):
         return (self.positive,) + tuple(self.positive_extra)
 
     def benign_samples(self):
         return (self.benign,) + tuple(self.benign_extra)
+
+
+_TW_LETTER_CODES = {
+    "A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15, "G": 16, "H": 17,
+    "I": 34, "J": 18, "K": 19, "L": 20, "M": 21, "N": 22, "O": 35, "P": 23,
+    "Q": 24, "R": 25, "S": 26, "T": 27, "U": 28, "V": 29, "W": 32, "X": 30,
+    "Y": 31, "Z": 33,
+}
+
+
+def _luhn_ok(candidate) -> bool:
+    """True for a run that is a plausible card number under the Luhn check.
+
+    A shape-and-length rule flags any long digit run, including an ordinary order reference.
+    Requiring the Luhn check digit makes the detector principled: a random 16-digit reference
+    normally fails it and stays PUBLIC, while a real card-like run still matches.
+    """
+    digits = [int(ch) for ch in candidate if ch.isdigit()]
+    if not 13 <= len(digits) <= 19:
+        return False
+    total = 0
+    for index, digit in enumerate(reversed(digits)):
+        if index % 2 == 1:
+            digit *= 2
+            if digit > 9:
+                digit -= 9
+        total += digit
+    return total % 10 == 0
+
+
+def _taiwan_id_ok(token) -> bool:
+    """True for a checksum-valid Taiwan national id in standalone-token form.
+
+    `A123456789` (a real shape) is accepted; a build tag of the same character shape such as
+    `B123456789` fails the weighted check digit and stays PUBLIC.
+    """
+    token = token.strip()
+    if len(token) != 10 or not token[1:].isdigit():
+        return False
+    letter = token[0].upper()
+    if letter not in _TW_LETTER_CODES:
+        return False
+    code = _TW_LETTER_CODES[letter]
+    digits = [code // 10, code % 10] + [int(ch) for ch in token[1:]]
+    weights = (1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1)
+    return sum(d * w for d, w in zip(digits, weights)) % 10 == 0
+
+
+def _detector_fires(detector, sample) -> bool:
+    """True when the detector's regex matches AND its optional validator accepts the match."""
+    for match in detector.regex.finditer(sample):
+        if detector.validator is None or detector.validator(match.group(0)):
+            return True
+    return False
 
 
 # A credential-shaped run: 16+ characters drawn from the alphabet that real secrets use.
@@ -104,13 +169,20 @@ _DETECTORS = (
               "contact alice.chen@example.com for escalation",
               "the mail relay name is relay01.internal.example"),
     _Detector("PII", "taiwan_national_id",
-              re.compile(r"\b[A-Z][12]\d{8}\b"),
+              re.compile(r"(?<![0-9A-Za-z])[A-Z][12]\d{8}(?![0-9A-Za-z])"),
               "A123456789",
-              "the build tag is Z9ABC1234 and it is public"),
+              "the build tag is Z9ABC1234 and it is public",
+              ("A123456789 is the id on file",),
+              ("the build tag is Z9ABC1234 and it is public",
+               "build-B123456789 is a tag, not an identity"),
+              _taiwan_id_ok),
     _Detector("PII", "card_like_number",
               re.compile(r"(?<![0-9A-Za-z])(?:\d[ \-]?){13,19}(?![0-9A-Za-z])"),
               "4111 1111 1111 1111",
-              "order reference 2026 is recorded in the quarterly ledger"),
+              "order reference 2026 is recorded in the quarterly ledger",
+              ("4111111111111111",),
+              ("order reference 1234567890123456 is recorded in the ledger",),
+              _luhn_ok),
 )
 
 DETECTORS = tuple(_DETECTORS)
@@ -165,6 +237,9 @@ BENIGN_SAMPLES = (
     "550e8400-e29b-41d4-a716-446655440000",
     "C:/projects/swof/src/security/classification.py",
     "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
+    "B123456789",
+    "order reference 1234567890123456 is recorded in the ledger",
+    "checkpoint-key-4f2a9c1e7b3d5086",
 )
 
 
@@ -172,6 +247,8 @@ def _hits(text):
     found = []
     for detector in DETECTORS:
         for match in detector.regex.finditer(text):
+            if detector.validator is not None and not detector.validator(match.group(0)):
+                continue
             found.append((match.start(), match.end(), detector.class_name,
                           detector.detector_id, match.group(0)))
     found.sort(key=lambda item: item[0])
@@ -329,9 +406,9 @@ def detector_selftest() -> dict:
     for detector in DETECTORS:
         positives = detector.positive_samples()
         negatives = detector.benign_samples()
-        positive_matched = sum(1 for sample in positives if detector.regex.search(sample))
+        positive_matched = sum(1 for sample in positives if _detector_fires(detector, sample))
         true_negative_matched = sum(1 for sample in negatives
-                                    if not detector.regex.search(sample))
+                                    if not _detector_fires(detector, sample))
         vacuous = positive_matched == 0
         missed = positive_matched < len(positives)
         benign_matched = true_negative_matched < len(negatives)
