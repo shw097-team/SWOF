@@ -1,32 +1,35 @@
 {
  "schema": "SWOF-POST-COMMIT-REMOTE-READBACK-RECEIPT/1",
- "layer": "COMMIT_3_BINDING",
+ "layer": "COMMIT_5_BINDING",
  "repo": "shw097-team/SWOF",
  "evidence_branch": "evidence/w1-r4-evidence-cleanup",
- "bound_evidence_commit_sha": "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
+ "bound_evidence_commit_sha": "39ba9e03cfd16cda840ed367d00a09e913bae4ce",
  "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
  "source_branch_tip_at_readback": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
  "source_branch_unchanged_by_cleanup": true,
- "supersedes_binding_of": "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f",
+ "supersedes_binding_of": "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
  "superseded_commits_retained_in_history": [
   "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f",
-  "a45009bd7b459fa400a81f339b67e25ea9c051c2"
+  "a45009bd7b459fa400a81f339b67e25ea9c051c2",
+  "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
+  "0a34440f786cc1bedc5eac75167e233884623f87"
  ],
+ "readback_method": "PATH_INDEPENDENT: paths resolved to blob SHAs via git ls-tree, content read with git cat-file blob; no filesystem path is involved, so Windows MAX_PATH cannot produce a false mismatch. A failed read is a hard error.",
+ "max_path_defect_disclosure": {
+  "id": "EVIDENCE-CLEANUP-MAXPATH-001",
+  "symptom": "reading the archived receipt by <commit>:<path> failed with 'Filename too long' and yielded an empty blob (sha256 e3b0c442... = the empty-string hash)",
+  "true_content_was_intact": true,
+  "false_mismatch_count_it_caused": 1,
+  "fix": "archive filename shortened; readback made path-independent",
+  "affected_commit": "0a34440f786cc1bedc5eac75167e233884623f87"
+ },
  "remote_readback": {
-  "file_count": 30,
-  "byte_and_hash_match_count": 29,
-  "mismatch_count": 1,
-  "mismatches": [
-   {
-    "path": "artifacts/superseded/POST_COMMIT_REMOTE_READBACK_RECEIPT.bound-fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f.json",
-    "remote_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "remote_bytes": 0,
-    "byte_match": false,
-    "sha256_match": false
-   }
-  ],
-  "remote_tip_git_fetch": "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
-  "remote_tip_github_api": "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
+  "file_count": 31,
+  "byte_and_hash_match_count": 31,
+  "mismatch_count": 0,
+  "mismatches": [],
+  "remote_tip_git_fetch": "39ba9e03cfd16cda840ed367d00a09e913bae4ce",
+  "remote_tip_github_api": "39ba9e03cfd16cda840ed367d00a09e913bae4ce",
   "transports_agree": true,
   "github_contents_api_spot_check": {
    "path": "artifacts/SWOF_EVIDENCE_RETURN_PACK.json",
@@ -58,5 +61,5 @@
  },
  "evidence_commit_neq_source": true,
  "evidence_commit_neq_historical": true,
- "verdict": "FAIL"
+ "verdict": "PASS"
 }
