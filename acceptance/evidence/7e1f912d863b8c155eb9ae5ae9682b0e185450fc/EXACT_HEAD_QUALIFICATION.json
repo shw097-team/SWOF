@@ -1,0 +1,77 @@
+{
+ "schema": "SWOF-W1-R4-EXACT-HEAD-QUALIFICATION/1",
+ "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "branch": "repair/w1-r4-binding-order-proof",
+ "toolchain": {
+  "python": "3.12.14"
+ },
+ "head_recorded_in_every_raw_log": true,
+ "roots": {
+  "tests": {
+   "ran": 16,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/tests.log",
+   "log_sha256": "2c46d0621fb04fc8932191aeccc7e3d4e6d95d2a623347768fd029ff2addd196"
+  },
+  "src/fabric/tests": {
+   "ran": 21,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_fabric_tests.log",
+   "log_sha256": "a222ee5c0440b00f472ef3b6c8ba7dd65b244847e7a3dcba8eda4e7c9d126702"
+  },
+  "src/knowledge/tests": {
+   "ran": 25,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_knowledge_tests.log",
+   "log_sha256": "9988de6150134e41cee9f0a8e512bdd59232e92856f37c749d8b20c17cb91f11"
+  },
+  "src/admission/tests": {
+   "ran": 17,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_admission_tests.log",
+   "log_sha256": "a7ed68132f857bae1588388600036a20f6fdc7f81746ea311885f80ad4d6d049"
+  },
+  "src/profile/tests": {
+   "ran": 12,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_profile_tests.log",
+   "log_sha256": "8259bf49fc5f1a08870605231b6cb63ded5b519d83ec282da5290d01317cde69"
+  },
+  "src/capability/tests": {
+   "ran": 22,
+   "fail": 0,
+   "error": 0,
+   "skip": 0,
+   "exit_code": 0,
+   "log": "raw_test_logs/src_capability_tests.log",
+   "log_sha256": "f47886bfc99f43aa3651b83b31b6de2ef1b3b3becbc39b9790a060f1ecd4271a"
+  }
+ },
+ "total": {
+  "ran": 113,
+  "fail": 0,
+  "error": 0,
+  "skip": 0
+ },
+ "all_roots_rc_zero": true,
+ "head_unchanged_after_tests": true,
+ "receipt_subject_equals_head": true,
+ "receipt_schema_valid": true,
+ "generated_at_utc": "2026-10-03T04:19:04Z"
+}

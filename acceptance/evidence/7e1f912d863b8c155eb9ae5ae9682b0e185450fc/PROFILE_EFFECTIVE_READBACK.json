@@ -1,0 +1,14 @@
+{
+ "profile_id": "hgk-coding-factory",
+ "logical_role_id": "tracked-mutation-writer",
+ "worker_identity": "codex (tracked mutation writer)",
+ "binding_id": "BIND-SWOF-W1-R4-001",
+ "role_ne_profile_ne_worker": true,
+ "effective_load_readback": {
+  "binding_present": true,
+  "profile_selected": true,
+  "worker_claimed": true,
+  "lease_holder": "LS-SWOF-W1-R4-001"
+ },
+ "profile_source_locator": "HG-KSEOS docs §9 (5 stable P0 profiles; ROLE != PROFILE != WORKER)"
+}

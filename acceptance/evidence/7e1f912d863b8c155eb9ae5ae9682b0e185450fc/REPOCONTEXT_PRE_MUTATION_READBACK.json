@@ -1,0 +1,31 @@
+{
+ "schema": "SWOF-R4-REPOCONTEXT-PRE-MUTATION-READBACK/1",
+ "read_at_head": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "read_at_head_equals_baseline": true,
+ "branch": "repair/w1-r4-binding-order-proof",
+ "worktree_clean": true,
+ "repo_root": "C:\\Projects\\Agent_Workspace\\SWOF",
+ "toolchain": {
+  "python": "3.12.14",
+  "git": "git version 2.53.0.windows.1"
+ },
+ "instructions": "AGENTS.md present (read-only consumption)",
+ "permissions": {
+  "writable": [
+   "README.md",
+   "schemas/capability/**",
+   "src/capability/**"
+  ],
+  "forbidden": [
+   "source corpus",
+   "Fabric",
+   "HG-KSEOS source",
+   "merge/release"
+  ]
+ },
+ "secret_boundary": "no credentials read, printed or written",
+ "captured_before_mutation": true,
+ "source_mutation_started": false,
+ "spine_db": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-construction-002-r4\\hgk_spine.sqlite3",
+ "captured_at_utc": "2026-10-03T04:19:00Z"
+}

@@ -1,0 +1,22 @@
+# canonical compiler command: python3 scripts/prompt_contract_compiler.py duplication C:\Users\user\AppData\Local\hermes\attachments\SWOF_W1_NARROW_REPAIR_R4_EXECUTOR_PROMPT_v1.md --source C:\Projects\Agent_Workspace\知識庫\實作相關DOC\Fabric vNext\Semantic World OS Fabric\SWOF-F_SWOF-GENIE_All-IW_Pre-Dev_Multi-Packages\SWOF_HGK_ACA_RBWI\SWOF_HGK_ACA_RBWI.md --source C:\Projects\Agent_Workspace\知識庫\實作相關DOC\HG-KSEOS\construction-acceptance-prompt-compiler\construction-acceptance-prompt-compiler\construction-acceptance-prompt-compiler_SKILL.md
+# subject workorder: WO-SWOF-W1-REPAIR-R4-001
+# exit_code: 0
+# generated_at_utc: 2026-10-03T04:18:58Z
+------------------------------------------------------------------------------
+{
+  "verdict": "PROMPT_COMPILE_PASS",
+  "rule": "PL-001",
+  "threshold": 0.25,
+  "results": [
+    {
+      "source": "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\Fabric vNext\\Semantic World OS Fabric\\SWOF-F_SWOF-GENIE_All-IW_Pre-Dev_Multi-Packages\\SWOF_HGK_ACA_RBWI\\SWOF_HGK_ACA_RBWI.md",
+      "ratio": 0.007027
+    },
+    {
+      "source": "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\HG-KSEOS\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler_SKILL.md",
+      "ratio": 0.007027
+    }
+  ]
+}
+
+

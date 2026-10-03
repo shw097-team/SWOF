@@ -1,0 +1,8 @@
+{
+  "claim_ceiling": "LOCAL",
+  "contract_sha256": "78883752bc487d2f337d28661d2daf7c52798182715b999f43f6a388d4be001d",
+  "error_count": 0,
+  "errors": [],
+  "task_id": "SWOF-W1-REPAIR-R4-BINDING-ORDER-PROOF-001",
+  "verdict": "PROMPT_COMPILE_PASS"
+}

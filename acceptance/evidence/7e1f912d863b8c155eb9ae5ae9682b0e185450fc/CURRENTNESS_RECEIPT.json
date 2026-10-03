@@ -1,0 +1,11 @@
+{
+ "schema": "SWOF-R4-CURRENTNESS-RECEIPT/1",
+ "source_freeze": "current (no source corpus mutation)",
+ "g_know": "PASS for the affected cone",
+ "reuse_map": "valid (unchanged)",
+ "repocontext": "fresh readback at the R4 baseline (REPOCONTEXT_PRE_MUTATION_READBACK.json)",
+ "decision_corpus_digest_checked": true,
+ "affected_cone_only": true,
+ "captured_before_mutation": true,
+ "generated_at_utc": "2026-10-03T04:19:00Z"
+}

@@ -1,0 +1,39 @@
+# command : focused capability negatives (source-disposition coercion, schema rejection)
+# cwd     : C:\Projects\Agent_Workspace\SWOF
+# git HEAD: 7e1f912d863b8c155eb9ae5ae9682b0e185450fc
+# exit_code: 0
+------------------------------------------------------------------------------
+
+test_assigned_row_may_not_use_a_non_terminal_token (test_ledger.TestLedger.test_assigned_row_may_not_use_a_non_terminal_token) ... ok
+test_assigned_row_may_still_not_use_an_execution_label (test_ledger.TestLedger.test_assigned_row_may_still_not_use_an_execution_label) ... ok
+test_assigned_terminal_set_row_is_accepted_with_obligation_quote (test_ledger.TestLedger.test_assigned_terminal_set_row_is_accepted_with_obligation_quote)
+An internal construction row may use a terminal-set token, and must say it is assigned. ... ok
+test_build_ladder_is_a_distinct_axis (test_ledger.TestLedger.test_build_ladder_is_a_distinct_axis)
+The Search-Before-Build ladder must not be usable as the source vocabulary. ... ok
+test_canonical_source_text_is_required (test_ledger.TestLedger.test_canonical_source_text_is_required) ... ok
+test_consumed_active_requires_consumer (test_ledger.TestLedger.test_consumed_active_requires_consumer) ... ok
+test_every_execution_label_is_refused_as_a_source_disposition (test_ledger.TestLedger.test_every_execution_label_is_refused_as_a_source_disposition) ... ok
+test_not_active_requires_reason (test_ledger.TestLedger.test_not_active_requires_reason) ... ok
+test_opa_selected_for_predev_cannot_be_serialized_as_deferred (test_ledger.TestLedger.test_opa_selected_for_predev_cannot_be_serialized_as_deferred)
+The reviewer's exact counterexample must be refused, not merely discouraged. ... ok
+test_receipt_counts_and_digest (test_ledger.TestLedger.test_receipt_counts_and_digest) ... ok
+test_reference_alone_is_not_consumption (test_ledger.TestLedger.test_reference_alone_is_not_consumption)
+A locator with no readback proof must NOT satisfy CONSUMED_ACTIVE. ... ok
+test_registry_tokens_carry_a_locator (test_ledger.TestLedger.test_registry_tokens_carry_a_locator) ... ok
+test_relabelled_field_with_real_source_quote_is_refused (test_ledger.TestLedger.test_relabelled_field_with_real_source_quote_is_refused)
+Claiming SELECTED_FOR_PREDEV while quoting the OpenLineage row must fail. ... ok
+test_silent_omission_refused (test_ledger.TestLedger.test_silent_omission_refused) ... ok
+test_source_and_execution_dispositions_are_separate_axes (test_ledger.TestLedger.test_source_and_execution_dispositions_are_separate_axes) ... ok
+test_temp_closed_prefixed_token_is_accepted (test_ledger.TestLedger.test_temp_closed_prefixed_token_is_accepted) ... ok
+test_unknown_disposition_evidence_kind_is_refused (test_ledger.TestLedger.test_unknown_disposition_evidence_kind_is_refused) ... ok
+test_unknown_source_disposition_is_typed_registry_row (test_ledger.TestLedger.test_unknown_source_disposition_is_typed_registry_row) ... ok
+test_real_receipt_conforms (test_ledger.TestReceiptSchema.test_real_receipt_conforms) ... ok
+test_schema_rejects_assigned_row_using_a_non_terminal_token (test_ledger.TestReceiptSchema.test_schema_rejects_assigned_row_using_a_non_terminal_token) ... ok
+test_schema_rejects_execution_label_as_source_disposition (test_ledger.TestReceiptSchema.test_schema_rejects_execution_label_as_source_disposition) ... ok
+test_schema_rejects_nonzero_unconsumed (test_ledger.TestReceiptSchema.test_schema_rejects_nonzero_unconsumed) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.138s
+
+OK
+

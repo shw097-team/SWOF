@@ -1,0 +1,66 @@
+{
+ "schema": "SWOF-INDEPENDENT-RECEIPT/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W1-REPAIR-R4",
+ "changeset": "NARROW_REPAIR",
+ "repair_workorder_id": "WO-SWOF-W1-REPAIR-R4-001",
+ "local_checkpoint_id": "CKPT-SWOF-W1-REPAIR-R4-001",
+ "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "branch": "repair/w1-r4-binding-order-proof",
+ "maker_identity": "hermes-orchestrator (HG-KSEOS bounded runtime)",
+ "checker_identity": "fresh-context VERIFY_ONLY lane deleg_2667d12a",
+ "checker_ne_maker": true,
+ "checker_did_not_mutate_subject": true,
+ "verdict": "PASS",
+ "falsification": {
+  "compiler_lint_activation_acceptance_compile_pass": true,
+  "compiler_duplication_below_threshold": true,
+  "clean_pre_r2_baseline_proved": true,
+  "parent_commit_is_baseline": true,
+  "diff_within_admitted_write_set": true,
+  "byte_identical_to_reviewed_r2_surface": true,
+  "authoritative_execution_binding_materialized": true,
+  "execution_binding_schema": "RP002-EXECUTION-BINDING/2",
+  "positive_delegation_window": true,
+  "lease_read_back_from_spine": true,
+  "profile_effective_readback_role_ne_profile_ne_worker": true,
+  "monotonic_append_only_ordering_on_one_hgk_stream": true,
+  "wall_clock_is_not_the_primary_oracle": true,
+  "mutation_permit_precedes_source_write": true,
+  "fresh_pre_mutation_repocontext": true,
+  "pre_mutation_pd04_chain_captured_before_mutation": true,
+  "complete_raw_evidence_set": true,
+  "gate_calibration_rows_published": true,
+  "direct_vs_transitive_linkage_semantics": true,
+  "r2_semantics_intact": true,
+  "exact_head_logs_bind_git_head": true,
+  "maker_checker_separated": true,
+  "checker_did_not_mutate_subject": true,
+  "consumption_receipt_subject_ok": true,
+  "no_history_rewrite_of_rejected_pr": true,
+  "no_secret_or_pii_in_diff": true
+ },
+ "superseded_prior_subjects": [
+  {
+   "source_candidate_sha": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b",
+   "evidence_commit_sha": "7c0fa362347ff59bd6faaff08da96c5ca2ad7cf3",
+   "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+  },
+  {
+   "source_candidate_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "evidence_commit_sha": "0c6278175f296ff41ef7d130199c57c1052eee40",
+   "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+  },
+  {
+   "source_candidate_sha": "ed28b784fcae651897fe261120db7840134d0028",
+   "evidence_commit_sha": "6b0e11e369140e4e5f690b84fcc90905cda00e94",
+   "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+  },
+  {
+   "source_candidate_sha": "eae8df6084b79c8ae6bb8dc795b58c208d4ef4de",
+   "evidence_commit_sha": "SUPERSEDED_BY_CORRECTED_RERUN",
+   "state": "HISTORICAL_FAILED_SUBJECT_NEVER_REUSED"
+  }
+ ],
+ "generated_at_utc": "2026-10-03T04:25:22Z"
+}

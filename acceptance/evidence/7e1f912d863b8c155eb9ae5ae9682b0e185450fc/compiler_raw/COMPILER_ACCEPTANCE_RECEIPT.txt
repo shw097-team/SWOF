@@ -1,0 +1,12 @@
+# canonical compiler command: python3 scripts/prompt_contract_compiler.py acceptance C:\Projects\Agent_Workspace\HG-KSEOS\evidence\swof-construction-002\w1_r4_binding_order\R4_CONTRACT.json
+# subject workorder: WO-SWOF-W1-REPAIR-R4-001
+# exit_code: 0
+# generated_at_utc: 2026-10-03T04:18:58Z
+------------------------------------------------------------------------------
+{
+  "verdict": "PROMPT_COMPILE_PASS",
+  "error_count": 0,
+  "errors": []
+}
+
+

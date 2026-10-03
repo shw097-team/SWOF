@@ -1,0 +1,44 @@
+{
+ "schema": "SWOF-R4-COMPILER-PREFLIGHT/1",
+ "at_utc": "2026-10-03T04:18:58Z",
+ "contract": {
+  "path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_r4_binding_order\\R4_CONTRACT.json",
+  "sha256": "78883752bc487d2f337d28661d2daf7c52798182715b999f43f6a388d4be001d"
+ },
+ "compiler_bundle": "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\HG-KSEOS\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler",
+ "compiler_script_sha256": "2c282ad6539a465c3b1d751868cab98437a8f35e9728be686117e364a70857d9",
+ "receipts": {
+  "lint": {
+   "exit_code": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "raw_receipt": "compiler_raw/COMPILER_LINT_RECEIPT.txt",
+   "sha256": "d4cd12dab11ebf891b4e39b1b08db5916191ed9baeea629bb47e729ed61ac58c"
+  },
+  "activation": {
+   "exit_code": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "raw_receipt": "compiler_raw/COMPILER_ACTIVATION_RECEIPT.txt",
+   "sha256": "2d66f6b64209838e297e42f42bc2aa1a595e6eb82eb5e2ad7542d5f2a1bc1fa3"
+  },
+  "acceptance": {
+   "exit_code": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "raw_receipt": "compiler_raw/COMPILER_ACCEPTANCE_RECEIPT.txt",
+   "sha256": "605264a113e42bd4ca3fc373665fa0a472d64d9d91c649382cb7d86c3ef53754"
+  },
+  "compile": {
+   "exit_code": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "raw_receipt": "compiler_raw/COMPILER_COMPILE_RECEIPT.txt",
+   "sha256": "e0f59b2ad737f4909401270eed73be9f702cd5f1e8f0512e66d9a00e79a174b6"
+  },
+  "duplication": {
+   "exit_code": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "raw_receipt": "compiler_raw/COMPILER_DUPLICATION_RECEIPT.txt",
+   "sha256": "972f15710b5d49096dfe9428f7fb77637ad62267cbdb8dfee5259f715b51ceaa"
+  }
+ },
+ "all_pass": true,
+ "raw_evidence_not_summary_booleans": true
+}

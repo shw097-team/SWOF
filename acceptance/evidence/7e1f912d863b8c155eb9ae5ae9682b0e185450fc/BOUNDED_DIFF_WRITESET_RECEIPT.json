@@ -1,0 +1,21 @@
+{
+ "schema": "SWOF-R4-BOUNDED-DIFF-WRITESET-RECEIPT/1",
+ "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "changed_files": [
+  "README.md",
+  "schemas/capability/_conformance_sample.json",
+  "schemas/capability/named_consumption.schema.json",
+  "src/capability/ledger.py",
+  "src/capability/tests/test_ledger.py"
+ ],
+ "within_admitted_write_set": true,
+ "byte_identical_to_reviewed_r2_surface": true,
+ "per_file": {
+  "README.md": true,
+  "schemas/capability/_conformance_sample.json": true,
+  "schemas/capability/named_consumption.schema.json": true,
+  "src/capability/ledger.py": true,
+  "src/capability/tests/test_ledger.py": true
+ }
+}

@@ -1,0 +1,42 @@
+{
+ "schema": "SWOF-PD04-CONSTRUCTION-PACKET/1",
+ "workorder_id": "WO-SWOF-W1-REPAIR-R4-001",
+ "wave": "W1",
+ "state": "CREATED",
+ "fresh_repocontext_ref": "REPOCONTEXT_PRE_MUTATION_READBACK.json",
+ "pd04_packet_ref": "PD04::WO-SWOF-W1-REPAIR-R4-001",
+ "taskspec_ref": "TS-SWOF-W1-REPAIR-R4-001",
+ "ecp_ref": "ECP-WO-SWOF-W1-REPAIR-R4-001",
+ "execution_binding_ref": "BIND-SWOF-W1-R4-001",
+ "execution_binding_schema": "RP002-EXECUTION-BINDING/2",
+ "source_requirement_edges": [
+  {
+   "requirement_id": "REQ-HGK-SWOF-W1-REPAIR-R4-001",
+   "source_locator": "PI-PKG/SWOF-F_SWOF-GENIE_All-IW_PI-PKG-05_2026-09-14_r2_FULL_REPAIR.md §19.1",
+   "acceptance_id": "ACC-SWOF-W1-REPAIR-R4-001"
+  }
+ ],
+ "acceptance_edges": [
+  {
+   "acceptance_id": "ACC-SWOF-W1-REPAIR-R4-001",
+   "oracle": "monotonic HGK rowid ordering",
+   "negative_fixture": "source write before the permit transition"
+  }
+ ],
+ "evidence_edges": [
+  "PRE_MUTATION_ADMISSION_RECEIPT.json",
+  "MUTATION_PERMIT_RECEIPT.json",
+  "FIRST_MUTATION_ORDERING_RECEIPT.json",
+  "EXECUTION_BINDING_RAW.json"
+ ],
+ "bounded_write_set": [
+  "README.md",
+  "schemas/capability/_conformance_sample.json",
+  "schemas/capability/named_consumption.schema.json",
+  "src/capability/ledger.py",
+  "src/capability/tests/test_ledger.py"
+ ],
+ "rollback_ref": "RB-WO-SWOF-W1-REPAIR-R4-001",
+ "checkpoint_ref": "CKPT-SWOF-W1-REPAIR-R4-001",
+ "captured_before_mutation": true
+}

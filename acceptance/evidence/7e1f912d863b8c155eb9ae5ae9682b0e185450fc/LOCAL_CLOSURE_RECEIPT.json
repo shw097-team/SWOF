@@ -1,0 +1,44 @@
+{
+ "schema": "SWOF-LOCAL-CLOSURE-RECEIPT/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W1-REPAIR-R4",
+ "changeset": "NARROW_REPAIR",
+ "repair_workorder_id": "WO-SWOF-W1-REPAIR-R4-001",
+ "local_checkpoint_id": "CKPT-SWOF-W1-REPAIR-R4-001",
+ "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "branch": "repair/w1-r4-binding-order-proof",
+ "producer_identity": "hermes-orchestrator (HG-KSEOS bounded runtime)",
+ "checker_identity": "fresh-context VERIFY_ONLY lane deleg_2667d12a",
+ "producer_ne_checker": true,
+ "verdict": "PASS",
+ "execution_binding_ref": "BIND-SWOF-W1-R4-001",
+ "execution_binding_schema": "RP002-EXECUTION-BINDING/2",
+ "mutation_permit_id": "PERMIT-SWOF-W1-R4-001",
+ "monotonic_ordering": {
+  "binding_seq": 8,
+  "permit_seq": 9,
+  "first_write_seq": 10,
+  "holds": true
+ },
+ "tests": {
+  "roots": {
+   "tests": 16,
+   "src/fabric/tests": 21,
+   "src/knowledge/tests": 25,
+   "src/admission/tests": 17,
+   "src/profile/tests": 12,
+   "src/capability/tests": 22
+  },
+  "total": 113,
+  "fail": 0,
+  "error": 0,
+  "skip": 0
+ },
+ "findings_closed": [
+  "W1-R3-EXT-001",
+  "W1-R3-EXT-002",
+  "W1-R3-EG-001",
+  "W1-R3-EXT-003"
+ ],
+ "generated_at_utc": "2026-10-03T04:25:22Z"
+}

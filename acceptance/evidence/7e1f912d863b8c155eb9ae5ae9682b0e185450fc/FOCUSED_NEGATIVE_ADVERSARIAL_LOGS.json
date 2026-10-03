@@ -1,0 +1,14 @@
+{
+ "schema": "SWOF-R4-FOCUSED-NEGATIVE-LOG/1",
+ "git_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "exit_code": 0,
+ "log": "raw_test_logs/focused_negative_adversarial.log",
+ "log_sha256": "b4e0eebf941a1b49d65a6748c1399ec0923de4c13ad1957ed19230216c4afc00",
+ "negative_cases_proven": [
+  "execution label cannot inhabit source_disposition",
+  "SOURCE_VERBATIM token must appear in the quoted source line",
+  "unknown source token fails closed (TEMP_CLOSED_REGISTRY_ROW)",
+  "schema rejects a coerced row",
+  "schema rejects nonzero unconsumed"
+ ]
+}

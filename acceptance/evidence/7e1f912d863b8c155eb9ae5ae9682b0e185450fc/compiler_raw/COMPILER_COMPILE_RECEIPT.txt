@@ -1,0 +1,15 @@
+# canonical compiler command: python3 scripts/prompt_contract_compiler.py compile C:\Projects\Agent_Workspace\HG-KSEOS\evidence\swof-construction-002\w1_r4_binding_order\R4_CONTRACT.json --out-dir C:\Projects\Agent_Workspace\HG-KSEOS\evidence\swof-construction-002\w1_r4_binding_order\compiler_raw\compiled
+# subject workorder: WO-SWOF-W1-REPAIR-R4-001
+# exit_code: 0
+# generated_at_utc: 2026-10-03T04:18:58Z
+------------------------------------------------------------------------------
+{
+  "verdict": "PROMPT_COMPILE_PASS",
+  "error_count": 0,
+  "errors": [],
+  "task_id": "SWOF-W1-REPAIR-R4-BINDING-ORDER-PROOF-001",
+  "contract_sha256": "78883752bc487d2f337d28661d2daf7c52798182715b999f43f6a388d4be001d",
+  "claim_ceiling": "LOCAL"
+}
+
+

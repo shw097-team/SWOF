@@ -1,0 +1,129 @@
+{
+ "schema": "SWOF-R4-FIRST-MUTATION-ORDERING-RECEIPT/1",
+ "subject_type": "TRANSITIVE_MUTATION_LINEAGE_HUB",
+ "ordering_key": "project_transitions.rowid",
+ "ordering_key_properties": {
+  "generated_by": "HGK ProjectLifecycleController",
+  "monotonic": true,
+  "append_only": true,
+  "contiguous_no_gaps": true,
+  "writer_can_choose_or_backdate": false
+ },
+ "binding_effective_seq": 8,
+ "mutation_permit_seq": 9,
+ "writer_start_seq": 9,
+ "first_write_boundary_seq": 10,
+ "deterministic_ordering_statement": "BINDING_PROFILE_EFFECTIVE_SEQ < MUTATION_PERMIT_SEQ <= WRITER_START_SEQ < FIRST_WRITE_SEQ",
+ "ordering_holds": true,
+ "supporting_metadata_only": {
+  "admission_receipt_frozen_at_utc": "2026-10-03T04:19:00Z",
+  "writer_start_utc": "2026-10-03T04:19:04Z",
+  "first_source_mutation_commit_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+  "first_source_mutation_commit_time_utc": "2026-10-03T12:19:04+08:00",
+  "note": "wall-clock values are supporting metadata; the oracle is the monotonic rowid"
+ },
+ "wall_clock_is_primary_oracle": false,
+ "linkage": {
+  "relation": "TRANSITIVE_MUTATION_LINEAGE",
+  "via": "FIRST_MUTATION_ORDERING_RECEIPT.json",
+  "from": {
+   "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "workorder_id": "WO-SWOF-W1-REPAIR-R4-001",
+   "mutation_permit_id": "PERMIT-SWOF-W1-R4-001",
+   "binding_id": "BIND-SWOF-W1-R4-001"
+  },
+  "to": {
+   "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+  }
+ },
+ "changed_files": [
+  "README.md",
+  "schemas/capability/_conformance_sample.json",
+  "schemas/capability/named_consumption.schema.json",
+  "src/capability/ledger.py",
+  "src/capability/tests/test_ledger.py"
+ ],
+ "changed_files_match_admitted_write_set": true,
+ "project_transitions": [
+  {
+   "rowid": 1,
+   "transition_id": "TR-0018FF11CC",
+   "from_state": "",
+   "to_state": "PROJECT_CREATED",
+   "trigger": "PROJECT_CREATE",
+   "created_at": "2026-10-03T04:18:59.990032Z"
+  },
+  {
+   "rowid": 2,
+   "transition_id": "TR-687DCADA89",
+   "from_state": "PROJECT_CREATED",
+   "to_state": "SOURCE_DISCOVERY",
+   "trigger": "R4_SOURCE_DISCOVERY",
+   "created_at": "2026-10-03T04:19:00.003578Z"
+  },
+  {
+   "rowid": 3,
+   "transition_id": "TR-0C0AC914AB",
+   "from_state": "SOURCE_DISCOVERY",
+   "to_state": "SOURCE_ADMISSION",
+   "trigger": "R4_SOURCE_ADMISSION",
+   "created_at": "2026-10-03T04:19:00.022601Z"
+  },
+  {
+   "rowid": 4,
+   "transition_id": "TR-24787742A6",
+   "from_state": "SOURCE_ADMISSION",
+   "to_state": "INTENT_BOUND",
+   "trigger": "R4_INTENT_BOUND",
+   "created_at": "2026-10-03T04:19:00.033119Z"
+  },
+  {
+   "rowid": 5,
+   "transition_id": "TR-B315E95350",
+   "from_state": "INTENT_BOUND",
+   "to_state": "REQUIREMENTS_READY",
+   "trigger": "R4_REQUIREMENTS_READY",
+   "created_at": "2026-10-03T04:19:00.047646Z"
+  },
+  {
+   "rowid": 6,
+   "transition_id": "TR-9A0B380C6B",
+   "from_state": "REQUIREMENTS_READY",
+   "to_state": "DESIGN_READY",
+   "trigger": "R4_DESIGN_READY",
+   "created_at": "2026-10-03T04:19:00.060158Z"
+  },
+  {
+   "rowid": 7,
+   "transition_id": "TR-D40F0DCC96",
+   "from_state": "DESIGN_READY",
+   "to_state": "PLAN_READY",
+   "trigger": "R4_PLAN_READY",
+   "created_at": "2026-10-03T04:19:00.074190Z"
+  },
+  {
+   "rowid": 8,
+   "transition_id": "TR-F266F97D62",
+   "from_state": "PLAN_READY",
+   "to_state": "WORKORDERS_ADMITTED",
+   "trigger": "R4_WORKORDERS_ADMITTED",
+   "created_at": "2026-10-03T04:19:00.273120Z"
+  },
+  {
+   "rowid": 9,
+   "transition_id": "TR-91E928C22E",
+   "from_state": "WORKORDERS_ADMITTED",
+   "to_state": "EXECUTING",
+   "trigger": "MUTATION_PERMIT_ISSUED",
+   "created_at": "2026-10-03T04:19:00.286646Z"
+  },
+  {
+   "rowid": 10,
+   "transition_id": "TR-D1B086310A",
+   "from_state": "EXECUTING",
+   "to_state": "VERIFYING",
+   "trigger": "FIRST_WRITE_BOUNDARY_CROSSED",
+   "created_at": "2026-10-03T04:19:04.837105Z"
+  }
+ ]
+}

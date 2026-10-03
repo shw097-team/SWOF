@@ -1,0 +1,16 @@
+{
+ "schema": "SWOF-REPOCONTEXT-POST-MUTATION-READBACK/1",
+ "captured_before_mutation": false,
+ "note": "post-mutation readback; the PRE-mutation fresh RepoContext is REPOCONTEXT_PRE_MUTATION_READBACK.json captured at the baseline in the admission step",
+ "repo": "C:\\Projects\\Agent_Workspace\\SWOF",
+ "head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "branch": "repair/w1-r4-binding-order-proof",
+ "worktree_clean": true,
+ "toolchain": {
+  "python": "3.12.14",
+  "git": "git version 2.53.0.windows.1"
+ },
+ "instructions": "AGENTS.md present",
+ "target_root_mode": "bounded repair cone",
+ "secret_boundary": "no credentials read or written"
+}

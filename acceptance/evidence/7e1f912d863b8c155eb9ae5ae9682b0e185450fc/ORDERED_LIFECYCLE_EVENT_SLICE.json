@@ -1,0 +1,176 @@
+{
+ "schema": "SWOF-R4-ORDERED-LIFECYCLE-EVENT-SLICE/1",
+ "ordering_table": "project_transitions",
+ "ordering_key": "rowid",
+ "append_only": true,
+ "writer_chooses_key": false,
+ "project_id": "HGK-P0-SWOF-W1-R4",
+ "run_id": "RUN-SWOF-W1-R4-001",
+ "project_transitions": [
+  {
+   "rowid": 1,
+   "transition_id": "TR-0018FF11CC",
+   "from_state": "",
+   "to_state": "PROJECT_CREATED",
+   "trigger": "PROJECT_CREATE",
+   "created_at": "2026-10-03T04:18:59.990032Z"
+  },
+  {
+   "rowid": 2,
+   "transition_id": "TR-687DCADA89",
+   "from_state": "PROJECT_CREATED",
+   "to_state": "SOURCE_DISCOVERY",
+   "trigger": "R4_SOURCE_DISCOVERY",
+   "created_at": "2026-10-03T04:19:00.003578Z"
+  },
+  {
+   "rowid": 3,
+   "transition_id": "TR-0C0AC914AB",
+   "from_state": "SOURCE_DISCOVERY",
+   "to_state": "SOURCE_ADMISSION",
+   "trigger": "R4_SOURCE_ADMISSION",
+   "created_at": "2026-10-03T04:19:00.022601Z"
+  },
+  {
+   "rowid": 4,
+   "transition_id": "TR-24787742A6",
+   "from_state": "SOURCE_ADMISSION",
+   "to_state": "INTENT_BOUND",
+   "trigger": "R4_INTENT_BOUND",
+   "created_at": "2026-10-03T04:19:00.033119Z"
+  },
+  {
+   "rowid": 5,
+   "transition_id": "TR-B315E95350",
+   "from_state": "INTENT_BOUND",
+   "to_state": "REQUIREMENTS_READY",
+   "trigger": "R4_REQUIREMENTS_READY",
+   "created_at": "2026-10-03T04:19:00.047646Z"
+  },
+  {
+   "rowid": 6,
+   "transition_id": "TR-9A0B380C6B",
+   "from_state": "REQUIREMENTS_READY",
+   "to_state": "DESIGN_READY",
+   "trigger": "R4_DESIGN_READY",
+   "created_at": "2026-10-03T04:19:00.060158Z"
+  },
+  {
+   "rowid": 7,
+   "transition_id": "TR-D40F0DCC96",
+   "from_state": "DESIGN_READY",
+   "to_state": "PLAN_READY",
+   "trigger": "R4_PLAN_READY",
+   "created_at": "2026-10-03T04:19:00.074190Z"
+  },
+  {
+   "rowid": 8,
+   "transition_id": "TR-F266F97D62",
+   "from_state": "PLAN_READY",
+   "to_state": "WORKORDERS_ADMITTED",
+   "trigger": "R4_WORKORDERS_ADMITTED",
+   "created_at": "2026-10-03T04:19:00.273120Z"
+  },
+  {
+   "rowid": 9,
+   "transition_id": "TR-91E928C22E",
+   "from_state": "WORKORDERS_ADMITTED",
+   "to_state": "EXECUTING",
+   "trigger": "MUTATION_PERMIT_ISSUED",
+   "created_at": "2026-10-03T04:19:00.286646Z"
+  }
+ ],
+ "canonical_events": [
+  {
+   "rowid": 1,
+   "event_id": "TR-0018FF11CC",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W1-R4",
+   "from_state": "",
+   "to_state": "PROJECT_CREATED",
+   "created_at": "2026-10-03T04:18:59.990032Z"
+  },
+  {
+   "rowid": 2,
+   "event_id": "TR-687DCADA89",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W1-R4",
+   "from_state": "PROJECT_CREATED",
+   "to_state": "SOURCE_DISCOVERY",
+   "created_at": "2026-10-03T04:19:00.003578Z"
+  },
+  {
+   "rowid": 3,
+   "event_id": "TR-0C0AC914AB",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W1-R4",
+   "from_state": "SOURCE_DISCOVERY",
+   "to_state": "SOURCE_ADMISSION",
+   "created_at": "2026-10-03T04:19:00.022601Z"
+  },
+  {
+   "rowid": 4,
+   "event_id": "TR-24787742A6",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W1-R4",
+   "from_state": "SOURCE_ADMISSION",
+   "to_state": "INTENT_BOUND",
+   "created_at": "2026-10-03T04:19:00.033119Z"
+  },
+  {
+   "rowid": 5,
+   "event_id": "TR-B315E95350",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W1-R4",
+   "from_state": "INTENT_BOUND",
+   "to_state": "REQUIREMENTS_READY",
+   "created_at": "2026-10-03T04:19:00.047646Z"
+  },
+  {
+   "rowid": 6,
+   "event_id": "TR-9A0B380C6B",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W1-R4",
+   "from_state": "REQUIREMENTS_READY",
+   "to_state": "DESIGN_READY",
+   "created_at": "2026-10-03T04:19:00.060158Z"
+  },
+  {
+   "rowid": 7,
+   "event_id": "TR-D40F0DCC96",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W1-R4",
+   "from_state": "DESIGN_READY",
+   "to_state": "PLAN_READY",
+   "created_at": "2026-10-03T04:19:00.074190Z"
+  },
+  {
+   "rowid": 8,
+   "event_id": "EVT-341583fe13554c34",
+   "entity_type": "requirement",
+   "entity_id": "REQ-HGK-SWOF-W1-REPAIR-R4-001",
+   "from_state": "CANDIDATE",
+   "to_state": "FROZEN",
+   "created_at": "2026-10-03T04:19:00.105741Z"
+  },
+  {
+   "rowid": 9,
+   "event_id": "TR-F266F97D62",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W1-R4",
+   "from_state": "PLAN_READY",
+   "to_state": "WORKORDERS_ADMITTED",
+   "created_at": "2026-10-03T04:19:00.273120Z"
+  },
+  {
+   "rowid": 10,
+   "event_id": "TR-91E928C22E",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W1-R4",
+   "from_state": "WORKORDERS_ADMITTED",
+   "to_state": "EXECUTING",
+   "created_at": "2026-10-03T04:19:00.286646Z"
+  }
+ ],
+ "generated_at_utc": "2026-10-03T04:19:00Z"
+}

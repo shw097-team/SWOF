@@ -1,0 +1,17 @@
+{
+ "rows": [
+  {
+   "workorder_id": "WO-SWOF-W1-REPAIR-R4-001",
+   "taskspec_id": "TS-SWOF-W1-REPAIR-R4-001",
+   "writer": "codex (tracked mutation writer)",
+   "worktree": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "base_head": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "state": "CREATED",
+   "result_json": null,
+   "rollback_pointer": "RB-WO-SWOF-W1-REPAIR-R4-001",
+   "created_at": "2026-10-03T04:19:00.125782Z",
+   "updated_at": "2026-10-03T04:19:00.125782Z"
+  }
+ ],
+ "captured_before_mutation": true
+}

@@ -1,0 +1,9 @@
+{
+ "schema": "SWOF-ECP/1",
+ "ecp_id": "ECP-WO-SWOF-W1-REPAIR-R4-001",
+ "workorder_id": "WO-SWOF-W1-REPAIR-R4-001",
+ "execution_binding_ref": "BIND-SWOF-W1-R4-001",
+ "note": "ONE ECP for the R4 WorkOrder; the HGK spine has no ecp table, so the ECP is a document-level construction-packet identifier, explicitly not a spine row.",
+ "checkpoint_ref": "CKPT-SWOF-W1-REPAIR-R4-001",
+ "captured_before_mutation": true
+}

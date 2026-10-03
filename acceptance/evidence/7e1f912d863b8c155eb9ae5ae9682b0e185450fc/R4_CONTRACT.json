@@ -1,0 +1,586 @@
+{
+ "schema": "CAPC-PROMPT-CONTRACT/1",
+ "task_id": "SWOF-W1-REPAIR-R4-BINDING-ORDER-PROOF-001",
+ "source_scan": {
+  "required_source_families": [
+   "current_user_instruction",
+   "product_authority",
+   "execution_controls",
+   "memory_knowledge_runtime"
+  ],
+  "reviewed": [
+   {
+    "source_family": "current_user_instruction",
+    "source_id": "SRC-R3-PROMPT",
+    "locator": "attachments/SWOF_W1_NARROW_REPAIR_R4_EXECUTOR_PROMPT_v1.md#0-9",
+    "sha256": "UNAVAILABLE",
+    "role": "NORMATIVE",
+    "critical": true
+   },
+   {
+    "source_family": "product_authority",
+    "source_id": "SRC-SWOF-TARGET",
+    "locator": "C:\\Projects\\Agent_Workspace\\SWOF",
+    "sha256": "UNAVAILABLE",
+    "role": "NORMATIVE",
+    "critical": true
+   },
+   {
+    "source_family": "execution_controls",
+    "source_id": "SRC-HGK-CONTROL",
+    "locator": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\src\\hg_kseos",
+    "sha256": "UNAVAILABLE",
+    "role": "NORMATIVE",
+    "critical": true
+   },
+   {
+    "source_family": "memory_knowledge_runtime",
+    "source_id": "SRC-R2-CHALLENGE-REPORT",
+    "locator": "attachments/SWOF_W1_R3_EXTERNAL_CHALLENGE_REPORT.md",
+    "sha256": "UNAVAILABLE",
+    "role": "SUPPORT",
+    "critical": false
+   }
+  ],
+  "missing": [],
+  "normative_claims": [
+   {
+    "claim_id": "NC-001",
+    "text": "R4 must materialize a real HGK RP002-EXECUTION-BINDING/2 ExecutionBinding and record binding/permit/writer-start on one monotonic append-only HGK event stream before the first source write; equality of a lifecycle convention is not a binding.",
+    "source_ids": [
+     "SRC-R3-PROMPT",
+     "SRC-HGK-CONTROL",
+     "SRC-SWOF-TARGET"
+    ],
+    "locators": [
+     "attachments/SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md#6",
+     "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\src\\hg_kseos",
+     "C:\\Projects\\Agent_Workspace\\SWOF"
+    ]
+   },
+   {
+    "claim_id": "NC-002",
+    "text": "The defect must not be closed by changing receipts, timestamps, wording or summary verdicts.",
+    "source_ids": [
+     "SRC-R3-PROMPT"
+    ],
+    "locators": [
+     "attachments/SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md#1"
+    ]
+   },
+   {
+    "claim_id": "NC-003",
+    "text": "Reviewer verdicts bind the exact frozen subject; any new source or evidence SHA invalidates the prior verdict.",
+    "source_ids": [
+     "SRC-R2-CHALLENGE-REPORT"
+    ],
+    "locators": [
+     "attachments/SWOF_W1_R2_EXTERNAL_CHALLENGE_REPORT.md#6"
+    ]
+   }
+  ]
+ },
+ "intent": {
+  "goal": "Smallest-legal W1 R4 repair: materialize the authoritative HGK RP002-EXECUTION-BINDING/2 binding and prove admission/permit precede the first source write on a monotonic append-only event stream.",
+  "user_expected_outcome": "A new W1 candidate whose raw evidence proves BINDING < PERMIT <= WRITER_START < FIRST_WRITE on one monotonic HGK sequence.",
+  "user_expected_experience": "Routine repair executed autonomously; HITL only at real authority edges.",
+  "explicit_constraints": [
+   "start from clean baseline be036588bdf2d509c929aba9bc2bf0525674bb7a",
+   "materialize a real RP002-EXECUTION-BINDING/2 before any source mutation",
+   "ordering must use a monotonic append-only HGK stream, not wall-clock",
+   "no force-push of PR #2 or PR #3",
+   "do not reuse ed28b784 or 6b0e11e as the R4 subject"
+  ],
+  "non_goals": [
+   "W2-W5 implementation",
+   "architecture reset",
+   "second control plane",
+   "provider activation"
+  ],
+  "authorized_mutations": [
+   "SWOF after admission",
+   "HG-KSEOS governed spine state",
+   "GitHub shw097-team/SWOF branches and a new PR"
+  ],
+  "forbidden_mutations": [
+   "source corpus",
+   "Fabric authoritative source",
+   "HG-KSEOS source code",
+   "remote merge",
+   "release",
+   "production"
+  ],
+  "expected_autonomy": "HIGH",
+  "allowed_hitl": [
+   "credentials",
+   "org authorization",
+   "destructive scope expansion",
+   "equal-rank conflict",
+   "break-glass",
+   "release or production"
+  ],
+  "requested_delivery": [
+   "SWOF-W1-R3-DELIVERABLE"
+  ],
+  "active_requirement_ids": [
+   "HGK-EXECUTION-BINDING"
+  ],
+  "claim_ceiling": "LOCAL"
+ },
+ "authority": {
+  "sources": [
+   {
+    "id": "SRC-R3-PROMPT",
+    "rank": "1",
+    "path": "attachments/SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md",
+    "sha256": "UNAVAILABLE",
+    "locator": "#0-9",
+    "role": "NORMATIVE",
+    "governs": true
+   },
+   {
+    "id": "SRC-HGK-CONTROL",
+    "rank": "2",
+    "path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\src\\hg_kseos",
+    "sha256": "UNAVAILABLE",
+    "locator": "spine.py",
+    "role": "NORMATIVE",
+    "governs": true
+   },
+   {
+    "id": "SRC-RBWI",
+    "rank": "3",
+    "path": "SWOF_HGK_ACA_RBWI/SWOF_HGK_ACA_RBWI.md",
+    "sha256": "UNAVAILABLE",
+    "locator": "#10.1-10.4",
+    "role": "NORMATIVE",
+    "governs": true
+   },
+   {
+    "id": "SRC-R2-CHALLENGE-REPORT",
+    "rank": "4",
+    "path": "attachments/SWOF_W1_R2_EXTERNAL_CHALLENGE_REPORT.md",
+    "sha256": "UNAVAILABLE",
+    "locator": "#5",
+    "role": "SUPPORT",
+    "governs": false
+   }
+  ],
+  "conflicts": [],
+  "missing_sources": [],
+  "native_control_plane_ids": [
+   "HG-KSEOS"
+  ],
+  "current_control_plane_id": "HG-KSEOS"
+ },
+ "changeset": {
+  "class": "NARROW_REPAIR",
+  "baseline_required": true,
+  "baseline_verified": true,
+  "reuse_prior_pass": true,
+  "affected_domains": [
+   "capability-ledger",
+   "capability-schema",
+   "capability-tests",
+   "documentation"
+  ],
+  "affected_files": [
+   "README.md",
+   "schemas/capability/_conformance_sample.json",
+   "schemas/capability/named_consumption.schema.json",
+   "src/capability/ledger.py",
+   "src/capability/tests/test_ledger.py"
+  ],
+  "must_not_reopen": [
+   "src/fabric",
+   "src/knowledge",
+   "src/admission",
+   "src/profile"
+  ],
+  "scope_expansion_requires_hitl": true,
+  "tracked_mutation": true,
+  "product_mutation_allowed": true
+ },
+ "execution_scope": [
+  {
+   "capability": "HGK-EXECUTION-BINDING",
+   "source_disposition": "CONSTRUCTION_ONLY",
+   "current_execution_disposition": "ACTIVE_REQUIRED",
+   "current_profile_selected": true,
+   "canonical_flow_referenced": true,
+   "automatic_route_target": true,
+   "user_experience_required": false,
+   "runtime_required_now": true,
+   "action": "DESIGN",
+   "source_locators": [
+    "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\src\\hg_kseos\\lifecycle.py",
+    "C:\\Projects\\Agent_Workspace\\Fabric\\stage\\RP002-STAGE-HGK\\B1\\B1_EXECUTION_BINDING.json"
+   ],
+   "external_method": false,
+   "control_authority": true
+  },
+  {
+   "capability": "SWOF-CAPABILITY-LEDGER",
+   "source_disposition": "CONSTRUCTION_ONLY",
+   "current_execution_disposition": "ACTIVE_REQUIRED",
+   "current_profile_selected": true,
+   "canonical_flow_referenced": true,
+   "automatic_route_target": true,
+   "user_experience_required": false,
+   "runtime_required_now": true,
+   "action": "DESIGN",
+   "source_locators": [
+    "C:\\Projects\\Agent_Workspace\\SWOF\\src\\capability\\ledger.py"
+   ],
+   "external_method": false,
+   "control_authority": true
+  }
+ ],
+ "runtime_readiness": [
+  {
+   "capability": "HGK-EXECUTION-BINDING",
+   "required_now": true,
+   "lifecycle": {
+    "identify": "PASS",
+    "pin": "PASS",
+    "install_materialize": "PASS",
+    "configure": "PASS",
+    "discover": "PASS",
+    "bind": "PASS",
+    "route": "PASS",
+    "effective_load": "PASS",
+    "doctor_health": "PASS",
+    "positive_pilot": "PASS",
+    "negative_security": "PASS",
+    "fallback": "PASS",
+    "rollback_uninstall": "PASS",
+    "independent_qualification": "PASS",
+    "certify": "PASS",
+    "enable": "PASS"
+   },
+   "current_verdict": "RUNTIME_READY",
+   "work_required": [],
+   "acceptance_ids": [
+    "ACC-R4-BINDING-ORDER"
+   ]
+  },
+  {
+   "capability": "SWOF-CAPABILITY-LEDGER",
+   "required_now": true,
+   "lifecycle": {
+    "identify": "PASS",
+    "pin": "PASS",
+    "install_materialize": "PASS",
+    "configure": "PASS",
+    "discover": "PASS",
+    "bind": "PASS",
+    "route": "PASS",
+    "effective_load": "PASS",
+    "doctor_health": "PASS",
+    "positive_pilot": "PASS",
+    "negative_security": "PASS",
+    "fallback": "PASS",
+    "rollback_uninstall": "PASS",
+    "independent_qualification": "PASS",
+    "certify": "PASS",
+    "enable": "PASS"
+   },
+   "current_verdict": "RUNTIME_READY",
+   "work_required": [],
+   "acceptance_ids": [
+    "ACC-R3-LEDGER"
+   ]
+  }
+ ],
+ "journeys": [
+  {
+   "journey_id": "J-R3-ORDER",
+   "required": true,
+   "user_goal": "prove governance admission preceded the first source mutation",
+   "expected_visible_result": "PRE_MUTATION_ADMISSION_RECEIPT frozen with real spine readback before any source byte changed",
+   "expected_automatic_behavior": [
+    "executor registers admission",
+    "executor then mutates in that order"
+   ],
+   "expected_manual_behavior": [
+    "none"
+   ],
+   "allowed_hitl": [
+    "authority edges only"
+   ],
+   "required_capabilities": [
+    "HGK-EXECUTION-BINDING",
+    "SWOF-CAPABILITY-LEDGER"
+   ],
+   "negative_behavior": [
+    "if any source byte changed before admission the verdict MUST be FAIL"
+   ],
+   "failure_recovery": [
+    "revert to the clean baseline and re-run admission first"
+   ],
+   "source_expectation_ids": [
+    "NC-001",
+    "NC-002"
+   ],
+   "source_locators": [
+    "attachments/SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md#6"
+   ]
+  }
+ ],
+ "acceptance": [
+  {
+   "acceptance_id": "ACC-R4-COMPILER",
+   "subject_id": "SWOF-W1-R3-DELIVERABLE",
+   "subject_type": "DELIVERABLE",
+   "source_locators": [
+    "attachments/SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md#0"
+   ],
+   "runtime_required": false,
+   "required_depth": "L1_SCHEMA_CONTRACT",
+   "positive_fixture": "lint+activation+acceptance+compile succeed",
+   "negative_fixture": "absent bundle yields PROMPT_COMPILE_BLOCKED",
+   "recovery_fixture": "mount bundle and re-run",
+   "raw_evidence_required": false,
+   "independent_checker_required": false,
+   "terminal_states": [
+    "COMPILER_PASS"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-R4-BINDING-ORDER",
+   "subject_id": "HGK-EXECUTION-BINDING",
+   "subject_type": "REQUIREMENT",
+   "source_locators": [
+    "attachments/SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md#6",
+    "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\src\\hg_kseos\\spine.py"
+   ],
+   "runtime_required": true,
+   "required_depth": "L3_INTEGRATION_RUNTIME",
+   "positive_fixture": "spine shows admission events before the first source-mutating commit",
+   "negative_fixture": "any source byte changed before PRE_MUTATION_ADMISSION_RECEIPT",
+   "recovery_fixture": "reset to baseline and re-admit",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-R3-LEDGER",
+   "subject_id": "SWOF-CAPABILITY-LEDGER",
+   "subject_type": "CAPABILITY",
+   "source_locators": [
+    "C:\\Projects\\Agent_Workspace\\SWOF\\src\\capability\\ledger.py",
+    "PI-PKG-05_2026-09-14_r2_FULL_REPAIR.md 19.1"
+   ],
+   "runtime_required": true,
+   "required_depth": "L2_UNIT_BEHAVIOR",
+   "positive_fixture": "canonical source tokens preserved distinctly from execution state",
+   "negative_fixture": "source_disposition=DEFERRED refused; relabelled quote refused",
+   "recovery_fixture": "restore the reviewed R2 semantics",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-R4-JOURNEY",
+   "subject_id": "J-R3-ORDER",
+   "subject_type": "JOURNEY",
+   "source_locators": [
+    "attachments/SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md#6"
+   ],
+   "runtime_required": true,
+   "required_depth": "L3_INTEGRATION_RUNTIME",
+   "positive_fixture": "ordering journey completes with admission first",
+   "negative_fixture": "ordering journey aborts if mutation precedes admission",
+   "recovery_fixture": "re-run from the clean baseline",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "gate_id": "G-R4-0",
+   "predicate": "canonical compiler validates this C0-C9 contract",
+   "expected": "lint/activation/acceptance/compile PASS",
+   "command_or_probe": "prompt_contract_compiler.py lint|activation|acceptance|compile",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": false,
+   "candidate_binding": {
+    "head": "R3_BASELINE_HEAD",
+    "package_sha256": "R4_CONTRACT_SHA256",
+    "source_hashes": [
+     "R3_CONTRACT_SHA256"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "contract edit"
+   ],
+   "terminal_verdict": "COMPILER_PASS",
+   "runtime_pass_allowed": false,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-R4-1",
+   "predicate": "HGK admission preceded the first R3 source mutation",
+   "expected": "ADMISSION_PRECEDED_MUTATION = true from raw spine events and git history",
+   "command_or_probe": "sqlite3 readback of canonical_events + git log commit times",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "R3_CANDIDATE_HEAD",
+    "package_sha256": "R4_PRE_MUTATION_ADMISSION_RECEIPT_SHA256",
+    "source_hashes": [
+     "SWOF/src/capability/ledger.py"
+    ]
+   },
+   "rerun_rule": "full",
+   "invalidation": [
+    "post-checker source mutation"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-R4-2",
+   "predicate": "R3 diff stays within the admitted write-set",
+   "expected": "only the five admitted files differ from baseline",
+   "command_or_probe": "git diff --name-only baseline..candidate",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "R3_CANDIDATE_HEAD",
+    "package_sha256": "R4_BOUNDED_DIFF_RECEIPT_SHA256",
+    "source_hashes": [
+     "SWOF/src/capability/ledger.py"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "scope change"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-R4-7",
+   "predicate": "independent checker cannot falsify the admission-before-mutation ordering",
+   "expected": "checker attempts the chronology attack and fails to break it",
+   "command_or_probe": "checker reads spine rows, git history and receipts directly",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "R3_CANDIDATE_HEAD",
+    "package_sha256": "R4_INDEPENDENT_RECEIPT_SHA256",
+    "source_hashes": [
+     "SWOF/src/capability/ledger.py"
+    ]
+   },
+   "rerun_rule": "full",
+   "invalidation": [
+    "candidate changed after check"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-R4-2-BINDING",
+   "predicate": "authoritative HGK ExecutionBinding materialized before mutation",
+   "expected": "real RP002-EXECUTION-BINDING/2 binding for WO-SWOF-W1-REPAIR-R4-001 with a stable id and profile",
+   "command_or_probe": "read back the binding object and its hashes",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "R4_CANDIDATE_HEAD",
+    "package_sha256": "R4_BINDING_SHA256",
+    "source_hashes": [
+     "SWOF/src/capability/ledger.py"
+    ]
+   },
+   "rerun_rule": "full",
+   "invalidation": [
+    "binding or profile change"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-R4-3-MONOTONIC",
+   "predicate": "monotonic append-only ordering on one HGK stream",
+   "expected": "binding_seq < permit_seq <= writer_start_seq < first_write_seq",
+   "command_or_probe": "read project_transitions/canonical_events rowids from the spine",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "R4_CANDIDATE_HEAD",
+    "package_sha256": "R4_ORDERING_SHA256",
+    "source_hashes": [
+     "SWOF/src/capability/ledger.py"
+    ]
+   },
+   "rerun_rule": "full",
+   "invalidation": [
+    "ordering change"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  }
+ ],
+ "termination": {
+  "terminal_states": [
+   "PASS",
+   "PARTIAL",
+   "FAIL",
+   "TEMP_CLOSED",
+   "PROMPT_COMPILE_BLOCKED",
+   "CHANGESET_RECOMPILE_REQUIRED"
+  ],
+  "non_terminal_pause": [
+   "HITL_AUTHORITY_EDGE"
+  ],
+  "checkpoint_required": true,
+  "checkpoint_fields": [
+   "task_id",
+   "source_hashes",
+   "current_candidate",
+   "completed_gates",
+   "open_gates",
+   "next_work_order",
+   "rollback_pointer"
+  ],
+  "retry_budget": 3,
+  "rollback_pointer_required": true
+ },
+ "render_policy": {
+  "control_corpus_restatement": false,
+  "embedded_control_bodies": [],
+  "max_prompt_chars": 20000,
+  "output_language": "zh-TW"
+ }
+}

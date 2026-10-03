@@ -1,0 +1,148 @@
+{
+ "schema": "SWOF-W1-R4-FINAL-PACKAGING/1",
+ "at_utc": "2026-10-03T04:24:43Z",
+ "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "branch": "repair/w1-r4-binding-order-proof",
+ "clean": true,
+ "verdicts": {
+  "schema": "SWOF-W1-R4-VERDICTS/1",
+  "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+  "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+  "branch": "repair/w1-r4-binding-order-proof",
+  "verdict": "PASS",
+  "verdicts_do_not_promote": [
+   "NOT_EXTERNALLY_ACCEPTED",
+   "NO_REMOTE_MERGE",
+   "NO_RELEASE",
+   "NO_PRODUCTION",
+   "NO_WORLD_EFFECT_ACCEPTANCE",
+   "W2_W5_NOT_COMPLETED"
+  ],
+  "checks": {
+   "compiler_lint_activation_acceptance_compile_pass": true,
+   "compiler_duplication_below_threshold": true,
+   "clean_pre_r2_baseline_proved": true,
+   "parent_commit_is_baseline": true,
+   "diff_within_admitted_write_set": true,
+   "byte_identical_to_reviewed_r2_surface": true,
+   "authoritative_execution_binding_materialized": true,
+   "execution_binding_schema": "RP002-EXECUTION-BINDING/2",
+   "positive_delegation_window": true,
+   "lease_read_back_from_spine": true,
+   "profile_effective_readback_role_ne_profile_ne_worker": true,
+   "monotonic_append_only_ordering_on_one_hgk_stream": true,
+   "wall_clock_is_not_the_primary_oracle": true,
+   "mutation_permit_precedes_source_write": true,
+   "fresh_pre_mutation_repocontext": true,
+   "pre_mutation_pd04_chain_captured_before_mutation": true,
+   "complete_raw_evidence_set": true,
+   "gate_calibration_rows_published": true,
+   "direct_vs_transitive_linkage_semantics": true,
+   "r2_semantics_intact": true,
+   "exact_head_logs_bind_git_head": true,
+   "maker_checker_separated": true,
+   "checker_did_not_mutate_subject": true,
+   "consumption_receipt_subject_ok": true,
+   "no_history_rewrite_of_rejected_pr": true,
+   "no_secret_or_pii_in_diff": true
+  },
+  "ordering_proof": {
+   "ordering_key": "project_transitions.rowid",
+   "ordering_key_generated_by": "HGK ProjectLifecycleController (SQLite append-only rowid)",
+   "append_only": true,
+   "writer_can_choose_or_backdate_key": false,
+   "binding_effective_seq": 8,
+   "mutation_permit_seq": 9,
+   "writer_start_seq": 9,
+   "first_write_boundary_seq": 10,
+   "contiguous_from_1": true,
+   "created_at_monotonic_with_rowid": true,
+   "integrity_check": "ok",
+   "statement": "BINDING_PROFILE_EFFECTIVE_SEQ < MUTATION_PERMIT_SEQ <= WRITER_START_SEQ < FIRST_WRITE_SEQ",
+   "holds": true,
+   "supporting_only": [
+    "file mtimes",
+    "git commit time"
+   ]
+  },
+  "r3_blocking_findings_closure": {
+   "W1-R3-EXT-001_EXECUTION_BINDING_PROFILE_NOT_ACTUALLY_MATERIALIZED": "CLOSED",
+   "W1-R3-EXT-002_ORDERING_ORACLE_WALL_CLOCK_ONLY_AND_SELF_CONTRADICTORY": "CLOSED",
+   "W1-R3-EG-001_REQUIRED_RAW_EVIDENCE_SET_INCOMPLETE": "CLOSED",
+   "W1-R3-EXT-003_PRE_MUTATION_RECEIPT_FALSE_DIRECT_FINAL_SUBJECT_LINK": "CLOSED"
+  },
+  "lanes": [
+   {
+    "lane": "deleg_6defb785",
+    "mandate": "first R4 pass at head eae8df60",
+    "verdict": "PASS",
+    "note": "All four R3 blockers falsified and survived. Flagged a degenerate zero-duration delegation window as a non-blocking residual."
+   },
+   {
+    "lane": "deleg_ea2b0c35",
+    "mandate": "second R4 pass at head 5158d0e7 after the delegation-window correction",
+    "verdict": "PASS",
+    "note": "Confirmed the delegation window genuinely fixed (86400s, not relabelled) and the lease read back byte-for-byte from the spine. Flagged that REPOCONTEXT_READBACK recorded the post-mutation head as a non-blocking residual."
+   },
+   {
+    "lane": "deleg_2667d12a",
+    "mandate": "final R4 pass at head 7e1f912d after the fresh pre-mutation RepoContext correction",
+    "verdict": "PASS",
+    "blocking_findings": [],
+    "note": "Confirmed the fresh pre-mutation RepoContext reads at the BASELINE (be036588) and that the whole pre-mutation PD04 chain is captured_before_mutation=true and contains no final SHA. Independently resolved its own 113-vs-106 count discrepancy in favour of 113 by reproducing the logged per-root invocations.",
+    "residual_weaknesses": [
+     "The spine DB file mtime sits ~4ms after the last transition created_at and in the same second as the commit. This is expected: FIRST_WRITE_BOUNDARY_CROSSED is by design appended AFTER the commit. SQLite mtime cannot cryptographically exclude a wholesale DB regeneration; contiguous rowids 1..10, integrity_check=ok and a single ~5s run window across every artifact show no tamper signal.",
+     "Byte-identity is asserted against the R2 tip on the same branch; the external Fabric/RP002 authority file is used as the BINDING SHAPE reference, not digest-pinned to this SWOF run."
+    ]
+   }
+  ],
+  "corrections_made_by_rerun_not_by_edit": [
+   "degenerate zero-duration delegation window (issued_at == expires_at) - corrected by re-running the chain from the clean baseline, because the binding must exist before the mutation and editing it afterwards would be retroactive fabrication",
+   "RepoContext readback recorded the post-mutation head (G-R4-1's own negative fixture is 'stale RepoContext') - corrected by capturing a fresh RepoContext at the baseline pre-mutation",
+   "pre-mutation PD04 chain objects (PD04_PACKET/TASKSPEC_RAW/WORKORDER_RAW/ECP_RAW/CURRENTNESS_RECEIPT) were emitted post-mutation - moved into the admission step with captured_before_mutation=true"
+  ],
+  "residual_weaknesses_open": [
+   "Ordering integrity is append-only BY CONVENTION: SQLite permits an explicit rowid on INSERT, so 'the writer cannot choose the key' rests on the writer using only the ProjectLifecycleController API. There is no DB trigger, hash-chain or cryptographic tamper-evidence.",
+   "The HGK spine has no dedicated execution_bindings table; the binding is a materialized RP002-EXECUTION-BINDING/2 artifact attached to the WORKORDERS_ADMITTED spine row via evidence_refs_json.",
+   "No remote CI runs exist for the source SHA; remote CI is only required where portable checks are applicable.",
+   "No active provider runtime provider-off drill was executed; no provider is activated or bound by this repair."
+  ],
+  "non_claims": [
+   "NOT_EXTERNALLY_ACCEPTED",
+   "NO_REMOTE_MERGE",
+   "NO_RELEASE",
+   "NO_PRODUCTION",
+   "NO_WORLD_EFFECT_ACCEPTANCE",
+   "W2_W5_NOT_COMPLETED_BY_THIS_REPAIR"
+  ],
+  "generated_at_utc": "2026-10-03T04:25:00Z"
+ },
+ "candidate_readback": {
+  "sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+  "equals_source": true
+ },
+ "evidence_push": {
+  "local_sha": "9d122356b4b2597f305d6eac9ab6faff0bcdd04e",
+  "remote_sha": "9d122356b4b2597f305d6eac9ab6faff0bcdd04e",
+  "readback_matches": true,
+  "neq_source": true,
+  "rc": 0
+ },
+ "pull_request": {
+  "http": 422,
+  "number": null,
+  "head_sha": null,
+  "error": "A pull request already exists for shw097-team:repair/w1-r4-binding-order-proof."
+ },
+ "pr_head_equals_source": false,
+ "required_zero_counts": {
+  "hash_mismatch_count": 0,
+  "byte_mismatch_count": 0,
+  "invalid_direct_link_count": 1,
+  "invalid_transitive_link_count": 0,
+  "missing_required_evidence_count": 0
+ },
+ "evidence_item_count": 39,
+ "verdict": "PARTIAL"
+}

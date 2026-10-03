@@ -1,0 +1,25 @@
+{
+ "schema": "SWOF-R4-MUTATION-PERMIT-RECEIPT/1",
+ "mutation_permit_id": "PERMIT-SWOF-W1-R4-001",
+ "workorder_id": "WO-SWOF-W1-REPAIR-R4-001",
+ "binding_id": "BIND-SWOF-W1-R4-001",
+ "permit_baseline": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "baseline_equals_clean_baseline": true,
+ "permit_write_set": [
+  "README.md",
+  "schemas/capability/_conformance_sample.json",
+  "schemas/capability/named_consumption.schema.json",
+  "src/capability/ledger.py",
+  "src/capability/tests/test_ledger.py"
+ ],
+ "permit_write_set_equals_admitted": true,
+ "binding_effective_seq": 8,
+ "permit_seq": 9,
+ "permit_after_binding": true,
+ "permit_transition_id": "TR-91E928C22E",
+ "permit_is_required_by_writer_route": true,
+ "writer_route": "codex tracked mutation writer must assert this permit exists before applying the admitted write-set (enforced by r19_apply.py precondition)",
+ "permit_event_id": null,
+ "source_mutation_started": false,
+ "generated_at_utc": "2026-10-03T04:19:00Z"
+}
