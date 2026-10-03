@@ -5,7 +5,7 @@
  "clean_tree": {
   "errors": [],
   "hashes_checked": 145,
-  "files": 35,
+  "files": 36,
   "passes": true
  },
  "negative_fixture": {

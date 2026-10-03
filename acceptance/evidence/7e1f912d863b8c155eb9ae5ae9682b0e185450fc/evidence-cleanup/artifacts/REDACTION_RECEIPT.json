@@ -1,7 +1,7 @@
 {
  "schema": "SWOF-REDACTION-RECEIPT/1",
  "scan_scope": "generation-time workspace set at artifact-generation time (artifacts/*.json + compiler_raw/*.txt + compiler_raw/compiled/* + the contract); the COMMITTED TREE scan count is recorded separately by POST_COMMIT_REMOTE_READBACK_RECEIPT.committed_tree_secret_scan",
- "scanned_file_count": 30,
+ "scanned_file_count": 31,
  "redactions_applied": 0,
  "redaction_policy": "no secret or PII material present; nothing removed",
  "protected_material_review": {
