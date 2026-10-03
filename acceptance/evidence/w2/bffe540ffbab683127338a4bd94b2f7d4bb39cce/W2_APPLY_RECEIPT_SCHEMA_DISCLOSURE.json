@@ -1,0 +1,14 @@
+{
+ "schema": "SWOF-W2-APPLY-RECEIPT-SCHEMA-DISCLOSURE/1",
+ "generated_at_utc": "2026-10-03T16:15:31Z",
+ "disclosure": "WO-SWOF-W2-001's apply receipt was produced by the first, still-valid run of the apply process. That run revealed a real defect: `git commit -a` silently skips NEW (untracked) files, so the commit staged nothing and HEAD stayed at the baseline (recorded candidate 7e1f912d863b8c155eb9ae5ae9682b0e185450fc, diff_count 0). The apply process was corrected to stage the admitted paths explicitly and to assert that the staged set is non-empty and in scope, then re-run in --commit-only mode for WO-001 (the writer's files were already on disk from the same run).",
+ "wo_001_receipt_fields": {
+  "candidate_after_commit": "c7988cdee6783ad69768b75a17d0c97d9ecc02ee",
+  "staged_files": 21,
+  "diff_since_baseline": 21,
+  "workorder_delta_field_present": false
+ },
+ "consequence": "the field naming differs from the later three receipts (delta vs workorder_delta); the candidate SHA, staged set, focused test result and containment verdict are all present and correct, so no evidence was lost and no claim depends on the missing alias",
+ "repaired": true,
+ "builder_commit_of_the_fix": "local apply process w2_05_apply.py (out-of-tree, HG-KSEOS var)"
+}

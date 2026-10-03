@@ -1,0 +1,91 @@
+{
+ "schema": "SWOF-W2-WORKORDER-APPLY-RECEIPT/1",
+ "workorder_id": "WO-SWOF-W2-001",
+ "mutation_permit_id": "PERMIT-SWOF-W2-001",
+ "binding_id": "BIND-WO-SWOF-W2-001",
+ "baseline": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "candidate_after_commit": "c7988cdee6783ad69768b75a17d0c97d9ecc02ee",
+ "writer": "codex (tracked mutation writer)",
+ "writer_lane": "sealed codex lane / opencode-go",
+ "writer_log": "writer_logs/CODEX_WO-SWOF-W2-001.jsonl",
+ "writer_log_sha256": "5f7bf217e384e6ed1a235727e19f45537502f93d70e645a2f54d9f2610c0fac9",
+ "writer_note": "commit-only mode: the writer had already produced this WorkOrder's files in a previous run of this same process; only the containment/stage/commit step is redone",
+ "codex_exit_code": null,
+ "writer_start_utc": "2026-10-03T15:18:14Z",
+ "head_before_equals_baseline": true,
+ "pre_mutation_clean": true,
+ "containment": {
+  "schema": "SWOF-W2-WRITESET-CONTAINMENT/1",
+  "workorder_id": "WO-SWOF-W2-001",
+  "admitted": [
+   "src/security/",
+   "schemas/security/"
+  ],
+  "changed_paths": [
+   "schemas/security/",
+   "src/security/"
+  ],
+  "outside_write_set": [],
+  "reverted": [],
+  "containment_ok": true,
+  "repaired_by": "revert/delete of the out-of-scope paths; the write-set was NOT widened",
+  "changed_after_repair": [
+   "schemas/security/",
+   "src/security/"
+  ]
+ },
+ "focused_tests": {
+  "ran": 159,
+  "exit_code": 0,
+  "raw_log": "writer_logs/FOCUSED_WO-SWOF-W2-001.log",
+  "sha256": "7c85f3b61012d632802ef60ba3865a9662a8abce21b672fabb9cbdd61c340189",
+  "ok": true
+ },
+ "staged_files": [
+  "schemas/security/README.md",
+  "schemas/security/permission_envelope.schema.json",
+  "schemas/security/security_veto.schema.json",
+  "src/security/README.md",
+  "src/security/__init__.py",
+  "src/security/classification.py",
+  "src/security/injection.py",
+  "src/security/permissions.py",
+  "src/security/provenance.py",
+  "src/security/rights.py",
+  "src/security/supplychain.py",
+  "src/security/tests/__init__.py",
+  "src/security/tests/test_adversarial.py",
+  "src/security/tests/test_classification.py",
+  "src/security/tests/test_injection.py",
+  "src/security/tests/test_permissions.py",
+  "src/security/tests/test_provenance.py",
+  "src/security/tests/test_rights.py",
+  "src/security/tests/test_supplychain.py",
+  "src/security/tests/test_veto.py",
+  "src/security/veto.py"
+ ],
+ "diff_since_baseline": [
+  "schemas/security/README.md",
+  "schemas/security/permission_envelope.schema.json",
+  "schemas/security/security_veto.schema.json",
+  "src/security/README.md",
+  "src/security/__init__.py",
+  "src/security/classification.py",
+  "src/security/injection.py",
+  "src/security/permissions.py",
+  "src/security/provenance.py",
+  "src/security/rights.py",
+  "src/security/supplychain.py",
+  "src/security/tests/__init__.py",
+  "src/security/tests/test_adversarial.py",
+  "src/security/tests/test_classification.py",
+  "src/security/tests/test_injection.py",
+  "src/security/tests/test_permissions.py",
+  "src/security/tests/test_provenance.py",
+  "src/security/tests/test_rights.py",
+  "src/security/tests/test_supplychain.py",
+  "src/security/tests/test_veto.py",
+  "src/security/veto.py"
+ ],
+ "generated_at_utc": "2026-10-03T15:18:15Z"
+}

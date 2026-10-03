@@ -1,0 +1,1048 @@
+{
+ "schema": "SWOF-W2-KANBAN-EXECUTION-RECEIPT/1",
+ "board": "swof-w2-construction-002",
+ "generated_at_utc": "2026-10-03T17:59:52Z",
+ "card_map": {
+  "A": "t_76b398e1",
+  "C1": "t_4fe847b3",
+  "C2": "t_9f9aa5b1",
+  "C3": "t_58d73aef",
+  "C4": "t_46df6e25",
+  "C5": "t_bb5b8248",
+  "C6": "t_1adf4271",
+  "C7": "t_5c366212",
+  "D1": "t_103ca3b2",
+  "D2": "t_76d5ea92",
+  "D3": "t_394d000d",
+  "D4": "t_dd6d6cb4",
+  "D5": "t_6dd0cc45",
+  "D6": "t_d7875d33",
+  "E1": "t_3b800e8f",
+  "K1": "t_9fd826fd",
+  "K2": "t_87b639c3",
+  "K3": "t_ed7d6fd3",
+  "P1": "t_5237bee5",
+  "P2": "t_8afd18ec",
+  "V1": "t_6d3cef49"
+ },
+ "list": {
+  "rc": 1,
+  "stdout": "",
+  "stderr": "kanban: delegate_task child contexts cannot mutate Kanban tasks or boards"
+ },
+ "stats": {
+  "rc": 0,
+  "stdout": "By status:\n  triage    0\n  todo      2\n  scheduled  0\n  ready     2\n  running   0\n  blocked   0\n  done      17\n\nBy assignee:\n  default               done=17\n\nOldest ready task age: 10852s",
+  "stderr": ""
+ },
+ "boards_show": {
+  "rc": 0,
+  "stdout": "Current board: swof-w2-construction-002\n  Display name: SWOF W2 Construction (SWOF-CONSTRUCTION-002-W2, security/effect/assurance)\n  DB path:      C:\\Users\\user\\AppData\\Local\\hermes\\kanban\\boards\\swof-w2-construction-002\\kanban.db\n  Tasks:        23 total (archived=2, done=17, ready=2, todo=2)",
+  "stderr": ""
+ },
+ "snapshot_semantics": "This receipt is a POINT-IN-TIME snapshot of the board taken at generated_at_utc. A card that completes AFTER that instant is necessarily still shown as unfinished, and the criterion 'no card is shown unfinished that is in fact finished' is structurally unsatisfiable for the card whose own write produces this receipt. Read the snapshot field below together with the live board DB rather than treating the receipt as a live view.",
+ "tasks_completed_after_generation": [],
+ "tasks": [
+  {
+   "id": "t_08263684",
+   "title": "W2-K1 W1 carry-forward + fresh compiler currentness/effective load",
+   "status": "archived",
+   "assignee": null,
+   "priority": 1,
+   "created_at": 1791039505,
+   "started_at": null,
+   "completed_at": null,
+   "result": null
+  },
+  {
+   "id": "t_c01fe293",
+   "title": "W2-PROBE-SHAPE",
+   "status": "archived",
+   "assignee": null,
+   "priority": 0,
+   "created_at": 1791039514,
+   "started_at": null,
+   "completed_at": null,
+   "result": null
+  },
+  {
+   "id": "t_9fd826fd",
+   "title": "W2-K1 W1 carry-forward + fresh compiler currentness/effective load",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791039532,
+   "started_at": 1791041917,
+   "completed_at": 1791041920,
+   "result": "W1 tuple read back, 113-test denominator preserved, compiler 48a3 + bundle identical + effective load PASS"
+  },
+  {
+   "id": "t_87b639c3",
+   "title": "W2-K2 fresh RepoContext + W2 PD04 packet set (+ ONE ECP per WorkOrder)",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791039533,
+   "started_at": 1791041923,
+   "completed_at": 1791041925,
+   "result": "fresh RepoContext at accepted W1 baseline + W2 PD04 packet set (4 WOs, ONE ECP each), FAIL_PD04_ROUTE not triggered"
+  },
+  {
+   "id": "t_ed7d6fd3",
+   "title": "W2-K3 W2 gate calibration at security strictness (S3 minimum)",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791039534,
+   "started_at": 1791041928,
+   "completed_at": 1791041930,
+   "result": "9 gate calibration rows at S2/S3, security minimum strictness S3, deterministic oracles, proxy PASS forbidden"
+  },
+  {
+   "id": "t_76b398e1",
+   "title": "W2-A admission: authoritative ExecutionBinding + profile readback + mutation permit",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791039535,
+   "started_at": 1791041933,
+   "completed_at": 1791041936,
+   "result": "4 REQ/TS/WO/ECP lineages admitted; 4 RP002-EXECUTION-BINDING/2 materialized; permit seq 9 > admission seq 8; zero source mutation at freeze"
+  },
+  {
+   "id": "t_103ca3b2",
+   "title": "W2-D1 WO-SWOF-W2-001 security/privacy/rights/HumanGate substrate",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791039536,
+   "started_at": 1791041938,
+   "completed_at": 1791041941,
+   "result": "WO-SWOF-W2-001 applied by codex; 21 files; 159 focused tests OK; containment OK"
+  },
+  {
+   "id": "t_76d5ea92",
+   "title": "W2-D2 WO-SWOF-W2-002 effect/observation/UNKNOWN_EFFECT/reconciliation substrate",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791039537,
+   "started_at": 1791041944,
+   "completed_at": 1791041946,
+   "result": "WO-SWOF-W2-002 applied by codex; 16 files; 91 focused tests OK; containment OK"
+  },
+  {
+   "id": "t_394d000d",
+   "title": "W2-D3 WO-SWOF-W2-003 assurance/evidence/SoD substrate + journal integrity",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791039538,
+   "started_at": 1791042810,
+   "completed_at": 1791042813,
+   "result": "WO-SWOF-W2-003 applied by codex; 19 files; 95 focused tests OK; containment OK; journal-integrity envelope implemented (detection-only, no DB-level claim)"
+  },
+  {
+   "id": "t_dd6d6cb4",
+   "title": "W2-D4 WO-SWOF-W2-004 observability/recovery hooks + W2 doc sync",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791039539,
+   "started_at": 1791044076,
+   "completed_at": 1791044078,
+   "result": "WO-SWOF-W2-004 applied by codex; observability hooks + README/AGENTS/config/non-goals W2 sync; focused tests OK"
+  },
+  {
+   "id": "t_6dd0cc45",
+   "title": "W2-D5 W2 negative/adversarial/security/effect/assurance suite",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791039540,
+   "started_at": 1791044082,
+   "completed_at": 1791044084,
+   "result": "W2 negative/adversarial/security/effect/assurance suites green: security 159, effect 91, assurance 95, observability 97 = 442 tests at the frozen candidate HEAD"
+  },
+  {
+   "id": "t_d7875d33",
+   "title": "W2-D6 affected W1 regression at the W2 candidate HEAD (denominator 113)",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791039541,
+   "started_at": 1791044087,
+   "completed_at": 1791044090,
+   "result": "affected W1 regression green at the candidate HEAD: six accepted roots = 113 tests, denominator preserved (no silent shrink)"
+  },
+  {
+   "id": "t_6d3cef49",
+   "title": "W2-V1 fresh-context independent checker (VERIFY_ONLY, checker != maker)",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791039542,
+   "started_at": 1791044519,
+   "completed_at": 1791044522,
+   "result": "ROUND 1 (subject 83adb8e1): 3 fresh VERIFY_ONLY lanes returned PARTIAL. Independently CONFIRMED green: candidate HEAD clean, W1 ancestry, 4/5 W1 repair-surface files byte-identical, containment 71/71 assigned, ordering admission 8 < permit 9 < first-write 10 on contiguous rowids, denominators 113+442=555, no over-claim. BLOCKING findings: TC-W2-SEC-01 (credential detector blind to bearer/JSON/AWS-secret/vendor token shapes) and TT-CR-1 (harness containment false negative). Non-blocking: evidence.invalidate direction, oracle negative-fixture vacuity, journal reason collapse, effect retry unreachable. Round-1 verdicts preserved verbatim; SUPERSEDED by the corrective round. Round 2 re-verification is card W2-C2."
+  },
+  {
+   "id": "t_3b800e8f",
+   "title": "W2-E1 checkpoint + LocalClosureReceipt + SWOF-EVIDENCE-RETURN-PACK/1",
+   "status": "ready",
+   "assignee": null,
+   "priority": 1,
+   "created_at": 1791039542,
+   "started_at": null,
+   "completed_at": null,
+   "result": null
+  },
+  {
+   "id": "t_5237bee5",
+   "title": "W2-P1 W2 source candidate publication + exact readback",
+   "status": "todo",
+   "assignee": null,
+   "priority": 1,
+   "created_at": 1791039543,
+   "started_at": null,
+   "completed_at": null,
+   "result": null
+  },
+  {
+   "id": "t_8afd18ec",
+   "title": "W2-P2 separate evidence publication + SWOF-W2-EXTERNAL-ACCEPTANCE-READSET/1",
+   "status": "todo",
+   "assignee": null,
+   "priority": 1,
+   "created_at": 1791039544,
+   "started_at": null,
+   "completed_at": null,
+   "result": null
+  },
+  {
+   "id": "t_4fe847b3",
+   "title": "W2-C1 corrective CW1: close round-1 independent findings",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791044504,
+   "started_at": 1791046104,
+   "completed_at": 1791046106,
+   "result": "CORRECTIVE CW1 applied by codex: TC-W2-SEC-01 closed (credential detector extended, selftest non-vacuous with real-world positives + benign negatives), TC-W2-EVID-01/ORACLE-01/JRN-01/EFFECT-01 closed; counts moved security 159->177, effect 91->100, assurance 95->116; superseded 83adb8e1 -> f05cef1f; plus CW1b README count sync -> 4469813c. TT-CR-1 closed by regenerating the harness receipts (containment_ok true, 0 unassigned) and TT-W2-003 metadata corrected."
+  },
+  {
+   "id": "t_9f9aa5b1",
+   "title": "W2-C2 fresh independent re-verification on the NEW candidate",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791044505,
+   "started_at": 1791046109,
+   "completed_at": 1791047492,
+   "result": "ROUND 2 on 4469813c: lane A (governance/evidence) PASS on all 7 items; lane B (adversarial) PARTIAL - all 5 round-1 counterexamples now HOLD and no regressions, but found 1 new BLOCKING bypass (oracle negative-fixture representation satisfiable via a caller-chosen item_id) plus 4 non-blocking gaps. Superseded by CW2."
+  },
+  {
+   "id": "t_58d73aef",
+   "title": "W2-C3 corrective CW2: close round-2 independent findings",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791047487,
+   "started_at": 1791047495,
+   "completed_at": 1791047497,
+   "result": "CORRECTIVE CW2 applied by codex on ec16ed3: TC-W2-R2-01/02/03/04/05 closed (oracle representation now requires a plan-level manifest proof kind; PARTIAL_EFFECT no longer retryable; bytes fail closed in the secret gate; invalidate() discriminates on the security axis; journal header declared non-authoritative with a manifest-anchored verification). Counts security 177->183, effect 100->105, assurance 116->128. Ordering: round open seq 12 < write permitted seq 13 < applied seq 14 on the same contiguous stream."
+  },
+  {
+   "id": "t_46df6e25",
+   "title": "W2-C4 round-3 fresh independent re-verification on the NEW candidate",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791047488,
+   "started_at": 1791048139,
+   "completed_at": 1791048141,
+   "result": "ROUND 3 on f7ab02db: lane A PARTIAL (checks 1-5 and 7 PASS; only the finding-closure ledger check PARTIAL, two bookkeeping gaps); lane B PARTIAL (all five round-2 findings HOLD, no regressions in eight law groups, but six NEW NON-BLOCKING counterexamples). No blocking finding remains. Driver for the final corrective round CW3 plus a cumulative finding ledger."
+  },
+  {
+   "id": "t_bb5b8248",
+   "title": "W2-C5 corrective CW3 (final bounded corrective round)",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791048135,
+   "started_at": 1791049775,
+   "completed_at": 1791049777,
+   "result": "CORRECTIVE CW3 applied by codex (two commits: 89287e2 three subsystems + 316f792 observability that the first stage list omitted; then the count sync amended to bffe540): TT-CR-01..06 closed. Counts security 183->191, effect 105->116, assurance 128->144, observability 97->102. Ordering: CW3 open seq 15 < write permitted seq 16 < applied seq 17, contiguous. Disclosed: the stage list omitted observability though its test count moved - tell caught and harness fixed permanently."
+  },
+  {
+   "id": "t_1adf4271",
+   "title": "W2-C6 round-4 fresh independent re-verification on the FINAL candidate",
+   "status": "done",
+   "assignee": "default",
+   "priority": 1,
+   "created_at": 1791048136,
+   "started_at": 1791049781,
+   "completed_at": 1791050134,
+   "result": "ROUND 4 on bffe540f: PRODUCT lane PASS (all 21 CW3 re-probes HOLD, all 9 regression law groups HOLD, no new blocking counterexample, detector selftests proven falsifiable by injection); GOVERNANCE lane PARTIAL (checks 1,2,4,5,6,7 PASS; 5 non-blocking counterexamples: CW1 lacks a dedicated permit/applied edge, stale ordering slice, stale kanban receipt, incomplete freeze superseded list, README round-history imprecision). All five either regenerated or explicitly disclosed; round 5 re-verifies the closed set on the SAME candidate."
+  },
+  {
+   "id": "t_5c366212",
+   "title": "W2-C7 round-5 narrow governance re-verification of the CLOSED evidence set",
+   "status": "ready",
+   "assignee": null,
+   "priority": 1,
+   "created_at": 1791050130,
+   "started_at": null,
+   "completed_at": null,
+   "result": null
+  }
+ ],
+ "task_events": [
+  {
+   "task_id": "t_08263684",
+   "kind": "created",
+   "created_at": 1791039505
+  },
+  {
+   "task_id": "t_c01fe293",
+   "kind": "created",
+   "created_at": 1791039514
+  },
+  {
+   "task_id": "t_9fd826fd",
+   "kind": "created",
+   "created_at": 1791039532
+  },
+  {
+   "task_id": "t_87b639c3",
+   "kind": "created",
+   "created_at": 1791039533
+  },
+  {
+   "task_id": "t_ed7d6fd3",
+   "kind": "created",
+   "created_at": 1791039534
+  },
+  {
+   "task_id": "t_76b398e1",
+   "kind": "created",
+   "created_at": 1791039535
+  },
+  {
+   "task_id": "t_103ca3b2",
+   "kind": "created",
+   "created_at": 1791039536
+  },
+  {
+   "task_id": "t_76d5ea92",
+   "kind": "created",
+   "created_at": 1791039537
+  },
+  {
+   "task_id": "t_394d000d",
+   "kind": "created",
+   "created_at": 1791039538
+  },
+  {
+   "task_id": "t_dd6d6cb4",
+   "kind": "created",
+   "created_at": 1791039539
+  },
+  {
+   "task_id": "t_6dd0cc45",
+   "kind": "created",
+   "created_at": 1791039540
+  },
+  {
+   "task_id": "t_d7875d33",
+   "kind": "created",
+   "created_at": 1791039541
+  },
+  {
+   "task_id": "t_6d3cef49",
+   "kind": "created",
+   "created_at": 1791039542
+  },
+  {
+   "task_id": "t_3b800e8f",
+   "kind": "created",
+   "created_at": 1791039542
+  },
+  {
+   "task_id": "t_5237bee5",
+   "kind": "created",
+   "created_at": 1791039543
+  },
+  {
+   "task_id": "t_8afd18ec",
+   "kind": "created",
+   "created_at": 1791039544
+  },
+  {
+   "task_id": "t_08263684",
+   "kind": "archived",
+   "created_at": 1791039552
+  },
+  {
+   "task_id": "t_c01fe293",
+   "kind": "archived",
+   "created_at": 1791039553
+  },
+  {
+   "task_id": "t_9fd826fd",
+   "kind": "assigned",
+   "created_at": 1791041915
+  },
+  {
+   "task_id": "t_9fd826fd",
+   "kind": "claimed",
+   "created_at": 1791041917
+  },
+  {
+   "task_id": "t_9fd826fd",
+   "kind": "heartbeat",
+   "created_at": 1791041919
+  },
+  {
+   "task_id": "t_9fd826fd",
+   "kind": "completed",
+   "created_at": 1791041920
+  },
+  {
+   "task_id": "t_87b639c3",
+   "kind": "promoted",
+   "created_at": 1791041920
+  },
+  {
+   "task_id": "t_ed7d6fd3",
+   "kind": "promoted",
+   "created_at": 1791041920
+  },
+  {
+   "task_id": "t_87b639c3",
+   "kind": "assigned",
+   "created_at": 1791041921
+  },
+  {
+   "task_id": "t_87b639c3",
+   "kind": "claimed",
+   "created_at": 1791041923
+  },
+  {
+   "task_id": "t_87b639c3",
+   "kind": "heartbeat",
+   "created_at": 1791041924
+  },
+  {
+   "task_id": "t_87b639c3",
+   "kind": "completed",
+   "created_at": 1791041925
+  },
+  {
+   "task_id": "t_ed7d6fd3",
+   "kind": "assigned",
+   "created_at": 1791041926
+  },
+  {
+   "task_id": "t_ed7d6fd3",
+   "kind": "claimed",
+   "created_at": 1791041928
+  },
+  {
+   "task_id": "t_ed7d6fd3",
+   "kind": "heartbeat",
+   "created_at": 1791041929
+  },
+  {
+   "task_id": "t_ed7d6fd3",
+   "kind": "completed",
+   "created_at": 1791041930
+  },
+  {
+   "task_id": "t_76b398e1",
+   "kind": "promoted",
+   "created_at": 1791041930
+  },
+  {
+   "task_id": "t_76b398e1",
+   "kind": "assigned",
+   "created_at": 1791041932
+  },
+  {
+   "task_id": "t_76b398e1",
+   "kind": "claimed",
+   "created_at": 1791041933
+  },
+  {
+   "task_id": "t_76b398e1",
+   "kind": "heartbeat",
+   "created_at": 1791041935
+  },
+  {
+   "task_id": "t_76b398e1",
+   "kind": "completed",
+   "created_at": 1791041936
+  },
+  {
+   "task_id": "t_103ca3b2",
+   "kind": "promoted",
+   "created_at": 1791041936
+  },
+  {
+   "task_id": "t_76d5ea92",
+   "kind": "promoted",
+   "created_at": 1791041936
+  },
+  {
+   "task_id": "t_394d000d",
+   "kind": "promoted",
+   "created_at": 1791041936
+  },
+  {
+   "task_id": "t_103ca3b2",
+   "kind": "assigned",
+   "created_at": 1791041937
+  },
+  {
+   "task_id": "t_103ca3b2",
+   "kind": "claimed",
+   "created_at": 1791041938
+  },
+  {
+   "task_id": "t_103ca3b2",
+   "kind": "heartbeat",
+   "created_at": 1791041940
+  },
+  {
+   "task_id": "t_103ca3b2",
+   "kind": "completed",
+   "created_at": 1791041941
+  },
+  {
+   "task_id": "t_76d5ea92",
+   "kind": "assigned",
+   "created_at": 1791041942
+  },
+  {
+   "task_id": "t_76d5ea92",
+   "kind": "claimed",
+   "created_at": 1791041944
+  },
+  {
+   "task_id": "t_76d5ea92",
+   "kind": "heartbeat",
+   "created_at": 1791041945
+  },
+  {
+   "task_id": "t_76d5ea92",
+   "kind": "completed",
+   "created_at": 1791041946
+  },
+  {
+   "task_id": "t_394d000d",
+   "kind": "assigned",
+   "created_at": 1791042809
+  },
+  {
+   "task_id": "t_394d000d",
+   "kind": "claimed",
+   "created_at": 1791042810
+  },
+  {
+   "task_id": "t_394d000d",
+   "kind": "tip_scratch_workspace",
+   "created_at": 1791042810
+  },
+  {
+   "task_id": "t_394d000d",
+   "kind": "spawned",
+   "created_at": 1791042810
+  },
+  {
+   "task_id": "t_394d000d",
+   "kind": "heartbeat",
+   "created_at": 1791042812
+  },
+  {
+   "task_id": "t_394d000d",
+   "kind": "completed",
+   "created_at": 1791042813
+  },
+  {
+   "task_id": "t_dd6d6cb4",
+   "kind": "promoted",
+   "created_at": 1791042813
+  },
+  {
+   "task_id": "t_394d000d",
+   "kind": "commented",
+   "created_at": 1791043022
+  },
+  {
+   "task_id": "t_dd6d6cb4",
+   "kind": "commented",
+   "created_at": 1791043033
+  },
+  {
+   "task_id": "t_6dd0cc45",
+   "kind": "commented",
+   "created_at": 1791043033
+  },
+  {
+   "task_id": "t_dd6d6cb4",
+   "kind": "assigned",
+   "created_at": 1791044074
+  },
+  {
+   "task_id": "t_dd6d6cb4",
+   "kind": "claimed",
+   "created_at": 1791044076
+  },
+  {
+   "task_id": "t_dd6d6cb4",
+   "kind": "heartbeat",
+   "created_at": 1791044077
+  },
+  {
+   "task_id": "t_dd6d6cb4",
+   "kind": "completed",
+   "created_at": 1791044078
+  },
+  {
+   "task_id": "t_6dd0cc45",
+   "kind": "promoted",
+   "created_at": 1791044078
+  },
+  {
+   "task_id": "t_6dd0cc45",
+   "kind": "assigned",
+   "created_at": 1791044080
+  },
+  {
+   "task_id": "t_6dd0cc45",
+   "kind": "claimed",
+   "created_at": 1791044082
+  },
+  {
+   "task_id": "t_6dd0cc45",
+   "kind": "heartbeat",
+   "created_at": 1791044083
+  },
+  {
+   "task_id": "t_6dd0cc45",
+   "kind": "completed",
+   "created_at": 1791044084
+  },
+  {
+   "task_id": "t_d7875d33",
+   "kind": "promoted",
+   "created_at": 1791044084
+  },
+  {
+   "task_id": "t_d7875d33",
+   "kind": "assigned",
+   "created_at": 1791044086
+  },
+  {
+   "task_id": "t_d7875d33",
+   "kind": "claimed",
+   "created_at": 1791044087
+  },
+  {
+   "task_id": "t_d7875d33",
+   "kind": "heartbeat",
+   "created_at": 1791044088
+  },
+  {
+   "task_id": "t_d7875d33",
+   "kind": "completed",
+   "created_at": 1791044090
+  },
+  {
+   "task_id": "t_6d3cef49",
+   "kind": "promoted",
+   "created_at": 1791044090
+  },
+  {
+   "task_id": "t_4fe847b3",
+   "kind": "created",
+   "created_at": 1791044504
+  },
+  {
+   "task_id": "t_9f9aa5b1",
+   "kind": "created",
+   "created_at": 1791044505
+  },
+  {
+   "task_id": "t_6d3cef49",
+   "kind": "assigned",
+   "created_at": 1791044518
+  },
+  {
+   "task_id": "t_6d3cef49",
+   "kind": "claimed",
+   "created_at": 1791044519
+  },
+  {
+   "task_id": "t_6d3cef49",
+   "kind": "heartbeat",
+   "created_at": 1791044521
+  },
+  {
+   "task_id": "t_6d3cef49",
+   "kind": "completed",
+   "created_at": 1791044522
+  },
+  {
+   "task_id": "t_3b800e8f",
+   "kind": "promoted",
+   "created_at": 1791044522
+  },
+  {
+   "task_id": "t_4fe847b3",
+   "kind": "promoted",
+   "created_at": 1791044522
+  },
+  {
+   "task_id": "t_9f9aa5b1",
+   "kind": "promoted",
+   "created_at": 1791044522
+  },
+  {
+   "task_id": "t_4fe847b3",
+   "kind": "assigned",
+   "created_at": 1791046102
+  },
+  {
+   "task_id": "t_4fe847b3",
+   "kind": "claimed",
+   "created_at": 1791046104
+  },
+  {
+   "task_id": "t_4fe847b3",
+   "kind": "heartbeat",
+   "created_at": 1791046105
+  },
+  {
+   "task_id": "t_4fe847b3",
+   "kind": "completed",
+   "created_at": 1791046106
+  },
+  {
+   "task_id": "t_9f9aa5b1",
+   "kind": "assigned",
+   "created_at": 1791046107
+  },
+  {
+   "task_id": "t_9f9aa5b1",
+   "kind": "claimed",
+   "created_at": 1791046109
+  },
+  {
+   "task_id": "t_9f9aa5b1",
+   "kind": "heartbeat",
+   "created_at": 1791046110
+  },
+  {
+   "task_id": "t_58d73aef",
+   "kind": "created",
+   "created_at": 1791047487
+  },
+  {
+   "task_id": "t_46df6e25",
+   "kind": "created",
+   "created_at": 1791047488
+  },
+  {
+   "task_id": "t_9f9aa5b1",
+   "kind": "heartbeat",
+   "created_at": 1791047491
+  },
+  {
+   "task_id": "t_9f9aa5b1",
+   "kind": "completed",
+   "created_at": 1791047492
+  },
+  {
+   "task_id": "t_58d73aef",
+   "kind": "promoted",
+   "created_at": 1791047492
+  },
+  {
+   "task_id": "t_46df6e25",
+   "kind": "promoted",
+   "created_at": 1791047492
+  },
+  {
+   "task_id": "t_58d73aef",
+   "kind": "assigned",
+   "created_at": 1791047493
+  },
+  {
+   "task_id": "t_58d73aef",
+   "kind": "claimed",
+   "created_at": 1791047495
+  },
+  {
+   "task_id": "t_58d73aef",
+   "kind": "heartbeat",
+   "created_at": 1791047496
+  },
+  {
+   "task_id": "t_58d73aef",
+   "kind": "completed",
+   "created_at": 1791047497
+  },
+  {
+   "task_id": "t_bb5b8248",
+   "kind": "created",
+   "created_at": 1791048135
+  },
+  {
+   "task_id": "t_1adf4271",
+   "kind": "created",
+   "created_at": 1791048136
+  },
+  {
+   "task_id": "t_46df6e25",
+   "kind": "assigned",
+   "created_at": 1791048137
+  },
+  {
+   "task_id": "t_46df6e25",
+   "kind": "claimed",
+   "created_at": 1791048139
+  },
+  {
+   "task_id": "t_46df6e25",
+   "kind": "heartbeat",
+   "created_at": 1791048140
+  },
+  {
+   "task_id": "t_46df6e25",
+   "kind": "completed",
+   "created_at": 1791048141
+  },
+  {
+   "task_id": "t_bb5b8248",
+   "kind": "promoted",
+   "created_at": 1791048141
+  },
+  {
+   "task_id": "t_1adf4271",
+   "kind": "promoted",
+   "created_at": 1791048141
+  },
+  {
+   "task_id": "t_bb5b8248",
+   "kind": "assigned",
+   "created_at": 1791049774
+  },
+  {
+   "task_id": "t_bb5b8248",
+   "kind": "claimed",
+   "created_at": 1791049775
+  },
+  {
+   "task_id": "t_bb5b8248",
+   "kind": "heartbeat",
+   "created_at": 1791049777
+  },
+  {
+   "task_id": "t_bb5b8248",
+   "kind": "completed",
+   "created_at": 1791049777
+  },
+  {
+   "task_id": "t_1adf4271",
+   "kind": "assigned",
+   "created_at": 1791049779
+  },
+  {
+   "task_id": "t_1adf4271",
+   "kind": "claimed",
+   "created_at": 1791049781
+  },
+  {
+   "task_id": "t_1adf4271",
+   "kind": "heartbeat",
+   "created_at": 1791049782
+  },
+  {
+   "task_id": "t_5c366212",
+   "kind": "created",
+   "created_at": 1791050130
+  },
+  {
+   "task_id": "t_1adf4271",
+   "kind": "heartbeat",
+   "created_at": 1791050133
+  },
+  {
+   "task_id": "t_1adf4271",
+   "kind": "completed",
+   "created_at": 1791050134
+  },
+  {
+   "task_id": "t_5c366212",
+   "kind": "promoted",
+   "created_at": 1791050134
+  }
+ ],
+ "event_kinds": [
+  "archived",
+  "assigned",
+  "claimed",
+  "commented",
+  "completed",
+  "created",
+  "heartbeat",
+  "promoted",
+  "spawned",
+  "tip_scratch_workspace"
+ ],
+ "completed_tasks": [
+  "t_103ca3b2",
+  "t_1adf4271",
+  "t_394d000d",
+  "t_46df6e25",
+  "t_4fe847b3",
+  "t_58d73aef",
+  "t_6d3cef49",
+  "t_6dd0cc45",
+  "t_76b398e1",
+  "t_76d5ea92",
+  "t_87b639c3",
+  "t_9f9aa5b1",
+  "t_9fd826fd",
+  "t_bb5b8248",
+  "t_d7875d33",
+  "t_dd6d6cb4",
+  "t_ed7d6fd3"
+ ],
+ "open_cards_at_snapshot": [
+  "t_08263684",
+  "t_3b800e8f",
+  "t_5237bee5",
+  "t_5c366212",
+  "t_8afd18ec",
+  "t_c01fe293"
+ ],
+ "claimed_heartbeated_completed": {
+  "t_08263684": {
+   "claimed": false,
+   "heartbeated": false,
+   "completed": false
+  },
+  "t_c01fe293": {
+   "claimed": false,
+   "heartbeated": false,
+   "completed": false
+  },
+  "t_9fd826fd": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_87b639c3": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_ed7d6fd3": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_76b398e1": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_103ca3b2": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_76d5ea92": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_394d000d": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_dd6d6cb4": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_6dd0cc45": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_d7875d33": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_6d3cef49": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_3b800e8f": {
+   "claimed": false,
+   "heartbeated": false,
+   "completed": false
+  },
+  "t_5237bee5": {
+   "claimed": false,
+   "heartbeated": false,
+   "completed": false
+  },
+  "t_8afd18ec": {
+   "claimed": false,
+   "heartbeated": false,
+   "completed": false
+  },
+  "t_4fe847b3": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_9f9aa5b1": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_58d73aef": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_46df6e25": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_bb5b8248": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_1adf4271": {
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
+  },
+  "t_5c366212": {
+   "claimed": false,
+   "heartbeated": false,
+   "completed": false
+  }
+ }
+}

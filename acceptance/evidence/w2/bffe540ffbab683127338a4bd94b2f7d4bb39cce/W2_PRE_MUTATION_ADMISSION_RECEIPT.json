@@ -1,0 +1,102 @@
+{
+ "schema": "SWOF-W2-PRE-MUTATION-ADMISSION-RECEIPT/1",
+ "subject_type": "PRE_MUTATION_BASELINE_WORKORDERS",
+ "accepted_w1_source_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "accepted_w1_evidence_sha": "84ea30c216ac319c4e55df1b07ee2ee3372bcc88",
+ "workorder_ids": [
+  "WO-SWOF-W2-001",
+  "WO-SWOF-W2-002",
+  "WO-SWOF-W2-003",
+  "WO-SWOF-W2-004"
+ ],
+ "checkpoint_ids": [
+  "CKPT-WO-SWOF-W2-001",
+  "CKPT-WO-SWOF-W2-002",
+  "CKPT-WO-SWOF-W2-003",
+  "CKPT-WO-SWOF-W2-004"
+ ],
+ "checkpoint_or_pre_mutation_stage": "WORKORDERS_ADMITTED",
+ "direct_final_subject_match": false,
+ "workspace_clean": true,
+ "repo_head_before_mutation": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "branch": "wo/swof-w2-security-effect-assurance",
+ "repocontext_ref": "REPOCONTEXT_PRE_MUTATION_READBACK.json",
+ "repocontext_sha256": "3967aa08a50847c8196aafe4b8a78953d4a5f1b9b9f5f78eaf54d1b0c46de6a5",
+ "pd04_packet_ref": "PD04::W2-SET",
+ "pd04_packets_sha256": "c0831112595a87baaa2d0436bb51fd9a9eccc6b26a064510d11a3ca846a478bf",
+ "taskspec_ref": "TS-W2-SET",
+ "taskspecs_sha256": "3137bc072628c91da7be2c9fcd1fd3ad3f406e87dd1aaa576e4175644cd19d0f",
+ "ecp_ref": "ECP-W2-SET",
+ "ecps_sha256": "308bb66ff9357ff69c877f1c9e7fd8e3ea3886a9feea6aac2e719a98c7f5ba6c",
+ "workorders_sha256": "45ca0f6ca4406b881973ed3a76e231dd559b8a091e7cf5cbf48337cd7afa2230",
+ "project_lifecycle_ref": "HGK-P0-SWOF-W2/RUN-SWOF-W2-001",
+ "execution_binding_refs": [
+  "BIND-WO-SWOF-W2-001",
+  "BIND-WO-SWOF-W2-002",
+  "BIND-WO-SWOF-W2-003",
+  "BIND-WO-SWOF-W2-004"
+ ],
+ "execution_binding_schema": "RP002-EXECUTION-BINDING/2",
+ "execution_binding_hashes": {
+  "WO-SWOF-W2-001": "c891bf8e8111ffcacaff5e61155aa3cf98c29a9f6331ed9498d4f33dd5842f0f",
+  "WO-SWOF-W2-002": "626713f2147e747ad7cf2cfee4c47bdf627a189e79d6771dba2ab4caf2be0a98",
+  "WO-SWOF-W2-003": "76002af7cb34a969820bfa9dc5227e3c876b5f89f2e48a74ee78fd3e711f986b",
+  "WO-SWOF-W2-004": "275e38f5752b9ecb14a6c86924f121785c65f1ac183d68677f702fd7a427bb80"
+ },
+ "execution_binding_set_sha256": "1248f7c29dce1e8f30038073e6909eee9076da91a7d7ece5868f7b9cf152fd11",
+ "profile_id": "hgk-coding-factory",
+ "profile_effective_ref": "W2_PROFILE_EFFECTIVE_READBACK.json",
+ "profile_effective_sha256": "ce0b54628c3351a777d7cbcc49d04c0fc4706b5650356f69ef25cfb1dff229af",
+ "mutation_permit_id": "PERMIT-SWOF-W2-001",
+ "requirement_states": {
+  "REQ-HGK-SWOF-W2-001": "FROZEN",
+  "REQ-HGK-SWOF-W2-002": "FROZEN",
+  "REQ-HGK-SWOF-W2-003": "FROZEN",
+  "REQ-HGK-SWOF-W2-004": "FROZEN"
+ },
+ "taskspec_states": {
+  "TS-WO-SWOF-W2-001": "ADMITTED",
+  "TS-WO-SWOF-W2-002": "ADMITTED",
+  "TS-WO-SWOF-W2-003": "ADMITTED",
+  "TS-WO-SWOF-W2-004": "ADMITTED"
+ },
+ "workorder_states": {
+  "WO-SWOF-W2-001": "CREATED",
+  "WO-SWOF-W2-002": "CREATED",
+  "WO-SWOF-W2-003": "CREATED",
+  "WO-SWOF-W2-004": "CREATED"
+ },
+ "admission_transition_seq": 8,
+ "admission_transition_id": "TR-11035AB7E8",
+ "mutation_permit_seq": 9,
+ "mutation_permit_transition_id": "TR-8F82CB11A4",
+ "bounded_write_sets": {
+  "WO-SWOF-W2-001": [
+   "src/security/*",
+   "schemas/security/*"
+  ],
+  "WO-SWOF-W2-002": [
+   "src/effect/*",
+   "schemas/effect/*"
+  ],
+  "WO-SWOF-W2-003": [
+   "src/assurance/*",
+   "schemas/assurance/*"
+  ],
+  "WO-SWOF-W2-004": [
+   "src/observability/*",
+   "schemas/observability/*",
+   "README.md",
+   "AGENTS.md",
+   "config/workspace.json",
+   "docs/constitution/non-goals.md"
+  ]
+ },
+ "writer_identity": "codex (tracked mutation writer)",
+ "source_mutation_started": false,
+ "source_mutation_count_at_freeze": 0,
+ "frozen_at_utc": "2026-10-03T15:03:33Z",
+ "ordering_key_mechanism": "HGK project_transitions.rowid (append-only, DB-generated; the writer cannot choose or backdate it)",
+ "wall_clock_is_primary_oracle": false,
+ "spine_db": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-construction-002-w2\\hgk_spine.sqlite3"
+}

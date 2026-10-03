@@ -1,0 +1,53 @@
+{
+ "schema": "SWOF-W2-WRITESET-CONTAINMENT/1",
+ "workorder_id": "WO-SWOF-W2-004",
+ "admitted": [
+  "src/observability/",
+  "schemas/observability/",
+  "README.md",
+  "AGENTS.md",
+  "config/workspace.json",
+  "docs/constitution/non-goals.md"
+ ],
+ "changed_paths": [
+  "AGENTS.md",
+  "README.md",
+  "config/workspace.json",
+  "docs/constitution/non-goals.md",
+  "schemas/observability/",
+  "src/observability/"
+ ],
+ "outside_write_set": [],
+ "reverted": [],
+ "containment_ok": true,
+ "repaired_by": "revert/delete of the out-of-scope paths; the write-set was NOT widened",
+ "changed_after_repair": [
+  "AGENTS.md",
+  "README.md",
+  "config/workspace.json",
+  "docs/constitution/non-goals.md",
+  "schemas/observability/",
+  "src/observability/"
+ ],
+ "workorder_base": "fb75dae1932331e79a39276d2a5b31a0522b0cb3",
+ "workorder_delta": [
+  "AGENTS.md",
+  "README.md",
+  "config/workspace.json",
+  "docs/constitution/non-goals.md",
+  "schemas/observability/README.md",
+  "src/observability/README.md",
+  "src/observability/__init__.py",
+  "src/observability/correlation.py",
+  "src/observability/hooks.py",
+  "src/observability/recovery.py",
+  "src/observability/redaction.py",
+  "src/observability/tests/__init__.py",
+  "src/observability/tests/test_adversarial.py",
+  "src/observability/tests/test_correlation.py",
+  "src/observability/tests/test_hooks.py",
+  "src/observability/tests/test_recovery.py",
+  "src/observability/tests/test_redaction.py"
+ ],
+ "workorder_delta_out_of_scope": []
+}

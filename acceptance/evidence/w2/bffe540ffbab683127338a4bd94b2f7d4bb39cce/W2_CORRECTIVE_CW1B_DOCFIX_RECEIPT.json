@@ -1,0 +1,29 @@
+{
+ "schema": "SWOF-W2-CORRECTIVE-CW1B-DOCFIX/1",
+ "before": "316f7923b592eed617f6f7941b767ca96ec242e7",
+ "after": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+ "changed": [
+  "README.md"
+ ],
+ "measured_counts": {
+  "tests": 16,
+  "src/fabric/tests": 21,
+  "src/knowledge/tests": 25,
+  "src/admission/tests": 17,
+  "src/profile/tests": 12,
+  "src/capability/tests": 22,
+  "src/security/tests": 191,
+  "src/effect/tests": 116,
+  "src/assurance/tests": 144,
+  "src/observability/tests": 102
+ },
+ "aggregate": 666,
+ "writer": "codex (tracked mutation writer)",
+ "codex_exit_code": 0,
+ "writer_log_sha256": "4442adfefa2b0aa8331730d412f932cc33e5635a6220893dd2a13c1789d39353",
+ "generated_at_utc": "2026-10-03T17:44:28Z",
+ "amended_from": "73844c0a0bab",
+ "amendment_note": "the count-sync commit was amended BEFORE the candidate was frozen, so no subject a checker ever read was rewritten; the amendment only replaced a hardcoded commit message that misnamed the round. The file content at bffe540 is byte-identical to the file content at 73844c0.",
+ "current_head": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+ "head_matches_after": true
+}

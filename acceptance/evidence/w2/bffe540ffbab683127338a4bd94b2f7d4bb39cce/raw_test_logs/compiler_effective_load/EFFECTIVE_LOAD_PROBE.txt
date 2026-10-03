@@ -1,0 +1,6 @@
+# command : C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe scripts/prompt_contract_compiler.py hash <skill>
+# cwd     : C:\Projects\Agent_Workspace\知識庫\實作相關DOC\HG-KSEOS\construction-acceptance-prompt-compiler\construction-acceptance-prompt-compiler
+# exit_code: 0
+------------------------------------------------------------------------------
+48a3fdc5a0c65d4279c27ebc7586e747ba86c4bde82535cad2512d43547b4acb
+

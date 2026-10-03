@@ -1,0 +1,79 @@
+{
+ "schema": "SWOF-W2-CORRECTIVE-ROUND-RECEIPT/1",
+ "round": "CORRECTIVE_CW2",
+ "superseded_subject": "4469813c086b864cfd82383400a11ce2831b8433",
+ "new_candidate": "ec16ed371953cf5262e1548ca9b746556777ffa6",
+ "branch": "wo/swof-w2-security-effect-assurance",
+ "ordering": {
+  "round_opened_seq": 12,
+  "write_permitted_seq": 13,
+  "applied_seq": 14,
+  "permit_precedes_corrective_write": true,
+  "stream_contiguous": true,
+  "attempt_counter_note": "the applied edge reuses the EXECUTING->VERIFYING pair of the initial round, so the governance attempt/repair counter was advanced exactly as begin_repair() does, making the two boundaries distinct events"
+ },
+ "writer": "codex (tracked mutation writer)",
+ "writer_log": "writer_logs/CODEX_CORRECTIVE_CW2.jsonl",
+ "writer_log_sha256": "637ec871f639c1609ad7f1c503ff9c1a695fb3587aa5857b00824ebcf65dc3d7",
+ "allowed_write_sets": [
+  "src/security/",
+  "src/effect/",
+  "src/assurance/"
+ ],
+ "affected_roots": {
+  "src/security/tests": {
+   "ran": 183,
+   "exit_code": 0,
+   "ok": true,
+   "count_moved": true,
+   "pre_repair_count": 177,
+   "raw_log": "writer_logs/CORRECTIVE_CW2_src_security_tests.log",
+   "sha256": "4b5f26ede03c37ea15683d29acdcfd2f2ecd60c1ef72ab3f18a9a3f84af23dfb"
+  },
+  "src/effect/tests": {
+   "ran": 105,
+   "exit_code": 0,
+   "ok": true,
+   "count_moved": true,
+   "pre_repair_count": 100,
+   "raw_log": "writer_logs/CORRECTIVE_CW2_src_effect_tests.log",
+   "sha256": "50251dbd4423b1d75fd05b408d7be7439df80bb8a5f46475948f7e8411bc185f"
+  },
+  "src/assurance/tests": {
+   "ran": 128,
+   "exit_code": 0,
+   "ok": true,
+   "count_moved": true,
+   "pre_repair_count": 116,
+   "raw_log": "writer_logs/CORRECTIVE_CW2_src_assurance_tests.log",
+   "sha256": "3d4bbb6b0849464c5f79849011bf3ccd1b8b5efad14a217696c4a7378ef7db3f"
+  }
+ },
+ "delta_vs_superseded": [
+  "src/assurance/README.md",
+  "src/assurance/evidence.py",
+  "src/assurance/journal.py",
+  "src/assurance/oracle.py",
+  "src/assurance/tests/test_adversarial.py",
+  "src/assurance/tests/test_evidence.py",
+  "src/assurance/tests/test_journal.py",
+  "src/assurance/tests/test_oracle.py",
+  "src/effect/README.md",
+  "src/effect/idempotency.py",
+  "src/effect/substrate.py",
+  "src/effect/tests/test_adversarial.py",
+  "src/effect/tests/test_idempotency.py",
+  "src/security/classification.py",
+  "src/security/tests/test_adversarial.py",
+  "src/security/tests/test_classification.py"
+ ],
+ "delta_count": 16,
+ "findings_closed": [
+  "TC-W2-R2-01",
+  "TC-W2-R2-02",
+  "TC-W2-R2-03",
+  "TC-W2-R2-04",
+  "TC-W2-R2-05"
+ ],
+ "generated_at_utc": "2026-10-03T17:10:55Z"
+}

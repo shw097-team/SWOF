@@ -1,0 +1,41 @@
+{
+ "schema": "SWOF-W2-WRITESET-CONTAINMENT/1",
+ "workorder_id": "WO-SWOF-W2-003",
+ "admitted": [
+  "src/assurance/",
+  "schemas/assurance/"
+ ],
+ "changed_paths": [
+  "schemas/assurance/",
+  "src/assurance/"
+ ],
+ "outside_write_set": [],
+ "reverted": [],
+ "containment_ok": true,
+ "repaired_by": "revert/delete of the out-of-scope paths; the write-set was NOT widened",
+ "changed_after_repair": [
+  "schemas/assurance/",
+  "src/assurance/"
+ ],
+ "workorder_base": "26873f6208720f7962060ef876bde8628d1f679a",
+ "workorder_delta": [
+  "schemas/assurance/README.md",
+  "schemas/assurance/acceptance_predicate.schema.json",
+  "schemas/assurance/evidence_plan.schema.json",
+  "src/assurance/README.md",
+  "src/assurance/__init__.py",
+  "src/assurance/evidence.py",
+  "src/assurance/journal.py",
+  "src/assurance/oracle.py",
+  "src/assurance/predicate.py",
+  "src/assurance/sod.py",
+  "src/assurance/tests/__init__.py",
+  "src/assurance/tests/test_adversarial.py",
+  "src/assurance/tests/test_evidence.py",
+  "src/assurance/tests/test_journal.py",
+  "src/assurance/tests/test_oracle.py",
+  "src/assurance/tests/test_predicate.py",
+  "src/assurance/tests/test_sod.py"
+ ],
+ "workorder_delta_out_of_scope": []
+}

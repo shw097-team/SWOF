@@ -1,0 +1,595 @@
+{
+ "schema": "SWOF-GATE-CALIBRATION-SET/1",
+ "wave": "W2",
+ "order_id": "SWOF-CONSTRUCTION-002-W2",
+ "calibrated_at_utc": "2026-10-03T15:03:29Z",
+ "security_minimum_strictness": "S3",
+ "rows": [
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-W2-0",
+   "objective_function": "the canonical compiler validates the W2 C0-C9 contract, so the compiled task contract is deterministic rather than prose",
+   "risk_tier": "S3",
+   "strictness": {
+    "required_predicates": [
+     "lint+activation+acceptance+compile+duplication all PROMPT_COMPILE_PASS with raw receipts"
+    ],
+    "threshold_or_exact_condition": "lint+activation+acceptance+compile+duplication all PROMPT_COMPILE_PASS with raw receipts"
+   },
+   "positive_case": "five subcommands exit 0 and each raw stdout is persisted with its own sha256",
+   "negative_cases": [
+    "absent bundle or a schema-violating contract => PROMPT_COMPILE_BLOCKED"
+   ],
+   "adversarial_cases": [
+    "absent bundle or a schema-violating contract => PROMPT_COMPILE_BLOCKED"
+   ],
+   "false_positive_defense": "a `compiler_pass: true` boolean cannot stand in for the compiler output",
+   "false_negative_defense": "duplication is measured against the RBWI and the compiler SKILL, not self-referential",
+   "regression_baseline": {
+    "baseline_id": "SWOF-W1-ACCEPTED-7e1f912d",
+    "value": "accepted W1 six-root baseline (113 tests) + the W2 subsystem roots; the denominator may only GROW, never shrink",
+    "deliberate_allowed_delta": [
+     "denominator growth only"
+    ]
+   },
+   "anti_overfit": {
+    "holdout_or_cross_slice": [
+     "W1 R2/R3/R4 rejected subjects retained as negative fixtures",
+     "adversarial fixtures are stated per gate, not derived from the implementation"
+    ],
+    "metric_improved_objective_worse_case": "REQUIRED"
+   },
+   "deterministic_oracle": {
+    "id": "prompt_contract_compiler.py {lint,activation,acceptance,compile,duplication}"
+   },
+   "llm_judge_policy": {
+    "role": "DISALLOWED",
+    "rubric_id": null,
+    "pair_order_counterbalance": "REQUIRED_IF_USED",
+    "order_a_b_result": null,
+    "order_b_a_result": null,
+    "disagreement_policy": "OPEN_TT_AND_CALIBRATE"
+   },
+   "human_calibration": "REQUIRED_IF_SECURITY_RISK_APPETITE_CHANGES",
+   "raw_evidence_required": [
+    "raw command output with its own sha256, never a summary boolean"
+   ],
+   "tt_cr": {
+    "on_uncertainty": "OPEN",
+    "owner": "construction-commander",
+    "close_evidence": []
+   },
+   "fail_closed_on": [
+    "objective_mismatch",
+    "stale_or_foreign_evidence",
+    "missing_raw_evidence",
+    "proxy_pass_only",
+    "subject_identity_change",
+    "checker_equals_producer"
+   ],
+   "gate_result": "PASS",
+   "proxy_pass_forbidden": true
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-W2-1",
+   "objective_function": "no W2 source byte is written before the authoritative binding and mutation permit",
+   "risk_tier": "S3",
+   "strictness": {
+    "required_predicates": [
+     "monotonic project_transitions.rowid: binding_seq < permit_seq <= writer_start_seq < first_write_seq, on a contiguous stream"
+    ],
+    "threshold_or_exact_condition": "monotonic project_transitions.rowid: binding_seq < permit_seq <= writer_start_seq < first_write_seq, on a contiguous stream"
+   },
+   "positive_case": "rows 1..n contiguous with BIND < PERMIT < FIRST_WRITE",
+   "negative_cases": [
+    "a source commit whose time precedes the permit, or any missing permit row => FAIL_MUTATION_ORDERING"
+   ],
+   "adversarial_cases": [
+    "a source commit whose time precedes the permit, or any missing permit row => FAIL_MUTATION_ORDERING"
+   ],
+   "false_positive_defense": "wall-clock comparison alone does NOT pass this gate",
+   "false_negative_defense": "rowid is DB-generated and append-only; the writer cannot choose or backdate it",
+   "regression_baseline": {
+    "baseline_id": "SWOF-W1-ACCEPTED-7e1f912d",
+    "value": "accepted W1 six-root baseline (113 tests) + the W2 subsystem roots; the denominator may only GROW, never shrink",
+    "deliberate_allowed_delta": [
+     "denominator growth only"
+    ]
+   },
+   "anti_overfit": {
+    "holdout_or_cross_slice": [
+     "W1 R2/R3/R4 rejected subjects retained as negative fixtures",
+     "adversarial fixtures are stated per gate, not derived from the implementation"
+    ],
+    "metric_improved_objective_worse_case": "REQUIRED"
+   },
+   "deterministic_oracle": {
+    "id": "sqlite readback of project_transitions + canonical_events for the W2 project"
+   },
+   "llm_judge_policy": {
+    "role": "DISALLOWED",
+    "rubric_id": null,
+    "pair_order_counterbalance": "REQUIRED_IF_USED",
+    "order_a_b_result": null,
+    "order_b_a_result": null,
+    "disagreement_policy": "OPEN_TT_AND_CALIBRATE"
+   },
+   "human_calibration": "REQUIRED_IF_SECURITY_RISK_APPETITE_CHANGES",
+   "raw_evidence_required": [
+    "raw command output with its own sha256, never a summary boolean"
+   ],
+   "tt_cr": {
+    "on_uncertainty": "OPEN",
+    "owner": "construction-commander",
+    "close_evidence": []
+   },
+   "fail_closed_on": [
+    "objective_mismatch",
+    "stale_or_foreign_evidence",
+    "missing_raw_evidence",
+    "proxy_pass_only",
+    "subject_identity_change",
+    "checker_equals_producer"
+   ],
+   "gate_result": "PASS",
+   "proxy_pass_forbidden": true
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-W2-2",
+   "objective_function": "every mutation stays inside its own admitted write-set",
+   "risk_tier": "S2",
+   "strictness": {
+    "required_predicates": [
+     "each changed path matches the admitted glob set of exactly one admitted WorkOrder"
+    ],
+    "threshold_or_exact_condition": "each changed path matches the admitted glob set of exactly one admitted WorkOrder"
+   },
+   "positive_case": "containment_ok for all four WorkOrders after the write",
+   "negative_cases": [
+    "a path outside the admitted set => FAIL_WRITE_SET_CONTAINMENT (repair by deletion, never by widening the write-set)"
+   ],
+   "adversarial_cases": [
+    "a path outside the admitted set => FAIL_WRITE_SET_CONTAINMENT (repair by deletion, never by widening the write-set)"
+   ],
+   "false_positive_defense": "a plausible-looking subsystem directory is not an entitlement",
+   "false_negative_defense": "the containment check re-reads the on-disk paths after the write, not the plan",
+   "regression_baseline": {
+    "baseline_id": "SWOF-W1-ACCEPTED-7e1f912d",
+    "value": "accepted W1 six-root baseline (113 tests) + the W2 subsystem roots; the denominator may only GROW, never shrink",
+    "deliberate_allowed_delta": [
+     "denominator growth only"
+    ]
+   },
+   "anti_overfit": {
+    "holdout_or_cross_slice": [
+     "W1 R2/R3/R4 rejected subjects retained as negative fixtures",
+     "adversarial fixtures are stated per gate, not derived from the implementation"
+    ],
+    "metric_improved_objective_worse_case": "REQUIRED"
+   },
+   "deterministic_oracle": {
+    "id": "git diff --name-only baseline..candidate + per-WorkOrder glob match"
+   },
+   "llm_judge_policy": {
+    "role": "DISALLOWED",
+    "rubric_id": null,
+    "pair_order_counterbalance": "REQUIRED_IF_USED",
+    "order_a_b_result": null,
+    "order_b_a_result": null,
+    "disagreement_policy": "OPEN_TT_AND_CALIBRATE"
+   },
+   "human_calibration": "REQUIRED_IF_SECURITY_RISK_APPETITE_CHANGES",
+   "raw_evidence_required": [
+    "raw command output with its own sha256, never a summary boolean"
+   ],
+   "tt_cr": {
+    "on_uncertainty": "OPEN",
+    "owner": "construction-commander",
+    "close_evidence": []
+   },
+   "fail_closed_on": [
+    "objective_mismatch",
+    "stale_or_foreign_evidence",
+    "missing_raw_evidence",
+    "proxy_pass_only",
+    "subject_identity_change",
+    "checker_equals_producer"
+   ],
+   "gate_result": "PASS",
+   "proxy_pass_forbidden": true
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-W2-3",
+   "objective_function": "security, privacy and rights decisions fail closed under adversarial input",
+   "risk_tier": "S3",
+   "strictness": {
+    "required_predicates": [
+     "deny-by-default permission envelope; unknown action/scope => DENY; every adversarial fixture refused with a typed error"
+    ],
+    "threshold_or_exact_condition": "deny-by-default permission envelope; unknown action/scope => DENY; every adversarial fixture refused with a typed error"
+   },
+   "positive_case": "an admitted action is allowed, external content is labelled DATA, a redacted evidence item round-trips",
+   "negative_cases": [
+    "permission expansion, injected authority override, secret exfiltration, malicious tool output, HumanGate bypass => refused"
+   ],
+   "adversarial_cases": [
+    "permission expansion, injected authority override, secret exfiltration, malicious tool output, HumanGate bypass => refused"
+   ],
+   "false_positive_defense": "provider success, a local metric or the presence of a policy file cannot override a veto",
+   "false_negative_defense": "least privilege is asserted on the DECISION, not on the absence of an exception",
+   "regression_baseline": {
+    "baseline_id": "SWOF-W1-ACCEPTED-7e1f912d",
+    "value": "accepted W1 six-root baseline (113 tests) + the W2 subsystem roots; the denominator may only GROW, never shrink",
+    "deliberate_allowed_delta": [
+     "denominator growth only"
+    ]
+   },
+   "anti_overfit": {
+    "holdout_or_cross_slice": [
+     "W1 R2/R3/R4 rejected subjects retained as negative fixtures",
+     "adversarial fixtures are stated per gate, not derived from the implementation"
+    ],
+    "metric_improved_objective_worse_case": "REQUIRED"
+   },
+   "deterministic_oracle": {
+    "id": "src/security/tests adversarial suite (deterministic, stdlib only)"
+   },
+   "llm_judge_policy": {
+    "role": "DISALLOWED",
+    "rubric_id": null,
+    "pair_order_counterbalance": "REQUIRED_IF_USED",
+    "order_a_b_result": null,
+    "order_b_a_result": null,
+    "disagreement_policy": "OPEN_TT_AND_CALIBRATE"
+   },
+   "human_calibration": "REQUIRED_IF_SECURITY_RISK_APPETITE_CHANGES",
+   "raw_evidence_required": [
+    "raw command output with its own sha256, never a summary boolean"
+   ],
+   "tt_cr": {
+    "on_uncertainty": "OPEN",
+    "owner": "construction-commander",
+    "close_evidence": []
+   },
+   "fail_closed_on": [
+    "objective_mismatch",
+    "stale_or_foreign_evidence",
+    "missing_raw_evidence",
+    "proxy_pass_only",
+    "subject_identity_change",
+    "checker_equals_producer"
+   ],
+   "gate_result": "PASS",
+   "proxy_pass_forbidden": true
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-W2-4",
+   "objective_function": "effect state is decided by readback, never by provider/tool response",
+   "risk_tier": "S3",
+   "strictness": {
+    "required_predicates": [
+     "a state may reach RECONCILED only with a matching readback and correlation id; otherwise it stays UNKNOWN_EFFECT"
+    ],
+    "threshold_or_exact_condition": "a state may reach RECONCILED only with a matching readback and correlation id; otherwise it stays UNKNOWN_EFFECT"
+   },
+   "positive_case": "readback-confirmed effect reaches RECONCILED",
+   "negative_cases": [
+    "apparent success without readback, ambiguous response, duplicate retry, partial effect, stale readback, wrong subject, reconciliation mismatch, denied permission"
+   ],
+   "adversarial_cases": [
+    "apparent success without readback, ambiguous response, duplicate retry, partial effect, stale readback, wrong subject, reconciliation mismatch, denied permission"
+   ],
+   "false_positive_defense": "a provider 200 is an OBSERVATION, never a world-state success",
+   "false_negative_defense": "the substrate is exercised on local/simulated fixtures; no live effect is claimed",
+   "regression_baseline": {
+    "baseline_id": "SWOF-W1-ACCEPTED-7e1f912d",
+    "value": "accepted W1 six-root baseline (113 tests) + the W2 subsystem roots; the denominator may only GROW, never shrink",
+    "deliberate_allowed_delta": [
+     "denominator growth only"
+    ]
+   },
+   "anti_overfit": {
+    "holdout_or_cross_slice": [
+     "W1 R2/R3/R4 rejected subjects retained as negative fixtures",
+     "adversarial fixtures are stated per gate, not derived from the implementation"
+    ],
+    "metric_improved_objective_worse_case": "REQUIRED"
+   },
+   "deterministic_oracle": {
+    "id": "src/effect/tests adversarial suite"
+   },
+   "llm_judge_policy": {
+    "role": "DISALLOWED",
+    "rubric_id": null,
+    "pair_order_counterbalance": "REQUIRED_IF_USED",
+    "order_a_b_result": null,
+    "order_b_a_result": null,
+    "disagreement_policy": "OPEN_TT_AND_CALIBRATE"
+   },
+   "human_calibration": "REQUIRED_IF_SECURITY_RISK_APPETITE_CHANGES",
+   "raw_evidence_required": [
+    "raw command output with its own sha256, never a summary boolean"
+   ],
+   "tt_cr": {
+    "on_uncertainty": "OPEN",
+    "owner": "construction-commander",
+    "close_evidence": []
+   },
+   "fail_closed_on": [
+    "objective_mismatch",
+    "stale_or_foreign_evidence",
+    "missing_raw_evidence",
+    "proxy_pass_only",
+    "subject_identity_change",
+    "checker_equals_producer"
+   ],
+   "gate_result": "PASS",
+   "proxy_pass_forbidden": true
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-W2-5",
+   "objective_function": "the evidence envelope accepts only subject-bound, checker-separated raw evidence",
+   "risk_tier": "S3",
+   "strictness": {
+    "required_predicates": [
+     "AcceptancePredicate + deterministic Oracle + EvidencePlan; every rejection class raises its own typed error"
+    ],
+    "threshold_or_exact_condition": "AcceptancePredicate + deterministic Oracle + EvidencePlan; every rejection class raises its own typed error"
+   },
+   "positive_case": "a complete plan on the exact subject PASSes with first-failure semantics",
+   "negative_cases": [
+    "forged summary without raw proof, wrong SHA with plausible content, maker-as-checker, checker mutation attempt, evidence tamper, stale pre-mutation object marked direct-final, branch-tip substitution"
+   ],
+   "adversarial_cases": [
+    "forged summary without raw proof, wrong SHA with plausible content, maker-as-checker, checker mutation attempt, evidence tamper, stale pre-mutation object marked direct-final, branch-tip substitution"
+   ],
+   "false_positive_defense": "hash equality alone proves transport, not meaning: internal subject identity is compared separately",
+   "false_negative_defense": "each rejection fixture is injected, so the checker cannot be vacuous",
+   "regression_baseline": {
+    "baseline_id": "SWOF-W1-ACCEPTED-7e1f912d",
+    "value": "accepted W1 six-root baseline (113 tests) + the W2 subsystem roots; the denominator may only GROW, never shrink",
+    "deliberate_allowed_delta": [
+     "denominator growth only"
+    ]
+   },
+   "anti_overfit": {
+    "holdout_or_cross_slice": [
+     "W1 R2/R3/R4 rejected subjects retained as negative fixtures",
+     "adversarial fixtures are stated per gate, not derived from the implementation"
+    ],
+    "metric_improved_objective_worse_case": "REQUIRED"
+   },
+   "deterministic_oracle": {
+    "id": "src/assurance/tests adversarial suite"
+   },
+   "llm_judge_policy": {
+    "role": "DISALLOWED",
+    "rubric_id": null,
+    "pair_order_counterbalance": "REQUIRED_IF_USED",
+    "order_a_b_result": null,
+    "order_b_a_result": null,
+    "disagreement_policy": "OPEN_TT_AND_CALIBRATE"
+   },
+   "human_calibration": "REQUIRED_IF_SECURITY_RISK_APPETITE_CHANGES",
+   "raw_evidence_required": [
+    "raw command output with its own sha256, never a summary boolean"
+   ],
+   "tt_cr": {
+    "on_uncertainty": "OPEN",
+    "owner": "construction-commander",
+    "close_evidence": []
+   },
+   "fail_closed_on": [
+    "objective_mismatch",
+    "stale_or_foreign_evidence",
+    "missing_raw_evidence",
+    "proxy_pass_only",
+    "subject_identity_change",
+    "checker_equals_producer"
+   ],
+   "gate_result": "PASS",
+   "proxy_pass_forbidden": true
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-W2-6",
+   "objective_function": "maker and checker are mechanically separated",
+   "risk_tier": "S3",
+   "strictness": {
+    "required_predicates": [
+     "producer != checker identity, and the checker write path is read-only"
+    ],
+    "threshold_or_exact_condition": "producer != checker identity, and the checker write path is read-only"
+   },
+   "positive_case": "the SoD probe accepts a distinct checker and refuses a self-certification",
+   "negative_cases": [
+    "producer == checker, or a checker that writes product code/evaluator logic => FAIL_SOD"
+   ],
+   "adversarial_cases": [
+    "producer == checker, or a checker that writes product code/evaluator logic => FAIL_SOD"
+   ],
+   "false_positive_defense": "the same model identity cannot issue the final acceptance",
+   "false_negative_defense": "the read-only enforcement is asserted on the real guard, not on convention",
+   "regression_baseline": {
+    "baseline_id": "SWOF-W1-ACCEPTED-7e1f912d",
+    "value": "accepted W1 six-root baseline (113 tests) + the W2 subsystem roots; the denominator may only GROW, never shrink",
+    "deliberate_allowed_delta": [
+     "denominator growth only"
+    ]
+   },
+   "anti_overfit": {
+    "holdout_or_cross_slice": [
+     "W1 R2/R3/R4 rejected subjects retained as negative fixtures",
+     "adversarial fixtures are stated per gate, not derived from the implementation"
+    ],
+    "metric_improved_objective_worse_case": "REQUIRED"
+   },
+   "deterministic_oracle": {
+    "id": "src/assurance/sod.py probe + the independent checker receipt"
+   },
+   "llm_judge_policy": {
+    "role": "DISALLOWED",
+    "rubric_id": null,
+    "pair_order_counterbalance": "REQUIRED_IF_USED",
+    "order_a_b_result": null,
+    "order_b_a_result": null,
+    "disagreement_policy": "OPEN_TT_AND_CALIBRATE"
+   },
+   "human_calibration": "REQUIRED_IF_SECURITY_RISK_APPETITE_CHANGES",
+   "raw_evidence_required": [
+    "raw command output with its own sha256, never a summary boolean"
+   ],
+   "tt_cr": {
+    "on_uncertainty": "OPEN",
+    "owner": "construction-commander",
+    "close_evidence": []
+   },
+   "fail_closed_on": [
+    "objective_mismatch",
+    "stale_or_foreign_evidence",
+    "missing_raw_evidence",
+    "proxy_pass_only",
+    "subject_identity_change",
+    "checker_equals_producer"
+   ],
+   "gate_result": "PASS",
+   "proxy_pass_forbidden": true
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-W2-7",
+   "objective_function": "the accepted W1 dependency cone is not regressed by W2",
+   "risk_tier": "S2",
+   "strictness": {
+    "required_predicates": [
+     "all six accepted W1 roots green at the W2 candidate HEAD, denominator >= 113"
+    ],
+    "threshold_or_exact_condition": "all six accepted W1 roots green at the W2 candidate HEAD, denominator >= 113"
+   },
+   "positive_case": "six roots green, total = 113 + the W2 additions",
+   "negative_cases": [
+    "a red W1 root, or a total below 113 => FAIL_REGRESSION"
+   ],
+   "adversarial_cases": [
+    "a red W1 root, or a total below 113 => FAIL_REGRESSION"
+   ],
+   "false_positive_defense": "a smaller denominator cannot masquerade as green",
+   "false_negative_defense": "each root is discovered separately so a co-located root cannot be silently skipped",
+   "regression_baseline": {
+    "baseline_id": "SWOF-W1-ACCEPTED-7e1f912d",
+    "value": "accepted W1 six-root baseline (113 tests) + the W2 subsystem roots; the denominator may only GROW, never shrink",
+    "deliberate_allowed_delta": [
+     "denominator growth only"
+    ]
+   },
+   "anti_overfit": {
+    "holdout_or_cross_slice": [
+     "W1 R2/R3/R4 rejected subjects retained as negative fixtures",
+     "adversarial fixtures are stated per gate, not derived from the implementation"
+    ],
+    "metric_improved_objective_worse_case": "REQUIRED"
+   },
+   "deterministic_oracle": {
+    "id": "six explicit unittest discover runs, counts summed"
+   },
+   "llm_judge_policy": {
+    "role": "DISALLOWED",
+    "rubric_id": null,
+    "pair_order_counterbalance": "REQUIRED_IF_USED",
+    "order_a_b_result": null,
+    "order_b_a_result": null,
+    "disagreement_policy": "OPEN_TT_AND_CALIBRATE"
+   },
+   "human_calibration": "REQUIRED_IF_SECURITY_RISK_APPETITE_CHANGES",
+   "raw_evidence_required": [
+    "raw command output with its own sha256, never a summary boolean"
+   ],
+   "tt_cr": {
+    "on_uncertainty": "OPEN",
+    "owner": "construction-commander",
+    "close_evidence": []
+   },
+   "fail_closed_on": [
+    "objective_mismatch",
+    "stale_or_foreign_evidence",
+    "missing_raw_evidence",
+    "proxy_pass_only",
+    "subject_identity_change",
+    "checker_equals_producer"
+   ],
+   "gate_result": "PASS",
+   "proxy_pass_forbidden": true
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-W2-8",
+   "objective_function": "the published evidence set is complete, subject-bound and producer/checker separated",
+   "risk_tier": "S3",
+   "strictness": {
+    "required_predicates": [
+     "every required raw artifact present, hash-pinned, correct linkage mode, no secret"
+    ],
+    "threshold_or_exact_condition": "every required raw artifact present, hash-pinned, correct linkage mode, no secret"
+   },
+   "positive_case": "SWOF-EVIDENCE-RETURN-PACK/1 validates with zero invalid links",
+   "negative_cases": [
+    "summary-only proxy, missing raw item, producer==checker or a secret finding => FAIL/TEMP_CLOSED_EVIDENCE"
+   ],
+   "adversarial_cases": [
+    "summary-only proxy, missing raw item, producer==checker or a secret finding => FAIL/TEMP_CLOSED_EVIDENCE"
+   ],
+   "false_positive_defense": "a declared boolean is not evidence; each command's raw output is its own artifact",
+   "false_negative_defense": "linkage is classified per artifact class and the counters are kept separate",
+   "regression_baseline": {
+    "baseline_id": "SWOF-W1-ACCEPTED-7e1f912d",
+    "value": "accepted W1 six-root baseline (113 tests) + the W2 subsystem roots; the denominator may only GROW, never shrink",
+    "deliberate_allowed_delta": [
+     "denominator growth only"
+    ]
+   },
+   "anti_overfit": {
+    "holdout_or_cross_slice": [
+     "W1 R2/R3/R4 rejected subjects retained as negative fixtures",
+     "adversarial fixtures are stated per gate, not derived from the implementation"
+    ],
+    "metric_improved_objective_worse_case": "REQUIRED"
+   },
+   "deterministic_oracle": {
+    "id": "SWOF-EVIDENCE-RETURN-PACK/1 builder + validator + secret scan"
+   },
+   "llm_judge_policy": {
+    "role": "DISALLOWED",
+    "rubric_id": null,
+    "pair_order_counterbalance": "REQUIRED_IF_USED",
+    "order_a_b_result": null,
+    "order_b_a_result": null,
+    "disagreement_policy": "OPEN_TT_AND_CALIBRATE"
+   },
+   "human_calibration": "REQUIRED_IF_SECURITY_RISK_APPETITE_CHANGES",
+   "raw_evidence_required": [
+    "raw command output with its own sha256, never a summary boolean"
+   ],
+   "tt_cr": {
+    "on_uncertainty": "OPEN",
+    "owner": "construction-commander",
+    "close_evidence": []
+   },
+   "fail_closed_on": [
+    "objective_mismatch",
+    "stale_or_foreign_evidence",
+    "missing_raw_evidence",
+    "proxy_pass_only",
+    "subject_identity_change",
+    "checker_equals_producer"
+   ],
+   "gate_result": "PASS",
+   "proxy_pass_forbidden": true
+  }
+ ],
+ "row_count": 9
+}

@@ -1,0 +1,49 @@
+{
+ "schema": "SWOF-W2-MUTATION-PERMIT-RECEIPT/1",
+ "mutation_permit_id": "PERMIT-SWOF-W2-001",
+ "workorder_ids": [
+  "WO-SWOF-W2-001",
+  "WO-SWOF-W2-002",
+  "WO-SWOF-W2-003",
+  "WO-SWOF-W2-004"
+ ],
+ "binding_ids": [
+  "BIND-WO-SWOF-W2-001",
+  "BIND-WO-SWOF-W2-002",
+  "BIND-WO-SWOF-W2-003",
+  "BIND-WO-SWOF-W2-004"
+ ],
+ "permit_baseline": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "baseline_equals_accepted_w1_source": true,
+ "permit_write_sets": {
+  "WO-SWOF-W2-001": [
+   "src/security/*",
+   "schemas/security/*"
+  ],
+  "WO-SWOF-W2-002": [
+   "src/effect/*",
+   "schemas/effect/*"
+  ],
+  "WO-SWOF-W2-003": [
+   "src/assurance/*",
+   "schemas/assurance/*"
+  ],
+  "WO-SWOF-W2-004": [
+   "src/observability/*",
+   "schemas/observability/*",
+   "README.md",
+   "AGENTS.md",
+   "config/workspace.json",
+   "docs/constitution/non-goals.md"
+  ]
+ },
+ "permit_write_sets_equal_admitted": true,
+ "binding_effective_seq": 8,
+ "permit_seq": 9,
+ "permit_after_binding": true,
+ "permit_transition_id": "TR-8F82CB11A4",
+ "permit_is_required_by_writer_route": true,
+ "writer_route": "the tracked writer must assert this permit exists, that it records source_mutation_started=false, and that the tree is still exactly at the baseline before applying any admitted write-set (enforced by w2_05_apply.py preconditions)",
+ "source_mutation_started": false,
+ "generated_at_utc": "2026-10-03T15:03:33Z"
+}

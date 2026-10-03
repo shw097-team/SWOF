@@ -1,0 +1,117 @@
+{
+ "schema": "SWOF-W2-TEST-DENOMINATOR/1",
+ "candidate": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+ "branch": "wo/swof-w2-security-effect-assurance",
+ "worktree_clean_at_test_time": true,
+ "interpreter": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\.venv\\Scripts\\python.exe",
+ "python_version": "3.12.14",
+ "w1_regression": {
+  "roots": [
+   {
+    "label": "tests",
+    "root": "tests",
+    "ran": 16,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w2_candidate_w1_tests.log",
+    "sha256": "1299674549f82e400f13c0a62bf5714c331d974a5fd840d32a3e74ced92c5629"
+   },
+   {
+    "label": "src/fabric/tests",
+    "root": "src/fabric/tests",
+    "ran": 21,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w2_candidate_w1_src_fabric_tests.log",
+    "sha256": "6a538596efd87b535b1a16cd1b26b7aafde7b523b9fd631a5f33304b7698f550"
+   },
+   {
+    "label": "src/knowledge/tests",
+    "root": "src/knowledge/tests",
+    "ran": 25,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w2_candidate_w1_src_knowledge_tests.log",
+    "sha256": "ef0924c3cab4a83280d9caa7e84dafd86d89f0902277651eea867e09197a4f1e"
+   },
+   {
+    "label": "src/admission/tests",
+    "root": "src/admission/tests",
+    "ran": 17,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w2_candidate_w1_src_admission_tests.log",
+    "sha256": "2dec1b77132ff1826b8a8b7af87e4a0163877dc5aa570cd5832bca02ebb2224f"
+   },
+   {
+    "label": "src/profile/tests",
+    "root": "src/profile/tests",
+    "ran": 12,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w2_candidate_w1_src_profile_tests.log",
+    "sha256": "fd7f1e3c65061a6f993e8001683843b787c7c2c4f7dba755ec93ab8d5b092ed8"
+   },
+   {
+    "label": "src/capability/tests",
+    "root": "src/capability/tests",
+    "ran": 22,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w2_candidate_w1_src_capability_tests.log",
+    "sha256": "d66433de46176417bd97c76fcb90ceaa80a7fff8de54371bca122ac3e1a6bbf0"
+   }
+  ],
+  "total": 113,
+  "accepted_baseline": 113,
+  "denominator_preserved": true,
+  "silent_shortfall": false,
+  "all_green": true
+ },
+ "w2_suites": {
+  "roots": [
+   {
+    "label": "src/security/tests",
+    "root": "src/security/tests",
+    "ran": 191,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w2_candidate_w2_src_security_tests.log",
+    "sha256": "5bde48db629d0da0727ff3299e73c4b9a8797e234217634c1cf02fd9155a4cd9"
+   },
+   {
+    "label": "src/effect/tests",
+    "root": "src/effect/tests",
+    "ran": 116,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w2_candidate_w2_src_effect_tests.log",
+    "sha256": "e27d6b1bb24d8a8ab1ab2eb7c82c13bff60f8552a28dda4bef212d3e85478f41"
+   },
+   {
+    "label": "src/assurance/tests",
+    "root": "src/assurance/tests",
+    "ran": 144,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w2_candidate_w2_src_assurance_tests.log",
+    "sha256": "fb7c0c6c8540ef3f90b79371920a321c2cdd570b9d691698ac5248840ed764bb"
+   },
+   {
+    "label": "src/observability/tests",
+    "root": "src/observability/tests",
+    "ran": 102,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w2_candidate_w2_src_observability_tests.log",
+    "sha256": "eb6574dba420400c3a4de4cf3388f67b774508f0988946daf5e07b1cbb80950c"
+   }
+  ],
+  "total": 553,
+  "all_green": true
+ },
+ "grand_total": 666,
+ "zero_denominator_roots": [],
+ "aggregate_pass": true,
+ "generated_at_utc": "2026-10-03T17:48:59Z"
+}

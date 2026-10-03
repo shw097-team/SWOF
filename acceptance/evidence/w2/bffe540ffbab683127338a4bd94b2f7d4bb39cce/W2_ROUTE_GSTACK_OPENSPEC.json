@@ -1,0 +1,105 @@
+{
+ "schema": "ROUTE-CHECK-RECEIPT/1",
+ "task": "SWOF W2 security/effect/assurance substrate (SWOF-CONSTRUCTION-002-W2)",
+ "selected_route": "NATIVE",
+ "reason_code": "NATIVE_DIRECT",
+ "registry_source_basis": "hg_kseos.named_methods route()/registry_snapshot()",
+ "registry_active_selected_count": 8,
+ "registry_active_selected_ids": [
+  "gstack.cso",
+  "gstack.office-hours",
+  "gstack.plan-eng-review",
+  "gstack.qa",
+  "gstack.retro",
+  "gstack.review",
+  "gstack.ship",
+  "openspec"
+ ],
+ "registry_snapshot_keys": [
+  "gstack.cso",
+  "gstack.office-hours",
+  "gstack.plan-eng-review",
+  "gstack.qa",
+  "gstack.retro",
+  "gstack.review",
+  "gstack.ship",
+  "openspec",
+  "spec_kit"
+ ],
+ "route_flows": {
+  "swof-w2-construction": "NATIVE",
+  "kanban-swarm-execution": "NATIVE",
+  "acceptance": "NATIVE",
+  "design": "NATIVE"
+ },
+ "route_details": {
+  "swof-w2-construction": {
+   "selected_route": "NATIVE",
+   "reason_code": "NATIVE_DIRECT",
+   "raw": {
+    "flow": "swof-w2-construction",
+    "provider": null,
+    "state": null,
+    "fallback": null,
+    "final_authority": true,
+    "route": "NATIVE"
+   }
+  },
+  "kanban-swarm-execution": {
+   "selected_route": "NATIVE",
+   "reason_code": "NATIVE_DIRECT",
+   "raw": {
+    "flow": "kanban-swarm-execution",
+    "provider": null,
+    "state": null,
+    "fallback": null,
+    "final_authority": true,
+    "route": "NATIVE"
+   }
+  },
+  "acceptance": {
+   "selected_route": "NATIVE",
+   "reason_code": "NATIVE_DIRECT",
+   "raw": {
+    "flow": "acceptance",
+    "provider": null,
+    "state": null,
+    "fallback": null,
+    "final_authority": true,
+    "route": "NATIVE"
+   }
+  },
+  "design": {
+   "selected_route": "NATIVE",
+   "reason_code": "NATIVE_DIRECT",
+   "raw": {
+    "flow": "design",
+    "provider": null,
+    "state": null,
+    "fallback": null,
+    "final_authority": true,
+    "route": "NATIVE"
+   }
+  }
+ },
+ "execution_surfaces_enabled": [
+  "HGK",
+  "KANBAN",
+  "SWARM",
+  "GSTACK",
+  "OPENSPEC",
+  "CODEX"
+ ],
+ "lane_note": "lane selection decides the orchestrator only; Kanban + Swarm + gstack/OpenSpec check + Codex tracked writes still apply (HGK execution-method invariant #6)",
+ "workorder_ids": [
+  "WO-SWOF-W2-001",
+  "WO-SWOF-W2-002",
+  "WO-SWOF-W2-003",
+  "WO-SWOF-W2-004"
+ ],
+ "runtime_ids": [
+  "RUN-SWOF-W2-001"
+ ],
+ "fallback_degrade": "none",
+ "recorded_at_utc": "2026-10-03T15:21:21Z"
+}

@@ -1,0 +1,94 @@
+{
+ "schema": "SWOF-W2-COMPILER-CURRENTNESS/1",
+ "adjudicated_at_utc": "2026-10-03T15:00:20Z",
+ "policy": "selection is by the governed contract binding, not by mtime or hash majority",
+ "candidates": [
+  {
+   "label": "current_route_candidate",
+   "exact_path": "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\HG-KSEOS\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler_SKILL.md",
+   "exists": true,
+   "bytes": 9396,
+   "mtime_utc": "2026-08-12T07:34:38Z",
+   "sha256": "48a3fdc5a0c65d4279c27ebc7586e747ba86c4bde82535cad2512d43547b4acb"
+  },
+  {
+   "label": "historical_candidate",
+   "exact_path": "C:\\Projects\\Agent_Workspace\\知識庫\\工程基座\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler_SKILL.md",
+   "exists": true,
+   "bytes": 7534,
+   "mtime_utc": "2026-08-09T20:23:18Z",
+   "sha256": "214c7f048f7361fe0bc4a324a0c99aaaf0df4191a430b645b8a97d24620064b6"
+  }
+ ],
+ "support_bundle_members": {
+  "references/source-routing.md": {
+   "present_current": true,
+   "present_historical": true,
+   "sha256_current": "fa9a95e534673e021c8c9af25b70a4b59eb0a78067166e79b925bed06bb5ea59",
+   "sha256_historical": "fa9a95e534673e021c8c9af25b70a4b59eb0a78067166e79b925bed06bb5ea59",
+   "identical": true
+  },
+  "references/prompt-contract.schema.json": {
+   "present_current": true,
+   "present_historical": true,
+   "sha256_current": "cbcc9998cee3ba59f919417aacbc121ab20fc611f1c47c62cafcaa34bbf13612",
+   "sha256_historical": "cbcc9998cee3ba59f919417aacbc121ab20fc611f1c47c62cafcaa34bbf13612",
+   "identical": true
+  },
+  "references/contract-model.md": {
+   "present_current": true,
+   "present_historical": true,
+   "sha256_current": "a2da82dff78893330925ca6c18d2e386619832e523234f2b2039838f6742c47b",
+   "sha256_historical": "a2da82dff78893330925ca6c18d2e386619832e523234f2b2039838f6742c47b",
+   "identical": true
+  },
+  "references/activation-runtime.md": {
+   "present_current": true,
+   "present_historical": true,
+   "sha256_current": "4d69e27dc1176bc3c17062578f9e1d6336154d7b0d9f8e8780bb50b74c25dc29",
+   "sha256_historical": "4d69e27dc1176bc3c17062578f9e1d6336154d7b0d9f8e8780bb50b74c25dc29",
+   "identical": true
+  },
+  "references/acceptance-evidence.md": {
+   "present_current": true,
+   "present_historical": true,
+   "sha256_current": "7c0602976678806c24bc367a1984b1b0a5e9ac94618903bb0c8912bdda47c8b7",
+   "sha256_historical": "7c0602976678806c24bc367a1984b1b0a5e9ac94618903bb0c8912bdda47c8b7",
+   "identical": true
+  },
+  "references/termination-permissions.md": {
+   "present_current": true,
+   "present_historical": true,
+   "sha256_current": "5bedc535d3291434c026383081b2ce50ff428b11e1a1e43f32d34a6d6aa0639d",
+   "sha256_historical": "5bedc535d3291434c026383081b2ce50ff428b11e1a1e43f32d34a6d6aa0639d",
+   "identical": true
+  },
+  "references/rendering-and-antipatterns.md": {
+   "present_current": true,
+   "present_historical": true,
+   "sha256_current": "8db369edec9ca54045ae6eafc54117abe792e34b22f44aaa7edc15f5d65bb47a",
+   "sha256_historical": "8db369edec9ca54045ae6eafc54117abe792e34b22f44aaa7edc15f5d65bb47a",
+   "identical": true
+  },
+  "scripts/prompt_contract_compiler.py": {
+   "present_current": true,
+   "present_historical": true,
+   "sha256_current": "2c282ad6539a465c3b1d751868cab98437a8f35e9728be686117e364a70857d9",
+   "sha256_historical": "2c282ad6539a465c3b1d751868cab98437a8f35e9728be686117e364a70857d9",
+   "identical": true
+  }
+ },
+ "support_bundle_identical_under_both": true,
+ "bundle_member_count": 8,
+ "selected_current_sha256": "48a3fdc5a0c65d4279c27ebc7586e747ba86c4bde82535cad2512d43547b4acb",
+ "superseded_sha256": "214c7f048f7361fe0bc4a324a0c99aaaf0df4191a430b645b8a97d24620064b6",
+ "governed_binding_basis": "SRC-CAPC row rank R5_COMPILER_PROCEDURE role NORMATIVE governs=true at the HG-KSEOS exact path (48a3...), as recorded in the externally-challenged W1 R4EC-OD-001 adjudication",
+ "compiler_script_sha256": "2c282ad6539a465c3b1d751868cab98437a8f35e9728be686117e364a70857d9",
+ "effective_load_readback": {
+  "loads": true,
+  "exit_code": 0,
+  "raw_receipt": "raw_test_logs/compiler_effective_load/EFFECTIVE_LOAD_PROBE.txt",
+  "sha256": "e0eee72aee7e0b2e5f99353ad859195684dd95f5d7aa2a53eec2bccdc9855eb4",
+  "note": "a hash alone is not a load readback; the executable compiler was actually invoked"
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "schema": "SWOF-EXECUTION-BINDING-SET/1",
+ "schema_id": "RP002-EXECUTION-BINDING/2",
+ "bindings": [
+  {
+   "workorder_id": "WO-SWOF-W2-001",
+   "binding_id": "BIND-WO-SWOF-W2-001",
+   "artifact": "BINDING_WO-SWOF-W2-001.json",
+   "sha256": "c891bf8e8111ffcacaff5e61155aa3cf98c29a9f6331ed9498d4f33dd5842f0f"
+  },
+  {
+   "workorder_id": "WO-SWOF-W2-002",
+   "binding_id": "BIND-WO-SWOF-W2-002",
+   "artifact": "BINDING_WO-SWOF-W2-002.json",
+   "sha256": "626713f2147e747ad7cf2cfee4c47bdf627a189e79d6771dba2ab4caf2be0a98"
+  },
+  {
+   "workorder_id": "WO-SWOF-W2-003",
+   "binding_id": "BIND-WO-SWOF-W2-003",
+   "artifact": "BINDING_WO-SWOF-W2-003.json",
+   "sha256": "76002af7cb34a969820bfa9dc5227e3c876b5f89f2e48a74ee78fd3e711f986b"
+  },
+  {
+   "workorder_id": "WO-SWOF-W2-004",
+   "binding_id": "BIND-WO-SWOF-W2-004",
+   "artifact": "BINDING_WO-SWOF-W2-004.json",
+   "sha256": "275e38f5752b9ecb14a6c86924f121785c65f1ac183d68677f702fd7a427bb80"
+  }
+ ]
+}

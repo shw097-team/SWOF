@@ -1,0 +1,342 @@
+{
+ "schema": "SWOF-W2-ORDERED-LIFECYCLE-EVENT-SLICE/1",
+ "ordering_table": "project_transitions",
+ "ordering_key": "rowid",
+ "append_only": true,
+ "writer_chooses_key": false,
+ "project_id": "HGK-P0-SWOF-W2",
+ "run_id": "RUN-SWOF-W2-001",
+ "regenerated_reason": "an earlier revision of this slice was a snapshot taken at the first write boundary (rowids 1..9) and became stale once the corrective rounds appended rows 10..17; a reader must never be handed a stale ordering snapshot",
+ "project_transitions": [
+  {
+   "rowid": 1,
+   "transition_id": "TR-09CCE79A30",
+   "from_state": "",
+   "to_state": "PROJECT_CREATED",
+   "trigger": "PROJECT_CREATE",
+   "created_at": "2026-10-03T15:03:34.099591Z"
+  },
+  {
+   "rowid": 2,
+   "transition_id": "TR-D6A637519E",
+   "from_state": "PROJECT_CREATED",
+   "to_state": "SOURCE_DISCOVERY",
+   "trigger": "W2_SOURCE_DISCOVERY",
+   "created_at": "2026-10-03T15:03:34.125096Z"
+  },
+  {
+   "rowid": 3,
+   "transition_id": "TR-14EE5B69ED",
+   "from_state": "SOURCE_DISCOVERY",
+   "to_state": "SOURCE_ADMISSION",
+   "trigger": "W2_SOURCE_ADMISSION",
+   "created_at": "2026-10-03T15:03:34.148097Z"
+  },
+  {
+   "rowid": 4,
+   "transition_id": "TR-573085950A",
+   "from_state": "SOURCE_ADMISSION",
+   "to_state": "INTENT_BOUND",
+   "trigger": "W2_INTENT_BOUND",
+   "created_at": "2026-10-03T15:03:34.171096Z"
+  },
+  {
+   "rowid": 5,
+   "transition_id": "TR-60910BBDD0",
+   "from_state": "INTENT_BOUND",
+   "to_state": "REQUIREMENTS_READY",
+   "trigger": "W2_REQUIREMENTS_READY",
+   "created_at": "2026-10-03T15:03:34.193097Z"
+  },
+  {
+   "rowid": 6,
+   "transition_id": "TR-281A7DB675",
+   "from_state": "REQUIREMENTS_READY",
+   "to_state": "DESIGN_READY",
+   "trigger": "W2_DESIGN_READY",
+   "created_at": "2026-10-03T15:03:34.221096Z"
+  },
+  {
+   "rowid": 7,
+   "transition_id": "TR-67D67A22D7",
+   "from_state": "DESIGN_READY",
+   "to_state": "PLAN_READY",
+   "trigger": "W2_PLAN_READY",
+   "created_at": "2026-10-03T15:03:34.248097Z"
+  },
+  {
+   "rowid": 8,
+   "transition_id": "TR-11035AB7E8",
+   "from_state": "PLAN_READY",
+   "to_state": "WORKORDERS_ADMITTED",
+   "trigger": "W2_WORKORDERS_ADMITTED",
+   "created_at": "2026-10-03T15:03:34.621632Z"
+  },
+  {
+   "rowid": 9,
+   "transition_id": "TR-8F82CB11A4",
+   "from_state": "WORKORDERS_ADMITTED",
+   "to_state": "EXECUTING",
+   "trigger": "MUTATION_PERMIT_ISSUED",
+   "created_at": "2026-10-03T15:03:34.630632Z"
+  },
+  {
+   "rowid": 10,
+   "transition_id": "TR-EF1A97CC49",
+   "from_state": "EXECUTING",
+   "to_state": "VERIFYING",
+   "trigger": "FIRST_WRITE_BOUNDARY_CROSSED",
+   "created_at": "2026-10-03T16:13:14.582867Z"
+  },
+  {
+   "rowid": 11,
+   "transition_id": "TR-3069EF78DC",
+   "from_state": "VERIFYING",
+   "to_state": "EVOLUTION_REVIEW",
+   "trigger": "W2_CORRECTIVE_ROUND_OPENED",
+   "created_at": "2026-10-03T16:21:29.805050Z"
+  },
+  {
+   "rowid": 12,
+   "transition_id": "TR-8F831F3AF1",
+   "from_state": "EVOLUTION_REVIEW",
+   "to_state": "REPAIRING",
+   "trigger": "W2_CORRECTIVE_CW2_ROUND_OPENED",
+   "created_at": "2026-10-03T16:55:57.545135Z"
+  },
+  {
+   "rowid": 13,
+   "transition_id": "TR-21ECF49D97",
+   "from_state": "REPAIRING",
+   "to_state": "EXECUTING",
+   "trigger": "W2_CORRECTIVE_CW2_WRITE_PERMITTED",
+   "created_at": "2026-10-03T16:55:57.570134Z"
+  },
+  {
+   "rowid": 14,
+   "transition_id": "TR-E00C69DD3F",
+   "from_state": "EXECUTING",
+   "to_state": "VERIFYING",
+   "trigger": "W2_CORRECTIVE_CW2_APPLIED",
+   "created_at": "2026-10-03T17:10:55.144758Z"
+  },
+  {
+   "rowid": 15,
+   "transition_id": "TR-4B86E67F72",
+   "from_state": "VERIFYING",
+   "to_state": "REPAIRING",
+   "trigger": "W2_CORRECTIVE_CW3_ROUND_OPENED",
+   "created_at": "2026-10-03T17:22:08.210983Z"
+  },
+  {
+   "rowid": 16,
+   "transition_id": "TR-AEA83CBB82",
+   "from_state": "REPAIRING",
+   "to_state": "EXECUTING",
+   "trigger": "W2_CORRECTIVE_CW3_WRITE_PERMITTED",
+   "created_at": "2026-10-03T17:22:08.266985Z"
+  },
+  {
+   "rowid": 17,
+   "transition_id": "TR-802D6445C9",
+   "from_state": "EXECUTING",
+   "to_state": "VERIFYING",
+   "trigger": "W2_CORRECTIVE_CW3_APPLIED",
+   "created_at": "2026-10-03T17:36:52.773331Z"
+  }
+ ],
+ "contiguous_no_gaps": true,
+ "row_count": 17,
+ "canonical_events": [
+  {
+   "rowid": 1,
+   "event_id": "TR-09CCE79A30",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "",
+   "to_state": "PROJECT_CREATED",
+   "created_at": "2026-10-03T15:03:34.099591Z"
+  },
+  {
+   "rowid": 2,
+   "event_id": "TR-D6A637519E",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "PROJECT_CREATED",
+   "to_state": "SOURCE_DISCOVERY",
+   "created_at": "2026-10-03T15:03:34.125096Z"
+  },
+  {
+   "rowid": 3,
+   "event_id": "TR-14EE5B69ED",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "SOURCE_DISCOVERY",
+   "to_state": "SOURCE_ADMISSION",
+   "created_at": "2026-10-03T15:03:34.148097Z"
+  },
+  {
+   "rowid": 4,
+   "event_id": "TR-573085950A",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "SOURCE_ADMISSION",
+   "to_state": "INTENT_BOUND",
+   "created_at": "2026-10-03T15:03:34.171096Z"
+  },
+  {
+   "rowid": 5,
+   "event_id": "TR-60910BBDD0",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "INTENT_BOUND",
+   "to_state": "REQUIREMENTS_READY",
+   "created_at": "2026-10-03T15:03:34.194097Z"
+  },
+  {
+   "rowid": 6,
+   "event_id": "TR-281A7DB675",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "REQUIREMENTS_READY",
+   "to_state": "DESIGN_READY",
+   "created_at": "2026-10-03T15:03:34.221096Z"
+  },
+  {
+   "rowid": 7,
+   "event_id": "TR-67D67A22D7",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "DESIGN_READY",
+   "to_state": "PLAN_READY",
+   "created_at": "2026-10-03T15:03:34.248097Z"
+  },
+  {
+   "rowid": 8,
+   "event_id": "EVT-d292c8d80719ddd2",
+   "entity_type": "requirement",
+   "entity_id": "REQ-HGK-SWOF-W2-001",
+   "from_state": "CANDIDATE",
+   "to_state": "FROZEN",
+   "created_at": "2026-10-03T15:03:34.323610Z"
+  },
+  {
+   "rowid": 9,
+   "event_id": "EVT-1a333e5bb646d8b0",
+   "entity_type": "requirement",
+   "entity_id": "REQ-HGK-SWOF-W2-002",
+   "from_state": "CANDIDATE",
+   "to_state": "FROZEN",
+   "created_at": "2026-10-03T15:03:34.434116Z"
+  },
+  {
+   "rowid": 10,
+   "event_id": "EVT-fe319b0b96670d72",
+   "entity_type": "requirement",
+   "entity_id": "REQ-HGK-SWOF-W2-003",
+   "from_state": "CANDIDATE",
+   "to_state": "FROZEN",
+   "created_at": "2026-10-03T15:03:34.481118Z"
+  },
+  {
+   "rowid": 11,
+   "event_id": "EVT-13033c3bac4d322a",
+   "entity_type": "requirement",
+   "entity_id": "REQ-HGK-SWOF-W2-004",
+   "from_state": "CANDIDATE",
+   "to_state": "FROZEN",
+   "created_at": "2026-10-03T15:03:34.526631Z"
+  },
+  {
+   "rowid": 12,
+   "event_id": "TR-11035AB7E8",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "PLAN_READY",
+   "to_state": "WORKORDERS_ADMITTED",
+   "created_at": "2026-10-03T15:03:34.621632Z"
+  },
+  {
+   "rowid": 13,
+   "event_id": "TR-8F82CB11A4",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "WORKORDERS_ADMITTED",
+   "to_state": "EXECUTING",
+   "created_at": "2026-10-03T15:03:34.630632Z"
+  },
+  {
+   "rowid": 14,
+   "event_id": "TR-EF1A97CC49",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "EXECUTING",
+   "to_state": "VERIFYING",
+   "created_at": "2026-10-03T16:13:14.582867Z"
+  },
+  {
+   "rowid": 15,
+   "event_id": "TR-3069EF78DC",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "VERIFYING",
+   "to_state": "EVOLUTION_REVIEW",
+   "created_at": "2026-10-03T16:21:29.805050Z"
+  },
+  {
+   "rowid": 16,
+   "event_id": "TR-8F831F3AF1",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "EVOLUTION_REVIEW",
+   "to_state": "REPAIRING",
+   "created_at": "2026-10-03T16:55:57.545135Z"
+  },
+  {
+   "rowid": 17,
+   "event_id": "TR-21ECF49D97",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "REPAIRING",
+   "to_state": "EXECUTING",
+   "created_at": "2026-10-03T16:55:57.570134Z"
+  },
+  {
+   "rowid": 18,
+   "event_id": "TR-E00C69DD3F",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "EXECUTING",
+   "to_state": "VERIFYING",
+   "created_at": "2026-10-03T17:10:55.144758Z"
+  },
+  {
+   "rowid": 19,
+   "event_id": "TR-4B86E67F72",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "VERIFYING",
+   "to_state": "REPAIRING",
+   "created_at": "2026-10-03T17:22:08.210983Z"
+  },
+  {
+   "rowid": 20,
+   "event_id": "TR-AEA83CBB82",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "REPAIRING",
+   "to_state": "EXECUTING",
+   "created_at": "2026-10-03T17:22:08.266985Z"
+  },
+  {
+   "rowid": 21,
+   "event_id": "TR-802D6445C9",
+   "entity_type": "project_lifecycle",
+   "entity_id": "HGK-P0-SWOF-W2",
+   "from_state": "EXECUTING",
+   "to_state": "VERIFYING",
+   "created_at": "2026-10-03T17:36:52.773331Z"
+  }
+ ],
+ "generated_at_utc": "2026-10-03T17:54:38Z"
+}

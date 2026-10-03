@@ -1,0 +1,45 @@
+{
+ "schema": "SWOF-W2-CANDIDATE-FREEZE/1",
+ "candidate": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+ "round": "CORRECTIVE_CW3_FROZEN_ROUND4",
+ "branch": "wo/swof-w2-security-effect-assurance",
+ "worktree_clean": true,
+ "accepted_w1_source_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "accepted_w1_source_is_ancestor": true,
+ "superseded_subjects": [
+  "c7988cdee6783ad69768b75a17d0c97d9ecc02ee",
+  "26873f6208720f7962060ef876bde8628d1f679a",
+  "fb75dae1932331e79a39276d2a5b31a0522b0cb3",
+  "83adb8e1ef97f304d53bfb5d5c7c4c5ba9938ed2",
+  "f05cef1f0f1a184afb4bd4ecaf6248d58a8acabe",
+  "4469813c086b864cfd82383400a11ce2831b8433",
+  "ec16ed371953cf5262e1548ca9b746556777ffa6",
+  "f7ab02db6f6aa02a417965a73da1baac1b162441",
+  "89287e2c67565d9accf7e7ea8ac6b9277600618b",
+  "316f7923b592eed617f6f7941b767ca96ec242e7"
+ ],
+ "denominator_at_freeze": {
+  "w1": 113,
+  "w2": 553,
+  "grand_total": 666
+ },
+ "containment_ok": true,
+ "unassigned": [],
+ "ordering": {
+  "binding": 8,
+  "permit": 9,
+  "first_write": 10
+ },
+ "frozen_for_independent_verification": true,
+ "disclosures": [
+  "CORRECTIVE CW1 (commits f05cef1 + c79/4469813 lineage entry f05cef1) has a round-OPENED edge but NO dedicated write-permit and NO applied edge; its corrective writes were covered by the ORIGINAL wave mutation permit PERMIT-SWOF-W2-001, which authorizes the admitted W2 write-sets. The per-round open/permit/applied triple was introduced from CW2 onward. This is a disclosed record limitation, not a retroactive repair.",
+  "commits 89287e2 and 316f792 together constitute CORRECTIVE CW3 (see W2_CORRECTIVE_CW3_FINAL_RECEIPT.json); neither intermediate subject was handed to a checker",
+  "the count-sync commit was amended to bffe540 before freezing, so its message names the round correctly; no subject a checker ever read was rewritten",
+  "README.md's W2 status row cites only the round-1 independent check; the complete four-round verification history lives in W2_CHECKER_ROUND{1,2,3,4}_FINDINGS.json and the final dossier. This is an incomplete history in a doc string, NOT a false product claim: the row's claim ceiling ('PENDING INDEPENDENT CHECK', not externally accepted) remains correct.",
+  "TT-CR-07 (round 4): Oracle.required_kinds() exposes a declared kind tuple that decide() never consults - a declaration that cannot fail at decision time. Recorded as an open non-blocking hardening item, not a violation of any frozen law."
+ ],
+ "freeze_law": "FREEZE-001: the candidate is frozen for the FINAL round-4 VERIFY_ONLY lane; any further repair waits for the verdict and produces a NEW head plus a NEW verification run",
+ "frozen_at_utc": "2026-10-03T17:54:38Z",
+ "superseded_subjects_complete": true,
+ "superseded_subject_source": "git log --reverse <accepted W1 source>..<candidate> (derived from history, never a hardcoded list)"
+}

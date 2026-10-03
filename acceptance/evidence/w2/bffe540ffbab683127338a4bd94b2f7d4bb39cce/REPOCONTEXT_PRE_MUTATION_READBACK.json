@@ -1,0 +1,44 @@
+{
+ "schema": "SWOF-W2-REPOCONTEXT-PRE-MUTATION-READBACK/1",
+ "read_at_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "read_at_head_equals_accepted_w1_source": true,
+ "branch": "wo/swof-w2-security-effect-assurance",
+ "worktree_clean": true,
+ "untracked_files": [],
+ "repo_root": "C:\\Projects\\Agent_Workspace\\SWOF",
+ "toolchain": {
+  "python": "3.12.14",
+  "git": "git version 2.53.0.windows.1"
+ },
+ "instructions": "AGENTS.md present (read-only consumption); RBWI 10.4 mutation law enforced",
+ "permissions": {
+  "writable": [
+   "AGENTS.md",
+   "README.md",
+   "config/workspace.json",
+   "docs/constitution/non-goals.md",
+   "schemas/assurance/*",
+   "schemas/effect/*",
+   "schemas/observability/*",
+   "schemas/security/*",
+   "src/assurance/*",
+   "src/effect/*",
+   "src/observability/*",
+   "src/security/*"
+  ],
+  "forbidden": [
+   "source corpus",
+   "Fabric",
+   "HG-KSEOS source",
+   "merge/release",
+   "production",
+   "live world effect"
+  ]
+ },
+ "secret_boundary": "no credentials read, printed or written",
+ "fresh_reality": "read at the W2 baseline, not reused from an earlier phase or a post-mutation head",
+ "captured_before_mutation": true,
+ "source_mutation_started": false,
+ "spine_db": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-construction-002-w2\\hgk_spine.sqlite3",
+ "captured_at_utc": "2026-10-03T15:03:33Z"
+}

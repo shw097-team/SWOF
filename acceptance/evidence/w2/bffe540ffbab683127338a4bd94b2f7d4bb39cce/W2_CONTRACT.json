@@ -1,0 +1,1004 @@
+{
+ "schema": "CAPC-PROMPT-CONTRACT/1",
+ "task_id": "SWOF-CONSTRUCTION-002-W2-SECURITY-EFFECT-ASSURANCE-001",
+ "source_scan": {
+  "required_source_families": [
+   "current_user_instruction",
+   "product_authority",
+   "execution_controls",
+   "memory_knowledge_runtime"
+  ],
+  "reviewed": [
+   {
+    "source_family": "current_user_instruction",
+    "source_id": "SRC-R3-PROMPT",
+    "locator": "attachments/SWOF_W2_Executor_Thin_Prompt_v1.md#0-9",
+    "sha256": "a134a2eb6afb0ee00ddcce5822f097846b4efd75ce91fde76bd471a20de2d371",
+    "role": "NORMATIVE",
+    "critical": true
+   },
+   {
+    "source_family": "product_authority",
+    "source_id": "SRC-SWOF-TARGET",
+    "locator": "C:\\Projects\\Agent_Workspace\\SWOF",
+    "sha256": "UNAVAILABLE",
+    "role": "NORMATIVE",
+    "critical": true
+   },
+   {
+    "source_family": "execution_controls",
+    "source_id": "SRC-HGK-CONTROL",
+    "locator": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\src\\hg_kseos",
+    "sha256": "UNAVAILABLE",
+    "role": "NORMATIVE",
+    "critical": true
+   },
+   {
+    "source_family": "memory_knowledge_runtime",
+    "source_id": "SRC-W1-EXTERNAL-CHALLENGE",
+    "locator": "attachments/SWOF_W1_R4_EVIDENCE_ONLY_FINAL_CLOSURE_EXTERNAL_CHALLENGE_REPORT.md",
+    "sha256": "UNAVAILABLE",
+    "role": "SUPPORT",
+    "critical": false
+   }
+  ],
+  "missing": [],
+  "normative_claims": [
+   {
+    "claim_id": "NC-W2-001",
+    "text": "W2 owns the Security/Effect/Assurance substrate: security/negative/adversarial + evidence envelope + checker separation operational for the current scope, with the W1 dependency regression still green. No provider/tool success may imply world-state success and no proxy (test green, coverage, policy-file presence, CI green, LLM-judge score) may stand in for a PASS.",
+    "source_ids": [
+     "SRC-R3-PROMPT",
+     "SRC-SWOF-RBWI",
+     "SRC-HGK-CONTROL"
+    ],
+    "locators": [
+     "attachments/SWOF_W2_Executor_Thin_Prompt_v1.md#1",
+     "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\Fabric vNext\\Semantic World OS Fabric\\SWOF-F_SWOF-GENIE_All-IW_Pre-Dev_Multi-Packages\\SWOF_HGK_ACA_RBWI\\SWOF_HGK_ACA_RBWI.md#10.3",
+     "C:\\\\Projects\\\\Agent_Workspace\\\\HG-KSEOS\\\\src\\\\hg_kseos"
+    ]
+   },
+   {
+    "claim_id": "NC-W2-002",
+    "text": "The accepted W1 source/evidence tuple is immutable INPUT: 7e1f912d... and 84ea30c2... are not repaired, rewritten or superseded merely because another documentation branch exists.",
+    "source_ids": [
+     "SRC-W1-EXTERNAL-CHALLENGE"
+    ],
+    "locators": [
+     "attachments/SWOF_W1_R4_EVIDENCE_ONLY_FINAL_CLOSURE_EXTERNAL_CHALLENGE_REPORT.md#0"
+    ]
+   },
+   {
+    "claim_id": "NC-W2-003",
+    "text": "Every repo-mutating W2 WorkOrder needs fresh_repocontext_ref, pd04_packet_ref, taskspec_ref, ecp_ref and exact requirement/acceptance/evidence edges, and its mutation must be preceded by an authoritative ExecutionBinding and mutation permit on the monotonic HGK lifecycle stream. Missing any one is FAIL_PD04_ROUTE.",
+    "source_ids": [
+     "SRC-SWOF-RBWI",
+     "SRC-HGK-CONTROL"
+    ],
+    "locators": [
+     "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\Fabric vNext\\Semantic World OS Fabric\\SWOF-F_SWOF-GENIE_All-IW_Pre-Dev_Multi-Packages\\SWOF_HGK_ACA_RBWI\\SWOF_HGK_ACA_RBWI.md#10.4",
+     "C:\\\\Projects\\\\Agent_Workspace\\\\HG-KSEOS\\\\src\\\\hg_kseos"
+    ]
+   }
+  ]
+ },
+ "intent": {
+  "goal": "Implement and independently close W2 - the Security/Effect/Assurance substrate - on top of the externally accepted W1 source commit, then publish a W2 source candidate and a separate sanitized evidence subject.",
+  "user_expected_outcome": "SWOF-owned, executable, fail-closed security, effect and assurance contracts with adversarial coverage, an independent checker receipt and a subject-bound evidence envelope READY_FOR_W2_EXTERNAL_ACCEPTANCE.",
+  "user_expected_experience": "Routine W2 bounded repairs run autonomously; HITL only at real authority edges (credentials, destructive scope expansion, release/production).",
+  "explicit_constraints": [
+   "start from the accepted W1 source 7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+   "no W1 source/evidence repair; the accepted tuple is immutable input",
+   "no merge of PR #4 or any W2 PR; no release; no production; no live world effect",
+   "no mutation of the source corpus, HG-KSEOS or Fabric canonical roots",
+   "no provider/tool activation merely because it is named",
+   "one canonical writer; checker never repairs the candidate"
+  ],
+  "non_goals": [
+   "W3-W5 implementation",
+   "second control plane",
+   "second semantic root",
+   "second compiler",
+   "provider activation",
+   "live effect"
+  ],
+  "authorized_mutations": [
+   "SWOF/ under the admitted W2 WorkOrders",
+   "HG-KSEOS governed spine state and W2 evidence root",
+   "local W2 candidate/evidence branches"
+  ],
+  "forbidden_mutations": [
+   "source corpus",
+   "Fabric canonical contracts",
+   "HG-KSEOS source code",
+   "remote merge",
+   "release",
+   "production",
+   "live world effect"
+  ],
+  "expected_autonomy": "HIGH",
+  "allowed_hitl": [
+   "credentials",
+   "org authorization",
+   "destructive scope expansion",
+   "equal-rank conflict",
+   "break-glass",
+   "release or production"
+  ],
+  "requested_delivery": [
+   "SWOF-W2-DELIVERABLE"
+  ],
+  "active_requirement_ids": [
+   "W2-SECURITY-EFFECT-ASSURANCE",
+   "HGK-EXECUTION-BINDING"
+  ],
+  "claim_ceiling": "LOCAL"
+ },
+ "authority": {
+  "sources": [
+   {
+    "id": "SRC-R3-PROMPT",
+    "rank": "1",
+    "path": "attachments/SWOF_W2_Executor_Thin_Prompt_v1.md",
+    "sha256": "a134a2eb6afb0ee00ddcce5822f097846b4efd75ce91fde76bd471a20de2d371",
+    "locator": "attachments/SWOF_W2_Executor_Thin_Prompt_v1.md",
+    "role": "NORMATIVE",
+    "governs": true
+   },
+   {
+    "id": "SRC-HGK-CONTROL",
+    "rank": "2",
+    "path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\src\\hg_kseos",
+    "sha256": "UNAVAILABLE",
+    "locator": "spine.py",
+    "role": "NORMATIVE",
+    "governs": true
+   },
+   {
+    "id": "SRC-RBWI",
+    "rank": "3",
+    "path": "SWOF_HGK_ACA_RBWI/SWOF_HGK_ACA_RBWI.md",
+    "sha256": "b9a26f959233bc63c21bb4ad764ded3efc6ba6b02c2d29c40c92e33b0bb5670d",
+    "locator": "#10.1-10.4",
+    "role": "NORMATIVE",
+    "governs": true
+   },
+   {
+    "id": "SRC-W1-EXTERNAL-CHALLENGE",
+    "rank": "4",
+    "path": "attachments/SWOF_W1_R4_EVIDENCE_ONLY_FINAL_CLOSURE_EXTERNAL_CHALLENGE_REPORT.md",
+    "sha256": "UNAVAILABLE",
+    "locator": "#0,#12",
+    "role": "SUPPORT",
+    "governs": false
+   },
+   {
+    "id": "SRC-SWOF-RBWI",
+    "rank": "3",
+    "path": "SWOF_HGK_ACA_RBWI/SWOF_HGK_ACA_RBWI.md",
+    "sha256": "b9a26f959233bc63c21bb4ad764ded3efc6ba6b02c2d29c40c92e33b0bb5670d",
+    "locator": "#10.3-10.4,#21.1-21.5",
+    "role": "NORMATIVE",
+    "governs": true
+   }
+  ],
+  "conflicts": [],
+  "missing_sources": [],
+  "native_control_plane_ids": [
+   "HG-KSEOS"
+  ],
+  "current_control_plane_id": "HG-KSEOS"
+ },
+ "changeset": {
+  "class": "CONTINUATION",
+  "baseline_required": true,
+  "baseline_verified": true,
+  "reuse_prior_pass": true,
+  "affected_domains": [
+   "security",
+   "effect",
+   "assurance",
+   "observability",
+   "schemas",
+   "documentation"
+  ],
+  "affected_files": [
+   "schemas/security/README.md",
+   "schemas/security/permission_envelope.schema.json",
+   "schemas/security/security_veto.schema.json",
+   "src/security/README.md",
+   "src/security/__init__.py",
+   "src/security/permissions.py",
+   "src/security/provenance.py",
+   "src/security/injection.py",
+   "src/security/classification.py",
+   "src/security/rights.py",
+   "src/security/supplychain.py",
+   "src/security/veto.py",
+   "src/security/tests/__init__.py",
+   "src/security/tests/test_permissions.py",
+   "src/security/tests/test_provenance.py",
+   "src/security/tests/test_injection.py",
+   "src/security/tests/test_classification.py",
+   "src/security/tests/test_rights.py",
+   "src/security/tests/test_supplychain.py",
+   "src/security/tests/test_veto.py",
+   "src/security/tests/test_adversarial.py",
+   "schemas/effect/README.md",
+   "schemas/effect/effect_record.schema.json",
+   "src/effect/README.md",
+   "src/effect/__init__.py",
+   "src/effect/state.py",
+   "src/effect/substrate.py",
+   "src/effect/idempotency.py",
+   "src/effect/compensation.py",
+   "src/effect/correlation.py",
+   "src/effect/tests/__init__.py",
+   "src/effect/tests/test_state.py",
+   "src/effect/tests/test_substrate.py",
+   "src/effect/tests/test_idempotency.py",
+   "src/effect/tests/test_compensation.py",
+   "src/effect/tests/test_correlation.py",
+   "src/effect/tests/test_adversarial.py",
+   "schemas/assurance/README.md",
+   "schemas/assurance/acceptance_predicate.schema.json",
+   "schemas/assurance/evidence_plan.schema.json",
+   "src/assurance/README.md",
+   "src/assurance/__init__.py",
+   "src/assurance/predicate.py",
+   "src/assurance/oracle.py",
+   "src/assurance/evidence.py",
+   "src/assurance/sod.py",
+   "src/assurance/journal.py",
+   "src/assurance/tests/__init__.py",
+   "src/assurance/tests/test_predicate.py",
+   "src/assurance/tests/test_oracle.py",
+   "src/assurance/tests/test_evidence.py",
+   "src/assurance/tests/test_sod.py",
+   "src/assurance/tests/test_journal.py",
+   "src/assurance/tests/test_adversarial.py",
+   "schemas/observability/README.md",
+   "src/observability/README.md",
+   "src/observability/__init__.py",
+   "src/observability/correlation.py",
+   "src/observability/redaction.py",
+   "src/observability/hooks.py",
+   "src/observability/recovery.py",
+   "src/observability/tests/__init__.py",
+   "src/observability/tests/test_correlation.py",
+   "src/observability/tests/test_redaction.py",
+   "src/observability/tests/test_hooks.py",
+   "src/observability/tests/test_recovery.py",
+   "src/observability/tests/test_adversarial.py",
+   "README.md",
+   "AGENTS.md",
+   "config/workspace.json",
+   "docs/constitution/non-goals.md"
+  ],
+  "must_not_reopen": [
+   "src/fabric",
+   "src/knowledge",
+   "src/admission",
+   "src/profile",
+   "src/capability"
+  ],
+  "scope_expansion_requires_hitl": true,
+  "tracked_mutation": true,
+  "product_mutation_allowed": true
+ },
+ "execution_scope": [
+  {
+   "capability": "HGK-EXECUTION-BINDING",
+   "source_disposition": "CONSTRUCTION_ONLY",
+   "current_execution_disposition": "ACTIVE_REQUIRED",
+   "current_profile_selected": true,
+   "canonical_flow_referenced": true,
+   "automatic_route_target": true,
+   "user_experience_required": false,
+   "runtime_required_now": true,
+   "action": "DESIGN",
+   "source_locators": [
+    "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\src\\hg_kseos\\lifecycle.py"
+   ],
+   "external_method": false,
+   "control_authority": true
+  },
+  {
+   "capability": "SWOF-SECURITY-SUBSTRATE",
+   "source_disposition": "CONSTRUCTION_ONLY",
+   "current_execution_disposition": "ACTIVE_REQUIRED",
+   "current_profile_selected": true,
+   "canonical_flow_referenced": true,
+   "automatic_route_target": true,
+   "user_experience_required": false,
+   "runtime_required_now": true,
+   "action": "DESIGN",
+   "source_locators": [
+    "C:\\Projects\\Agent_Workspace\\SWOF\\src\\security\\veto.py"
+   ],
+   "external_method": false,
+   "control_authority": true
+  },
+  {
+   "capability": "SWOF-EFFECT-SUBSTRATE",
+   "source_disposition": "CONSTRUCTION_ONLY",
+   "current_execution_disposition": "ACTIVE_REQUIRED",
+   "current_profile_selected": true,
+   "canonical_flow_referenced": true,
+   "automatic_route_target": true,
+   "user_experience_required": false,
+   "runtime_required_now": true,
+   "action": "DESIGN",
+   "source_locators": [
+    "C:\\Projects\\Agent_Workspace\\SWOF\\src\\effect\\substrate.py"
+   ],
+   "external_method": false,
+   "control_authority": true
+  },
+  {
+   "capability": "SWOF-ASSURANCE-SUBSTRATE",
+   "source_disposition": "CONSTRUCTION_ONLY",
+   "current_execution_disposition": "ACTIVE_REQUIRED",
+   "current_profile_selected": true,
+   "canonical_flow_referenced": true,
+   "automatic_route_target": true,
+   "user_experience_required": false,
+   "runtime_required_now": true,
+   "action": "DESIGN",
+   "source_locators": [
+    "C:\\Projects\\Agent_Workspace\\SWOF\\src\\assurance\\evidence.py"
+   ],
+   "external_method": false,
+   "control_authority": true
+  },
+  {
+   "capability": "SWOF-OBSERVABILITY-HOOKS",
+   "source_disposition": "CONSTRUCTION_ONLY",
+   "current_execution_disposition": "ACTIVE_REQUIRED",
+   "current_profile_selected": true,
+   "canonical_flow_referenced": true,
+   "automatic_route_target": true,
+   "user_experience_required": false,
+   "runtime_required_now": true,
+   "action": "DESIGN",
+   "source_locators": [
+    "C:\\Projects\\Agent_Workspace\\SWOF\\src\\observability\\hooks.py"
+   ],
+   "external_method": false,
+   "control_authority": true
+  }
+ ],
+ "runtime_readiness": [
+  {
+   "capability": "HGK-EXECUTION-BINDING",
+   "required_now": true,
+   "lifecycle": {
+    "identify": "PASS",
+    "pin": "PASS",
+    "install_materialize": "PASS",
+    "configure": "PASS",
+    "discover": "PASS",
+    "bind": "PASS",
+    "route": "PASS",
+    "effective_load": "PASS",
+    "doctor_health": "PASS",
+    "positive_pilot": "PASS",
+    "negative_security": "PASS",
+    "fallback": "PASS",
+    "rollback_uninstall": "PASS",
+    "independent_qualification": "PASS",
+    "certify": "PASS",
+    "enable": "PASS"
+   },
+   "current_verdict": "RUNTIME_READY",
+   "work_required": [],
+   "acceptance_ids": [
+    "ACC-W2-BINDING-ORDER"
+   ]
+  },
+  {
+   "capability": "SWOF-SECURITY-SUBSTRATE",
+   "required_now": true,
+   "lifecycle": {
+    "identify": "PASS",
+    "pin": "PASS",
+    "install_materialize": "PASS",
+    "configure": "PASS",
+    "discover": "PASS",
+    "bind": "PASS",
+    "route": "PASS",
+    "effective_load": "PASS",
+    "doctor_health": "PASS",
+    "positive_pilot": "PASS",
+    "negative_security": "PASS",
+    "fallback": "PASS",
+    "rollback_uninstall": "PASS",
+    "independent_qualification": "PASS",
+    "certify": "PASS",
+    "enable": "PASS"
+   },
+   "current_verdict": "RUNTIME_READY",
+   "work_required": [],
+   "acceptance_ids": [
+    "ACC-W2-SECURITY"
+   ]
+  },
+  {
+   "capability": "SWOF-EFFECT-SUBSTRATE",
+   "required_now": true,
+   "lifecycle": {
+    "identify": "PASS",
+    "pin": "PASS",
+    "install_materialize": "PASS",
+    "configure": "PASS",
+    "discover": "PASS",
+    "bind": "PASS",
+    "route": "PASS",
+    "effective_load": "PASS",
+    "doctor_health": "PASS",
+    "positive_pilot": "PASS",
+    "negative_security": "PASS",
+    "fallback": "PASS",
+    "rollback_uninstall": "PASS",
+    "independent_qualification": "PASS",
+    "certify": "PASS",
+    "enable": "PASS"
+   },
+   "current_verdict": "RUNTIME_READY",
+   "work_required": [],
+   "acceptance_ids": [
+    "ACC-W2-EFFECT"
+   ]
+  },
+  {
+   "capability": "SWOF-ASSURANCE-SUBSTRATE",
+   "required_now": true,
+   "lifecycle": {
+    "identify": "PASS",
+    "pin": "PASS",
+    "install_materialize": "PASS",
+    "configure": "PASS",
+    "discover": "PASS",
+    "bind": "PASS",
+    "route": "PASS",
+    "effective_load": "PASS",
+    "doctor_health": "PASS",
+    "positive_pilot": "PASS",
+    "negative_security": "PASS",
+    "fallback": "PASS",
+    "rollback_uninstall": "PASS",
+    "independent_qualification": "PASS",
+    "certify": "PASS",
+    "enable": "PASS"
+   },
+   "current_verdict": "RUNTIME_READY",
+   "work_required": [],
+   "acceptance_ids": [
+    "ACC-W2-ASSURANCE"
+   ]
+  },
+  {
+   "capability": "SWOF-OBSERVABILITY-HOOKS",
+   "required_now": true,
+   "lifecycle": {
+    "identify": "PASS",
+    "pin": "PASS",
+    "install_materialize": "PASS",
+    "configure": "PASS",
+    "discover": "PASS",
+    "bind": "PASS",
+    "route": "PASS",
+    "effective_load": "PASS",
+    "doctor_health": "PASS",
+    "positive_pilot": "PASS",
+    "negative_security": "PASS",
+    "fallback": "PASS",
+    "rollback_uninstall": "PASS",
+    "independent_qualification": "PASS",
+    "certify": "PASS",
+    "enable": "PASS"
+   },
+   "current_verdict": "RUNTIME_READY",
+   "work_required": [],
+   "acceptance_ids": [
+    "ACC-W2-OPSHOOKS"
+   ]
+  }
+ ],
+ "journeys": [
+  {
+   "journey_id": "J-W2-SUBSTRATE",
+   "required": true,
+   "user_goal": "a security/effect/assurance substrate that fails closed and whose evidence cannot be forged, reused or self-certified",
+   "expected_visible_result": "independent W2 checker receipt + subject-bound evidence envelope",
+   "expected_automatic_behavior": [
+    "guard/deny checks run before the effect",
+    "readback decides effect state",
+    "checker verifies read-only"
+   ],
+   "expected_manual_behavior": [
+    "none"
+   ],
+   "allowed_hitl": [
+    "authority edges only"
+   ],
+   "required_capabilities": [
+    "HGK-EXECUTION-BINDING",
+    "SWOF-SECURITY-SUBSTRATE",
+    "SWOF-EFFECT-SUBSTRATE",
+    "SWOF-ASSURANCE-SUBSTRATE",
+    "SWOF-OBSERVABILITY-HOOKS"
+   ],
+   "negative_behavior": [
+    "provider success without readback MUST end in UNKNOWN_EFFECT, never SUCCESS"
+   ],
+   "failure_recovery": [
+    "compensate or classify irreversible; invalidate evidence"
+   ],
+   "source_expectation_ids": [
+    "NC-W2-001",
+    "NC-W2-003"
+   ],
+   "source_locators": [
+    "attachments/SWOF_W2_Executor_Thin_Prompt_v1.md#5"
+   ]
+  }
+ ],
+ "acceptance": [
+  {
+   "acceptance_id": "ACC-W2-COMPILER",
+   "subject_id": "SWOF-W2-DELIVERABLE",
+   "subject_type": "DELIVERABLE",
+   "source_locators": [
+    "attachments/SWOF_W2_Executor_Thin_Prompt_v1.md#0"
+   ],
+   "runtime_required": false,
+   "required_depth": "L1_SCHEMA_CONTRACT",
+   "positive_fixture": "lint+activation+acceptance+compile succeed",
+   "negative_fixture": "absent bundle yields PROMPT_COMPILE_BLOCKED",
+   "recovery_fixture": "mount bundle and re-run",
+   "raw_evidence_required": false,
+   "independent_checker_required": false,
+   "terminal_states": [
+    "COMPILER_PASS"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-W2-SECURITY",
+   "subject_id": "SWOF-SECURITY-SUBSTRATE",
+   "subject_type": "CAPABILITY",
+   "source_locators": [
+    "C:\\\\Projects\\\\Agent_Workspace\\\\SWOF\\\\src\\\\security\\\\veto.py",
+    "PI-PKG-06",
+    "PD-PKG-09"
+   ],
+   "runtime_required": true,
+   "required_depth": "L3_INTEGRATION_RUNTIME",
+   "positive_fixture": "least-privilege envelope allows an admitted action and labels external content as DATA",
+   "negative_fixture": "permission expansion, injected authority override, secret exfiltration, malicious tool output and HumanGate bypass are all refused",
+   "recovery_fixture": "quarantine + redact + route to HumanGate",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-W2-EFFECT",
+   "subject_id": "SWOF-EFFECT-SUBSTRATE",
+   "subject_type": "CAPABILITY",
+   "source_locators": [
+    "C:\\\\Projects\\\\Agent_Workspace\\\\SWOF\\\\src\\\\effect\\\\substrate.py",
+    "PI-PKG-07",
+    "PD-PKG-13"
+   ],
+   "runtime_required": true,
+   "required_depth": "L3_INTEGRATION_RUNTIME",
+   "positive_fixture": "a readback-confirmed effect reaches RECONCILED with a correlation id",
+   "negative_fixture": "apparent success with no readback stays UNKNOWN_EFFECT; duplicate retry and reconciliation mismatch are refused",
+   "recovery_fixture": "reobserve, then compensate or classify irreversible",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-W2-ASSURANCE",
+   "subject_id": "SWOF-ASSURANCE-SUBSTRATE",
+   "subject_type": "CAPABILITY",
+   "source_locators": [
+    "C:\\\\Projects\\\\Agent_Workspace\\\\SWOF\\\\src\\\\assurance\\\\evidence.py",
+    "PI-PKG-07",
+    "PD-PKG-13"
+   ],
+   "runtime_required": true,
+   "required_depth": "L3_INTEGRATION_RUNTIME",
+   "positive_fixture": "a predicate evaluated by a deterministic oracle over a subject-bound evidence plan PASSes with first-failure semantics",
+   "negative_fixture": "forged summary, wrong SHA with plausible content, maker-as-checker, checker mutation, evidence tamper, stale pre-mutation object marked direct-final and branch-tip substitution are all rejected",
+   "recovery_fixture": "invalidate evidence by cone and re-run the affected gate",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-W2-OPSHOOKS",
+   "subject_id": "SWOF-OBSERVABILITY-HOOKS",
+   "subject_type": "CAPABILITY",
+   "source_locators": [
+    "C:\\\\Projects\\\\Agent_Workspace\\\\SWOF\\\\src\\\\observability\\\\hooks.py",
+    "PI-PKG-08",
+    "PD-PKG-10"
+   ],
+   "runtime_required": true,
+   "required_depth": "L2_UNIT_BEHAVIOR",
+   "positive_fixture": "trace/workorder/checkpoint/subject correlation is emitted redacted and replayable",
+   "negative_fixture": "a secret in a log line is redacted; a first-failure and an evidence invalidation event are emitted",
+   "recovery_fixture": "deterministic readback reconstructs the event order",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-W2-BINDING-ORDER",
+   "subject_id": "HGK-EXECUTION-BINDING",
+   "subject_type": "REQUIREMENT",
+   "source_locators": [
+    "attachments/SWOF_W2_Executor_Thin_Prompt_v1.md#6",
+    "C:\\\\Projects\\\\Agent_Workspace\\\\HG-KSEOS\\\\src\\\\hg_kseos\\\\lifecycle.py"
+   ],
+   "runtime_required": true,
+   "required_depth": "L3_INTEGRATION_RUNTIME",
+   "positive_fixture": "monotonic rowid stream shows BINDING < PERMIT <= WRITER_START < FIRST_WRITE",
+   "negative_fixture": "any source byte written before the permit => FAIL_MUTATION_ORDERING",
+   "recovery_fixture": "replay from the accepted W1 source baseline",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-W2-REG-RUN",
+   "subject_id": "SWOF-W1-DEPENDENCY-CONE",
+   "subject_type": "REQUIREMENT",
+   "source_locators": [
+    "attachments/SWOF_W1_R4_EVIDENCE_ONLY_FINAL_CLOSURE_EXTERNAL_CHALLENGE_REPORT.md#0"
+   ],
+   "runtime_required": true,
+   "required_depth": "L3_INTEGRATION_RUNTIME",
+   "positive_fixture": "all six accepted W1 roots remain green at the W2 candidate HEAD",
+   "negative_fixture": "a silently lowered denominator or a red W1 root => FAIL",
+   "recovery_fixture": "repair the W2 affected cone, never the accepted W1 subject",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-W2-REQ",
+   "subject_id": "W2-SECURITY-EFFECT-ASSURANCE",
+   "subject_type": "REQUIREMENT",
+   "source_locators": [
+    "attachments/SWOF_W2_Executor_Thin_Prompt_v1.md#1"
+   ],
+   "runtime_required": true,
+   "required_depth": "L3_INTEGRATION_RUNTIME",
+   "positive_fixture": "security/negative/adversarial + evidence envelope + checker separation operational for the current scope",
+   "negative_fixture": "any proxy PASS (test green, coverage, policy-file presence, CI green, LLM-judge score) must not close W2",
+   "recovery_fixture": "reduce the claim and record the deferred item as a TT/CR",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-W2-JOURNEY",
+   "subject_id": "J-W2-SUBSTRATE",
+   "subject_type": "JOURNEY",
+   "source_locators": [
+    "attachments/SWOF_W2_Executor_Thin_Prompt_v1.md#5"
+   ],
+   "runtime_required": true,
+   "required_depth": "L3_INTEGRATION_RUNTIME",
+   "positive_fixture": "the substrate journey completes with an independent read-only checker",
+   "negative_fixture": "the journey aborts on a forged/tampered evidence item",
+   "recovery_fixture": "invalidate by cone and re-run",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "gate_id": "G-W2-0",
+   "predicate": "canonical compiler validates the W2 C0-C9 contract",
+   "expected": "lint/activation/acceptance/compile PASS",
+   "command_or_probe": "prompt_contract_compiler.py lint|activation|acceptance|compile",
+   "raw_receipt_required": true,
+   "producer": "codex (tracked mutation writer)",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": false,
+   "candidate_binding": {
+    "head": "W2_CANDIDATE_HEAD",
+    "package_sha256": "W2_G-W2-0_RECEIPT_SHA256",
+    "source_hashes": [
+     "SWOF/src/security",
+     "SWOF/src/effect",
+     "SWOF/src/assurance",
+     "SWOF/src/observability"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "subject identity change"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-W2-1",
+   "predicate": "authoritative ExecutionBinding + permit precede the first W2 source write",
+   "expected": "monotonic rowid: binding < permit <= writer_start < first_write",
+   "command_or_probe": "sqlite readback of project_transitions for the W2 project",
+   "raw_receipt_required": true,
+   "producer": "codex (tracked mutation writer)",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "W2_CANDIDATE_HEAD",
+    "package_sha256": "W2_G-W2-1_RECEIPT_SHA256",
+    "source_hashes": [
+     "SWOF/src/security",
+     "SWOF/src/effect",
+     "SWOF/src/assurance",
+     "SWOF/src/observability"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "subject identity change"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-W2-2",
+   "predicate": "W2 diff stays inside the admitted per-WorkOrder write-sets",
+   "expected": "every changed path matches an admitted workorder write-set glob",
+   "command_or_probe": "git diff --name-only baseline..candidate + glob containment check",
+   "raw_receipt_required": true,
+   "producer": "codex (tracked mutation writer)",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "W2_CANDIDATE_HEAD",
+    "package_sha256": "W2_G-W2-2_RECEIPT_SHA256",
+    "source_hashes": [
+     "SWOF/src/security",
+     "SWOF/src/effect",
+     "SWOF/src/assurance",
+     "SWOF/src/observability"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "subject identity change"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-W2-3",
+   "predicate": "security guard fails closed under adversarial input",
+   "expected": "permission expansion / injected override / secret exfiltration / HumanGate bypass refused",
+   "command_or_probe": "src/security/tests adversarial suite",
+   "raw_receipt_required": true,
+   "producer": "codex (tracked mutation writer)",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "W2_CANDIDATE_HEAD",
+    "package_sha256": "W2_G-W2-3_RECEIPT_SHA256",
+    "source_hashes": [
+     "SWOF/src/security",
+     "SWOF/src/effect",
+     "SWOF/src/assurance",
+     "SWOF/src/observability"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "subject identity change"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-W2-4",
+   "predicate": "effect substrate never converts uncertainty into success",
+   "expected": "apparent success without readback ends UNKNOWN_EFFECT",
+   "command_or_probe": "src/effect/tests adversarial suite",
+   "raw_receipt_required": true,
+   "producer": "codex (tracked mutation writer)",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "W2_CANDIDATE_HEAD",
+    "package_sha256": "W2_G-W2-4_RECEIPT_SHA256",
+    "source_hashes": [
+     "SWOF/src/security",
+     "SWOF/src/effect",
+     "SWOF/src/assurance",
+     "SWOF/src/observability"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "subject identity change"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-W2-5",
+   "predicate": "evidence envelope rejects stale/foreign/wrong-subject/forged/tampered items",
+   "expected": "each rejection class raises its own typed error",
+   "command_or_probe": "src/assurance/tests adversarial suite",
+   "raw_receipt_required": true,
+   "producer": "codex (tracked mutation writer)",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "W2_CANDIDATE_HEAD",
+    "package_sha256": "W2_G-W2-5_RECEIPT_SHA256",
+    "source_hashes": [
+     "SWOF/src/security",
+     "SWOF/src/effect",
+     "SWOF/src/assurance",
+     "SWOF/src/observability"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "subject identity change"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-W2-6",
+   "predicate": "maker/checker separation is mechanically demonstrated",
+   "expected": "checker != producer and the checker write path is read-only",
+   "command_or_probe": "src/assurance/sod.py probe + independent checker receipt",
+   "raw_receipt_required": true,
+   "producer": "codex (tracked mutation writer)",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "W2_CANDIDATE_HEAD",
+    "package_sha256": "W2_G-W2-6_RECEIPT_SHA256",
+    "source_hashes": [
+     "SWOF/src/security",
+     "SWOF/src/effect",
+     "SWOF/src/assurance",
+     "SWOF/src/observability"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "subject identity change"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-W2-7",
+   "predicate": "affected W1 regression stays green with no denominator shrink",
+   "expected": "six roots, 113 accepted tests plus the W2 additions",
+   "command_or_probe": "six explicit discover runs",
+   "raw_receipt_required": true,
+   "producer": "codex (tracked mutation writer)",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "W2_CANDIDATE_HEAD",
+    "package_sha256": "W2_G-W2-7_RECEIPT_SHA256",
+    "source_hashes": [
+     "SWOF/src/security",
+     "SWOF/src/effect",
+     "SWOF/src/assurance",
+     "SWOF/src/observability"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "subject identity change"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-W2-8",
+   "predicate": "W2 evidence pack completeness, linkage and SoD",
+   "expected": "every required raw artifact present with the correct linkage mode",
+   "command_or_probe": "SWOF-EVIDENCE-RETURN-PACK/1 builder + validator",
+   "raw_receipt_required": true,
+   "producer": "codex (tracked mutation writer)",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "W2_CANDIDATE_HEAD",
+    "package_sha256": "W2_G-W2-8_RECEIPT_SHA256",
+    "source_hashes": [
+     "SWOF/src/security",
+     "SWOF/src/effect",
+     "SWOF/src/assurance",
+     "SWOF/src/observability"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "subject identity change"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": true,
+   "claim_level": "LOCAL"
+  }
+ ],
+ "termination": {
+  "terminal_states": [
+   "PASS",
+   "PARTIAL",
+   "FAIL",
+   "TEMP_CLOSED",
+   "PROMPT_COMPILE_BLOCKED",
+   "CHANGESET_RECOMPILE_REQUIRED"
+  ],
+  "non_terminal_pause": [
+   "HITL_AUTHORITY_EDGE"
+  ],
+  "checkpoint_required": true,
+  "checkpoint_fields": [
+   "task_id",
+   "source_hashes",
+   "current_candidate",
+   "completed_gates",
+   "open_gates",
+   "next_work_order",
+   "rollback_pointer"
+  ],
+  "retry_budget": 3,
+  "rollback_pointer_required": true
+ },
+ "render_policy": {
+  "control_corpus_restatement": false,
+  "embedded_control_bodies": [],
+  "max_prompt_chars": 20000,
+  "output_language": "zh-TW"
+ }
+}

@@ -1,0 +1,40 @@
+{
+ "schema": "SWOF-W2-WRITESET-CONTAINMENT/1",
+ "workorder_id": "WO-SWOF-W2-002",
+ "admitted": [
+  "src/effect/",
+  "schemas/effect/"
+ ],
+ "changed_paths": [
+  "schemas/effect/",
+  "src/effect/"
+ ],
+ "outside_write_set": [],
+ "reverted": [],
+ "containment_ok": true,
+ "repaired_by": "revert/delete of the out-of-scope paths; the write-set was NOT widened",
+ "changed_after_repair": [
+  "schemas/effect/",
+  "src/effect/"
+ ],
+ "workorder_base": "c7988cdee6783ad69768b75a17d0c97d9ecc02ee",
+ "workorder_delta": [
+  "schemas/effect/README.md",
+  "schemas/effect/effect_record.schema.json",
+  "src/effect/README.md",
+  "src/effect/__init__.py",
+  "src/effect/compensation.py",
+  "src/effect/correlation.py",
+  "src/effect/idempotency.py",
+  "src/effect/state.py",
+  "src/effect/substrate.py",
+  "src/effect/tests/__init__.py",
+  "src/effect/tests/test_adversarial.py",
+  "src/effect/tests/test_compensation.py",
+  "src/effect/tests/test_correlation.py",
+  "src/effect/tests/test_idempotency.py",
+  "src/effect/tests/test_state.py",
+  "src/effect/tests/test_substrate.py"
+ ],
+ "workorder_delta_out_of_scope": []
+}

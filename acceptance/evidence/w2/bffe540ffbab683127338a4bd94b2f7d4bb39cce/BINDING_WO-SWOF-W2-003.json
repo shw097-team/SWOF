@@ -1,0 +1,92 @@
+{
+ "schema": "RP002-EXECUTION-BINDING/2",
+ "binding_id": "BIND-WO-SWOF-W2-003",
+ "project_id": "HGK-P0-SWOF-W2",
+ "stage_id": "SWOF-W2",
+ "gate_id": "W2",
+ "kanban_board_id": "swof-w2-construction-002",
+ "normative": {
+  "workorder_id": "WO-SWOF-W2-003",
+  "workorder_digest": "e74115a93d6885d52e646fc40ebad08aaedc9136c242a165f3f5a5aa858bd8af",
+  "authority_receipt_refs": [
+   "SWOF_W1_R4_EVIDENCE_ONLY_FINAL_CLOSURE_EXTERNAL_CHALLENGE_REPORT.md",
+   "async_attachment:SWOF_W2_Executor_Thin_Prompt_v1.md"
+  ],
+  "subject_digest": "393b01004c881a25aaf8a3fcd25a82a8a34c0e818b9d42194055a3055dceaa42"
+ },
+ "routing": {
+  "topology_mode": "DIRECT",
+  "profile_id": "hgk-coding-factory",
+  "logical_role_id": "tracked-mutation-writer",
+  "task_id": "WO-SWOF-W2-003",
+  "dependencies": [
+   "SWOF-W1-ACCEPTED-7e1f912d"
+  ],
+  "review_join_refs": [
+   "L1_REVIEW",
+   "FORMAL_ACCEPTANCE"
+  ]
+ },
+ "delegation": {
+  "delegation_id": "DEL-WO-SWOF-W2-003",
+  "issuer": "construction-commander",
+  "assignee": "codex (tracked mutation writer)",
+  "allowed_scope": "bounded W2 mutation for WO-SWOF-W2-003: acceptance predicate / deterministic oracle / evidence plan / SoD / journal integrity",
+  "denied_scope": [
+   "candidate write outside the worktree",
+   "fabric authority",
+   "merge/release/production",
+   "live world effect"
+  ],
+  "issued_at": "2026-10-03T15:03:33Z",
+  "expires_at": "2026-10-05T15:03:34Z",
+  "validity_window_seconds": 172800,
+  "revocation_ref": null
+ },
+ "lease": {
+  "lease_id": "LS-WO-SWOF-W2-003",
+  "holder": "codex (tracked mutation writer)",
+  "ttl_seconds": 3600,
+  "renewable": true
+ },
+ "budget": {
+  "step_budget": 40,
+  "retry_budget": 3,
+  "wall_clock_timeout_seconds": 21600,
+  "no_progress_detector": "candidate_digest_delta|new_evidence_delta|root_cause_delta"
+ },
+ "idempotency": {
+  "idempotency_key": "SWOF-W2-003-RUN-001",
+  "side_effect_class": "candidate-source-construction",
+  "replay_policy": "safe-replay",
+  "prior_effect_receipt_ref": null
+ },
+ "runtime": {
+  "run_id": "RUN-SWOF-W2-001",
+  "worker_pid": "18728",
+  "worker_log_ref": "W2_MUTATION_PERMIT_RECEIPT.json",
+  "heartbeat_ref": "lifecycle run RUN-SWOF-W2-001",
+  "workspace_or_worktree": "C:\\Projects\\Agent_Workspace\\SWOF",
+  "candidate_write_set": [
+   "src/assurance/*",
+   "schemas/assurance/*"
+  ],
+  "evidence_output_refs": [
+   "w2_binding_order/W2_EVIDENCE_ROOT"
+  ],
+  "lease_readback_source": "spine leases table (read back, not asserted)",
+  "lease_readback": {
+   "resource_id": "REQ-HGK-SWOF-W2-003",
+   "holder": "codex (tracked mutation writer)",
+   "token_hash": "fdd3625f8c69b67c0079bbdca228a8e4d8545a4bb95a0ef5d8f68e96d570472e",
+   "expires_at": "2026-10-03T16:03:34.468116Z",
+   "created_at": "2026-10-03T15:03:34.472116Z"
+  },
+  "writer_model": "the tracked writer applies only this WorkOrder's write-set in a separate process (w2_05_apply.py) whose FIRST assertions are that the permit artifact exists, records source_mutation_started=false, and that the tree is still exactly at the baseline"
+ },
+ "terminal": {
+  "allowed": true,
+  "session_end_is_terminal": false,
+  "worker_exit_zero_is_pass": false
+ }
+}

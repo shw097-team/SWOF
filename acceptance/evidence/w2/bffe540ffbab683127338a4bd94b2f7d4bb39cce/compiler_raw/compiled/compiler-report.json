@@ -1,0 +1,8 @@
+{
+  "claim_ceiling": "LOCAL",
+  "contract_sha256": "3e2eef57db3886e849605f606580a2b755d753eb895cc3754e1b79d4465b9213",
+  "error_count": 0,
+  "errors": [],
+  "task_id": "SWOF-CONSTRUCTION-002-W2-SECURITY-EFFECT-ASSURANCE-001",
+  "verdict": "PROMPT_COMPILE_PASS"
+}

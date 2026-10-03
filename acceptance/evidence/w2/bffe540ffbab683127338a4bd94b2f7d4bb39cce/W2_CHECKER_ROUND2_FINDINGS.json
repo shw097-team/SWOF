@@ -1,0 +1,47 @@
+{
+ "schema": "SWOF-W2-CHECKER-ROUND2-FINDINGS/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W2",
+ "subject": "4469813c086b864cfd82383400a11ce2831b8433",
+ "supersedes": "83adb8e1ef97f304d53bfb5d5c7c4c5ba9938ed2",
+ "lanes": [
+  {"lane": "A", "checker_identity": "fresh-context-VERIFY-ONLY-round2-lane-A", "verdict": "PASS",
+   "raw_transcript": "checker_live/ROUND2_task-0.log",
+   "raw_transcript_sha256": "857df348ddbda914667d66d06285e9e77a427f56943c3a90366b9b5759ef37c8"},
+  {"lane": "B", "checker_identity": "fresh-context-VERIFY-ONLY-round2-lane-B", "verdict": "PARTIAL",
+   "raw_transcript": "checker_live/ROUND2_task-1.log",
+   "raw_transcript_sha256": "98b7e33a36aa617f997d53b2841799fc5b0450fd8bd890e2bb834a7202f892d6"}
+ ],
+ "verdict_of_record": "PARTIAL",
+ "round1_findings_disposition": {
+  "TC-W2-SEC-01": "CLOSED - lane B re-probed all nine credential shapes: SECRET + redacted + gated; 17 benign samples stay PUBLIC; detector_selftest non-vacuous and falsifiable",
+  "TT-CR-1": "CLOSED - lane A recomputed the 71-path diff; both aggregate receipts now containment_ok=true with zero unassigned",
+  "TT-W2-003": "CLOSED - first_source_mutation_commit_sha now names c7988cde (oldest W2 commit)",
+  "TC-W2-EVID-01": "CLOSED - invalidate() now invalidates only the superseded binding on the oracle_id, environment and subject_sha axes",
+  "TC-W2-ORACLE-01": "PARTIALLY CLOSED - the self-declared negative_fixtures/negative_cases form is refused, but a second caller-chosen bypass (item_id equality) reopens the law; see TC-W2-R2-01",
+  "TC-W2-JRN-01": "CLOSED - mutation/deletion/reorder now yield three DISTINCT reason codes",
+  "TC-W2-EFFECT-01": "CLOSED - retry is reachable end-to-end through the public API"
+ },
+ "round2_confirmed_green": [
+  "all 7 governance/evidence items PASS (lane A): candidate HEAD clean, W1 ancestry, 71 changed paths with 0 unassigned, rowids 1..11 contiguous with admission 8 < permit 9 < first-write 10 < corrective edge 11, denominators 113 (W1) + 490 (W2) = 603 all green, README counts match measurement, no over-claim",
+  "all 5 round-1 counterexamples now HOLD and none of the 15 regression law-groups regressed (lane B)"
+ ],
+ "findings": [
+  {"id": "TC-W2-R2-01", "owner": "WO-SWOF-W2-003", "blocking": true, "class": "VACUOUS_LAW_RESIDUAL",
+   "what": "oracle negative-fixture representation is still satisfiable by an evidence item whose item_id merely equals the fixture string, with no plan-level manifest and no proof kind; oracle.py's own docstring says a self-declared field can never supply representation.",
+   "close_evidence": "the bare `fixture in present_ids` fallback removed; representation only via a plan-level manifest binding the fixture to a present proof kind; tests for item_id equality, unrelated-kind, self-declared and genuine cases"},
+  {"id": "TC-W2-R2-02", "owner": "WO-SWOF-W2-002", "blocking": false, "class": "DOC_CODE_CONTRADICTION",
+   "what": "PARTIAL_EFFECT is retryable through plan_retry/record_attempt although effect/README.md states uncertainty is answered with a fresh readback rather than another side effect; re-attempting a partially-applied effect risks duplicating the applied part.",
+   "close_evidence": "retry allowed only from UNKNOWN_EFFECT; PARTIAL_EFFECT refused with RETRY_REFUSED_PARTIAL_EFFECT and routed to reobserve/compensation; README, docstrings and code agree; retry still reachable from UNKNOWN_EFFECT"},
+  {"id": "TC-W2-R2-03", "owner": "WO-SWOF-W2-001", "blocking": false, "class": "GATE_BLIND_SPOT",
+   "what": "assert_no_secret() and sanitize_evidence() ignore bytes/non-str scalars: a bytes-encoded credential passes the hard gate unraised and is left unredacted with clean=true, although classify() fail-closes non-str to SECRET.",
+   "close_evidence": "bytes/bytearray are unscannable and fail closed in both functions, with an unscannable_bytes count and clean=false; ordinary scalars (int/float/bool/None) are not flagged"},
+  {"id": "TC-W2-R2-04", "owner": "WO-SWOF-W2-003", "blocking": false, "class": "NON_DISCRIMINATING_AXIS",
+   "what": "invalidate() invalidates EVERY gate on any security_config change, including a gate bound to the NEW config and a gate with no security binding, contradicting the uniformity promise of the _superseded() docstring. Fails safe but non-discriminating.",
+   "close_evidence": "the same discriminating rule applied on the security axis, with tests for superseded / current / unbound gates"},
+  {"id": "TC-W2-R2-05", "owner": "WO-SWOF-W2-003", "blocking": false, "class": "HONEST_LIMIT_NOT_DECLARED",
+   "what": "journal.verify() reports INTACT after the last entry is removed and the unauthenticated header is coherently rewritten; without key management that rewrite is genuinely undetectable from the header alone, but the artifact did not say so.",
+   "close_evidence": "verify() carries header_is_authoritative=false and states the limitation; a first-class manifest-anchored verification detects the truncation; threat_assessment states the limit plainly and does not claim more"}
+ ],
+ "blocking_findings": ["TC-W2-R2-01"],
+ "note": "round-2 lane-A is a PASS on governance/evidence; the round verdict is PARTIAL because lane-B found a blocking residual bypass. Per FREEZE-001 the round-2 verdict describes exactly the subject 4469813c; the corrective round produces a NEW identity with its own verification run."
+}

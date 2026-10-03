@@ -1,0 +1,37 @@
+{
+ "schema": "SWOF-W2-MAKER-SIDE-R1-PROBE/1",
+ "subject": "4469813c086b864cfd82383400a11ce2831b8433",
+ "generated_at_utc": "2026-10-03T16:52:00Z",
+ "purpose": "maker-side measurement integrity: after applying a repair, re-derive the claim from the artifact instead of the intent that produced it. The round-1 counterexample was re-probed directly against the frozen candidate BEFORE handing it to the round-2 checker. This is corroborating evidence, NOT a substitute for the independent verdict.",
+ "probe": "C:/Users/user/AppData/Local/Temp/r1probe.py (out-of-tree scratch; imports src/ from outside the repository)",
+ "results": {
+  "credential_shapes_classified_SECRET_redacted_and_blocked": 9,
+  "credential_shapes_probed": [
+   "Authorization: Bearer <jwt>",
+   "aws_secret_access_key = <value>",
+   "github_pat_...",
+   "glpat-...",
+   "xoxb-...",
+   "sk_live_...",
+   "{\"access_token\":\"eyJ...\"}",
+   "{\"token\":\"0123456789abcdef\"}",
+   "{\"api_key\":\"sk-proj-...\"}"
+  ],
+  "benign_shapes_still_PUBLIC": 6,
+  "benign_shapes_probed": [
+   "ordinary prose containing the word 'token'",
+   "version string v1.2.3",
+   "40-hex commit sha",
+   "uuid",
+   "file path",
+   "short word"
+  ],
+  "detector_selftest_vacuous": false,
+  "detector_selftest_keys": ["aws_access_key_id", "bearer_auth_header", "card_like_number",
+                             "email_address", "failed_detectors", "flagged_benign_samples",
+                             "github_token", "gitlab_token"],
+  "failures": []
+ },
+ "verdict": "ROUND_1_COUNTEREXAMPLE_R1_NO_LONGER_REPRODUCES",
+ "non_claim": "this is the maker re-reading its own repair; the binding verdict is the round-2 independent checker's"
+}

@@ -1,0 +1,102 @@
+{
+ "schema": "SWOF-W2-CORRECTIVE-ROUND-OPEN/1",
+ "round": "CORRECTIVE_CW1",
+ "project_id": "HGK-P0-SWOF-W2",
+ "superseded_subject": "83adb8e1ef97f304d53bfb5d5c7c4c5ba9938ed2",
+ "opened_at_utc": "2026-10-03T16:21:29Z",
+ "driver": "round-1 independent verification PARTIAL (blocking: TC-W2-SEC-01, TT-CR-1)",
+ "findings_ref": "W2_CHECKER_ROUND1_FINDINGS.json",
+ "write_sets_unchanged": true,
+ "note": "the corrective write stays inside the already-admitted per-WorkOrder write-sets; no write-set is widened, and a fresh checker will run on the NEW candidate",
+ "transition_stream": [
+  {
+   "rowid": 1,
+   "transition_id": "TR-09CCE79A30",
+   "from_state": "",
+   "to_state": "PROJECT_CREATED",
+   "trigger": "PROJECT_CREATE",
+   "created_at": "2026-10-03T15:03:34.099591Z"
+  },
+  {
+   "rowid": 2,
+   "transition_id": "TR-D6A637519E",
+   "from_state": "PROJECT_CREATED",
+   "to_state": "SOURCE_DISCOVERY",
+   "trigger": "W2_SOURCE_DISCOVERY",
+   "created_at": "2026-10-03T15:03:34.125096Z"
+  },
+  {
+   "rowid": 3,
+   "transition_id": "TR-14EE5B69ED",
+   "from_state": "SOURCE_DISCOVERY",
+   "to_state": "SOURCE_ADMISSION",
+   "trigger": "W2_SOURCE_ADMISSION",
+   "created_at": "2026-10-03T15:03:34.148097Z"
+  },
+  {
+   "rowid": 4,
+   "transition_id": "TR-573085950A",
+   "from_state": "SOURCE_ADMISSION",
+   "to_state": "INTENT_BOUND",
+   "trigger": "W2_INTENT_BOUND",
+   "created_at": "2026-10-03T15:03:34.171096Z"
+  },
+  {
+   "rowid": 5,
+   "transition_id": "TR-60910BBDD0",
+   "from_state": "INTENT_BOUND",
+   "to_state": "REQUIREMENTS_READY",
+   "trigger": "W2_REQUIREMENTS_READY",
+   "created_at": "2026-10-03T15:03:34.193097Z"
+  },
+  {
+   "rowid": 6,
+   "transition_id": "TR-281A7DB675",
+   "from_state": "REQUIREMENTS_READY",
+   "to_state": "DESIGN_READY",
+   "trigger": "W2_DESIGN_READY",
+   "created_at": "2026-10-03T15:03:34.221096Z"
+  },
+  {
+   "rowid": 7,
+   "transition_id": "TR-67D67A22D7",
+   "from_state": "DESIGN_READY",
+   "to_state": "PLAN_READY",
+   "trigger": "W2_PLAN_READY",
+   "created_at": "2026-10-03T15:03:34.248097Z"
+  },
+  {
+   "rowid": 8,
+   "transition_id": "TR-11035AB7E8",
+   "from_state": "PLAN_READY",
+   "to_state": "WORKORDERS_ADMITTED",
+   "trigger": "W2_WORKORDERS_ADMITTED",
+   "created_at": "2026-10-03T15:03:34.621632Z"
+  },
+  {
+   "rowid": 9,
+   "transition_id": "TR-8F82CB11A4",
+   "from_state": "WORKORDERS_ADMITTED",
+   "to_state": "EXECUTING",
+   "trigger": "MUTATION_PERMIT_ISSUED",
+   "created_at": "2026-10-03T15:03:34.630632Z"
+  },
+  {
+   "rowid": 10,
+   "transition_id": "TR-EF1A97CC49",
+   "from_state": "EXECUTING",
+   "to_state": "VERIFYING",
+   "trigger": "FIRST_WRITE_BOUNDARY_CROSSED",
+   "created_at": "2026-10-03T16:13:14.582867Z"
+  },
+  {
+   "rowid": 11,
+   "transition_id": "TR-3069EF78DC",
+   "from_state": "VERIFYING",
+   "to_state": "EVOLUTION_REVIEW",
+   "trigger": "W2_CORRECTIVE_ROUND_OPENED",
+   "created_at": "2026-10-03T16:21:29.805050Z"
+  }
+ ],
+ "stream_contiguous": true
+}

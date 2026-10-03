@@ -1,0 +1,116 @@
+{
+ "schema": "SWOF-W2-K1-CARRY-FORWARD/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W2",
+ "wave": "W2",
+ "generated_at_utc": "2026-10-03T15:00:20Z",
+ "w1_accepted_tuple_readback": {
+  "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+  "source_object_type": "commit",
+  "source_is_commit": true,
+  "evidence_commit_sha": "84ea30c216ac319c4e55df1b07ee2ee3372bcc88",
+  "evidence_object_type": "commit",
+  "evidence_commit_parent": "b7bd56c057527b51135f7edd08c5d821de8af821",
+  "evidence_commit_parent_matches_challenge_report": true,
+  "source_neq_evidence": true,
+  "source_branch": "repair/w1-r4-binding-order-proof",
+  "source_branch_tip": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+  "source_branch_tip_equals_accepted_source": true,
+  "evidence_branch": "evidence/w1-r4-evidence-cleanup",
+  "evidence_branch_tip": "84ea30c216ac319c4e55df1b07ee2ee3372bcc88",
+  "evidence_branch_tip_equals_accepted_evidence": true,
+  "readback_surface": "local git object store (the accepted tuple is immutable input)",
+  "remote_probe": "TEMP_CLOSED_GITHUB_NO_CREDENTIAL_OR_REMOTE",
+  "remote_probe_detail": "no git remote is configured for this checkout, `gh` is absent and no GitHub credential is present in the environment, so the authoritative remote readback is UNAVAILABLE; the local object store contains both exact accepted identities and the stale remote-tracking refs below",
+  "stale_remote_tracking_refs": {
+   "refs/remotes/origin/codex/swof-w1-stage": "0ddf00be6bd779b375368d5f4e647d8bccf1b81b",
+   "refs/remotes/origin/docs/w1-r4-handoff": "ca463f1ab3206e4065d424e96e3feebfd371b7a2",
+   "refs/remotes/origin/evidence/swof-w1-stage": "7c0fa362347ff59bd6faaff08da96c5ca2ad7cf3",
+   "refs/remotes/origin/evidence/w1-r3-admission-order": "6b0e11e369140e4e5f690b84fcc90905cda00e94",
+   "refs/remotes/origin/evidence/w1-r4-binding-order-proof": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+   "refs/remotes/origin/evidence/w1-r4-evidence-cleanup": "84ea30c216ac319c4e55df1b07ee2ee3372bcc88",
+   "refs/remotes/origin/evidence/w1-repair-001": "0c6278175f296ff41ef7d130199c57c1052eee40",
+   "refs/remotes/origin/evidence/w1-repair-r2-001": "2105e08f920414ba8093c0303b77bfada1cfa6df",
+   "refs/remotes/origin/main": "acdbfaadd19d12927eb5bd542b09ed230bbc481e",
+   "refs/remotes/origin/repair/w1-ext-001-008": "8689e583bab5198be11fb31442f5ac95d8490c00",
+   "refs/remotes/origin/repair/w1-r3-admission-order": "ed28b784fcae651897fe261120db7840134d0028",
+   "refs/remotes/origin/repair/w1-r4-binding-order-proof": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+  },
+  "drift_detected": false,
+  "w1_repair_reopened": false,
+  "policy": "FROZEN_DO_NOT_REPAIR_OR_MUTATE_WITHOUT_NEW_COUNTEREVIDENCE"
+ },
+ "w1_regression_baseline": {
+  "denominator_source": "accepted W1 external verdict / SWOF_W1_R4 support handoff",
+  "expected_denominator": 113,
+  "observed_denominator": 113,
+  "denominator_preserved": true,
+  "denominator_shrunk": false,
+  "interpreter": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\.venv\\Scripts\\python.exe",
+  "python_version": "3.12.14",
+  "all_roots_green": true,
+  "roots": [
+   {
+    "root": "tests",
+    "top": ".",
+    "ran": 16,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w1_baseline_tests.log",
+    "sha256": "e78984611f575fd44ec5130b160869da3ddb00877f7e80383f8d64367478e916"
+   },
+   {
+    "root": "src/fabric/tests",
+    "top": "src/fabric/tests",
+    "ran": 21,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w1_baseline_src_fabric_tests.log",
+    "sha256": "12f48b61f7265697dfd953a8bbcf8b43cc0601b89e508b18655d04d908e16f8d"
+   },
+   {
+    "root": "src/knowledge/tests",
+    "top": "src/knowledge/tests",
+    "ran": 25,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w1_baseline_src_knowledge_tests.log",
+    "sha256": "0b95f53f54b1d69b6095e7f0038cb63985f9c8e5d7a7315797047d58c4e9a36e"
+   },
+   {
+    "root": "src/admission/tests",
+    "top": "src/admission/tests",
+    "ran": 17,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w1_baseline_src_admission_tests.log",
+    "sha256": "6e73b8e4c259d9494dd81ce2b5b1be43897d2a152c6a2208c49761aa3f3088ed"
+   },
+   {
+    "root": "src/profile/tests",
+    "top": "src/profile/tests",
+    "ran": 12,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w1_baseline_src_profile_tests.log",
+    "sha256": "2d24895b4f8e9bb1b8ec27b3a44336442c5b7f24f0b522b277fbdac7d23d3b45"
+   },
+   {
+    "root": "src/capability/tests",
+    "top": "src/capability/tests",
+    "ran": 22,
+    "exit_code": 0,
+    "ok": true,
+    "raw_log": "raw_test_logs/w1_baseline_src_capability_tests.log",
+    "sha256": "eb1ccc15b49c977bdd2e548d236d270acf8bbf2694c27c10f94dff9567b782ac"
+   }
+  ],
+  "note": "each root is discovered separately; a single discover call silently skips the co-located src/<subsystem>/tests roots"
+ },
+ "compiler_currentness_ref": "W2_COMPILER_CURRENTNESS.json",
+ "compiler_currentness_sha256": "0e5f714ab15adbde80600e063456b84d36be781bfe5b011e52f355c995ce9c43",
+ "gate_results": {
+  "W1_TUPLE_READBACK": "PASS",
+  "W1_REGRESSION_DENOMINATOR": "PASS",
+  "COMPILER_CURRENTNESS_EFFECTIVE_LOAD": "PASS"
+ }
+}

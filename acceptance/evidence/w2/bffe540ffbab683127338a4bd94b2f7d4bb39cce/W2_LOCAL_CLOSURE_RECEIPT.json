@@ -1,0 +1,192 @@
+{
+ "schema": "SWOF-LOCAL-CLOSURE-RECEIPT/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W2",
+ "wave": "W2",
+ "changeset": "CONTINUATION",
+ "w1_accepted_input_tuple": {
+  "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+  "evidence_commit_sha": "84ea30c216ac319c4e55df1b07ee2ee3372bcc88",
+  "treated_as": "IMMUTABLE_INPUT",
+  "repaired": false
+ },
+ "w2_source_candidate_sha": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+ "w2_branch": "wo/swof-w2-security-effect-assurance",
+ "workorders": [
+  "WO-SWOF-W2-001",
+  "WO-SWOF-W2-002",
+  "WO-SWOF-W2-003",
+  "WO-SWOF-W2-004"
+ ],
+ "write_sets": {
+  "WO-SWOF-W2-001": [
+   "src/security/*",
+   "schemas/security/*"
+  ],
+  "WO-SWOF-W2-002": [
+   "src/effect/*",
+   "schemas/effect/*"
+  ],
+  "WO-SWOF-W2-003": [
+   "src/assurance/*",
+   "schemas/assurance/*"
+  ],
+  "WO-SWOF-W2-004": [
+   "src/observability/*",
+   "schemas/observability/*",
+   "README.md",
+   "AGENTS.md",
+   "config/workspace.json",
+   "docs/constitution/non-goals.md"
+  ]
+ },
+ "containment": {
+  "WO-SWOF-W2-001": true,
+  "WO-SWOF-W2-002": true,
+  "WO-SWOF-W2-003": true,
+  "WO-SWOF-W2-004": true
+ },
+ "execution_binding": {
+  "schema": "RP002-EXECUTION-BINDING/2",
+  "binding_ids": [
+   "BIND-WO-SWOF-W2-001",
+   "BIND-WO-SWOF-W2-002",
+   "BIND-WO-SWOF-W2-003",
+   "BIND-WO-SWOF-W2-004"
+  ],
+  "binding_set_sha256": "1248f7c29dce1e8f30038073e6909eee9076da91a7d7ece5868f7b9cf152fd11",
+  "mutation_permit_id": "PERMIT-SWOF-W2-001",
+  "permit_after_binding": true,
+  "ordering_key": "project_transitions.rowid",
+  "wall_clock_is_primary_oracle": false
+ },
+ "gate_calibration": {
+  "artifact": "W2_GATE_CALIBRATION.json",
+  "rows": 9,
+  "security_minimum_strictness": "S3",
+  "sha256": "79c859459b2c1f7a7a9217cf25221e9a536e426dd6945f344fb5c32ce237c055"
+ },
+ "compiler": {
+  "all_pass": true,
+  "receipts": {
+   "lint": "PROMPT_COMPILE_PASS",
+   "activation": "PROMPT_COMPILE_PASS",
+   "acceptance": "PROMPT_COMPILE_PASS",
+   "compile": "PROMPT_COMPILE_PASS",
+   "duplication": "PROMPT_COMPILE_PASS"
+  },
+  "sha256": "5eaddc9c7536a54431dee5cc3dfc996291c8b6432e8f7f3ee83f9fb4e884bda7"
+ },
+ "w1_carry_forward": {
+  "denominator": 113,
+  "expected": 113,
+  "preserved": true,
+  "compiler_currentness": "0e5f714ab15adbde80600e063456b84d36be781bfe5b011e52f355c995ce9c43"
+ },
+ "test_denominator": {
+  "w1_regression_total": 113,
+  "w2_suite_total": 553,
+  "grand_total": 666,
+  "zero_denominator_roots": [],
+  "all_green": true,
+  "artifact": "W2_TEST_DENOMINATOR.json",
+  "sha256": "5a71f343aa3c2c7379dd991b523fbf86cb6044ae8aa8784e800817e6229b7c86"
+ },
+ "apply_receipts": {
+  "WO-SWOF-W2-001": {
+   "candidate": "c7988cdee6783ad69768b75a17d0c97d9ecc02ee",
+   "focused": 159,
+   "sha256": "a9fd997e104394e4e146682c84a21c67696d3b0c740b15dfa17d100198798d85"
+  },
+  "WO-SWOF-W2-002": {
+   "candidate": "26873f6208720f7962060ef876bde8628d1f679a",
+   "focused": 91,
+   "sha256": "89f6bd7a47b48a79333623bfd3833ef6a7b2adc0449553e30013e45fccc70b0d"
+  },
+  "WO-SWOF-W2-003": {
+   "candidate": "fb75dae1932331e79a39276d2a5b31a0522b0cb3",
+   "focused": 95,
+   "sha256": "27676b03d6ae8d6becd0b123c66842f10de7176d484be2b1320dca12d2674cdc"
+  },
+  "WO-SWOF-W2-004": {
+   "candidate": "83adb8e1ef97f304d53bfb5d5c7c4c5ba9938ed2",
+   "focused": 97,
+   "sha256": "d91d6839b9e8afc1c33da2161c5506fe4ce83e513fb0f3f96ca68728f80a3aa0"
+  }
+ },
+ "independent_checker": {
+  "receipt": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w2_binding_order\\W2_INDEPENDENT_CHECKER_RECEIPT.json",
+  "sha256": "537ff28e8431b5f8ad2c718d8d17decd8499f4d3f4be29ecbfec059e61bac7f0",
+  "checker_identity": "fresh-context-VERIFY-ONLY (independent lanes across five verification rounds; no lane is the maker or an orchestration role)",
+  "verdict": "PARTIAL",
+  "checker_is_not_maker": true,
+  "product_verdict": "PASS",
+  "governance_verdict": "PASS_ON_SUBSTANCE_WITH_ONE_ACCEPTED_LIMITATION",
+  "wave_verdict": "PARTIAL",
+  "blocking_findings": [],
+  "open_non_blocking_findings": [
+   {
+    "id": "TT-CR-07",
+    "owner": "SWOF assurance (future hardening)",
+    "what": "Oracle.required_kinds() exposes a declared kind tuple that decide() never consults"
+   },
+   {
+    "id": "TT-CR-08",
+    "owner": "evidence harness",
+    "what": "the kanban receipt is a point-in-time snapshot and cannot show its own consumer as complete; the receipt is now explicitly self-describing and the earlier over-stated disposition sentence was corrected"
+   }
+  ]
+ },
+ "gates": {
+  "G-W2-0": "PASS",
+  "G-W2-1": "PASS",
+  "G-W2-2": "PASS",
+  "G-W2-3": "PASS",
+  "G-W2-4": "PASS",
+  "G-W2-5": "PASS",
+  "G-W2-6": "PASS",
+  "G-W2-7": "PASS",
+  "G-W2-8": "PASS"
+ },
+ "gate_set_passed": true,
+ "open_tt_cr": [
+  {
+   "id": "TT-CR-07",
+   "blocking": false,
+   "owner": "SWOF assurance",
+   "description": "Oracle.required_kinds() exposes a declared kind tuple decide() never consults - a declaration that cannot fail at decision time. Future hardening or an explicit precedent; no frozen law is violated."
+  },
+  {
+   "id": "TT-CR-08",
+   "blocking": false,
+   "owner": "evidence harness",
+   "description": "The kanban receipt is a point-in-time snapshot and cannot show its own consumer as complete; it is now self-describing (snapshot_semantics, tasks_completed_after_generation) and the earlier over-stated disposition sentence was corrected."
+  }
+ ],
+ "publication_state": {
+  "remote_push": "TEMP_CLOSED_GITHUB_NO_CREDENTIAL",
+  "reason": "no git remote is configured, gh is absent and no GitHub credential exists in this environment, so the authoritative remote readback is UNAVAILABLE; the exact local source and evidence commit identities are frozen instead",
+  "pr": "TEMP_CLOSED_GITHUB_NO_CREDENTIAL",
+  "remote_ci": "N/A_WITH_REASON (no remote publication)"
+ },
+ "claim_ceiling": "W2_LOCAL_CONSTRUCTION_CLOSED / W2_PRODUCT_SUBSTRATE_INDEPENDENT_CHECK_PASS / W2_GOVERNANCE_EVIDENCE_INDEPENDENT_CHECK_PASS_ON_SUBSTANCE_WITH_TWO_DISCLOSED_NON_BLOCKING_ITEMS / W1_ACCEPTED_BASELINE_PRESERVED / W2_SOURCE_AND_EVIDENCE_COMMITS_FROZEN_LOCALLY / PUBLICATION_TEMP_CLOSED_GITHUB_NO_CREDENTIAL / READY_FOR_W2_EXTERNAL_ACCEPTANCE / WAVE_VERDICT_PARTIAL / NOT_W3_STARTED / NOT_MERGED / NOT_RELEASED / NOT_PRODUCTION / NO_WORLD_EFFECT_ACCEPTANCE",
+ "non_claims": [
+  "W1 exact subject preserved and NOT repaired",
+  "W2_NOT_EXTERNALLY_ACCEPTED",
+  "NO_REMOTE_MERGE",
+  "NO_W3_DISPATCH",
+  "NO_RELEASE",
+  "NO_PRODUCTION",
+  "NO_WORLD_EFFECT_ACCEPTANCE"
+ ],
+ "checkpoint": {
+  "ids": [
+   "CKPT-WO-SWOF-W2-001",
+   "CKPT-WO-SWOF-W2-002",
+   "CKPT-WO-SWOF-W2-003",
+   "CKPT-WO-SWOF-W2-004"
+  ],
+  "pre_mutation_seq": 8,
+  "permit_seq": 9
+ },
+ "generated_at_utc": "2026-10-03T18:00:04Z"
+}

@@ -1,0 +1,82 @@
+{
+ "schema": "SWOF-W2-CORRECTIVE-ROUND-RECEIPT/1",
+ "round": "CORRECTIVE_CW3",
+ "superseded_subject": "f7ab02db6f6aa02a417965a73da1baac1b162441",
+ "new_candidate": "89287e2c67565d9accf7e7ea8ac6b9277600618b",
+ "branch": "wo/swof-w2-security-effect-assurance",
+ "ordering": {
+  "write_permitted_seq": 16,
+  "permit_precedes_corrective_write": true,
+  "applied_seq": [
+   17
+  ],
+  "stream_contiguous": true
+ },
+ "writer": "codex (tracked mutation writer)",
+ "codex_exit_code": 0,
+ "writer_log": "writer_logs/CODEX_CORRECTIVE_CW3.jsonl",
+ "writer_log_sha256": "608ddbf5b56effd6e8f7bc34d9d7945a3f4749fd64dfeecacad31dab6d9ab48a",
+ "allowed_write_sets": [
+  "src/security/",
+  "src/effect/",
+  "src/assurance/",
+  "src/observability/"
+ ],
+ "out_of_scope_reverted": [],
+ "affected_roots": {
+  "src/security/tests": {
+   "ran": 191,
+   "exit_code": 0,
+   "ok": true,
+   "count_moved": true,
+   "pre_repair_count": 183,
+   "raw_log": "writer_logs/CORRECTIVE_CW3_src_security_tests.log",
+   "sha256": "81de54edfecefc2a99feb618bcbce324702afefc52f1d7c4493acfc4b91c5762"
+  },
+  "src/effect/tests": {
+   "ran": 116,
+   "exit_code": 0,
+   "ok": true,
+   "count_moved": true,
+   "pre_repair_count": 105,
+   "raw_log": "writer_logs/CORRECTIVE_CW3_src_effect_tests.log",
+   "sha256": "66389530b8a38bc372f041a268783c848cd8cc7d8212a009f214949fdc2ae302"
+  },
+  "src/assurance/tests": {
+   "ran": 144,
+   "exit_code": 0,
+   "ok": true,
+   "count_moved": true,
+   "pre_repair_count": 128,
+   "raw_log": "writer_logs/CORRECTIVE_CW3_src_assurance_tests.log",
+   "sha256": "91f0f90fb6a0e2494084cb315d3a04f7165f45f6757ce47e405c71b0edd37d22"
+  },
+  "src/observability/tests": {
+   "ran": 102,
+   "exit_code": 0,
+   "ok": true,
+   "count_moved": true,
+   "pre_repair_count": 97,
+   "raw_log": "writer_logs/CORRECTIVE_CW3_src_observability_tests.log",
+   "sha256": "546f3b6e87520d8a3344631dc11d560a8027f868cde0ee54679eb239c038358b"
+  }
+ },
+ "delta_vs_superseded": [
+  "src/assurance/README.md",
+  "src/assurance/journal.py",
+  "src/assurance/oracle.py",
+  "src/assurance/tests/test_adversarial.py",
+  "src/assurance/tests/test_journal.py",
+  "src/assurance/tests/test_oracle.py",
+  "src/effect/README.md",
+  "src/effect/idempotency.py",
+  "src/effect/substrate.py",
+  "src/effect/tests/test_adversarial.py",
+  "src/effect/tests/test_idempotency.py",
+  "src/effect/tests/test_substrate.py",
+  "src/security/classification.py",
+  "src/security/tests/test_adversarial.py",
+  "src/security/tests/test_classification.py"
+ ],
+ "generated_at_utc": "2026-10-03T17:36:52Z"
+}

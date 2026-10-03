@@ -1,0 +1,42 @@
+{
+ "schema": "SWOF-ECP-SET/1",
+ "ecps": [
+  {
+   "schema": "SWOF-ECP/1",
+   "ecp_id": "ECP-WO-SWOF-W2-001",
+   "workorder_id": "WO-SWOF-W2-001",
+   "execution_binding_ref": "BIND-WO-SWOF-W2-001",
+   "checkpoint_ref": "CKPT-WO-SWOF-W2-001",
+   "note": "ONE ECP per WorkOrder; the HGK spine has no ecp table, so the ECP is a document-level construction-packet identifier, explicitly not a spine row.",
+   "captured_before_mutation": true
+  },
+  {
+   "schema": "SWOF-ECP/1",
+   "ecp_id": "ECP-WO-SWOF-W2-002",
+   "workorder_id": "WO-SWOF-W2-002",
+   "execution_binding_ref": "BIND-WO-SWOF-W2-002",
+   "checkpoint_ref": "CKPT-WO-SWOF-W2-002",
+   "note": "ONE ECP per WorkOrder; the HGK spine has no ecp table, so the ECP is a document-level construction-packet identifier, explicitly not a spine row.",
+   "captured_before_mutation": true
+  },
+  {
+   "schema": "SWOF-ECP/1",
+   "ecp_id": "ECP-WO-SWOF-W2-003",
+   "workorder_id": "WO-SWOF-W2-003",
+   "execution_binding_ref": "BIND-WO-SWOF-W2-003",
+   "checkpoint_ref": "CKPT-WO-SWOF-W2-003",
+   "note": "ONE ECP per WorkOrder; the HGK spine has no ecp table, so the ECP is a document-level construction-packet identifier, explicitly not a spine row.",
+   "captured_before_mutation": true
+  },
+  {
+   "schema": "SWOF-ECP/1",
+   "ecp_id": "ECP-WO-SWOF-W2-004",
+   "workorder_id": "WO-SWOF-W2-004",
+   "execution_binding_ref": "BIND-WO-SWOF-W2-004",
+   "checkpoint_ref": "CKPT-WO-SWOF-W2-004",
+   "note": "ONE ECP per WorkOrder; the HGK spine has no ecp table, so the ECP is a document-level construction-packet identifier, explicitly not a spine row.",
+   "captured_before_mutation": true
+  }
+ ],
+ "captured_before_mutation": true
+}

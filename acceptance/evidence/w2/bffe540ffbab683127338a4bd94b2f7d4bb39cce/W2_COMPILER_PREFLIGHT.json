@@ -1,0 +1,52 @@
+{
+ "schema": "SWOF-W2-COMPILER-PREFLIGHT/1",
+ "at_utc": "2026-10-03T15:01:59Z",
+ "contract": {
+  "path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w2_binding_order\\W2_CONTRACT.json",
+  "sha256": "3e2eef57db3886e849605f606580a2b755d753eb895cc3754e1b79d4465b9213"
+ },
+ "compiler_bundle": "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\HG-KSEOS\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler",
+ "compiler_root_skill_sha256": "48a3fdc5a0c65d4279c27ebc7586e747ba86c4bde82535cad2512d43547b4acb",
+ "compiler_script_sha256": "2c282ad6539a465c3b1d751868cab98437a8f35e9728be686117e364a70857d9",
+ "workorders": [
+  "WO-SWOF-W2-001",
+  "WO-SWOF-W2-002",
+  "WO-SWOF-W2-003",
+  "WO-SWOF-W2-004"
+ ],
+ "receipts": {
+  "lint": {
+   "exit_code": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "raw_receipt": "compiler_raw/COMPILER_LINT_RECEIPT.txt",
+   "sha256": "09352a74c3c6c98c9dcdf108e3e9b2c721552baeb42ffd4e832a31fe7ba80458"
+  },
+  "activation": {
+   "exit_code": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "raw_receipt": "compiler_raw/COMPILER_ACTIVATION_RECEIPT.txt",
+   "sha256": "cef4036666803c3daab22f8d383fe8a406dbe31b899147181b27af0b1c4250f6"
+  },
+  "acceptance": {
+   "exit_code": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "raw_receipt": "compiler_raw/COMPILER_ACCEPTANCE_RECEIPT.txt",
+   "sha256": "c619b77e59d0cb1b127e2444dd835afcb88790deef692958b41ebd7882e24424"
+  },
+  "compile": {
+   "exit_code": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "raw_receipt": "compiler_raw/COMPILER_COMPILE_RECEIPT.txt",
+   "sha256": "0259d02719eeaba2569a650f8fec1ef9243b7763712139bddb6dbe6ed3f8dea1"
+  },
+  "duplication": {
+   "exit_code": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "raw_receipt": "compiler_raw/COMPILER_DUPLICATION_RECEIPT.txt",
+   "sha256": "287e7d9fe4eb6e0ad438a5b85dc4d5d5c80d7d48c5b098db14ef64899d33c3b0"
+  }
+ },
+ "all_pass": true,
+ "raw_evidence_not_summary_booleans": true,
+ "blocked_result": "PROMPT_COMPILE_BLOCKED"
+}

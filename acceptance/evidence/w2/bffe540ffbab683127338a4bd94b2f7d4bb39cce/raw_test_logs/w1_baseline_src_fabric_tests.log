@@ -1,0 +1,15 @@
+# command : C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s src/fabric/tests -t src/fabric/tests
+# cwd     : C:\Projects\Agent_Workspace\SWOF
+# git HEAD: 7e1f912d863b8c155eb9ae5ae9682b0e185450fc
+# branch  : repair/w1-r4-binding-order-proof
+# python  : 3.12.14
+# started : 2026-10-03T15:00:21Z
+# duration: 0.119s
+# exit_code: 0
+------------------------------------------------------------------------------
+
+.....................
+----------------------------------------------------------------------
+Ran 21 tests in 0.002s
+
+OK

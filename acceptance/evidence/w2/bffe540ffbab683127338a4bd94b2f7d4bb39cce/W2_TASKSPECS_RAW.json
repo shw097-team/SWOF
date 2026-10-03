@@ -1,0 +1,65 @@
+{
+ "rows": [
+  {
+   "taskspec_id": "TS-WO-SWOF-W2-001",
+   "requirement_id": "REQ-HGK-SWOF-W2-001",
+   "objective": "SWOF-owned fail-closed security/privacy/rights/HumanGate guards",
+   "owner": "codex (tracked mutation writer)",
+   "writable_root": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "permissions_json": "{\"forbidden\":[\"source corpus\",\"Fabric\",\"HG-KSEOS source\",\"merge\",\"release\",\"production\",\"live effect\"],\"write\":[\"src/security/\",\"schemas/security/\"]}",
+   "tests_json": "[\"tests\",\"src/fabric/tests\",\"src/knowledge/tests\",\"src/admission/tests\",\"src/profile/tests\",\"src/capability/tests\"]",
+   "rollback_pointer": "RB-TS-WO-SWOF-W2-001",
+   "evidence_plan": "SWOF-EVIDENCE-RETURN-PACK/1 on the exact W2 subject",
+   "state": "ADMITTED",
+   "version": 1,
+   "created_at": "2026-10-03T15:03:34.343608Z",
+   "updated_at": "2026-10-03T15:03:34.365608Z"
+  },
+  {
+   "taskspec_id": "TS-WO-SWOF-W2-002",
+   "requirement_id": "REQ-HGK-SWOF-W2-002",
+   "objective": "effect/observation/UNKNOWN_EFFECT/reconciliation substrate (no live effect)",
+   "owner": "codex (tracked mutation writer)",
+   "writable_root": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "permissions_json": "{\"forbidden\":[\"source corpus\",\"Fabric\",\"HG-KSEOS source\",\"merge\",\"release\",\"production\",\"live effect\"],\"write\":[\"src/effect/\",\"schemas/effect/\"]}",
+   "tests_json": "[\"tests\",\"src/fabric/tests\",\"src/knowledge/tests\",\"src/admission/tests\",\"src/profile/tests\",\"src/capability/tests\"]",
+   "rollback_pointer": "RB-TS-WO-SWOF-W2-002",
+   "evidence_plan": "SWOF-EVIDENCE-RETURN-PACK/1 on the exact W2 subject",
+   "state": "ADMITTED",
+   "version": 1,
+   "created_at": "2026-10-03T15:03:34.437116Z",
+   "updated_at": "2026-10-03T15:03:34.444116Z"
+  },
+  {
+   "taskspec_id": "TS-WO-SWOF-W2-003",
+   "requirement_id": "REQ-HGK-SWOF-W2-003",
+   "objective": "acceptance predicate / deterministic oracle / evidence plan / SoD / journal integrity",
+   "owner": "codex (tracked mutation writer)",
+   "writable_root": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "permissions_json": "{\"forbidden\":[\"source corpus\",\"Fabric\",\"HG-KSEOS source\",\"merge\",\"release\",\"production\",\"live effect\"],\"write\":[\"src/assurance/\",\"schemas/assurance/\"]}",
+   "tests_json": "[\"tests\",\"src/fabric/tests\",\"src/knowledge/tests\",\"src/admission/tests\",\"src/profile/tests\",\"src/capability/tests\"]",
+   "rollback_pointer": "RB-TS-WO-SWOF-W2-003",
+   "evidence_plan": "SWOF-EVIDENCE-RETURN-PACK/1 on the exact W2 subject",
+   "state": "ADMITTED",
+   "version": 1,
+   "created_at": "2026-10-03T15:03:34.485116Z",
+   "updated_at": "2026-10-03T15:03:34.491117Z"
+  },
+  {
+   "taskspec_id": "TS-WO-SWOF-W2-004",
+   "requirement_id": "REQ-HGK-SWOF-W2-004",
+   "objective": "W2 observability/correlation/recovery hooks and W2 documentation sync",
+   "owner": "codex (tracked mutation writer)",
+   "writable_root": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "permissions_json": "{\"forbidden\":[\"source corpus\",\"Fabric\",\"HG-KSEOS source\",\"merge\",\"release\",\"production\",\"live effect\"],\"write\":[\"src/observability/\",\"schemas/observability/\",\"README.md\",\"AGENTS.md\",\"config/workspace.json\",\"docs/constitution/non-goals.md\"]}",
+   "tests_json": "[\"tests\",\"src/fabric/tests\",\"src/knowledge/tests\",\"src/admission/tests\",\"src/profile/tests\",\"src/capability/tests\"]",
+   "rollback_pointer": "RB-TS-WO-SWOF-W2-004",
+   "evidence_plan": "SWOF-EVIDENCE-RETURN-PACK/1 on the exact W2 subject",
+   "state": "ADMITTED",
+   "version": 1,
+   "created_at": "2026-10-03T15:03:34.530631Z",
+   "updated_at": "2026-10-03T15:03:34.541632Z"
+  }
+ ],
+ "captured_before_mutation": true
+}

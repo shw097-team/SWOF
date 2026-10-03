@@ -1,0 +1,53 @@
+{
+ "rows": [
+  {
+   "workorder_id": "WO-SWOF-W2-001",
+   "taskspec_id": "TS-WO-SWOF-W2-001",
+   "writer": "codex (tracked mutation writer)",
+   "worktree": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "base_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+   "state": "CREATED",
+   "result_json": null,
+   "rollback_pointer": "RB-WO-SWOF-W2-001",
+   "created_at": "2026-10-03T15:03:34.365608Z",
+   "updated_at": "2026-10-03T15:03:34.365608Z"
+  },
+  {
+   "workorder_id": "WO-SWOF-W2-002",
+   "taskspec_id": "TS-WO-SWOF-W2-002",
+   "writer": "codex (tracked mutation writer)",
+   "worktree": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "base_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+   "state": "CREATED",
+   "result_json": null,
+   "rollback_pointer": "RB-WO-SWOF-W2-002",
+   "created_at": "2026-10-03T15:03:34.444116Z",
+   "updated_at": "2026-10-03T15:03:34.444116Z"
+  },
+  {
+   "workorder_id": "WO-SWOF-W2-003",
+   "taskspec_id": "TS-WO-SWOF-W2-003",
+   "writer": "codex (tracked mutation writer)",
+   "worktree": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "base_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+   "state": "CREATED",
+   "result_json": null,
+   "rollback_pointer": "RB-WO-SWOF-W2-003",
+   "created_at": "2026-10-03T15:03:34.491117Z",
+   "updated_at": "2026-10-03T15:03:34.491117Z"
+  },
+  {
+   "workorder_id": "WO-SWOF-W2-004",
+   "taskspec_id": "TS-WO-SWOF-W2-004",
+   "writer": "codex (tracked mutation writer)",
+   "worktree": "C:\\Projects\\Agent_Workspace\\SWOF",
+   "base_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+   "state": "CREATED",
+   "result_json": null,
+   "rollback_pointer": "RB-WO-SWOF-W2-004",
+   "created_at": "2026-10-03T15:03:34.541632Z",
+   "updated_at": "2026-10-03T15:03:34.541632Z"
+  }
+ ],
+ "captured_before_mutation": true
+}

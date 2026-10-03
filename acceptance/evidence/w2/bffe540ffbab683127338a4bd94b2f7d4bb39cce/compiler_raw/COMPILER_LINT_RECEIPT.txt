@@ -1,0 +1,12 @@
+# canonical compiler command: C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe C:\Projects\Agent_Workspace\知識庫\實作相關DOC\HG-KSEOS\construction-acceptance-prompt-compiler\construction-acceptance-prompt-compiler\scripts\prompt_contract_compiler.py lint C:\Projects\Agent_Workspace\HG-KSEOS\evidence\swof-construction-002\w2_binding_order\W2_CONTRACT.json
+# subject workorder: WO-SWOF-W2-001;WO-SWOF-W2-002;WO-SWOF-W2-003;WO-SWOF-W2-004
+# exit_code: 0
+# generated_at_utc: 2026-10-03T15:01:59Z
+------------------------------------------------------------------------------
+{
+  "verdict": "PROMPT_COMPILE_PASS",
+  "error_count": 0,
+  "errors": []
+}
+
+

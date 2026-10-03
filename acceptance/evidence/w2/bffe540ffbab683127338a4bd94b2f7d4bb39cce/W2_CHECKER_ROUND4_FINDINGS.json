@@ -1,0 +1,49 @@
+{
+ "schema": "SWOF-W2-CHECKER-ROUND4-FINDINGS/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W2",
+ "subject": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+ "lanes": [
+  {"lane": "A", "checker_identity": "fresh-context-VERIFY-ONLY-round4-lane-A",
+   "verdict": "PARTIAL", "scope": "governance / evidence",
+   "raw_transcript": "checker_live/ROUND4_task-0.log",
+   "raw_transcript_sha256": "77049bc466db6c78db7be4e6c10a26fa2df351c54334907d3303e5caec1556c9"},
+  {"lane": "B", "checker_identity": "fresh-context-VERIFY-ONLY-round4-lane-B",
+   "verdict": "PASS", "scope": "product substrate (security / effect / assurance / observability)",
+   "raw_transcript": "checker_live/ROUND4_task-1.log",
+   "raw_transcript_sha256": "583e99812d0ea6e78ed752dc18503cc436f6bc42fab92f54a58c7ed62ddd9c09"}
+ ],
+ "product_verdict": "PASS",
+ "product_verdict_detail": "all 21 CW3 re-probes (Q1a-d, Q2a-c, Q3a-c, Q4a-d, Q5a-c, Q6a-d) HOLDS; all nine regression law-groups HOLDS; detector selftests proven falsifiable by injection; no new blocking counterexample found",
+ "governance_verdict": "PARTIAL",
+ "governance_detail": "checks 1, 2, 4, 5, 6, 7 PASS on independently recomputed numbers; check 3 (ordering record) PARTIAL and four non-blocking evidence-ledger gaps",
+ "lane_A_counterexamples_and_disposition": [
+  {"id": "A-CE-1", "what": "CORRECTIVE CW1 has a round-OPENED edge but no dedicated write-permit and no applied edge, so only CW2 and CW3 form complete open/permit/applied triples.",
+   "disposition": "DISCLOSED, NOT RETROACTIVELY REPAIRED",
+   "reasoning": "the CW1 corrective writes were covered by the wave mutation permit PERMIT-SWOF-W2-001, which authorizes the admitted W2 write-sets; the wave-level ordering invariant (admission 8 < permit 9 < first write 10) was independently verified in every round. Adding a permit edge after the write would be retroactive fabrication, which the order forbids. The limitation is now recorded in W2_CANDIDATE_FREEZE.json.disclosures and in the closure receipt.",
+   "claim_effect": "claim reduced from 'every corrective round is triple-ordered' to 'CW2/CW3 are triple-ordered; CW1 is covered by the wave permit and is disclosed'"},
+  {"id": "A-CE-2", "what": "W2_ORDERED_LIFECYCLE_EVENT_SLICE.json was a rowid-1..9 snapshot and went stale once the corrective rounds appended rows 10..17.",
+   "disposition": "CLOSED_BY_REGENERATION",
+   "close_evidence": "the slice is regenerated from the live spine and now carries all 17 rows with contiguous_no_gaps=true; the regeneration states why the earlier revision was stale",
+   "artifact": "W2_ORDERED_LIFECYCLE_EVENT_SLICE.json"},
+  {"id": "A-CE-3", "what": "W2_KANBAN_EXECUTION_RECEIPT.json still described cards D4/D5/D6 as unfinished.",
+   "disposition": "CLOSED_BY_REGENERATION_WITH_PRECISE_WORDING",
+   "close_evidence": "regenerated from the board DB; D4/D5/D6 now show as done, matching the DB. The receipt is a POINT-IN-TIME snapshot and now carries explicit `snapshot_semantics` plus `tasks_completed_after_generation`, because a receipt cannot show its own consumer as complete. Precise statement, replacing an earlier overstatement: at snapshot time the receipt listed the then-unfinished cards, which were the three publication cards plus the round-4 checker card that was still running; it does not claim to be a live view.",
+   "superseding_note": "this disposition previously read 'It now lists only the three genuinely open publication cards (E1/P1/P2)' and 'cannot describe a card that has since completed'. Round-5 lane A correctly showed that the artifact listed four unfinished cards (C6 running, E1 ready, P1/P2 todo). The overstatement is corrected here and recorded as TT-CR-08.",
+   "artifact": "W2_KANBAN_EXECUTION_RECEIPT.json"},
+  {"id": "A-CE-4", "what": "W2_CANDIDATE_FREEZE.json's superseded_subjects listed 5 commits and omitted other transient candidates.",
+   "disposition": "CLOSED_BY_REGENERATION",
+   "close_evidence": "the freeze now derives the superseded list from history (git log --reverse <accepted W1 source>..<candidate>) and lists all 10 superseded commits; a hardcoded list can no longer omit one",
+   "artifact": "W2_CANDIDATE_FREEZE.json"},
+  {"id": "A-CE-5", "what": "commit bffe540's message mentions AGENTS.md while only README.md changed; README's W2 row cites only the round-1 check.",
+   "disposition": "DISCLOSED",
+   "reasoning": "the message wording is cosmetic. The README row is an INCOMPLETE history, not a false product claim: its ceiling ('PENDING INDEPENDENT CHECK', not externally accepted) is correct, and the four-round history is recorded in full in W2_CHECKER_ROUND{1,2,3,4}_FINDINGS.json and the final dossier. Changing the README would move the frozen candidate and invalidate the round-4 product PASS, so the imprecision is disclosed instead of repaired.",
+   "claim_effect": "none - this is an under-statement in a doc string"}
+ ],
+ "new_from_lane_B": [
+  {"id": "TT-CR-07", "blocking": false, "state": "OPEN_NON_BLOCKING",
+   "what": "Oracle.required_kinds() exposes a declared kind tuple (_ORACLE_RULES[*]['kinds']) that decide() never consults: evidence-kind gating derives only from the predicate's required_evidence_kinds, so a declared oracle kind is a declaration that cannot fail at decision time.",
+   "note": "not a violation of any frozen law; recorded as a future hardening item"}
+ ],
+ "blocking_findings_after_round4": [],
+ "next_edge": "one focused governance lane (round 5) verifies the CLOSED evidence set on the SAME frozen candidate, so that both independent verdicts bind the same subject"
+}

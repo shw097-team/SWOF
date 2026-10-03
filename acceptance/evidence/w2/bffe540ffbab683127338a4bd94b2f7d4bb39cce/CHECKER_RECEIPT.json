@@ -1,0 +1,66 @@
+{
+ "schema": "SWOF-W2-INDEPENDENT-CHECKER-RECEIPT/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W2",
+ "subject": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+ "checker_identity": "fresh-context-VERIFY-ONLY (independent lanes across five verification rounds; no lane is the maker or an orchestration role)",
+ "lane_count": 8,
+ "checker_is_not_maker": true,
+ "checker_write_policy": "every lane was read-only; the acceptance-officer lanes were explicitly forbidden to repair the candidate, its evaluator logic, the WorkOrder or the evidence contract",
+ "product_verdict": "PASS",
+ "product_verdict_source": "round 4 lane B on the frozen subject bffe540f: all 21 CW3 re-probes HOLDS, all nine regression law-groups HOLDS, detector selftests proven falsifiable by injection, no new blocking counterexample",
+ "governance_verdict": "PASS_ON_SUBSTANCE_WITH_ONE_ACCEPTED_LIMITATION",
+ "governance_verdict_source": "round 5 lane on the same frozen subject: substantive governance repairs verified clean (ordering slice an exact row-by-row copy of all 17 transitions, freeze superseded list derived from history and complete, CW1 limitation honestly disclosed, no over-claim, round-4 PARTIAL correctly not recorded as PASS); the single residual is a point-in-time kanban snapshot race that is structurally unsatisfiable for the card that produces the receipt",
+ "wave_verdict": "PARTIAL",
+ "verdict": "PARTIAL",
+ "wave_verdict_reason": "the W2 product substrate is independently PASSED; the wave cannot be called PASS because (1) publication of the exact source/evidence commits is TEMP_CLOSED_GITHUB (no remote, no gh, no credential in this environment, so the remote readback is UNAVAILABLE) and (2) two non-blocking residuals remain open and are explicitly deferred: TT-CR-07 (an oracle-declared kind list that decide() never consults) and TT-CR-08 (the kanban receipt snapshot race, now self-describing). No mandatory safety or authority invariant is bypassed.",
+ "blocking_findings": [],
+ "open_non_blocking_findings": [
+  {"id": "TT-CR-07", "owner": "SWOF assurance (future hardening)", "what": "Oracle.required_kinds() exposes a declared kind tuple that decide() never consults"},
+  {"id": "TT-CR-08", "owner": "evidence harness", "what": "the kanban receipt is a point-in-time snapshot and cannot show its own consumer as complete; the receipt is now explicitly self-describing and the earlier over-stated disposition sentence was corrected"}
+ ],
+ "rounds": [
+  {"round": 1, "subject": "83adb8e1ef97f304d53bfb5d5c7c4c5ba9938ed2", "lanes": 3, "verdict": "PARTIAL", "blocking": 2,
+   "findings": "TC-W2-SEC-01 (credential detector gap), TT-CR-1 (harness containment false negative)"},
+  {"round": 2, "subject": "4469813c086b864cfd82383400a11ce2831b8433", "lanes": 2, "verdict": "PARTIAL", "blocking": 1,
+   "findings": "TC-W2-R2-01 (oracle negative-fixture law still bypassable)"},
+  {"round": 3, "subject": "f7ab02db6f6aa02a417965a73da1baac1b162441", "lanes": 2, "verdict": "PARTIAL", "blocking": 0,
+   "findings": "six non-blocking gaps (TT-CR-01..06)"},
+  {"round": 4, "subject": "bffe540ffbab683127338a4bd94b2f7d4bb39cce", "lanes": 2,
+   "verdict": "PRODUCT_PASS / GOVERNANCE_PARTIAL", "blocking": 0,
+   "findings": "product lane found no new blocking counterexample; governance lane found five non-blocking evidence-ledger gaps, all regenerated or disclosed; new TT-CR-07"},
+  {"round": 5, "subject": "bffe540ffbab683127338a4bd94b2f7d4bb39cce", "lanes": 1, "verdict": "PARTIAL", "blocking": 0,
+   "findings": "the regenerated artifacts were verified clean on the same unchanged subject; one residual TT-CR-08 (snapshot race) plus a corrected disposition wording"}
+ ],
+ "corrective_rounds": [
+  {"round": "CW1(+CW1b)", "from": "83adb8e1ef97f304d53bfb5d5c7c4c5ba9938ed2", "to": "4469813c086b864cfd82383400a11ce2831b8433",
+   "closed": ["TC-W2-SEC-01", "TC-W2-EVID-01", "TC-W2-ORACLE-01", "TC-W2-JRN-01", "TC-W2-EFFECT-01"]},
+  {"round": "CW2", "from": "4469813c086b864cfd82383400a11ce2831b8433", "to": "f7ab02db6f6aa02a417965a73da1baac1b162441",
+   "closed": ["TC-W2-R2-01", "TC-W2-R2-02", "TC-W2-R2-03", "TC-W2-R2-04", "TC-W2-R2-05"]},
+  {"round": "CW3", "from": "f7ab02db6f6aa02a417965a73da1baac1b162441", "to": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+   "closed": ["TT-CR-01", "TT-CR-02", "TT-CR-03", "TT-CR-04", "TT-CR-05", "TT-CR-06"]}
+ ],
+ "checks": [
+  {"id": "P1", "claim": "product substrate laws hold under active attempts to break them", "result": "PASS",
+   "evidence": "round-4 lane B, 21 re-probes + 9 regression law-groups, all HOLDS"},
+  {"id": "G1", "claim": "accepted W1 input preserved; candidate descended from it; W1 repair surface byte-identical except the authorised README doc sync", "result": "PASS",
+   "evidence": "rounds 1-5: W1 source is an ancestor in every round; the four W1 repair-surface files have identical blob SHAs; README.md changed only under WO-SWOF-W2-004's admitted write-set"},
+  {"id": "G2", "claim": "admission precedes the mutation permit which precedes the first write, on one contiguous append-only stream", "result": "PASS",
+   "evidence": "live DB rowids 8 < 9 < 10 with a contiguous 1..17 stream, verified independently in rounds 3, 4 and 5"},
+  {"id": "G3", "claim": "write-set containment; W1 regression denominator preserved", "result": "PASS",
+   "evidence": "71 changed paths, 0 unassigned in rounds 1-5; six W1 roots = 113 in every round"},
+  {"id": "G4", "claim": "the evidence set carries no over-claim", "result": "PASS",
+   "evidence": "rounds 3, 4, 5: no external acceptance / merge / release / production / world-effect claim"},
+  {"id": "G5", "claim": "governance evidence set fully clean", "result": "PARTIAL",
+   "evidence": "one accepted non-blocking snapshot-race limitation (TT-CR-08) and one open hardening item (TT-CR-07)"}
+ ],
+ "tt_cr": [
+  {"id": "TT-CR-07", "blocking": false, "owner": "SWOF assurance", "description": "Oracle.required_kinds() exposes a declared kind tuple decide() never consults - a declaration that cannot fail at decision time. Future hardening or an explicit precedent; no frozen law is violated."},
+  {"id": "TT-CR-08", "blocking": false, "owner": "evidence harness", "description": "The kanban receipt is a point-in-time snapshot and cannot show its own consumer as complete; it is now self-describing (snapshot_semantics, tasks_completed_after_generation) and the earlier over-stated disposition sentence was corrected."}
+ ],
+ "non_claims": [
+  "W2 is NOT externally accepted; the verdict is READY_FOR_W2_EXTERNAL_ACCEPTANCE only",
+  "no remote merge, no release, no production, no world-effect acceptance",
+  "the exact source/evidence commits are LOCAL identities; the remote readback is TEMP_CLOSED_GITHUB_NO_CREDENTIAL"
+ ],
+ "generated_at_utc": "2026-10-03T18:02:00Z"
+}

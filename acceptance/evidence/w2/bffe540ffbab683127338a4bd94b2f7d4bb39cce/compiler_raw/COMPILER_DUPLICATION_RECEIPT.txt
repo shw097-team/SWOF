@@ -1,0 +1,7 @@
+# canonical compiler command: duplication C:\Users\user\AppData\Local\hermes\attachments\SWOF_W2_Executor_Thin_Prompt_v1.md --source C:\Projects\Agent_Workspace\知識庫\實作相關DOC\Fabric vNext\Semantic World OS Fabric\SWOF-F_SWOF-GENIE_All-IW_Pre-Dev_Multi-Packages\SWOF_HGK_ACA_RBWI\SWOF_HGK_ACA_RBWI.md --source C:\Projects\Agent_Workspace\知識庫\實作相關DOC\HG-KSEOS\construction-acceptance-prompt-compiler\construction-acceptance-prompt-compiler\construction-acceptance-prompt-compiler_SKILL.md
+# subject workorder: WO-SWOF-W2-001;WO-SWOF-W2-002;WO-SWOF-W2-003;WO-SWOF-W2-004
+# exit_code: 0
+# generated_at_utc: 2026-10-03T15:01:59Z
+------------------------------------------------------------------------------
+{p.stdout}
+{p.stderr}

@@ -1,0 +1,163 @@
+{
+ "schema": "SWOF-PD04-PACKET-SET/1",
+ "wave": "W2",
+ "packets": [
+  {
+   "workorder_id": "WO-SWOF-W2-001",
+   "pd04_packet_ref": "PD04::WO-SWOF-W2-001",
+   "taskspec_ref": "TS-WO-SWOF-W2-001",
+   "ecp_ref": "ECP-WO-SWOF-W2-001",
+   "fresh_repocontext_ref": "REPOCONTEXT_PRE_MUTATION_READBACK.json",
+   "source_requirement_edges": [
+    "PI-PKG-06_2026-09-11_r2 / PD-PKG-09_2026-09-24 (security, privacy, rights, HumanGate)"
+   ],
+   "acceptance_edges": [
+    {
+     "acceptance_id": "ACC-SWOF-W2-001",
+     "oracle": "adversarial refusal: permission expansion, injected override, secret exfiltration, malicious tool output, HumanGate bypass all refused with typed errors",
+     "negative_fixture": "any adversarial fixture that is accepted => FAIL_SECURITY"
+    }
+   ],
+   "evidence_edges": [
+    "PRE_MUTATION_ADMISSION_RECEIPT.json",
+    "MUTATION_PERMIT_RECEIPT.json",
+    "FIRST_MUTATION_ORDERING_RECEIPT.json",
+    "BINDING_WO-SWOF-W2-001.json"
+   ],
+   "rollback_invalidation_edges": [
+    "RB-WO-SWOF-W2-001",
+    "subject identity change"
+   ],
+   "w1_dependency_refs": [
+    "SWOF-W1-ACCEPTED-7e1f912d",
+    "SWOF-W1-ACCEPTED-EVIDENCE-84ea30c2"
+   ],
+   "bounded_write_set": [
+    "src/security/",
+    "schemas/security/"
+   ],
+   "packet_fingerprint": "11df3c1c244b02bcd26173ebbe3bb0af620bfbcc2e57e8e5d876621a4c554d77",
+   "state": "CREATED",
+   "captured_before_mutation": true
+  },
+  {
+   "workorder_id": "WO-SWOF-W2-002",
+   "pd04_packet_ref": "PD04::WO-SWOF-W2-002",
+   "taskspec_ref": "TS-WO-SWOF-W2-002",
+   "ecp_ref": "ECP-WO-SWOF-W2-002",
+   "fresh_repocontext_ref": "REPOCONTEXT_PRE_MUTATION_READBACK.json",
+   "source_requirement_edges": [
+    "PI-PKG-07_2026-09-12_r2 / PD-PKG-13_2026-09-29 (reality, effect, evidence)"
+   ],
+   "acceptance_edges": [
+    {
+     "acceptance_id": "ACC-SWOF-W2-002",
+     "oracle": "readback decides the effect state; provider response is observation only",
+     "negative_fixture": "apparent success without readback converted to SUCCESS => FAIL_EFFECT_CORRECTNESS"
+    }
+   ],
+   "evidence_edges": [
+    "PRE_MUTATION_ADMISSION_RECEIPT.json",
+    "MUTATION_PERMIT_RECEIPT.json",
+    "FIRST_MUTATION_ORDERING_RECEIPT.json",
+    "BINDING_WO-SWOF-W2-002.json"
+   ],
+   "rollback_invalidation_edges": [
+    "RB-WO-SWOF-W2-002",
+    "subject identity change"
+   ],
+   "w1_dependency_refs": [
+    "SWOF-W1-ACCEPTED-7e1f912d",
+    "SWOF-W1-ACCEPTED-EVIDENCE-84ea30c2"
+   ],
+   "bounded_write_set": [
+    "src/effect/",
+    "schemas/effect/"
+   ],
+   "packet_fingerprint": "f495768856683d9f10e7eac073e0787785ba221a08490ffa72c7016fc54674de",
+   "state": "CREATED",
+   "captured_before_mutation": true
+  },
+  {
+   "workorder_id": "WO-SWOF-W2-003",
+   "pd04_packet_ref": "PD04::WO-SWOF-W2-003",
+   "taskspec_ref": "TS-WO-SWOF-W2-003",
+   "ecp_ref": "ECP-WO-SWOF-W2-003",
+   "fresh_repocontext_ref": "REPOCONTEXT_PRE_MUTATION_READBACK.json",
+   "source_requirement_edges": [
+    "PI-PKG-07_2026-09-12_r2 / PD-PKG-13_2026-09-29 (assurance, evidence, SoD)"
+   ],
+   "acceptance_edges": [
+    {
+     "acceptance_id": "ACC-SWOF-W2-003",
+     "oracle": "every stale/foreign/wrong-subject/self-referential/forged/tampered item is rejected with its own typed error",
+     "negative_fixture": "any rejected-class fixture accepted => FAIL_EVIDENCE_INTEGRITY"
+    }
+   ],
+   "evidence_edges": [
+    "PRE_MUTATION_ADMISSION_RECEIPT.json",
+    "MUTATION_PERMIT_RECEIPT.json",
+    "FIRST_MUTATION_ORDERING_RECEIPT.json",
+    "BINDING_WO-SWOF-W2-003.json"
+   ],
+   "rollback_invalidation_edges": [
+    "RB-WO-SWOF-W2-003",
+    "subject identity change"
+   ],
+   "w1_dependency_refs": [
+    "SWOF-W1-ACCEPTED-7e1f912d",
+    "SWOF-W1-ACCEPTED-EVIDENCE-84ea30c2"
+   ],
+   "bounded_write_set": [
+    "src/assurance/",
+    "schemas/assurance/"
+   ],
+   "packet_fingerprint": "536cb5dc7affef4294380194241c8fe9dd9ec62a8e175bf77cb9b968376fa49e",
+   "state": "CREATED",
+   "captured_before_mutation": true
+  },
+  {
+   "workorder_id": "WO-SWOF-W2-004",
+   "pd04_packet_ref": "PD04::WO-SWOF-W2-004",
+   "taskspec_ref": "TS-WO-SWOF-W2-004",
+   "ecp_ref": "ECP-WO-SWOF-W2-004",
+   "fresh_repocontext_ref": "REPOCONTEXT_PRE_MUTATION_READBACK.json",
+   "source_requirement_edges": [
+    "PI-PKG-08_2026-09-15_r3 / PD-PKG-10_2026-09-25 (ops, SRE, observability)"
+   ],
+   "acceptance_edges": [
+    {
+     "acceptance_id": "ACC-SWOF-W2-004",
+     "oracle": "trace/workorder/checkpoint/subject correlation emitted redacted and replayable",
+     "negative_fixture": "an unredacted secret, or a missing first-failure/invalidation event => FAIL_OPS_HOOKS"
+    }
+   ],
+   "evidence_edges": [
+    "PRE_MUTATION_ADMISSION_RECEIPT.json",
+    "MUTATION_PERMIT_RECEIPT.json",
+    "FIRST_MUTATION_ORDERING_RECEIPT.json",
+    "BINDING_WO-SWOF-W2-004.json"
+   ],
+   "rollback_invalidation_edges": [
+    "RB-WO-SWOF-W2-004",
+    "subject identity change"
+   ],
+   "w1_dependency_refs": [
+    "SWOF-W1-ACCEPTED-7e1f912d",
+    "SWOF-W1-ACCEPTED-EVIDENCE-84ea30c2"
+   ],
+   "bounded_write_set": [
+    "src/observability/",
+    "schemas/observability/",
+    "README.md",
+    "AGENTS.md",
+    "config/workspace.json",
+    "docs/constitution/non-goals.md"
+   ],
+   "packet_fingerprint": "4a94be09859b3acffa3b14a783daee02e7e7172861c070adeafd6d89debca793",
+   "state": "CREATED",
+   "captured_before_mutation": true
+  }
+ ],
+ "captured_before_mutation": true
+}

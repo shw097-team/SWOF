@@ -1,0 +1,61 @@
+{
+ "schema": "SWOF-PROFILE-EFFECTIVE-READBACK-SET/1",
+ "profiles": [
+  {
+   "profile_id": "hgk-coding-factory",
+   "logical_role_id": "tracked-mutation-writer",
+   "worker_identity": "codex (tracked mutation writer)",
+   "binding_id": "BIND-WO-SWOF-W2-001",
+   "role_ne_profile_ne_worker": true,
+   "effective_load_readback": {
+    "binding_present": true,
+    "profile_selected": true,
+    "worker_claimed": true,
+    "lease_holder": "LS-WO-SWOF-W2-001"
+   },
+   "profile_source_locator": "HG-KSEOS docs §9 (5 stable P0 profiles; ROLE != PROFILE != WORKER)"
+  },
+  {
+   "profile_id": "hgk-coding-factory",
+   "logical_role_id": "tracked-mutation-writer",
+   "worker_identity": "codex (tracked mutation writer)",
+   "binding_id": "BIND-WO-SWOF-W2-002",
+   "role_ne_profile_ne_worker": true,
+   "effective_load_readback": {
+    "binding_present": true,
+    "profile_selected": true,
+    "worker_claimed": true,
+    "lease_holder": "LS-WO-SWOF-W2-002"
+   },
+   "profile_source_locator": "HG-KSEOS docs §9 (5 stable P0 profiles; ROLE != PROFILE != WORKER)"
+  },
+  {
+   "profile_id": "hgk-coding-factory",
+   "logical_role_id": "tracked-mutation-writer",
+   "worker_identity": "codex (tracked mutation writer)",
+   "binding_id": "BIND-WO-SWOF-W2-003",
+   "role_ne_profile_ne_worker": true,
+   "effective_load_readback": {
+    "binding_present": true,
+    "profile_selected": true,
+    "worker_claimed": true,
+    "lease_holder": "LS-WO-SWOF-W2-003"
+   },
+   "profile_source_locator": "HG-KSEOS docs §9 (5 stable P0 profiles; ROLE != PROFILE != WORKER)"
+  },
+  {
+   "profile_id": "hgk-coding-factory",
+   "logical_role_id": "tracked-mutation-writer",
+   "worker_identity": "codex (tracked mutation writer)",
+   "binding_id": "BIND-WO-SWOF-W2-004",
+   "role_ne_profile_ne_worker": true,
+   "effective_load_readback": {
+    "binding_present": true,
+    "profile_selected": true,
+    "worker_claimed": true,
+    "lease_holder": "LS-WO-SWOF-W2-004"
+   },
+   "profile_source_locator": "HG-KSEOS docs §9 (5 stable P0 profiles; ROLE != PROFILE != WORKER)"
+  }
+ ]
+}

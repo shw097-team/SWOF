@@ -1,0 +1,16 @@
+# command : C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s src/security/tests -t src/security/tests
+# cwd     : C:\Projects\Agent_Workspace\SWOF
+# git HEAD: bffe540ffbab683127338a4bd94b2f7d4bb39cce
+# branch  : wo/swof-w2-security-effect-assurance
+# python  : 3.12.14
+# phase   : w2_candidate_w2
+# started : 2026-10-03T17:48:59Z
+# duration: 0.129s
+# exit_code: 0
+------------------------------------------------------------------------------
+
+...............................................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 191 tests in 0.012s
+
+OK

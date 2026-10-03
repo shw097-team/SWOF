@@ -1,0 +1,11 @@
+{
+ "schema": "SWOF-W2-CURRENTNESS-RECEIPT/1",
+ "source_freeze": "current (no source-corpus mutation in this order)",
+ "g_know": "PASS for the affected cone (W1 acceptance recorded 34/34; the W2 cone reuses it)",
+ "reuse_map": "valid (W1 accepted tuple is immutable input)",
+ "repocontext": "fresh readback at the W2 baseline (REPOCONTEXT_PRE_MUTATION_READBACK.json)",
+ "compiler_currentness": "W2_COMPILER_CURRENTNESS.json (fresh, 48a3 selected, bundle identical)",
+ "affected_cone_only": true,
+ "captured_before_mutation": true,
+ "generated_at_utc": "2026-10-03T15:03:33Z"
+}

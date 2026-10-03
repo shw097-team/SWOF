@@ -1,0 +1,12 @@
+# command : C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s src/assurance/tests -t src/assurance/tests
+# cwd     : C:\Projects\Agent_Workspace\SWOF
+# git HEAD: 26873f6208720f7962060ef876bde8628d1f679a
+# workorder: WO-SWOF-W2-003
+# exit_code: 0
+------------------------------------------------------------------------------
+
+...............................................................................................
+----------------------------------------------------------------------
+Ran 95 tests in 0.011s
+
+OK

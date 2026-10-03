@@ -1,0 +1,12 @@
+{
+  "compiler_sha256": "2c282ad6539a465c3b1d751868cab98437a8f35e9728be686117e364a70857d9",
+  "contract_sha256": "3e2eef57db3886e849605f606580a2b755d753eb895cc3754e1b79d4465b9213",
+  "generated_at": "2026-10-03T15:02:00.520347+00:00",
+  "independent_claim": "NOT_EVALUATED",
+  "production_claim": "NOT_CLAIMED",
+  "prompt_sha256": "25fae735cb1dd6a1373cde06a2a0f9bca6a481384405f09ac9e8c84271671dd1",
+  "runtime_claim": "NOT_EVALUATED",
+  "schema": "CAPC-COMPILER-RECEIPT/1",
+  "task_id": "SWOF-CONSTRUCTION-002-W2-SECURITY-EFFECT-ASSURANCE-001",
+  "verdict": "PROMPT_COMPILE_PASS"
+}

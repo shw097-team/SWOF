@@ -1,0 +1,34 @@
+{
+ "schema": "SWOF-W2-CORRECTIVE-CW3-FINAL-RECEIPT/1",
+ "round": "CORRECTIVE_CW3",
+ "superseded_subject": "f7ab02db6f6aa02a417965a73da1baac1b162441",
+ "intermediate_subject": "89287e2c67565d9accf7e7ea8ac6b9277600618b",
+ "final_subject_at_this_receipt": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+ "final_subject_note": "the round produced two commits (89287e2 = the three subsystem repairs, 316f792 = the observability repair the first stage list omitted) and the count-sync commit was then amended to bffe540; the frozen round-4 subject is bffe540",
+ "branch": "wo/swof-w2-security-effect-assurance",
+ "two_commit_disclosure": {
+  "what_happened": "the CW3 writer process completed the whole round, but its stage list still named only src/security, src/effect and src/assurance even though the round's admitted write-set and its test roots already included src/observability. The observability repair therefore landed on disk, ran (102 tests) and was reported in the round receipt, but was NOT committed by that process.",
+  "the_tell": "the observability test count moved (97 -> 102) while the commit delta contained no observability path - a count that moves without a corresponding artifact is the same class of signal as a repair whose collected count does not move",
+  "repair": "commit 89287e2 carries the three subsystem repairs; commit 316f7923 carries the observability repair (src/observability/redaction.py, src/observability/tests/test_redaction.py, src/observability/tests/test_adversarial.py), staged and committed explicitly. The harness stage list was corrected permanently so the round can no longer stage a subset of its own admitted write-set.",
+  "effect_on_verification": "the intermediate commit 89287e2 is NOT the subject of any checker run; the FINAL subject 316f7923 contains all four subsystem repairs and is the only subject handed to round 4"
+ },
+ "affected_roots_at_final_subject": {
+  "src/security/tests": {"ran": 191, "moved_from": 183},
+  "src/effect/tests": {"ran": 116, "moved_from": 105},
+  "src/assurance/tests": {"ran": 144, "moved_from": 128},
+  "src/observability/tests": {"ran": 102, "moved_from": 97}
+ },
+ "denominator_at_final_subject": {"w1": 113, "w2": 553, "grand_total": 666,
+                                  "artifact": "W2_TEST_DENOMINATOR.json"},
+ "containment_at_final_subject": {"changed_paths": 71, "unassigned": 0,
+                                  "artifact": "W2_BOUNDED_DIFF_WRITESET_RECEIPT.json"},
+ "ordering": {"round_opened_seq": 15, "write_permitted_seq": 16, "applied_seq": 17,
+              "permit_precedes_corrective_write": true, "stream_contiguous": true,
+              "artifact": "W2_ORDERED_LIFECYCLE_EVENT_SLICE.json"},
+ "findings_closed": ["TT-CR-01", "TT-CR-02", "TT-CR-03", "TT-CR-04", "TT-CR-05", "TT-CR-06"],
+ "bookkeeping_closed": {
+  "TT-CR-2 / TT-R3-01": "W2_KANBAN_EXECUTION_RECEIPT.json is regenerated as the LAST step of the wave, after every card reaches a terminal state, so it cannot describe a card that has since completed",
+  "TT-R3-02": "W2_CHECKER_ROUND3_FINDINGS.json carries a cumulative finding ledger that gives every finding id from all three rounds an explicit disposition, including the two ids the earlier per-round objects omitted (TT-W2-001, TT-CR-2)"
+ },
+ "generated_at_utc": "2026-10-03T17:52:00Z"
+}

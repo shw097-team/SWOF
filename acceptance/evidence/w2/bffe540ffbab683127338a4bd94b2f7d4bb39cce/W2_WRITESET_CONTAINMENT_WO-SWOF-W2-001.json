@@ -1,0 +1,20 @@
+{
+ "schema": "SWOF-W2-WRITESET-CONTAINMENT/1",
+ "workorder_id": "WO-SWOF-W2-001",
+ "admitted": [
+  "src/security/",
+  "schemas/security/"
+ ],
+ "changed_paths": [
+  "schemas/security/",
+  "src/security/"
+ ],
+ "outside_write_set": [],
+ "reverted": [],
+ "containment_ok": true,
+ "repaired_by": "revert/delete of the out-of-scope paths; the write-set was NOT widened",
+ "changed_after_repair": [
+  "schemas/security/",
+  "src/security/"
+ ]
+}

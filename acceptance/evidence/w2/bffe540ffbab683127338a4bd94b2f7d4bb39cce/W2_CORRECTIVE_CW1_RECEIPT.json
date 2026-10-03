@@ -1,0 +1,87 @@
+{
+ "schema": "SWOF-W2-CORRECTIVE-CW1-RECEIPT/1",
+ "round": "CORRECTIVE_CW1",
+ "superseded_subject": "83adb8e1ef97f304d53bfb5d5c7c4c5ba9938ed2",
+ "new_candidate": "f05cef1f0f1a184afb4bd4ecaf6248d58a8acabe",
+ "branch": "wo/swof-w2-security-effect-assurance",
+ "writer": "codex (tracked mutation writer)",
+ "codex_exit_code": 0,
+ "writer_log": "writer_logs/CODEX_CORRECTIVE_CW1.jsonl",
+ "writer_log_sha256": "58939723c69a08f89c48d436169c12b28a19aefa2f20aeac70244d611f709082",
+ "allowed_write_sets": [
+  "src/security/",
+  "src/effect/",
+  "src/assurance/"
+ ],
+ "changed_paths": [
+  "src/assurance/evidence.py",
+  "src/assurance/journal.py",
+  "src/assurance/oracle.py",
+  "src/assurance/tests/test_adversarial.py",
+  "src/assurance/tests/test_evidence.py",
+  "src/assurance/tests/test_journal.py",
+  "src/assurance/tests/test_oracle.py",
+  "src/effect/substrate.py",
+  "src/effect/tests/test_adversarial.py",
+  "src/effect/tests/test_substrate.py",
+  "src/security/classification.py",
+  "src/security/tests/test_adversarial.py",
+  "src/security/tests/test_classification.py"
+ ],
+ "out_of_scope_reverted": [],
+ "affected_roots": {
+  "src/security/tests": {
+   "ran": 177,
+   "exit_code": 0,
+   "ok": true,
+   "count_moved": true,
+   "pre_repair_count": 159,
+   "raw_log": "writer_logs/CORRECTIVE_src_security_tests.log",
+   "sha256": "2ae26d344e896b3e264b339e9b8a3c58b55668853e7104a2e3d0853aad9d9460"
+  },
+  "src/effect/tests": {
+   "ran": 100,
+   "exit_code": 0,
+   "ok": true,
+   "count_moved": true,
+   "pre_repair_count": 91,
+   "raw_log": "writer_logs/CORRECTIVE_src_effect_tests.log",
+   "sha256": "5393ede13b658c6b93be98a371f21ede832be7576a0a63d5e4909ee7459ff4f0"
+  },
+  "src/assurance/tests": {
+   "ran": 116,
+   "exit_code": 0,
+   "ok": true,
+   "count_moved": true,
+   "pre_repair_count": 95,
+   "raw_log": "writer_logs/CORRECTIVE_src_assurance_tests.log",
+   "sha256": "f75d0d13a2142466ba63c3edf1943ff64b975ca9da41e81e9642e575828d7b4e"
+  }
+ },
+ "delta_vs_superseded": [
+  "src/assurance/evidence.py",
+  "src/assurance/journal.py",
+  "src/assurance/oracle.py",
+  "src/assurance/tests/test_adversarial.py",
+  "src/assurance/tests/test_evidence.py",
+  "src/assurance/tests/test_journal.py",
+  "src/assurance/tests/test_oracle.py",
+  "src/effect/substrate.py",
+  "src/effect/tests/test_adversarial.py",
+  "src/effect/tests/test_substrate.py",
+  "src/security/classification.py",
+  "src/security/tests/test_adversarial.py",
+  "src/security/tests/test_classification.py"
+ ],
+ "delta_count": 13,
+ "findings_closed": [
+  "TC-W2-SEC-01",
+  "TC-W2-EVID-01",
+  "TC-W2-ORACLE-01",
+  "TC-W2-JRN-01",
+  "TC-W2-EFFECT-01"
+ ],
+ "finding_not_repairable_in_product": "TT-CR-1 is a harness evidence-integrity defect and is closed by regenerating the harness receipts, not by a product change",
+ "round1_verdicts_preserved": "checker_live/ROUND1_task-*.log (verbatim, unedited)",
+ "generated_at_utc": "2026-10-03T16:37:31Z"
+}

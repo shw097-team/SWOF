@@ -1,0 +1,15 @@
+# canonical compiler command: C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe C:\Projects\Agent_Workspace\知識庫\實作相關DOC\HG-KSEOS\construction-acceptance-prompt-compiler\construction-acceptance-prompt-compiler\scripts\prompt_contract_compiler.py compile C:\Projects\Agent_Workspace\HG-KSEOS\evidence\swof-construction-002\w2_binding_order\W2_CONTRACT.json --out-dir C:\Projects\Agent_Workspace\HG-KSEOS\evidence\swof-construction-002\w2_binding_order\compiler_raw\compiled
+# subject workorder: WO-SWOF-W2-001;WO-SWOF-W2-002;WO-SWOF-W2-003;WO-SWOF-W2-004
+# exit_code: 0
+# generated_at_utc: 2026-10-03T15:01:59Z
+------------------------------------------------------------------------------
+{
+  "verdict": "PROMPT_COMPILE_PASS",
+  "error_count": 0,
+  "errors": [],
+  "task_id": "SWOF-CONSTRUCTION-002-W2-SECURITY-EFFECT-ASSURANCE-001",
+  "contract_sha256": "3e2eef57db3886e849605f606580a2b755d753eb895cc3754e1b79d4465b9213",
+  "claim_ceiling": "LOCAL"
+}
+
+

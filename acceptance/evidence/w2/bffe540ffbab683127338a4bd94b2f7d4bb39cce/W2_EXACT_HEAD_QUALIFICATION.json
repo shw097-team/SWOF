@@ -1,0 +1,16 @@
+{
+ "schema": "SWOF-W2-EXACT-HEAD-QUALIFICATION/1",
+ "candidate": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+ "branch": "wo/swof-w2-security-effect-assurance",
+ "worktree_clean": true,
+ "denominator_at_this_head": {
+  "candidate": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+  "matches": true,
+  "w1_total": 113,
+  "w2_total": 553,
+  "grand_total": 666
+ },
+ "accepted_w1_source_is_ancestor": true,
+ "head_unchanged_after_tests": true,
+ "generated_at_utc": "2026-10-03T18:00:04Z"
+}

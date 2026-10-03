@@ -1,0 +1,12 @@
+# command : C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s src/observability/tests -t src/observability/tests
+# cwd     : C:\Projects\Agent_Workspace\SWOF
+# git HEAD: fb75dae1932331e79a39276d2a5b31a0522b0cb3
+# workorder: WO-SWOF-W2-004
+# exit_code: 0
+------------------------------------------------------------------------------
+
+.................................................................................................
+----------------------------------------------------------------------
+Ran 97 tests in 0.006s
+
+OK
