@@ -79,13 +79,13 @@ python -m unittest discover -s src/knowledge/tests -t src/knowledge/tests  # 25 
 python -m unittest discover -s src/admission/tests -t src/admission/tests  # 17 tests
 python -m unittest discover -s src/profile/tests -t src/profile/tests      # 12 tests
 python -m unittest discover -s src/capability/tests -t src/capability/tests # 22 tests
-python -m unittest discover -s src/security/tests -t src/security/tests    # 183 tests
-python -m unittest discover -s src/effect/tests -t src/effect/tests        # 105 tests
-python -m unittest discover -s src/assurance/tests -t src/assurance/tests  # 128 tests
-python -m unittest discover -s src/observability/tests -t src/observability/tests # 97 tests
+python -m unittest discover -s src/security/tests -t src/security/tests    # 191 tests
+python -m unittest discover -s src/effect/tests -t src/effect/tests        # 116 tests
+python -m unittest discover -s src/assurance/tests -t src/assurance/tests  # 144 tests
+python -m unittest discover -s src/observability/tests -t src/observability/tests # 102 tests
 ```
 
-Aggregate: **626 tests**, 0 failures, 0 errors, 0 skipped.
+Aggregate: **666 tests**, 0 failures, 0 errors, 0 skipped.
 
 A structural hygiene guard (`tests/test_test_hygiene.py`) fails the suite if any test is defined after an `if __name__ == "__main__"` guard, since such tests are silently never collected.
 
