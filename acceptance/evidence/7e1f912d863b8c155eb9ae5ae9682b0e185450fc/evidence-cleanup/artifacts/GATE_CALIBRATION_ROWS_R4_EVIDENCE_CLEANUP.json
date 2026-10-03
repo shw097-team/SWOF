@@ -243,11 +243,21 @@
     "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/LOCAL_CLOSURE_RECEIPT.json": "da11be212f1d374cb5e433b5fb8f5264fcb74467ce200ec4df85f25ed4e04213"
    },
    "observed": {
+    "maker_identity": "hermes-orchestrator (HG-KSEOS bounded runtime)",
     "checker_identity": "fresh-context VERIFY_ONLY lane deleg_2667d12a",
-    "producer_identity": null,
+    "checker_ne_maker": true,
     "verdict": "PASS",
     "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
-    "checker_did_not_mutate_subject": true
+    "checker_did_not_mutate_subject": true,
+    "repair_workorder_id": "WO-SWOF-W1-REPAIR-R4-001"
+   },
+   "observed_assertions": {
+    "checker_identity_present": true,
+    "maker_identity_present": true,
+    "checker_is_not_maker": true,
+    "checker_did_not_mutate_subject": true,
+    "receipt_subject_is_the_frozen_source": true,
+    "receipt_verdict": "PASS"
    },
    "fail_closed_result": "FAIL_SOD",
    "added_by": "W1-R4-EVIDENCE-ONLY-CLEANUP (closes R4-EXT-001 for this gate)"

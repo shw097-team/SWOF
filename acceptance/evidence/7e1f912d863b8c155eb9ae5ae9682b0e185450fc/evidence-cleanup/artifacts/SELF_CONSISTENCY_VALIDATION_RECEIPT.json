@@ -1,20 +1,37 @@
 {
  "schema": "SWOF-SELF-CONSISTENCY-VALIDATION-RECEIPT/1",
  "validator": "validate_tree() in var/swof-w1-r4-evidence-cleanup/e13_final.py",
- "rule": "every declared 64-hex value under a key containing 'sha256'/'hash' must equal the sha256 of the in-tree file named by a sibling path key, or of some in-tree file, or be in the historical/external allowlist; otherwise it is an error.",
+ "rule": "EVERY 64-hex value in a JSON file, whatever its key is named, must resolve: (a) if the enclosing object names a target via a path-like sibling key, OR the key itself is path-like, the value must equal the bytes of that target - an in-tree relative path, a <commit>:<path> git reference verified against THAT commit's blob, or an absolute workspace path matched by unique in-tree basename; (b) otherwise the value must equal the sha256 of some in-tree file or be in the external/historical allowlist. A named target that does not resolve is an error. Failures inside an explicit superseded/ scope are disclosed and counted rather than raised.",
+ "known_limitations": [
+  "the allowlist is a minimal external-reference set (historical commit blobs + named external control files + the out-of-tree contract); it is not a general escape hatch",
+  "an absolute path whose basename is ambiguous in-tree is treated as unresolved rather than guessed"
+ ],
  "clean_tree": {
   "errors": [],
-  "hashes_checked": 145,
+  "hashes_checked": 162,
   "files": 36,
   "passes": true
  },
- "negative_fixture": {
-  "injected_contradiction": "artifacts/INJECTED_CONTRADICTION.json claiming a bogus artifact_sha256 for a real in-tree file",
-  "errors": [
-   "artifacts/INJECTED_CONTRADICTION.json: artifact_sha256=000000000000... contradicts in-tree file artifacts/SWOF_EVIDENCE_RETURN_PACK.json"
+ "negative_fixtures": {
+  "shapes": [
+   "fixture_1_sibling_path_wrong_value",
+   "fixture_2_non_sha256_key",
+   "fixture_3_commit_path_wrong_blob",
+   "fixture_4_unresolvable_named_target"
   ],
-  "hashes_checked": 146,
-  "injection_caught": true
+  "caught": {
+   "fixture_1_sibling_path_wrong_value": true,
+   "fixture_2_non_sha256_key": true,
+   "fixture_3_commit_path_wrong_blob": true,
+   "fixture_4_unresolvable_named_target": true
+  },
+  "all_caught": true,
+  "errors": [
+   "artifacts/negative_fixture_1_sibling_path_wrong_value.json: artifact_sha256=000000000000... contradicts in-tree file artifacts/SWOF_EVIDENCE_RETURN_PACK.json",
+   "artifacts/negative_fixture_2_non_sha256_key.json: checksum=000000000000... resolves to no in-tree file and no known external blob",
+   "artifacts/negative_fixture_3_commit_path_wrong_blob.json: artifact_sha256=03f0334ed262... does not match the blob at 206ab073:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/R4_CONTRACT.json",
+   "artifacts/negative_fixture_4_unresolvable_named_target.json: artifact_sha256=03f0334ed262... names an in-tree target that does not resolve: does/not/exist.json"
+  ]
  },
  "non_vacuous": true,
  "prior_claim_corrected": "An earlier revision asserted this validator 'fails if any in-tree artifact declares a *_sha256 contradicting the in-tree bytes'. That was UNTRUE: the function initialised its error list and never appended to it, so it could never fail. This receipt records the corrected, demonstrated implementation."

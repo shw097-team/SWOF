@@ -200,8 +200,8 @@
    "id": "E-010",
    "type": "raw_artifact",
    "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\GATE_CALIBRATION_ROWS_R4_EVIDENCE_CLEANUP.json",
-   "sha256": "f8a45c8435a7fc6131c31d92ce371a1525c91f804050457a9cac00862de50378",
-   "bytes": 15149,
+   "sha256": "2bac921d04a7d69219f6b8e287f49f59bc564783ba449d8cee6487adb3ebcf02",
+   "bytes": 15541,
    "linkage_mode": "WORKORDER_CHECKPOINT",
    "linkage_subject": {
     "workorder_id": "WO-SWOF-W1-REPAIR-R4-001"
@@ -261,8 +261,8 @@
    "id": "E-013",
    "type": "raw_artifact",
    "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\EVIDENCE_LINKAGE_RECLASSIFICATION.json",
-   "sha256": "ae15b871cfb60d74026ef0a453e46a0c9f1441f3247000dea3f0a28766d24c8d",
-   "bytes": 37688,
+   "sha256": "73dd738ae5f19da967c27aa418ed6111c798cc08695806099d03cbd34931cad4",
+   "bytes": 44271,
    "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
    "linkage_subject": {
     "baseline": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
@@ -362,7 +362,7 @@
    "id": "E-018",
    "type": "raw_artifact",
    "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\SECRET_SCAN_RECEIPT.json",
-   "sha256": "38c84ab54c35d1e2ad0f3b20bcd2aab65aba56c8d23f16d87b2bcea06f73ef07",
+   "sha256": "6e1378111446d804cca6e22b3f220eabd61c1c46de987c43cedb028ac4328d0f",
    "bytes": 1463,
    "linkage_mode": "COMPILER_CONTRACT_BOUND",
    "linkage_subject": {
@@ -826,5 +826,5 @@
   "NO_WORLD_EFFECT_ACCEPTANCE",
   "W2_PRODUCT_MUTATION_NOT_EXECUTED"
  ],
- "generated_at_utc": "2026-10-03T06:33:17Z"
+ "generated_at_utc": "2026-10-03T06:46:03Z"
 }

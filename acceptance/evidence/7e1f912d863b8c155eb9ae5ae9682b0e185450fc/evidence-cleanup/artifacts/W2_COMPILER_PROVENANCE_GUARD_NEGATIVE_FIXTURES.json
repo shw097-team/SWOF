@@ -18,9 +18,9 @@
   },
   {
    "name": "injected_rank1_predecessor_path",
-   "path": "W2_GUARD_INJECTED_CONTRACT_NEGATIVE_FIXTURE.json",
-   "artifact_ref": "W2_GUARD_INJECTED_CONTRACT_NEGATIVE_FIXTURE.json",
-   "artifact_sha256": "fe039d4a054bd0c7a7cd174d8462730782611f9e4fd567ea98b0ef4dc25e52ca",
+   "path": "artifacts/W2_GUARD_INJECTED_CONTRACT_NEGATIVE_FIXTURE.json",
+   "artifact_ref": "artifacts/W2_GUARD_INJECTED_CONTRACT_NEGATIVE_FIXTURE.json",
+   "artifact_sha256": "61b4568213eedffd30f6cf86e9d19e4a11bd455adfc1d14f786c38cf65acd2c6",
    "in_tree_artifact": true,
    "violations": [
     "rank-1 authority retains a predecessor R3/R4 prompt path"
