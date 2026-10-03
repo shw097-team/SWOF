@@ -25,7 +25,7 @@ repository, which is unreviewed W0-W2 work.
 |---|---|---|
 | W0 | constitution, repo foundation, PD04 packet factory | IMPLEMENTED + INDEPENDENTLY VERIFIED |
 | W1 | `src/fabric`, `src/knowledge`, `src/admission`, `src/profile`, `src/capability` | IMPLEMENTED + INDEPENDENTLY VERIFIED |
-| W2 | `src/security`, `src/effect`, `src/assurance`, `src/observability` | IMPLEMENTED (LOCAL) / PENDING INDEPENDENT CHECK |
+| W2 | `src/security`, `src/effect`, `src/assurance`, `src/observability` | IMPLEMENTED (LOCAL) / ROUND-1 INDEPENDENT CHECK PARTIAL; CORRECTIVE ROUND APPLIED |
 | W3-W5 | product surfaces, ops/research, migration/handoff | PLANNED_NOT_DISPATCHED |
 
 **This is a W2-stage snapshot with a REDUCED claim.** It is NOT externally accepted,
@@ -79,13 +79,13 @@ python -m unittest discover -s src/knowledge/tests -t src/knowledge/tests  # 25 
 python -m unittest discover -s src/admission/tests -t src/admission/tests  # 17 tests
 python -m unittest discover -s src/profile/tests -t src/profile/tests      # 12 tests
 python -m unittest discover -s src/capability/tests -t src/capability/tests # 22 tests
-python -m unittest discover -s src/security/tests -t src/security/tests    # 177 tests
-python -m unittest discover -s src/effect/tests -t src/effect/tests        # 100 tests
-python -m unittest discover -s src/assurance/tests -t src/assurance/tests  # 116 tests
+python -m unittest discover -s src/security/tests -t src/security/tests    # 183 tests
+python -m unittest discover -s src/effect/tests -t src/effect/tests        # 105 tests
+python -m unittest discover -s src/assurance/tests -t src/assurance/tests  # 128 tests
 python -m unittest discover -s src/observability/tests -t src/observability/tests # 97 tests
 ```
 
-Aggregate: **603 tests**, 0 failures, 0 errors, 0 skipped.
+Aggregate: **626 tests**, 0 failures, 0 errors, 0 skipped.
 
 A structural hygiene guard (`tests/test_test_hygiene.py`) fails the suite if any test is defined after an `if __name__ == "__main__"` guard, since such tests are silently never collected.
 
@@ -99,8 +99,9 @@ root: it holds implementation and never semantic authority.
 Not externally accepted, not released, not production; no runtime or
 world-effect claim.
 
-- W2 is NOT externally accepted: the W2 suites are green locally only, and W2 is
-  `PENDING INDEPENDENT CHECK`. Local green is not acceptance.
+- W2 is NOT externally accepted: the W2 suites are green locally only. The round-1
+  independent check returned PARTIAL and a corrective round has been applied; neither
+  is external acceptance or an independent PASS. Local green is not acceptance.
 - The W2 journal-integrity envelope is DETECTION-ONLY over an EXPORTED event stream. It makes
   no DB-level claim and no signature claim: there is no key management, so it cannot prove
   authorship or make the source database tamper-proof.
