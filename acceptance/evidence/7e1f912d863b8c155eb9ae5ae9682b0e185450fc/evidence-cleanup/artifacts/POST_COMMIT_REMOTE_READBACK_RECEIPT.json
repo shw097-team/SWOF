@@ -1,24 +1,28 @@
 {
  "schema": "SWOF-POST-COMMIT-REMOTE-READBACK-RECEIPT/1",
- "layer": "BINDING_FOR_bbf51062",
+ "layer": "BINDING_FOR_e69454f0",
  "repo": "shw097-team/SWOF",
  "evidence_branch": "evidence/w1-r4-evidence-cleanup",
- "bound_evidence_commit_sha": "bbf51062149eb1f3035e8ee8d3bb4e75e6ad4e4d",
+ "bound_evidence_commit_sha": "e69454f047437337c89d376bf533b0d0ac97d51c",
  "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
  "source_branch_tip_at_readback": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
  "source_branch_unchanged_by_cleanup": true,
  "supersedes_binding_of": "1d3b4e3799af89cbb98d7059f559767752400851",
  "superseded_commits_retained_in_history": [
-  "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f",
-  "a45009bd7b459fa400a81f339b67e25ea9c051c2",
-  "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
-  "0a34440f786cc1bedc5eac75167e233884623f87",
-  "39ba9e03cfd16cda840ed367d00a09e913bae4ce",
-  "cf553b6f373e45fd95647b742079434f7f3c5acb",
-  "8731c34308e8a619ed26384d33cbf56b20e3b4bd",
-  "ece3010e49b9bdbfd9df90d5fb299597ace4907f",
+  "5672810e41117d77ccc15ec8bc5899be2da3d147",
+  "bbf51062149eb1f3035e8ee8d3bb4e75e6ad4e4d",
+  "470812c1b8d6134d29cdd7a9d2226009d6eff961",
+  "1bd60ea0484ffdac2a3d882ce56fee57c7ecc707",
+  "f79111293d272ac59654874deef2ee70b7ad63ff",
   "1d3b4e3799af89cbb98d7059f559767752400851",
-  "f79111293d272ac59654874deef2ee70b7ad63ff"
+  "ece3010e49b9bdbfd9df90d5fb299597ace4907f",
+  "8731c34308e8a619ed26384d33cbf56b20e3b4bd",
+  "cf553b6f373e45fd95647b742079434f7f3c5acb",
+  "39ba9e03cfd16cda840ed367d00a09e913bae4ce",
+  "0a34440f786cc1bedc5eac75167e233884623f87",
+  "c0023e6fd927c9d11cb2c1a6368ece50de982b42",
+  "a45009bd7b459fa400a81f339b67e25ea9c051c2",
+  "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f"
  ],
  "readback_method": "PATH_INDEPENDENT blob-SHA readback; an empty read is a hard error.",
  "residual_closure": {
@@ -41,7 +45,7 @@
    "non_vacuity_demonstrated": true,
    "clean_tree_errors": [],
    "injected_contradiction_caught": true,
-   "hashes_checked": 145,
+   "hashes_checked": 162,
    "proof_artifact": "artifacts/SELF_CONSISTENCY_VALIDATION_RECEIPT.json"
   }
  },
@@ -51,8 +55,8 @@
   "mismatch_count": 0,
   "mismatches": [],
   "empty_read_count": 0,
-  "remote_tip_git_fetch": "bbf51062149eb1f3035e8ee8d3bb4e75e6ad4e4d",
-  "remote_tip_github_api": "bbf51062149eb1f3035e8ee8d3bb4e75e6ad4e4d",
+  "remote_tip_git_fetch": "e69454f047437337c89d376bf533b0d0ac97d51c",
+  "remote_tip_github_api": "e69454f047437337c89d376bf533b0d0ac97d51c",
   "transports_agree": true
  },
  "committed_tree_secret_scan": {
