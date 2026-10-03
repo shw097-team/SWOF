@@ -1,14 +1,16 @@
 {
  "schema": "SWOF-POST-COMMIT-REMOTE-READBACK-RECEIPT/1",
- "layer": "BINDING_FOR_4b199c99",
+ "layer": "BINDING_FOR_7d692506",
  "repo": "shw097-team/SWOF",
  "evidence_branch": "evidence/w1-r4-evidence-cleanup",
- "bound_evidence_commit_sha": "4b199c99e2e9aeb16ef165e3c2cf2a44767ddc04",
+ "bound_evidence_commit_sha": "7d6925060df8cbcb25cdf167413ea0560fc9caa9",
  "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
  "source_branch_tip_at_readback": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
  "source_branch_unchanged_by_cleanup": true,
  "supersedes_binding_of": "1d3b4e3799af89cbb98d7059f559767752400851",
  "superseded_commits_retained_in_history": [
+  "c94ceb58386810ebeff4031911c6dc96262da4c1",
+  "4b199c99e2e9aeb16ef165e3c2cf2a44767ddc04",
   "00d55fe130c102270743b56be2faf6a4655a8eca",
   "b1c6183e2b5675a1ce036876eac1471c7f572a03",
   "8c5c7c98063cfd912d75379ffbcc94c3c292e6d2",
@@ -58,7 +60,8 @@
     "fixture_2_non_sha256_key": true,
     "fixture_3_commit_path_wrong_blob": true,
     "fixture_4_unresolvable_named_target": true,
-    "fixture_5_uppercase_wrong_digest": true
+    "fixture_5_uppercase_wrong_digest": true,
+    "fixture_6_bare_list_element": true
    },
    "hashes_checked": 162,
    "superseded_scope_stale_reference_count": 14,
@@ -87,8 +90,8 @@
   "mismatch_count": 0,
   "mismatches": [],
   "empty_read_count": 0,
-  "remote_tip_git_fetch": "4b199c99e2e9aeb16ef165e3c2cf2a44767ddc04",
-  "remote_tip_github_api": "4b199c99e2e9aeb16ef165e3c2cf2a44767ddc04",
+  "remote_tip_git_fetch": "7d6925060df8cbcb25cdf167413ea0560fc9caa9",
+  "remote_tip_github_api": "7d6925060df8cbcb25cdf167413ea0560fc9caa9",
   "transports_agree": true
  },
  "committed_tree_secret_scan": {
