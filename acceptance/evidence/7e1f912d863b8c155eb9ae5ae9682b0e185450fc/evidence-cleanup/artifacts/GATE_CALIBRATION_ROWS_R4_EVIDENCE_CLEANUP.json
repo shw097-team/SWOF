@@ -104,12 +104,28 @@
     "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/ECP_RAW.json": "533804e576d3d000bfe791c0c2e5e59cc3abca9971b0c25a49bc92cebad47b41"
    },
    "observed": {
-    "pre_mutation_repocontext_head": null,
+    "repocontext_read_at_head": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+    "repocontext_read_at_head_equals_baseline": true,
     "pre_mutation_baseline_expected": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
     "captured_before_mutation": true,
+    "source_mutation_started": false,
+    "worktree_clean": true,
     "pd04_packet_present": true,
-    "workorder_id": null,
-    "ecp_id": "ECP-WO-SWOF-W1-REPAIR-R4-001"
+    "pd04_packet_workorder_id": "WO-SWOF-W1-REPAIR-R4-001",
+    "workorder_id": "WO-SWOF-W1-REPAIR-R4-001",
+    "workorder_base_head": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+    "taskspec_id": "TS-SWOF-W1-REPAIR-R4-001",
+    "ecp_id": "ECP-WO-SWOF-W1-REPAIR-R4-001",
+    "checkpoint_ref": "CKPT-SWOF-W1-REPAIR-R4-001",
+    "execution_binding_ref": "BIND-SWOF-W1-R4-001"
+   },
+   "observed_assertions": {
+    "repocontext_read_at_head_is_baseline": true,
+    "captured_before_mutation_true": true,
+    "source_mutation_started_false": true,
+    "workorder_base_head_is_baseline": true,
+    "workorder_ids_agree_across_pd04_wo_ecp": true,
+    "taskspec_links_requirement": true
    },
    "fail_closed_result": "FAIL_GATE_CALIBRATION",
    "added_by": "W1-R4-EVIDENCE-ONLY-CLEANUP (closes R4-EXT-001 for this gate)"

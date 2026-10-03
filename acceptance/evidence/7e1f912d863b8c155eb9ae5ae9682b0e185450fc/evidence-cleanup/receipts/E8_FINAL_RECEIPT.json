@@ -1,0 +1,13 @@
+{
+ "final_evidence_commit_sha": "a45009bd7b459fa400a81f339b67e25ea9c051c2",
+ "file_count": 29,
+ "matched": 29,
+ "mismatch": 0,
+ "source_branch_unchanged": true,
+ "commit1": "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f",
+ "final_readback": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_r4_evidence_cleanup\\FINAL_EVIDENCE_CLEANUP_READBACK.json",
+ "final_readback_sha256": "822d5a2738ce3af90c31470ed978611f228e33de340b26761b99d78496a963ae",
+ "readset": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\evidence\\swof-construction-002\\w1_r4_evidence_cleanup\\SWOF_EXTERNAL_ACCEPTANCE_READSET.json",
+ "readset_sha256": "2ef9f4d8f8ba0d25013435c9d464e61ff2091baf4940d0096be118195a100ec0",
+ "verdict": "PASS"
+}

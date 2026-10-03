@@ -2,7 +2,7 @@
  "carry_forward_gate": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\W1_CARRY_FORWARD_GATE.json",
  "return_pack": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\SWOF_EVIDENCE_RETURN_PACK.json",
  "readset": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\SWOF_EXTERNAL_ACCEPTANCE_READSET.json",
- "return_pack_sha256": "3979209ee19f48051b95193546b9469ea1f4c02eb5586f3dce22166015d9992c",
+ "return_pack_sha256": "2274852243bee8ffc4cc1d1246651d21986839ea56e39d3ac0901044525e4fbc",
  "readset_sha256": "d982644b3fe6282644de36c6d4ee95e1c8a37a388a70d69bd51e0ca87a7086de",
  "evidence_item_count": 37,
  "linkage_summary": {

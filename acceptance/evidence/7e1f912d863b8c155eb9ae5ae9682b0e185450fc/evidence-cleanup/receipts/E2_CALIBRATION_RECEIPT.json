@@ -1,7 +1,7 @@
 {
  "schema": "SWOF-GATE-CALIBRATION-DENOMINATOR-RECEIPT/1",
  "artifact": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\GATE_CALIBRATION_ROWS_R4_EVIDENCE_CLEANUP.json",
- "artifact_sha256": "ebf1540c2e7fb2e5da3d32211e1c85d4e86be026470d21dd44bd64e086b7974b",
+ "artifact_sha256": "f8a45c8435a7fc6131c31d92ce371a1525c91f804050457a9cac00862de50378",
  "required_denominator": [
   "G-R4-0",
   "G-R4-1",
@@ -26,6 +26,15 @@
  "required_count": 8,
  "duplicates": [],
  "every_row_points_to_raw_evidence": true,
+ "g_r4_1_grounded_in_raw_evidence": true,
+ "g_r4_1_observed_assertions": {
+  "repocontext_read_at_head_is_baseline": true,
+  "captured_before_mutation_true": true,
+  "source_mutation_started_false": true,
+  "workorder_base_head_is_baseline": true,
+  "workorder_ids_agree_across_pd04_wo_ecp": true,
+  "taskspec_links_requirement": true
+ },
  "validation_errors": [],
  "negative_fixtures": [
   {
