@@ -362,7 +362,7 @@
    "id": "E-018",
    "type": "raw_artifact",
    "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\SECRET_SCAN_RECEIPT.json",
-   "sha256": "624263d2ece1821561283a2a7a0af3d2d939cea181c111f5ef0961e8dbc18215",
+   "sha256": "f26ab29879491c6d13c1aef87cc90d19b6df4d705614bc6d9b8839d6071a6467",
    "bytes": 1463,
    "linkage_mode": "COMPILER_CONTRACT_BOUND",
    "linkage_subject": {
@@ -826,5 +826,5 @@
   "NO_WORLD_EFFECT_ACCEPTANCE",
   "W2_PRODUCT_MUTATION_NOT_EXECUTED"
  ],
- "generated_at_utc": "2026-10-03T07:23:16Z"
+ "generated_at_utc": "2026-10-03T07:30:07Z"
 }
