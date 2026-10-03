@@ -1,0 +1,41 @@
+{
+ "schema": "SWOF-POST-COMMIT-REMOTE-READBACK-RECEIPT/1",
+ "layer": "COMMIT_1_BINDING",
+ "repo": "shw097-team/SWOF",
+ "evidence_branch": "evidence/w1-r4-evidence-cleanup",
+ "bound_evidence_commit_sha": "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f",
+ "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "source_branch_tip_at_readback": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "source_branch_unchanged_by_cleanup": true,
+ "remote_readback": {
+  "file_count": 28,
+  "byte_and_hash_match_count": 28,
+  "mismatch_count": 0,
+  "mismatches": [],
+  "remote_tip_git_fetch": "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f",
+  "remote_tip_github_api": "fcd991b5f7a44b5bb3c3b760134b5aa4b3707f9f",
+  "transports_agree": true,
+  "github_contents_api_spot_check": {
+   "path": "artifacts/SWOF_EVIDENCE_RETURN_PACK.json",
+   "api_sha256": "3979209ee19f48051b95193546b9469ea1f4c02eb5586f3dce22166015d9992c",
+   "remote_sha256": "3979209ee19f48051b95193546b9469ea1f4c02eb5586f3dce22166015d9992c",
+   "match": true
+  }
+ },
+ "manifest_readback": {
+  "evidence_item_count": 37,
+  "calibration_gates": 8,
+  "calibration_gates_required": 8,
+  "missing_required_evidence": [],
+  "linkage_mode_counts": {
+   "COMPILER_CONTRACT_BOUND": 10,
+   "DIRECT_FINAL_SUBJECT": 1,
+   "HISTORICAL_SUPERSEDED": 3,
+   "WORKORDER_CHECKPOINT": 3,
+   "TRANSITIVE_PRE_MUTATION_LINEAGE": 20
+  }
+ },
+ "evidence_commit_neq_source": true,
+ "evidence_commit_neq_historical": true,
+ "verdict": "PASS"
+}
