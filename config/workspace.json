@@ -16,6 +16,29 @@
   ],
   "remediation_note": "Defect W0-002-WS-001: an earlier pass wrote src/ and tools/ outside this write-set; those files were deleted and are recorded in the corrective receipt."
  },
+ "w2_admitted_write_sets": {
+  "WO-SWOF-W2-001": [
+   "src/security/",
+   "schemas/security/"
+  ],
+  "WO-SWOF-W2-002": [
+   "src/effect/",
+   "schemas/effect/"
+  ],
+  "WO-SWOF-W2-003": [
+   "src/assurance/",
+   "schemas/assurance/"
+  ],
+  "WO-SWOF-W2-004": [
+   "src/observability/",
+   "schemas/observability/",
+   "README.md",
+   "AGENTS.md",
+   "config/workspace.json",
+   "docs/constitution/non-goals.md"
+  ]
+ },
+ "w2_note": "The W2 admitted write-set is enforced by RE-READING the on-disk paths after the write and failing if any touched path falls outside the declared set. The set is never widened to fit a stray path: an out-of-set path is a defect to be deleted and receipted, not an entry to be added.",
  "invariants": [
   "no second semantic root (PI-PKG-00 2.3)",
   "provider/execution state is never semantic authority (PI-PKG-00 2.4)",
