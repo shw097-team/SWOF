@@ -1,0 +1,841 @@
+{
+ "schema": "CAPC-PROMPT-CONTRACT/1",
+ "task_id": "SWOF-W1-R4-EVIDENCE-ONLY-CLEANUP-W2-ENTRY-001",
+ "source_scan": {
+  "required_source_families": [
+   "current_user_instruction",
+   "product_authority",
+   "execution_controls",
+   "memory_knowledge_runtime"
+  ],
+  "reviewed": [
+   {
+    "source_family": "current_user_instruction",
+    "source_id": "SRC-CUR-TASK-PROMPT",
+    "locator": "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EVIDENCE_ONLY_CLEANUP_AND_W2_ENTRY_EXECUTOR_PROMPT_v1.md#0-9",
+    "sha256": "7bfe828691b3f0d52b89a387751536f2e2c1fcccb57a45284088f6dc11847756",
+    "role": "NORMATIVE",
+    "critical": true
+   },
+   {
+    "source_family": "product_authority",
+    "source_id": "SRC-SWOF-TARGET",
+    "locator": "C:\\Projects\\Agent_Workspace\\SWOF",
+    "sha256": "UNAVAILABLE",
+    "role": "NORMATIVE",
+    "critical": true
+   },
+   {
+    "source_family": "execution_controls",
+    "source_id": "SRC-HGK-CONTROL",
+    "locator": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\src\\hg_kseos",
+    "sha256": "UNAVAILABLE",
+    "role": "NORMATIVE",
+    "critical": true
+   },
+   {
+    "source_family": "memory_knowledge_runtime",
+    "source_id": "SRC-CUR-DECISION-REPORT",
+    "locator": "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EXTERNAL_CHALLENGE_AND_W2_ENTRY_DECISION.md#5",
+    "sha256": "6868a088c868a3cbe812c54576b2940a01325604e6283e6a6bcb6051851528fa",
+    "role": "NORMATIVE",
+    "critical": true
+   }
+  ],
+  "missing": [],
+  "normative_claims": [
+   {
+    "claim_id": "NC-001",
+    "text": "This changeset is EVIDENCE_ONLY: the frozen W1 product source 7e1f912d must not change and no new W1 source candidate may be created.",
+    "source_ids": [
+     "SRC-CUR-TASK-PROMPT"
+    ],
+    "locators": [
+     "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EVIDENCE_ONLY_CLEANUP_AND_W2_ENTRY_EXECUTOR_PROMPT_v1.md#1"
+    ]
+   },
+   {
+    "claim_id": "NC-002",
+    "text": "Historical R4 artifacts are historical facts; defects are adjudicated non-retroactively and never rewritten to look correct.",
+    "source_ids": [
+     "SRC-CUR-TASK-PROMPT"
+    ],
+    "locators": [
+     "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EVIDENCE_ONLY_CLEANUP_AND_W2_ENTRY_EXECUTOR_PROMPT_v1.md#4"
+    ]
+   },
+   {
+    "claim_id": "NC-003",
+    "text": "The four R4 external findings R4-EXT-001..004 must be closed or adjudicated against exact raw evidence with an explicit denominator.",
+    "source_ids": [
+     "SRC-CUR-DECISION-REPORT"
+    ],
+    "locators": [
+     "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EXTERNAL_CHALLENGE_AND_W2_ENTRY_DECISION.md#5"
+    ]
+   },
+   {
+    "claim_id": "NC-004",
+    "text": "Every current source_id/locator/authority-path must resolve to the current task inputs; predecessor prompt paths may appear only as HISTORICAL/SUPPORT.",
+    "source_ids": [
+     "SRC-CUR-TASK-PROMPT"
+    ],
+    "locators": [
+     "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EVIDENCE_ONLY_CLEANUP_AND_W2_ENTRY_EXECUTOR_PROMPT_v1.md#4"
+    ]
+   },
+   {
+    "claim_id": "NC-005",
+    "text": "A fresh independent VERIFY_ONLY checker, distinct from the evidence producer, must verify all four findings before publication.",
+    "source_ids": [
+     "SRC-CUR-TASK-PROMPT"
+    ],
+    "locators": [
+     "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EVIDENCE_ONLY_CLEANUP_AND_W2_ENTRY_EXECUTOR_PROMPT_v1.md#6"
+    ]
+   }
+  ]
+ },
+ "intent": {
+  "goal": "Evidence-only acceptance cleanup of the frozen W1 R4 subject: complete the gate-calibration denominator, supersede the stale packaging receipt truthfully, reclassify linkage modes, adjudicate the historical compiler-provenance defect non-retroactively, and prepare the W2 entry carry-forward gate.",
+  "user_expected_outcome": "A new immutable evidence commit bound to the unchanged source 7e1f912d, with the four R4 findings closed/adjudicated and a W2 handoff gate.",
+  "user_expected_experience": "Routine evidence cleanup executed autonomously; HITL only at real authority edges.",
+  "explicit_constraints": [
+   "frozen source 7e1f912d863b8c155eb9ae5ae9682b0e185450fc must not be modified",
+   "no new W1 source candidate",
+   "historical R4 evidence commit 206ab073e92541cbb0d2acab8a3beebbcfe8c9e9 treated read-only",
+   "no force-push of PR #4",
+   "no rewrite of historical compiler receipts"
+  ],
+  "non_goals": [
+   "W1 source replay",
+   "five-file reapply",
+   "W2 product mutation",
+   "provider activation",
+   "merge/release/production"
+  ],
+  "authorized_mutations": [
+   "HG-KSEOS evidence workspace",
+   "GitHub shw097-team/SWOF evidence branch (new commit only)"
+  ],
+  "forbidden_mutations": [
+   "SWOF product source",
+   "source corpus",
+   "Fabric authoritative source",
+   "HG-KSEOS source code",
+   "remote merge",
+   "release",
+   "production"
+  ],
+  "expected_autonomy": "HIGH",
+  "allowed_hitl": [
+   "credentials",
+   "org authorization",
+   "destructive scope expansion",
+   "equal-rank conflict",
+   "break-glass",
+   "release or production"
+  ],
+  "requested_delivery": [
+   "SWOF-W1-R4-EVIDENCE-CLEANUP-DELIVERABLE"
+  ],
+  "active_requirement_ids": [
+   "W1-R4-ACCEPTANCE-CLEANUP",
+   "W1-CARRY-FORWARD"
+  ],
+  "claim_ceiling": "LOCAL"
+ },
+ "authority": {
+  "sources": [
+   {
+    "id": "SRC-CUR-TASK-PROMPT",
+    "rank": "1",
+    "path": "attachments/SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md",
+    "sha256": "7bfe828691b3f0d52b89a387751536f2e2c1fcccb57a45284088f6dc11847756",
+    "locator": "#0-9",
+    "role": "NORMATIVE",
+    "governs": true
+   },
+   {
+    "id": "SRC-CUR-DECISION-REPORT",
+    "rank": "2",
+    "path": "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EXTERNAL_CHALLENGE_AND_W2_ENTRY_DECISION.md",
+    "sha256": "6868a088c868a3cbe812c54576b2940a01325604e6283e6a6bcb6051851528fa",
+    "locator": "#5",
+    "role": "NORMATIVE",
+    "governs": true
+   },
+   {
+    "id": "SRC-RBWI",
+    "rank": "3",
+    "path": "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\Fabric vNext\\Semantic World OS Fabric\\SWOF-F_SWOF-GENIE_All-IW_Pre-Dev_Multi-Packages\\SWOF_HGK_ACA_RBWI\\SWOF_HGK_ACA_RBWI.md",
+    "sha256": "b9a26f959233bc63c21bb4ad764ded3efc6ba6b02c2d29c40c92e33b0bb5670d",
+    "locator": "#10.1-10.4,21,22",
+    "role": "NORMATIVE",
+    "governs": true
+   },
+   {
+    "id": "SRC-COMPILER-SKILL",
+    "rank": "4",
+    "path": "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\HG-KSEOS\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler_SKILL.md",
+    "sha256": "48a3fdc5a0c65d4279c27ebc7586e747ba86c4bde82535cad2512d43547b4acb",
+    "locator": "C0-C9",
+    "role": "NORMATIVE",
+    "governs": true
+   },
+   {
+    "id": "SRC-HGK-CONTROL",
+    "rank": "5",
+    "path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\src\\hg_kseos",
+    "sha256": "UNAVAILABLE",
+    "locator": "lifecycle.py,spine.py",
+    "role": "NORMATIVE",
+    "governs": true
+   },
+   {
+    "id": "SRC-FROZEN-R4-SUBJECT",
+    "rank": "6",
+    "path": "shw097-team/SWOF#4",
+    "sha256": "UNAVAILABLE",
+    "locator": "branch repair/w1-r4-binding-order-proof @ 7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "role": "STATE_EVIDENCE",
+    "governs": false
+   },
+   {
+    "id": "SRC-HIST-R4-EVIDENCE",
+    "rank": "7",
+    "path": "shw097-team/SWOF",
+    "sha256": "UNAVAILABLE",
+    "locator": "evidence/w1-r4-binding-order-proof @ 206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "role": "STATE_EVIDENCE",
+    "governs": false
+   },
+   {
+    "id": "SRC-HISTORICAL-R4-PROMPT",
+    "rank": "8",
+    "path": "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_NARROW_REPAIR_R4_EXECUTOR_PROMPT_v1.md",
+    "sha256": "a2ff1672dcc3bc6cdaa48aaf6c33848675cb8bf9e22304c0b5a00c2cf3acac41",
+    "locator": "historical-predecessor",
+    "role": "SUPPORT",
+    "governs": false
+   },
+   {
+    "id": "SRC-HISTORICAL-R3-PROMPT",
+    "rank": "9",
+    "path": "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md",
+    "sha256": "b343cb380ef3115f083aa8cc7e6a59e8944b681bf3f55de270a2a42ca036ae87",
+    "locator": "historical-predecessor",
+    "role": "SUPPORT",
+    "governs": false
+   }
+  ],
+  "conflicts": [],
+  "missing_sources": [],
+  "native_control_plane_ids": [
+   "HG-KSEOS"
+  ],
+  "current_control_plane_id": "HG-KSEOS"
+ },
+ "changeset": {
+  "class": "EVIDENCE_ONLY",
+  "baseline_required": true,
+  "baseline_verified": true,
+  "reuse_prior_pass": true,
+  "affected_domains": [
+   "evidence",
+   "acceptance-packaging",
+   "gate-calibration",
+   "compiler-provenance"
+  ],
+  "affected_files": [],
+  "must_not_reopen": [
+   "src/fabric",
+   "src/knowledge",
+   "src/admission",
+   "src/profile",
+   "src/capability",
+   "schemas",
+   "README.md"
+  ],
+  "scope_expansion_requires_hitl": true,
+  "tracked_mutation": false,
+  "product_mutation_allowed": false
+ },
+ "execution_scope": [
+  {
+   "capability": "W1-R4-ACCEPTANCE-CLEANUP",
+   "source_disposition": "CONSTRUCTION_ONLY",
+   "current_execution_disposition": "ACTIVE_REQUIRED",
+   "current_profile_selected": true,
+   "canonical_flow_referenced": true,
+   "automatic_route_target": true,
+   "user_experience_required": false,
+   "runtime_required_now": true,
+   "action": "QUALIFY",
+   "source_locators": [
+    "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EVIDENCE_ONLY_CLEANUP_AND_W2_ENTRY_EXECUTOR_PROMPT_v1.md"
+   ],
+   "external_method": false,
+   "control_authority": true
+  },
+  {
+   "capability": "W1-CARRY-FORWARD",
+   "source_disposition": "CONSTRUCTION_ONLY",
+   "current_execution_disposition": "ACTIVE_REQUIRED",
+   "current_profile_selected": true,
+   "canonical_flow_referenced": true,
+   "automatic_route_target": true,
+   "user_experience_required": false,
+   "runtime_required_now": true,
+   "action": "DESIGN",
+   "source_locators": [
+    "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EXTERNAL_CHALLENGE_AND_W2_ENTRY_DECISION.md"
+   ],
+   "external_method": false,
+   "control_authority": true
+  }
+ ],
+ "runtime_readiness": [
+  {
+   "capability": "W1-R4-ACCEPTANCE-CLEANUP",
+   "required_now": true,
+   "lifecycle": {
+    "identify": "PASS",
+    "pin": "PASS",
+    "install_materialize": "PASS",
+    "configure": "PASS",
+    "discover": "PASS",
+    "bind": "PASS",
+    "route": "PASS",
+    "effective_load": "PASS",
+    "doctor_health": "PASS",
+    "positive_pilot": "PASS",
+    "negative_security": "PASS",
+    "fallback": "PASS",
+    "rollback_uninstall": "PASS",
+    "independent_qualification": "PASS",
+    "certify": "PASS",
+    "enable": "PASS"
+   },
+   "current_verdict": "RUNTIME_READY",
+   "work_required": [],
+   "acceptance_ids": [
+    "ACC-EV-DELIVERABLE",
+    "ACC-EV-CALIBRATION",
+    "ACC-EV-LINKAGE",
+    "ACC-EV-PROVENANCE"
+   ]
+  },
+  {
+   "capability": "W1-CARRY-FORWARD",
+   "required_now": true,
+   "lifecycle": {
+    "identify": "PASS",
+    "pin": "PASS",
+    "install_materialize": "PASS",
+    "configure": "PASS",
+    "discover": "PASS",
+    "bind": "PASS",
+    "route": "PASS",
+    "effective_load": "PASS",
+    "doctor_health": "PASS",
+    "positive_pilot": "PASS",
+    "negative_security": "PASS",
+    "fallback": "PASS",
+    "rollback_uninstall": "PASS",
+    "independent_qualification": "PASS",
+    "certify": "PASS",
+    "enable": "PASS"
+   },
+   "current_verdict": "RUNTIME_READY",
+   "work_required": [],
+   "acceptance_ids": [
+    "ACC-EV-W2-ENTRY"
+   ]
+  }
+ ],
+ "journeys": [
+  {
+   "journey_id": "J-EV-CLEANUP",
+   "required": true,
+   "user_goal": "clean up the R4 acceptance/provenance debt without changing the frozen W1 source",
+   "expected_visible_result": "a new evidence commit bound to 7e1f912d closing four findings",
+   "expected_automatic_behavior": [
+    "reuse raw evidence",
+    "reclassify linkage",
+    "supersede packaging"
+   ],
+   "expected_manual_behavior": [
+    "none"
+   ],
+   "allowed_hitl": [
+    "authority edges only"
+   ],
+   "required_capabilities": [
+    "W1-R4-ACCEPTANCE-CLEANUP"
+   ],
+   "negative_behavior": [
+    "if any product source byte changes the verdict MUST be FAIL"
+   ],
+   "failure_recovery": [
+    "restore the frozen source branch and re-run evidence-only"
+   ],
+   "source_expectation_ids": [
+    "NC-001",
+    "NC-002"
+   ],
+   "source_locators": [
+    "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EVIDENCE_ONLY_CLEANUP_AND_W2_ENTRY_EXECUTOR_PROMPT_v1.md"
+   ]
+  },
+  {
+   "journey_id": "J-EV-W2-ENTRY",
+   "required": true,
+   "user_goal": "hand off to W2 preconstruction with honest carrying of the W1 acceptance debt",
+   "expected_visible_result": "W1_CARRY_FORWARD_GATE with W2 preconstruction GO and mutation CONDITIONAL_GO",
+   "expected_automatic_behavior": [
+    "emit carry-forward gate"
+   ],
+   "expected_manual_behavior": [
+    "none"
+   ],
+   "allowed_hitl": [
+    "authority edges only"
+   ],
+   "required_capabilities": [
+    "W1-CARRY-FORWARD"
+   ],
+   "negative_behavior": [
+    "must not claim W1 external PASS"
+   ],
+   "failure_recovery": [
+    "re-emit the gate without promotion"
+   ],
+   "source_expectation_ids": [
+    "NC-003",
+    "NC-005"
+   ],
+   "source_locators": [
+    "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EXTERNAL_CHALLENGE_AND_W2_ENTRY_DECISION.md"
+   ]
+  }
+ ],
+ "acceptance": [
+  {
+   "acceptance_id": "ACC-EV-DELIVERABLE",
+   "subject_id": "SWOF-W1-R4-EVIDENCE-CLEANUP-DELIVERABLE",
+   "subject_type": "DELIVERABLE",
+   "source_locators": [
+    "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EVIDENCE_ONLY_CLEANUP_AND_W2_ENTRY_EXECUTOR_PROMPT_v1.md#1,#9"
+   ],
+   "runtime_required": true,
+   "required_depth": "L2_UNIT_BEHAVIOR",
+   "positive_fixture": "new evidence commit bound to the unchanged source 7e1f912d with all four findings closed/adjudicated",
+   "negative_fixture": "any product-source byte change or a new W1 source SHA yields FAIL",
+   "recovery_fixture": "restore the frozen source branch and re-run evidence-only",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-EV-JOURNEY-CLEANUP",
+   "subject_id": "J-EV-CLEANUP",
+   "subject_type": "JOURNEY",
+   "source_locators": [
+    "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EVIDENCE_ONLY_CLEANUP_AND_W2_ENTRY_EXECUTOR_PROMPT_v1.md#1"
+   ],
+   "runtime_required": true,
+   "required_depth": "L2_UNIT_BEHAVIOR",
+   "positive_fixture": "reuse raw evidence, reclassify linkage, supersede packaging without touching source",
+   "negative_fixture": "a summary-only calibration row or a DIRECT link without final-source derivation yields FAIL",
+   "recovery_fixture": "add the missing rows and reclassify",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-EV-JOURNEY-W2",
+   "subject_id": "J-EV-W2-ENTRY",
+   "subject_type": "JOURNEY",
+   "source_locators": [
+    "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EXTERNAL_CHALLENGE_AND_W2_ENTRY_DECISION.md#9"
+   ],
+   "runtime_required": true,
+   "required_depth": "L2_UNIT_BEHAVIOR",
+   "positive_fixture": "carry-forward gate states W2 preconstruction GO and mutation CONDITIONAL_GO",
+   "negative_fixture": "gate claims W1 external PASS yields FAIL",
+   "recovery_fixture": "re-emit the gate without promotion",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-EV-CALIBRATION",
+   "subject_id": "W1-R4-ACCEPTANCE-CLEANUP",
+   "subject_type": "DELIVERABLE",
+   "source_locators": [
+    "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EXTERNAL_CHALLENGE_AND_W2_ENTRY_DECISION.md#5"
+   ],
+   "runtime_required": false,
+   "required_depth": "L1_SCHEMA_CONTRACT",
+   "positive_fixture": "8/8 gate rows G-R4-0..5,7,8 present with no duplicates",
+   "negative_fixture": "6/8 denominator or a summary-only row yields FAIL_GATE_CALIBRATION",
+   "recovery_fixture": "add the missing rows from existing raw evidence",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "PASS",
+    "FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-EV-LINKAGE",
+   "subject_id": "W1-R4-LINKAGE",
+   "subject_type": "DELIVERABLE",
+   "source_locators": [
+    "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EXTERNAL_CHALLENGE_AND_W2_ENTRY_DECISION.md#5"
+   ],
+   "runtime_required": false,
+   "required_depth": "L1_SCHEMA_CONTRACT",
+   "positive_fixture": "each item's mode-specific oracle passes; DIRECT artifacts derive the final SHA",
+   "negative_fixture": "DIRECT without final source derivation yields FAIL_EVIDENCE_LINKAGE",
+   "recovery_fixture": "reclassify to the honest mode",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "PASS",
+    "FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-EV-PROVENANCE",
+   "subject_id": "W1-R4-COMPILER-PROVENANCE",
+   "subject_type": "DELIVERABLE",
+   "source_locators": [
+    "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EXTERNAL_CHALLENGE_AND_W2_ENTRY_DECISION.md#5"
+   ],
+   "runtime_required": false,
+   "required_depth": "L1_SCHEMA_CONTRACT",
+   "positive_fixture": "historical R4 defect preserved byte-exact and adjudicated non-retroactively",
+   "negative_fixture": "rewriting a historical receipt yields FAIL_PROVENANCE_LAUNDERING",
+   "recovery_fixture": "restore historical bytes and adjudicate",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "PASS",
+    "FAIL"
+   ]
+  },
+  {
+   "acceptance_id": "ACC-EV-W2-ENTRY",
+   "subject_id": "W1-CARRY-FORWARD",
+   "subject_type": "REQUIREMENT",
+   "source_locators": [
+    "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EXTERNAL_CHALLENGE_AND_W2_ENTRY_DECISION.md#9"
+   ],
+   "runtime_required": true,
+   "required_depth": "L2_UNIT_BEHAVIOR",
+   "positive_fixture": "carry-forward gate states W2 preconstruction GO and mutation CONDITIONAL_GO",
+   "negative_fixture": "gate claims W1 external PASS yields FAIL",
+   "recovery_fixture": "re-emit the gate without promotion",
+   "raw_evidence_required": true,
+   "independent_checker_required": true,
+   "terminal_states": [
+    "INDEPENDENT_CASE_PASS",
+    "INDEPENDENT_CASE_FAIL"
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "gate_id": "G-EV-0",
+   "predicate": "current EVIDENCE_ONLY compiler validates this C0-C9 contract",
+   "expected": "lint/activation/acceptance/compile/duplication PASS",
+   "command_or_probe": "prompt_contract_compiler.py lint|activation|acceptance|compile|duplication",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": false,
+   "candidate_binding": {
+    "head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "package_sha256": "EVIDENCE_ONLY_CONTRACT_SHA256",
+    "source_hashes": [
+     "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "product source mutation",
+    "evidence republish"
+   ],
+   "terminal_verdict": "COMPILER_PASS",
+   "runtime_pass_allowed": false,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-EV-1",
+   "predicate": "frozen W1 source identity unchanged (PR #4 head == 7e1f912d)",
+   "expected": "source SHA exact, no product mutation",
+   "command_or_probe": "git rev-parse + GitHub PR readback",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "package_sha256": "EVIDENCE_ONLY_CONTRACT_SHA256",
+    "source_hashes": [
+     "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "product source mutation",
+    "evidence republish"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": false,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-EV-2",
+   "predicate": "gate-calibration denominator exact 8/8 = G-R4-0,1,2,3,4,5,7,8",
+   "expected": "no missing gate, no duplicate, no summary-only row",
+   "command_or_probe": "denominator validator",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "package_sha256": "EVIDENCE_ONLY_CONTRACT_SHA256",
+    "source_hashes": [
+     "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "product source mutation",
+    "evidence republish"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": false,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-EV-3",
+   "predicate": "historical packaging superseded; new truthful packaging receipt; post-commit readback binds the new evidence SHA",
+   "expected": "zero counts all zero; no future-SHA claim in-tree",
+   "command_or_probe": "packaging + post-commit readback",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": true,
+   "candidate_binding": {
+    "head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "package_sha256": "EVIDENCE_ONLY_CONTRACT_SHA256",
+    "source_hashes": [
+     "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "product source mutation",
+    "evidence republish"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": false,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-EV-4",
+   "predicate": "linkage classification valid per mode-specific oracle",
+   "expected": "no DIRECT item lacking final-source derivation",
+   "command_or_probe": "linkage validator with negative fixtures",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": false,
+   "candidate_binding": {
+    "head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "package_sha256": "EVIDENCE_ONLY_CONTRACT_SHA256",
+    "source_hashes": [
+     "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "product source mutation",
+    "evidence republish"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": false,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-EV-5",
+   "predicate": "compiler provenance adjudicated non-retroactively; historical defect preserved",
+   "expected": "no historical byte rewritten; current provenance exact",
+   "command_or_probe": "byte compare historical vs current",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": false,
+   "candidate_binding": {
+    "head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "package_sha256": "EVIDENCE_ONLY_CONTRACT_SHA256",
+    "source_hashes": [
+     "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "product source mutation",
+    "evidence republish"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": false,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-EV-6",
+   "predicate": "SWOF-EVIDENCE-RETURN-PACK/1 completeness with explicit denominator",
+   "expected": "all required artifacts present",
+   "command_or_probe": "return-pack validator",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": false,
+   "candidate_binding": {
+    "head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "package_sha256": "EVIDENCE_ONLY_CONTRACT_SHA256",
+    "source_hashes": [
+     "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "product source mutation",
+    "evidence republish"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": false,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-EV-7",
+   "predicate": "fresh independent VERIFY_ONLY evidence checker (checker != producer)",
+   "expected": "checker attacks all four findings and cannot break them",
+   "command_or_probe": "delegated fresh-context lane",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": false,
+   "candidate_binding": {
+    "head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "package_sha256": "EVIDENCE_ONLY_CONTRACT_SHA256",
+    "source_hashes": [
+     "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "product source mutation",
+    "evidence republish"
+   ],
+   "terminal_verdict": "INDEPENDENT_CASE_PASS",
+   "runtime_pass_allowed": false,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-EV-8",
+   "predicate": "new evidence commit published; remote byte/hash/linkage readback exact",
+   "expected": "evidence SHA != source SHA and != 206ab073",
+   "command_or_probe": "git push + remote recompute",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": false,
+   "candidate_binding": {
+    "head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "package_sha256": "EVIDENCE_ONLY_CONTRACT_SHA256",
+    "source_hashes": [
+     "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "product source mutation",
+    "evidence republish"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": false,
+   "claim_level": "LOCAL"
+  },
+  {
+   "gate_id": "G-EV-9",
+   "predicate": "W1 carry-forward gate prepared for W2 entry",
+   "expected": "W2 preconstruction GO; mutation CONDITIONAL_GO only",
+   "command_or_probe": "gate artifact validation",
+   "raw_receipt_required": true,
+   "producer": "hermes-orchestrator",
+   "independent_checker": "fresh-context-VERIFY-ONLY",
+   "tracked_subject": false,
+   "candidate_binding": {
+    "head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "package_sha256": "EVIDENCE_ONLY_CONTRACT_SHA256",
+    "source_hashes": [
+     "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+    ]
+   },
+   "rerun_rule": "affected-only",
+   "invalidation": [
+    "product source mutation",
+    "evidence republish"
+   ],
+   "terminal_verdict": "PASS",
+   "runtime_pass_allowed": false,
+   "claim_level": "LOCAL"
+  }
+ ],
+ "termination": {
+  "terminal_states": [
+   "PASS",
+   "PARTIAL",
+   "FAIL",
+   "TEMP_CLOSED",
+   "PROMPT_COMPILE_BLOCKED",
+   "CHANGESET_RECOMPILE_REQUIRED"
+  ],
+  "non_terminal_pause": [
+   "HITL_AUTHORITY_EDGE"
+  ],
+  "checkpoint_required": true,
+  "checkpoint_fields": [
+   "task_id",
+   "source_hashes",
+   "current_candidate",
+   "completed_gates",
+   "open_gates",
+   "next_work_order",
+   "rollback_pointer"
+  ],
+  "retry_budget": 3,
+  "rollback_pointer_required": true
+ },
+ "render_policy": {
+  "control_corpus_restatement": false,
+  "embedded_control_bodies": [],
+  "max_prompt_chars": 20000,
+  "output_language": "zh-TW"
+ }
+}
