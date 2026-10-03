@@ -24,7 +24,7 @@ repository, which is unreviewed W0 work.
 | Wave | Scope | State |
 |---|---|---|
 | W0 | constitution, repo foundation, PD04 packet factory | IMPLEMENTED + INDEPENDENTLY VERIFIED |
-| W1 | narrow waist: `src/fabric`, `src/knowledge`, `src/admission` | IMPLEMENTED + INDEPENDENTLY VERIFIED |
+| W1 | `src/fabric`, `src/knowledge`, `src/admission`, `src/profile`, `src/capability` | IMPLEMENTED + INDEPENDENTLY VERIFIED |
 | W2-W5 | security/assurance, product surfaces, ops/research, migration/handoff | PLANNED_NOT_DISPATCHED |
 
 **This is a W1-stage snapshot with a REDUCED claim.** It is NOT externally accepted,
@@ -45,6 +45,8 @@ tools/pd04/            PD04 construction-packet factory (W0-003)
 src/fabric/            provider-neutral narrow waist + binder (W1-001)
 src/knowledge/         Data Brain: trust facets, retrieval, source-as-DATA (W1-002)
 src/admission/         Search-Before-Build admission ladder (W1-003)
+src/profile/           PD05 execution-context seam (W1 repair)
+src/capability/        named-capability consumption ledger (W1 repair)
 tests/, src/*/tests/   test suites (each subsystem root is discovered separately)
 config/                workspace + runtime configuration
 ```
@@ -55,16 +57,18 @@ semantic implementation. Each subsystem owns its own test root under `src/<subsy
 ## Verification
 
 `src/` is not an importable package root, so each subsystem test root must be
-run separately. All four roots are green:
+run separately. All six roots are green:
 
 ```bash
-python -m unittest discover -s tests -t .   # 15 tests
-python -m unittest discover -s src/fabric/tests -t src/fabric/tests   # 21 tests
-python -m unittest discover -s src/knowledge/tests -t src/knowledge/tests   # 25 tests
-python -m unittest discover -s src/admission/tests -t src/admission/tests   # 17 tests
+python -m unittest discover -s tests -t .                                  # 16 tests
+python -m unittest discover -s src/fabric/tests -t src/fabric/tests        # 21 tests
+python -m unittest discover -s src/knowledge/tests -t src/knowledge/tests  # 25 tests
+python -m unittest discover -s src/admission/tests -t src/admission/tests  # 17 tests
+python -m unittest discover -s src/profile/tests -t src/profile/tests      # 12 tests
+python -m unittest discover -s src/capability/tests -t src/capability/tests #  7 tests
 ```
 
-Aggregate: **78 tests**, 0 failures.
+Aggregate: **98 tests**, 0 failures, 0 errors, 0 skipped.
 
 A structural hygiene guard (`tests/test_test_hygiene.py`) fails the suite if any test is defined after an `if __name__ == "__main__"` guard, since such tests are silently never collected.
 
