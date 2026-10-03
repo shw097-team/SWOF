@@ -1,6 +1,6 @@
 {
  "schema": "SWOF-REDACTION-RECEIPT/1",
- "scanned_file_count": 28,
+ "scanned_file_count": 29,
  "redactions_applied": 0,
  "redaction_policy": "no secret or PII material present; nothing removed",
  "protected_material_review": {

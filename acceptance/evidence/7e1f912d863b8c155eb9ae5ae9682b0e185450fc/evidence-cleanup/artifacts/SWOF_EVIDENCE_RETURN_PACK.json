@@ -342,7 +342,7 @@
    "id": "E-017",
    "type": "raw_artifact",
    "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\REDACTION_RECEIPT.json",
-   "sha256": "4b09dfdb0de0fcfd34b6949a03b87aafe520317b4294e0d787c76dd86cf32c0a",
+   "sha256": "01422c959f89b3a3131c40ff53b5e0c64d42c05a937c0e92d9f88e9fb1e2fe91",
    "bytes": 399,
    "linkage_mode": "COMPILER_CONTRACT_BOUND",
    "linkage_subject": {
@@ -362,7 +362,7 @@
    "id": "E-018",
    "type": "raw_artifact",
    "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\SECRET_SCAN_RECEIPT.json",
-   "sha256": "55c67e78feb7ac4d0d124497fee7afcaabc7bd7dcfd82d4897ef05985755b546",
+   "sha256": "77f90f41cf5615e3fa7c35076626b50433b0949e595a8507ea259d96a143e3dd",
    "bytes": 1186,
    "linkage_mode": "COMPILER_CONTRACT_BOUND",
    "linkage_subject": {
@@ -826,5 +826,5 @@
   "NO_WORLD_EFFECT_ACCEPTANCE",
   "W2_PRODUCT_MUTATION_NOT_EXECUTED"
  ],
- "generated_at_utc": "2026-10-03T06:02:01Z"
+ "generated_at_utc": "2026-10-03T06:14:22Z"
 }

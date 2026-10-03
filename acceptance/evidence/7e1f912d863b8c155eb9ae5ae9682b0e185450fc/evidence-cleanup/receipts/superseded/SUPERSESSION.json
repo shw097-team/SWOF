@@ -1,0 +1,23 @@
+{
+ "schema": "SWOF-IN_TREE-RECEIPT-SUPERSESSION/1",
+ "defect_class": "STALE_RECEIPT_OF_THE_SAME_CLASS_AS_R4-EXT-002",
+ "disclosure": "The immutable evidence set previously carried publish/republish-time receipts that named an evidence commit which has since been superseded, with a file count and readback/readset hashes that no longer match. They are PRESERVED here under their original content and explicitly declared superseded. Nothing was deleted.",
+ "superseded": [
+  {
+   "superseded_file": "E8_FINAL_RECEIPT.bound-a45009bd.json",
+   "was": "receipts/E8_FINAL_RECEIPT.json",
+   "bounds_evidence_commit": "a45009bd7b459fa400a81f339b67e25ea9c051c2",
+   "stale_claims": {
+    "final_evidence_commit_sha": "a45009bd7b459fa400a81f339b67e25ea9c051c2",
+    "file_count": 29,
+    "matched": 29,
+    "final_readback_sha256": "822d5a2738ce3af90c31470ed978611f228e33de340b26761b99d78496a963ae",
+    "readset_sha256": "2ef9f4d8f8ba0d25013435c9d464e61ff2091baf4940d0096be118195a100ec0",
+    "verdict": "PASS"
+   }
+  }
+ ],
+ "superseded_by": "the out-of-tree FINAL_EVIDENCE_CLEANUP_READBACK.json and SWOF_EXTERNAL_ACCEPTANCE_READSET.json for the current final evidence commit",
+ "policy_going_forward": "publish/republish-time receipts are no longer copied into the immutable in-tree evidence set; the immutable set carries only generation receipts whose claims do not depend on a commit that can later move.",
+ "overwritten_or_deleted": false
+}
