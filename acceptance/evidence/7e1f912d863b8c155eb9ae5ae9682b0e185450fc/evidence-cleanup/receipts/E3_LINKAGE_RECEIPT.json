@@ -1,0 +1,65 @@
+{
+ "schema": "SWOF-EVIDENCE-LINKAGE-VALIDATION-RECEIPT/1",
+ "artifact": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\EVIDENCE_LINKAGE_RECLASSIFICATION.json",
+ "artifact_sha256": "ae15b871cfb60d74026ef0a453e46a0c9f1441f3247000dea3f0a28766d24c8d",
+ "item_count": 39,
+ "mode_counts": {
+  "DIRECT_FINAL_SUBJECT": 8,
+  "COMPILER_CONTRACT_BOUND": 10,
+  "TRANSITIVE_PRE_MUTATION_LINEAGE": 11,
+  "WORKORDER_CHECKPOINT": 10
+ },
+ "historical_mode_counts": {
+  "DIRECT_FINAL_SUBJECT": 12,
+  "COMPILER_CONTRACT_BOUND": 8,
+  "TRANSITIVE_PRE_MUTATION_LINEAGE": 10,
+  "WORKORDER_CHECKPOINT": 9
+ },
+ "corrected_item_count": 4,
+ "invalid_direct_link_count": 0,
+ "invalid_transitive_link_count": 0,
+ "invalid_compiler_contract_link_count": 0,
+ "invalid_workorder_checkpoint_link_count": 0,
+ "invalid_link_count": 0,
+ "invalid_links": [],
+ "negative_fixtures": [
+  {
+   "name": "direct_without_final_source",
+   "errors": [
+    "DIRECT artifact lacks final source derivation"
+   ]
+  },
+  {
+   "name": "transitive_without_lineage_hub",
+   "errors": [
+    "INJECTED: TRANSITIVE artifact lacks a valid lineage hub"
+   ]
+  },
+  {
+   "name": "compiler_without_contract_digest",
+   "errors": [
+    "compiler artifact lacks exact contract/task binding"
+   ]
+  },
+  {
+   "name": "workorder_with_foreign_wo",
+   "errors": [
+    "workorder artifact has foreign WorkOrder/checkpoint"
+   ]
+  },
+  {
+   "name": "historical_superseded_counted_current",
+   "errors": [
+    "historical superseded artifact counted as current PASS evidence"
+   ]
+  },
+  {
+   "name": "transitive_hub_forced_invalid",
+   "errors": [
+    "TRANSITIVE artifact lacks a valid lineage hub"
+   ]
+  }
+ ],
+ "negative_fixtures_all_rejected": true,
+ "verdict": "PASS"
+}

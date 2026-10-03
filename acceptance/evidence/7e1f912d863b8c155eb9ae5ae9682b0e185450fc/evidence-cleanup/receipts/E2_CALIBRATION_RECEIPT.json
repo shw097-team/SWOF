@@ -1,0 +1,58 @@
+{
+ "schema": "SWOF-GATE-CALIBRATION-DENOMINATOR-RECEIPT/1",
+ "artifact": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\GATE_CALIBRATION_ROWS_R4_EVIDENCE_CLEANUP.json",
+ "artifact_sha256": "ebf1540c2e7fb2e5da3d32211e1c85d4e86be026470d21dd44bd64e086b7974b",
+ "required_denominator": [
+  "G-R4-0",
+  "G-R4-1",
+  "G-R4-2",
+  "G-R4-3",
+  "G-R4-4",
+  "G-R4-5",
+  "G-R4-7",
+  "G-R4-8"
+ ],
+ "observed_gate_ids": [
+  "G-R4-0",
+  "G-R4-1",
+  "G-R4-2",
+  "G-R4-3",
+  "G-R4-4",
+  "G-R4-5",
+  "G-R4-7",
+  "G-R4-8"
+ ],
+ "count": 8,
+ "required_count": 8,
+ "duplicates": [],
+ "every_row_points_to_raw_evidence": true,
+ "validation_errors": [],
+ "negative_fixtures": [
+  {
+   "name": "six_row_historical_denominator",
+   "errors": [
+    "denominator mismatch: missing=['G-R4-1', 'G-R4-7'] extra=[]"
+   ]
+  },
+  {
+   "name": "duplicate_gate_id",
+   "errors": [
+    "duplicate gate_id"
+   ]
+  },
+  {
+   "name": "missing_G_R4_7",
+   "errors": [
+    "denominator mismatch: missing=['G-R4-7'] extra=[]"
+   ]
+  },
+  {
+   "name": "summary_only_row_rejected",
+   "errors": [
+    "summary-only row rejected: a row lacks raw_evidence binding"
+   ]
+  }
+ ],
+ "negative_fixtures_all_rejected": true,
+ "verdict": "PASS"
+}

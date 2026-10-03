@@ -1,0 +1,40 @@
+{
+ "schema": "SWOF-W2-COMPILER-PROVENANCE-GUARD/1",
+ "rule": "all current source_id / locator / authority-path / normative-claim locators MUST resolve to current W2 task inputs; predecessor R3/R4 prompt paths may appear only as HISTORICAL/SUPPORT, never as current rank-1 task authority.",
+ "applies_to": [
+  "W2 prompt compiler contract",
+  "W2 PD04 packet",
+  "W2 RepoContext"
+ ],
+ "check": {
+  "rank1_must_be_normative": true,
+  "predecessor_prompt_paths_allowed_as_rank1": false,
+  "predecessor_prompt_paths_allowed_as_support": true,
+  "acceptance_and_journey_locators_must_not_retain_predecessor_prompts": true
+ },
+ "positive_fixture": {
+  "name": "current_evidence_only_contract",
+  "contract": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\contract\\EVIDENCE_ONLY_CONTRACT.json",
+  "violations": []
+ },
+ "negative_fixtures": [
+  {
+   "name": "historical_R4_contract",
+   "ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/R4_CONTRACT.json",
+   "violations": [
+    "rank-1 authority retains a predecessor R3/R4 prompt path",
+    "acceptance ACC-R4-COMPILER locator retains predecessor prompt: attachments/SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md#0",
+    "acceptance ACC-R4-BINDING-ORDER locator retains predecessor prompt: attachments/SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md#6",
+    "acceptance ACC-R4-JOURNEY locator retains predecessor prompt: attachments/SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md#6",
+    "journey J-R3-ORDER locator retains predecessor prompt: attachments/SWOF_W1_NARROW_REPAIR_R3_EXECUTOR_PROMPT_v1.md#6"
+   ]
+  },
+  {
+   "name": "injected_rank1_predecessor_path",
+   "violations": [
+    "rank-1 authority retains a predecessor R3/R4 prompt path"
+   ]
+  }
+ ],
+ "guard_verdict": "PASS"
+}

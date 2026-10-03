@@ -1,0 +1,13 @@
+{
+ "schema": "SWOF-REDACTION-RECEIPT/1",
+ "scanned_file_count": 27,
+ "redactions_applied": 0,
+ "redaction_policy": "no secret or PII material present; nothing removed",
+ "protected_material_review": {
+  "github_pat_present": false,
+  "provider_api_key_present": false,
+  "pii_present": false,
+  "note": "evidence artifacts contain SHAs, receipt hashes and design prose only"
+ },
+ "verdict": "PASS"
+}

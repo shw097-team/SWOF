@@ -1,0 +1,53 @@
+{
+ "task_id": "SWOF-W1-R4-EVIDENCE-ONLY-CLEANUP-W2-ENTRY-001",
+ "changeset": "EVIDENCE_ONLY",
+ "product_mutation_allowed": false,
+ "contract_path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\contract\\EVIDENCE_ONLY_CONTRACT.json",
+ "contract_sha256": "b617c82fdfa314bb60e229843ffd72b00ea723e6a509d04cb28126940e4ea47f",
+ "current_task_prompt_sha256": "7bfe828691b3f0d52b89a387751536f2e2c1fcccb57a45284088f6dc11847756",
+ "current_decision_report_sha256": "6868a088c868a3cbe812c54576b2940a01325604e6283e6a6bcb6051851528fa",
+ "rbwi_sha256": "b9a26f959233bc63c21bb4ad764ded3efc6ba6b02c2d29c40c92e33b0bb5670d",
+ "compiler_skill_sha256": "48a3fdc5a0c65d4279c27ebc7586e747ba86c4bde82535cad2512d43547b4acb",
+ "compiler_script_sha256": "2c282ad6539a465c3b1d751868cab98437a8f35e9728be686117e364a70857d9",
+ "rank1_authority_path": "C:\\Users\\user\\AppData\\Local\\hermes\\attachments\\SWOF_W1_R4_EVIDENCE_ONLY_CLEANUP_AND_W2_ENTRY_EXECUTOR_PROMPT_v1.md",
+ "predecessor_authority_ranks": [
+  "8",
+  "9"
+ ],
+ "predecessor_roles": [
+  "SUPPORT",
+  "SUPPORT"
+ ],
+ "receipts": {
+  "lint": {
+   "rc": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "error_count": 0
+  },
+  "activation": {
+   "rc": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "error_count": 0
+  },
+  "acceptance": {
+   "rc": 0,
+   "verdict": "PROMPT_COMPILE_PASS",
+   "error_count": 0
+  },
+  "compile": {
+   "rc": 0,
+   "verdict": "PROMPT_COMPILE_PASS"
+  },
+  "duplication": {
+   "rc": 0,
+   "raw": "{\n  \"verdict\": \"PROMPT_COMPILE_PASS\",\n  \"rule\": \"PL-001\",\n  \"threshold\": 0.25,\n  \"results\": [\n    {\n      \"source\": \"C:\\\\Projects\\\\Agent_Workspace\\\\知識庫\\\\實作相關DOC\\\\Fabric vNext\\\\Semantic World OS Fabric\\\\SWOF-F_SWOF-GENIE_All-IW_Pre-Dev_Multi-Packages\\\\SWOF_HGK_ACA_RBWI\\\\SWOF_HGK_ACA_RBWI.md\",\n      \"ratio\": 0.008759\n    },\n    {\n      \"source\": \"C:\\\\Projects\\\\Agent_Workspace\\\\知識庫\\\\實作相關DOC\\\\HG-KSEOS",
+   "verdict": "PROMPT_COMPILE_PASS",
+   "ratios": {
+    "s\\SWOF_HGK_ACA_RBWI\\SWOF_HGK_ACA_RBWI.md": 0.008759,
+    "tion-acceptance-prompt-compiler_SKILL.md": 0.00292
+   }
+  }
+ },
+ "thin_prompt": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\compiler_raw\\compiled\\thin-prompt.md",
+ "thin_prompt_exists": true
+}

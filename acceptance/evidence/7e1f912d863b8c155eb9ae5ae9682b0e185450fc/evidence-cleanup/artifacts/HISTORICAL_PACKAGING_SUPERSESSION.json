@@ -1,0 +1,19 @@
+{
+ "schema": "SWOF-HISTORICAL-PACKAGING-SUPERSESSION/1",
+ "artifact": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/W1_R4_FINAL_PACKAGING.json",
+ "artifact_sha256": "5054e7e456e4cf8577d5084598147af5de2380f38ceba5a3c5b0110dfa80bdb7",
+ "disposition": "SUPERSEDED_HISTORICAL_EVIDENCE",
+ "historical_verdict": "PARTIAL",
+ "historical_stale_fields": {
+  "evidence_push_local_sha": "9d122356b4b2597f305d6eac9ab6faff0bcdd04e",
+  "pull_request_http": 422,
+  "pull_request_number": null,
+  "pr_head_equals_source": false,
+  "invalid_direct_link_count": 1,
+  "evidence_item_count": 39
+ },
+ "why_stale": "It recorded an intermediate packaging attempt (evidence 9d122356, PR create HTTP 422) before the evidence commit and PR were finalised; it was never regenerated.",
+ "overwritten_or_deleted": false,
+ "not_part_of_current_evidence_denominator": true,
+ "superseded_by": "W1_R4_EVIDENCE_CLEANUP_FINAL_PACKAGING.json"
+}

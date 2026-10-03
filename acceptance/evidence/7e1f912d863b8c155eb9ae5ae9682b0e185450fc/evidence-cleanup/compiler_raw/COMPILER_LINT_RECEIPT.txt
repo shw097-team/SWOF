@@ -1,0 +1,8 @@
+# command: prompt_contract_compiler.py lint C:\Projects\Agent_Workspace\HG-KSEOS\var\swof-w1-r4-evidence-cleanup\contract\EVIDENCE_ONLY_CONTRACT.json
+# rc=0
+{
+  "verdict": "PROMPT_COMPILE_PASS",
+  "error_count": 0,
+  "errors": []
+}
+

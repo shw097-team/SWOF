@@ -1,0 +1,56 @@
+{
+ "schema": "SWOF-W1-CARRY-FORWARD-GATE/1",
+ "exact_w1_source_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "generated_by": "SWOF-W1-R4-EVIDENCE-ONLY-CLEANUP",
+ "engineering_state": {
+  "source_retrieval_profile_provider_seams": "VERIFIED_FOR_W1",
+  "named_capability_unconsumed": 0,
+  "exact_head_regression_reference": 113,
+  "binding_profile_route": "USABLE",
+  "source_state": "FROZEN"
+ },
+ "w1_acceptance_debt": {
+  "R4-EXT-001": "CLOSED_BY_CURRENT_EVIDENCE_ONLY_REPAIR",
+  "R4-EXT-002": "CLOSED_BY_CURRENT_EVIDENCE_ONLY_REPAIR",
+  "R4-EXT-003": "CLOSED_BY_CURRENT_EVIDENCE_ONLY_REPAIR",
+  "R4-EXT-004": "NONRETROACTIVE_DEFECT_ADJUDICATED"
+ },
+ "w1_acceptance_state": "FAIL_CHALLENGE_PENDING_FRESH_EVIDENCE_ONLY_REVIEW",
+ "w1_external_pass_claimed": false,
+ "w2_rule": {
+  "runtime_dependency_failure": "BLOCK_W2_REPO_MUTATION",
+  "semantic_dependency_failure": "BLOCK_W2_REPO_MUTATION",
+  "acceptance_packaging_debt_only": "DOES_NOT_BLOCK_W2_PRECONSTRUCTION",
+  "unresolved_compiler_currentness_for_w2": "BLOCK_W2_REPO_MUTATION",
+  "fresh_w2_pd04_missing": "BLOCK_W2_REPO_MUTATION"
+ },
+ "w2_preconstruction": {
+  "state": "GO"
+ },
+ "w2_repo_mutation": {
+  "state": "CONDITIONAL_GO",
+  "requires": [
+   "fresh W2 Prompt Compiler PASS",
+   "fresh RepoContext",
+   "fresh W2 PD04 packet",
+   "W1 dependency readback for the affected W2 cone",
+   "W2 gate calibration"
+  ]
+ },
+ "mandatory_w2_compiler_hygiene": {
+  "guard": "W2_COMPILER_PROVENANCE_GUARD.json",
+  "rule": "all source_id/locator/authority-path/normative-claim locators must resolve to the exact current W2 prompt/challenge input/RBWI; predecessor R3/R4 prompt paths may appear only as HISTORICAL/SUPPORT, never as current rank-1 task authority."
+ },
+ "carried_into_w2": {
+  "lifecycle_tamper_resistance": "W2 Security/Effect/Assurance acceptance edge",
+  "sqlite_rowid_not_cryptographic": "OBS-R4-001 carried forward as a W2 hardening edge",
+  "execution_binding_artifact_vs_table": "OBS-R4-002 low CP, kept unless W2 finds a real weakness",
+  "remote_ci": "OBS-R4-003 portable read-only CI optional in W2",
+  "provider_off_drill": "OBS-R4-004 only if a provider is activated"
+ },
+ "non_claims": [
+  "Does not execute W2.",
+  "Does not claim W1 external PASS.",
+  "Does not authorize merge/release/production."
+ ]
+}

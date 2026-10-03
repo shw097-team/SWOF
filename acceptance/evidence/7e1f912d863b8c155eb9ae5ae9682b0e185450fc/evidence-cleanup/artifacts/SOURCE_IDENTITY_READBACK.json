@@ -1,0 +1,20 @@
+{
+ "schema": "SWOF-SOURCE-IDENTITY-READBACK/1",
+ "repo": "shw097-team/SWOF",
+ "pr_number": 4,
+ "branch": "repair/w1-r4-binding-order-proof",
+ "frozen_source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "local_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "local_branch": "repair/w1-r4-binding-order-proof",
+ "worktree_clean": true,
+ "source_is_child_of_baseline": true,
+ "source_parent": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "baseline_expected": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "remote_pr_state": "open",
+ "remote_pr_draft": true,
+ "remote_pr_merged": false,
+ "remote_pr_head_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "remote_pr_head_branch": "repair/w1-r4-binding-order-proof",
+ "pr_head_equals_frozen_source": true,
+ "source_mutated_by_cleanup": false
+}

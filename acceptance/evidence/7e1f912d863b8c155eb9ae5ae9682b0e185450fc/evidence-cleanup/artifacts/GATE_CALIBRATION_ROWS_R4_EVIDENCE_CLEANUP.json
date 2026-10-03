@@ -1,0 +1,259 @@
+{
+ "schema": "SWOF-GATE-CALIBRATION-SET/1",
+ "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "historical_evidence_commit_sha": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+ "historical_calibration_artifact": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/GATE_CALIBRATION_ROWS.json",
+ "supersedes_for_denominator": "GATE_CALIBRATION_ROWS.json",
+ "historical_rows_reused_verbatim": [
+  "G-R4-0",
+  "G-R4-2",
+  "G-R4-3",
+  "G-R4-4",
+  "G-R4-5",
+  "G-R4-8"
+ ],
+ "added_rows": [
+  "G-R4-1",
+  "G-R4-7"
+ ],
+ "required_denominator": [
+  "G-R4-0",
+  "G-R4-1",
+  "G-R4-2",
+  "G-R4-3",
+  "G-R4-4",
+  "G-R4-5",
+  "G-R4-7",
+  "G-R4-8"
+ ],
+ "rows": [
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-R4-0",
+   "objective": "canonical compiler validates the R4 C0-C9 contract",
+   "risk_tier": "HIGH",
+   "strictness": "FAIL_CLOSED",
+   "deterministic_oracle": "five compiler subcommands exit 0 with PROMPT_COMPILE_PASS",
+   "positive_case": "raw receipts for lint/activation/acceptance/compile/duplication",
+   "negative_adversarial_case": "absent bundle or blocked contract => PROMPT_COMPILE_BLOCKED",
+   "false_positive_defense": "raw receipts prevent a summary boolean standing in for compiler output",
+   "false_negative_defense": "duplication ratio checked against RBWI and compiler SKILL",
+   "regression_baseline": "113 tests",
+   "anti_overfit_holdout": "R2/R3 rejected subjects retained as negative fixtures",
+   "llm_judge_policy": "NONE - deterministic raw evidence only",
+   "hitl_rule": "only at authority edges",
+   "tt_cr": "none open",
+   "raw_evidence": "see evidence items",
+   "fail_closed_result": "FAIL_*"
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-R4-1",
+   "objective": "fresh pre-mutation RepoContext + PD04 construction chain captured BEFORE the first source write",
+   "risk_tier": "HIGH",
+   "strictness": "FAIL_CLOSED",
+   "deterministic_oracle": "pre-mutation RepoContext reads the BASELINE be036588 and contains no final candidate SHA; the PD04 chain (packet/taskspec/workorder/ecp) exists with captured_before_mutation=true",
+   "positive_case": "REPOCONTEXT_PRE_MUTATION_READBACK.json reads repo_head=be036588bdf2d509c929aba9bc2bf0525674bb7a; PD04_PACKET.json present for workorder WO-SWOF-W1-REPAIR-R4-001; TASKSPEC_RAW/WORKORDER_RAW/ECP_RAW all resolve",
+   "negative_adversarial_case": "stale/post-mutation RepoContext pretending to be pre-mutation; missing PD04 edge; a foreign WorkOrder or ECP substituted for this order",
+   "false_positive_defense": "captured_before_mutation must be true AND the recorded head must equal the baseline, not the final candidate",
+   "false_negative_defense": "raw bytes are hashed at the historical evidence commit so a re-rendered copy cannot masquerade as the original capture",
+   "regression_baseline": "113 tests exact-head (unchanged; no product rerun required for evidence-only)",
+   "anti_overfit_holdout": "the R3 defect (admission after first write) retained as the negative fixture",
+   "llm_judge_policy": "NONE - deterministic raw evidence only",
+   "hitl_rule": "only at authority edges",
+   "tt_cr": "none open",
+   "raw_evidence": {
+    "repocontext_pre_mutation_readback": {
+     "path": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/REPOCONTEXT_PRE_MUTATION_READBACK.json",
+     "sha256": "277f7921e20738fdeaab1e580925e806c82712314e44a0018dd5ed0ea42f2fb1",
+     "bytes": 918
+    },
+    "pd04_packet": {
+     "path": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/PD04_PACKET.json",
+     "sha256": "8a7f2a81a0544123f11a4c8875db735d84f11326242ad690ea835b4c3522c9bc",
+     "bytes": 1411
+    },
+    "taskspec_raw": {
+     "path": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/TASKSPEC_RAW.json",
+     "sha256": "3d483fd0dc65240447af3f47b045402a28551f831573062745a36b5837d590f9",
+     "bytes": 941
+    },
+    "workorder_raw": {
+     "path": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/WORKORDER_RAW.json",
+     "sha256": "b777c45832881b84a32992f35fcc6976ed7f96c67b343bfcc5b44f6771f94980",
+     "bytes": 511
+    },
+    "ecp_raw": {
+     "path": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/ECP_RAW.json",
+     "sha256": "533804e576d3d000bfe791c0c2e5e59cc3abca9971b0c25a49bc92cebad47b41",
+     "bytes": 413
+    }
+   },
+   "raw_evidence_refs": [
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/REPOCONTEXT_PRE_MUTATION_READBACK.json",
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/PD04_PACKET.json",
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/TASKSPEC_RAW.json",
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/WORKORDER_RAW.json",
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/ECP_RAW.json"
+   ],
+   "raw_evidence_sha256": {
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/REPOCONTEXT_PRE_MUTATION_READBACK.json": "277f7921e20738fdeaab1e580925e806c82712314e44a0018dd5ed0ea42f2fb1",
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/PD04_PACKET.json": "8a7f2a81a0544123f11a4c8875db735d84f11326242ad690ea835b4c3522c9bc",
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/TASKSPEC_RAW.json": "3d483fd0dc65240447af3f47b045402a28551f831573062745a36b5837d590f9",
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/WORKORDER_RAW.json": "b777c45832881b84a32992f35fcc6976ed7f96c67b343bfcc5b44f6771f94980",
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/ECP_RAW.json": "533804e576d3d000bfe791c0c2e5e59cc3abca9971b0c25a49bc92cebad47b41"
+   },
+   "observed": {
+    "pre_mutation_repocontext_head": null,
+    "pre_mutation_baseline_expected": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+    "captured_before_mutation": true,
+    "pd04_packet_present": true,
+    "workorder_id": null,
+    "ecp_id": "ECP-WO-SWOF-W1-REPAIR-R4-001"
+   },
+   "fail_closed_result": "FAIL_GATE_CALIBRATION",
+   "added_by": "W1-R4-EVIDENCE-ONLY-CLEANUP (closes R4-EXT-001 for this gate)"
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-R4-2",
+   "objective": "authoritative HGK ExecutionBinding materialized before mutation",
+   "risk_tier": "HIGH",
+   "strictness": "FAIL_CLOSED",
+   "deterministic_oracle": "real RP002-EXECUTION-BINDING/2 object with stable id, workorder, profile, write-set, state",
+   "positive_case": "BIND-SWOF-W1-R4-001 read back with hash",
+   "negative_adversarial_case": "candidate-local pseudo-binding refused",
+   "false_positive_defense": "'final rows exist therefore pre-authorized' defeated by the seq of the binding event",
+   "false_negative_defense": "binding bound to the exact baseline and WorkOrder",
+   "regression_baseline": "113 tests",
+   "anti_overfit_holdout": "R2/R3 rejected subjects retained as negative fixtures",
+   "llm_judge_policy": "NONE - deterministic raw evidence only",
+   "hitl_rule": "only at authority edges",
+   "tt_cr": "none open",
+   "raw_evidence": "see evidence items",
+   "fail_closed_result": "FAIL_*"
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-R4-3",
+   "objective": "monotonic append-only ordering on one HGK stream",
+   "risk_tier": "HIGH",
+   "strictness": "FAIL_CLOSED",
+   "deterministic_oracle": "project_transitions.rowid: binding_seq < permit_seq <= writer_start_seq < first_write_seq",
+   "positive_case": "contiguous stream 8<9<10 with no gaps",
+   "negative_adversarial_case": "source write before the permit => FAIL_MUTATION_ORDERING",
+   "false_positive_defense": "wall-clock comparison alone does NOT pass this gate",
+   "false_negative_defense": "rowid is DB-generated; the writer cannot choose or backdate it",
+   "regression_baseline": "113 tests",
+   "anti_overfit_holdout": "R2/R3 rejected subjects retained as negative fixtures",
+   "llm_judge_policy": "NONE - deterministic raw evidence only",
+   "hitl_rule": "only at authority edges",
+   "tt_cr": "none open",
+   "raw_evidence": "see evidence items",
+   "fail_closed_result": "FAIL_*"
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-R4-4",
+   "objective": "reviewed source repair identity preserved",
+   "risk_tier": "HIGH",
+   "strictness": "FAIL_CLOSED",
+   "deterministic_oracle": "five files byte-identical to the reviewed R2 surface",
+   "positive_case": "per-file blob SHA-256 equality",
+   "negative_adversarial_case": "execution label as source_disposition refused",
+   "false_positive_defense": "byte identity prevents silent semantic drift",
+   "false_negative_defense": "focused negatives re-run at the new exact HEAD",
+   "regression_baseline": "113 tests",
+   "anti_overfit_holdout": "R2/R3 rejected subjects retained as negative fixtures",
+   "llm_judge_policy": "NONE - deterministic raw evidence only",
+   "hitl_rule": "only at authority edges",
+   "tt_cr": "none open",
+   "raw_evidence": "see evidence items",
+   "fail_closed_result": "FAIL_*"
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-R4-5",
+   "objective": "exact-HEAD qualification",
+   "risk_tier": "HIGH",
+   "strictness": "FAIL_CLOSED",
+   "deterministic_oracle": "git rev-parse HEAD == source_candidate_sha in every raw log",
+   "positive_case": "six roots green at the frozen HEAD",
+   "negative_adversarial_case": "logs not binding HEAD refused",
+   "false_positive_defense": "HEAD recorded in each log header",
+   "false_negative_defense": "post-test HEAD re-checked unchanged",
+   "regression_baseline": "113 tests",
+   "anti_overfit_holdout": "R2/R3 rejected subjects retained as negative fixtures",
+   "llm_judge_policy": "NONE - deterministic raw evidence only",
+   "hitl_rule": "only at authority edges",
+   "tt_cr": "none open",
+   "raw_evidence": "see evidence items",
+   "fail_closed_result": "FAIL_*"
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-R4-7",
+   "objective": "fresh independent VERIFY_ONLY checker, distinct from the maker, cannot falsify the frozen subject",
+   "risk_tier": "HIGH",
+   "strictness": "FAIL_CLOSED",
+   "deterministic_oracle": "INDEPENDENT_RECEIPT.json shows checker != producer, checker_did_not_mutate_subject=true and a verdict bound to the exact source candidate SHA",
+   "positive_case": "independent checker(s) recorded with verdict PASS against source_candidate_sha=7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+   "negative_adversarial_case": "checker == maker; checker writes the candidate; checker bound to a stale/foreign source SHA; checker only repeats the maker's summary",
+   "false_positive_defense": "the receipt must carry the exact candidate SHA and a maker/checker identity separation, not a generic PASS boolean",
+   "false_negative_defense": "raw receipt bytes hashed at the historical evidence commit; the summary cannot substitute for the receipt",
+   "regression_baseline": "113 tests exact-head",
+   "anti_overfit_holdout": "the R2/R3 rejected subjects remain negative fixtures",
+   "llm_judge_policy": "NONE - deterministic raw evidence only",
+   "hitl_rule": "only at authority edges",
+   "tt_cr": "none open",
+   "raw_evidence": {
+    "independent_receipt": {
+     "path": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/INDEPENDENT_RECEIPT.json",
+     "sha256": "e44e8206a6388005fec91ebf4c9a8d5d941ec9a2e658a7d20bcfc7b84055680c",
+     "bytes": 2731
+    },
+    "local_closure_receipt": {
+     "path": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/LOCAL_CLOSURE_RECEIPT.json",
+     "sha256": "da11be212f1d374cb5e433b5fb8f5264fcb74467ce200ec4df85f25ed4e04213",
+     "bytes": 1261
+    }
+   },
+   "raw_evidence_refs": [
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/INDEPENDENT_RECEIPT.json",
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/LOCAL_CLOSURE_RECEIPT.json"
+   ],
+   "raw_evidence_sha256": {
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/INDEPENDENT_RECEIPT.json": "e44e8206a6388005fec91ebf4c9a8d5d941ec9a2e658a7d20bcfc7b84055680c",
+    "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/LOCAL_CLOSURE_RECEIPT.json": "da11be212f1d374cb5e433b5fb8f5264fcb74467ce200ec4df85f25ed4e04213"
+   },
+   "observed": {
+    "checker_identity": "fresh-context VERIFY_ONLY lane deleg_2667d12a",
+    "producer_identity": null,
+    "verdict": "PASS",
+    "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "checker_did_not_mutate_subject": true
+   },
+   "fail_closed_result": "FAIL_SOD",
+   "added_by": "W1-R4-EVIDENCE-ONLY-CLEANUP (closes R4-EXT-001 for this gate)"
+  },
+  {
+   "schema": "SWOF-GATE-CALIBRATION/1",
+   "gate_id": "G-R4-8",
+   "objective": "evidence-pack completeness and linkage",
+   "risk_tier": "HIGH",
+   "strictness": "FAIL_CLOSED",
+   "deterministic_oracle": "all required raw artifacts present with correct linkage mode",
+   "positive_case": "14+ raw items with DIRECT or TRANSITIVE linkage",
+   "negative_adversarial_case": "summary-only proxy refused; false direct final-subject match refused",
+   "false_positive_defense": "transitive linkage required for pre-mutation artifacts",
+   "false_negative_defense": "completeness denominator validated remotely",
+   "regression_baseline": "113 tests",
+   "anti_overfit_holdout": "R2/R3 rejected subjects retained as negative fixtures",
+   "llm_judge_policy": "NONE - deterministic raw evidence only",
+   "hitl_rule": "only at authority edges",
+   "tt_cr": "none open",
+   "raw_evidence": "see evidence items",
+   "fail_closed_result": "FAIL_*"
+  }
+ ]
+}

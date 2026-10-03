@@ -1,0 +1,18 @@
+# command: duplication C:\Projects\Agent_Workspace\HG-KSEOS\var\swof-w1-r4-evidence-cleanup\compiler_raw\compiled\thin-prompt.md --source RBWI --source SKILL
+# rc=0
+{
+  "verdict": "PROMPT_COMPILE_PASS",
+  "rule": "PL-001",
+  "threshold": 0.25,
+  "results": [
+    {
+      "source": "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\Fabric vNext\\Semantic World OS Fabric\\SWOF-F_SWOF-GENIE_All-IW_Pre-Dev_Multi-Packages\\SWOF_HGK_ACA_RBWI\\SWOF_HGK_ACA_RBWI.md",
+      "ratio": 0.008759
+    },
+    {
+      "source": "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\HG-KSEOS\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler_SKILL.md",
+      "ratio": 0.00292
+    }
+  ]
+}
+

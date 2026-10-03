@@ -1,0 +1,8 @@
+{
+  "claim_ceiling": "LOCAL",
+  "contract_sha256": "b617c82fdfa314bb60e229843ffd72b00ea723e6a509d04cb28126940e4ea47f",
+  "error_count": 0,
+  "errors": [],
+  "task_id": "SWOF-W1-R4-EVIDENCE-ONLY-CLEANUP-W2-ENTRY-001",
+  "verdict": "PROMPT_COMPILE_PASS"
+}

@@ -1,0 +1,44 @@
+{
+ "schema": "SWOF-W1-R4-EVIDENCE-CLEANUP-FINAL-PACKAGING/1",
+ "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "historical_evidence_commit_sha": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+ "new_evidence_commit_sha": null,
+ "new_evidence_commit_sha_binding": "DEFERRED_TO_POST_COMMIT_REMOTE_READBACK",
+ "pr_number": 4,
+ "pr_head_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "pr_head_equals_source": true,
+ "source_branch": "repair/w1-r4-binding-order-proof",
+ "source_branch_mutated_by_cleanup": false,
+ "changeset": "EVIDENCE_ONLY",
+ "historical_stale_packaging": {
+  "artifact": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/W1_R4_FINAL_PACKAGING.json",
+  "disposition": "SUPERSEDED_HISTORICAL_EVIDENCE",
+  "historical_verdict": "PARTIAL"
+ },
+ "validation": {
+  "calibration_gate_count": 8,
+  "calibration_required_count": 8,
+  "calibration_verdict": "PASS",
+  "linkage_item_count": 39,
+  "linkage_corrected_item_count": 4,
+  "linkage_verdict": "PASS",
+  "compiler_provenance_state": "NONRETROACTIVE_DEFECT_ADJUDICATED",
+  "compiler_guard_verdict": "PASS",
+  "current_compiler_verdicts": {
+   "lint": "PROMPT_COMPILE_PASS",
+   "activation": "PROMPT_COMPILE_PASS",
+   "acceptance": "PROMPT_COMPILE_PASS",
+   "compile": "PROMPT_COMPILE_PASS",
+   "duplication": "PROMPT_COMPILE_PASS"
+  },
+  "hash_mismatch_count": 0,
+  "byte_mismatch_count": 0,
+  "invalid_direct_link_count": 0,
+  "invalid_transitive_link_count": 0,
+  "invalid_compiler_contract_link_count": 0,
+  "invalid_workorder_checkpoint_link_count": 0,
+  "missing_required_evidence_count": 0
+ },
+ "self_reference_note": "This in-tree receipt does NOT claim a future evidence commit SHA. The immutable evidence identity is bound by POST_COMMIT_REMOTE_READBACK_RECEIPT.json.",
+ "verdict": "PASS"
+}

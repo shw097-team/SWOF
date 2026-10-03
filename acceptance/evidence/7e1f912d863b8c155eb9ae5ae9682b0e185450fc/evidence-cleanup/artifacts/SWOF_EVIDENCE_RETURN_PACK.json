@@ -1,0 +1,830 @@
+{
+ "schema": "SWOF-EVIDENCE-RETURN-PACK/1",
+ "round": "R4_EVIDENCE_CLEANUP",
+ "changeset": "EVIDENCE_ONLY",
+ "repo": "shw097-team/SWOF",
+ "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "baseline_sha": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+ "historical_evidence_commit_sha": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+ "evidence_branch": "evidence/w1-r4-evidence-cleanup",
+ "pr_number": 4,
+ "producer_identity": "hermes-orchestrator",
+ "checker_identity": "fresh-context-VERIFY-ONLY",
+ "evidence_items": [
+  {
+   "id": "E-001",
+   "type": "compiler_receipt",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\compiler_raw\\COMPILER_ACCEPTANCE_RECEIPT.txt",
+   "sha256": "faf470ecd4759ef696557ebf59c5ae75dac2738c8a0d7b4079f569cff438f7f2",
+   "bytes": 239,
+   "linkage_mode": "COMPILER_CONTRACT_BOUND",
+   "linkage_subject": {
+    "contract": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\contract\\EVIDENCE_ONLY_CONTRACT.json",
+    "sha256": "b617c82fdfa314bb60e229843ffd72b00ea723e6a509d04cb28126940e4ea47f"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": true,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-002",
+   "type": "compiler_receipt",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\compiler_raw\\COMPILER_ACTIVATION_RECEIPT.txt",
+   "sha256": "de17ee9026fa212a98d49f2fb7d61061738c57ad8554fa77d21b411cb5f2c85d",
+   "bytes": 239,
+   "linkage_mode": "COMPILER_CONTRACT_BOUND",
+   "linkage_subject": {
+    "contract": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\contract\\EVIDENCE_ONLY_CONTRACT.json",
+    "sha256": "b617c82fdfa314bb60e229843ffd72b00ea723e6a509d04cb28126940e4ea47f"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": true,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-003",
+   "type": "compiler_receipt",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\compiler_raw\\COMPILER_COMPILE_RECEIPT.txt",
+   "sha256": "861ca49b7fd4d4238219e8735b99585bb42d5107e3b0a98c3ab249f608a7ce0d",
+   "bytes": 516,
+   "linkage_mode": "COMPILER_CONTRACT_BOUND",
+   "linkage_subject": {
+    "contract": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\contract\\EVIDENCE_ONLY_CONTRACT.json",
+    "sha256": "b617c82fdfa314bb60e229843ffd72b00ea723e6a509d04cb28126940e4ea47f"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": true,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-004",
+   "type": "compiler_receipt",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\compiler_raw\\COMPILER_DUPLICATION_RECEIPT.txt",
+   "sha256": "f8f525e21b6b91151ee18a7af4acbff68c8ce639893b7ec1da26376b8df4e8f8",
+   "bytes": 764,
+   "linkage_mode": "COMPILER_CONTRACT_BOUND",
+   "linkage_subject": {
+    "contract": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\contract\\EVIDENCE_ONLY_CONTRACT.json",
+    "sha256": "b617c82fdfa314bb60e229843ffd72b00ea723e6a509d04cb28126940e4ea47f"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": true,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-005",
+   "type": "compiler_receipt",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\compiler_raw\\COMPILER_LINT_RECEIPT.txt",
+   "sha256": "6913d442bfcaaf5cd77813fbc2805544e787acbbec51216ce4bc9084da491eac",
+   "bytes": 233,
+   "linkage_mode": "COMPILER_CONTRACT_BOUND",
+   "linkage_subject": {
+    "contract": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\contract\\EVIDENCE_ONLY_CONTRACT.json",
+    "sha256": "b617c82fdfa314bb60e229843ffd72b00ea723e6a509d04cb28126940e4ea47f"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": true,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-006",
+   "type": "compiler_contract",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\contract\\EVIDENCE_ONLY_CONTRACT.json",
+   "sha256": "b617c82fdfa314bb60e229843ffd72b00ea723e6a509d04cb28126940e4ea47f",
+   "bytes": 27652,
+   "linkage_mode": "COMPILER_CONTRACT_BOUND",
+   "linkage_subject": {
+    "task_id": "SWOF-W1-R4-EVIDENCE-ONLY-CLEANUP-W2-ENTRY-001"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": true,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-007",
+   "type": "compiled_prompt",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\compiler_raw\\compiled\\thin-prompt.md",
+   "sha256": "421895b720b0addd36a9265adb1ce8705f5959321456c81a8c524c705a1a2408",
+   "bytes": 6027,
+   "linkage_mode": "COMPILER_CONTRACT_BOUND",
+   "linkage_subject": {
+    "contract": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\contract\\EVIDENCE_ONLY_CONTRACT.json"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": true,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-008",
+   "type": "raw_artifact",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\SOURCE_IDENTITY_READBACK.json",
+   "sha256": "3383f9eaf5cfdde513b21236b5594f082ed2ee96781e7fe72452ddf058df7f78",
+   "bytes": 807,
+   "linkage_mode": "DIRECT_FINAL_SUBJECT",
+   "linkage_subject": {
+    "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": true,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-009",
+   "type": "raw_artifact",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\R4_HISTORICAL_EVIDENCE_INVENTORY.json",
+   "sha256": "ef1893bc2f66e949bf883f4606191066f09babe7dbdb6107671de49d8ef0bd08",
+   "bytes": 4496,
+   "linkage_mode": "HISTORICAL_SUPERSEDED",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9"
+   },
+   "packaging_status": "HISTORICAL_SUPERSEDED",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": true
+   }
+  },
+  {
+   "id": "E-010",
+   "type": "raw_artifact",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\GATE_CALIBRATION_ROWS_R4_EVIDENCE_CLEANUP.json",
+   "sha256": "ebf1540c2e7fb2e5da3d32211e1c85d4e86be026470d21dd44bd64e086b7974b",
+   "bytes": 14386,
+   "linkage_mode": "WORKORDER_CHECKPOINT",
+   "linkage_subject": {
+    "workorder_id": "WO-SWOF-W1-REPAIR-R4-001"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": true,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-011",
+   "type": "raw_artifact",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\COMPILER_PROVENANCE_ADJUDICATION_R4.json",
+   "sha256": "98cd26f4d57e34ee9c7b70c39aeb98fe7b3f3185f94aee00de226728bea92b13",
+   "bytes": 5444,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "baseline": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+    "source": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-012",
+   "type": "raw_artifact",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\W2_COMPILER_PROVENANCE_GUARD.json",
+   "sha256": "50a9ef12d93a8bb5b742457a51785324d611fcda09270d2e6f102b7c4badc0e7",
+   "bytes": 1821,
+   "linkage_mode": "COMPILER_CONTRACT_BOUND",
+   "linkage_subject": {
+    "task_id": "W2-ENTRY"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": true,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-013",
+   "type": "raw_artifact",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\EVIDENCE_LINKAGE_RECLASSIFICATION.json",
+   "sha256": "ae15b871cfb60d74026ef0a453e46a0c9f1441f3247000dea3f0a28766d24c8d",
+   "bytes": 37688,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "baseline": "be036588bdf2d509c929aba9bc2bf0525674bb7a",
+    "source": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-014",
+   "type": "raw_artifact",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\HISTORICAL_PACKAGING_SUPERSESSION.json",
+   "sha256": "93953b5928ba762d23cccd11654f39a358ed5b5980419f4d5fc21113369097fb",
+   "bytes": 965,
+   "linkage_mode": "HISTORICAL_SUPERSEDED",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9"
+   },
+   "packaging_status": "HISTORICAL_SUPERSEDED",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": true
+   }
+  },
+  {
+   "id": "E-015",
+   "type": "raw_artifact",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\W1_R4_EVIDENCE_CLEANUP_FINAL_PACKAGING.json",
+   "sha256": "8542e90c6caf3e6ea4a8aa672360cedd6aaa04624fe24ff876673f85ccca4d9e",
+   "bytes": 1835,
+   "linkage_mode": "WORKORDER_CHECKPOINT",
+   "linkage_subject": {
+    "workorder_id": "WO-SWOF-W1-REPAIR-R4-001"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": true,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-016",
+   "type": "raw_artifact",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\W1_CARRY_FORWARD_GATE.json",
+   "sha256": "1144c882b5965c5cd91d15172c9b300e675d95d6312c2143445af2c654b4b507",
+   "bytes": 2288,
+   "linkage_mode": "WORKORDER_CHECKPOINT",
+   "linkage_subject": {
+    "workorder_id": "WO-SWOF-W1-REPAIR-R4-001"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": true,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-017",
+   "type": "raw_artifact",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\REDACTION_RECEIPT.json",
+   "sha256": "8ba6033b1ae1b36beed061b0378b900cc7343a419e7a4aad3ed782af26a2c140",
+   "bytes": 399,
+   "linkage_mode": "COMPILER_CONTRACT_BOUND",
+   "linkage_subject": {
+    "task_id": "evidence-cleanup"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": true,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-018",
+   "type": "raw_artifact",
+   "path_or_external_exact_ref": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\SECRET_SCAN_RECEIPT.json",
+   "sha256": "6a2784803fd2334e130b5110bdba86206cc75f39ee5f6c71fdad1defa5706cbb",
+   "bytes": 1186,
+   "linkage_mode": "COMPILER_CONTRACT_BOUND",
+   "linkage_subject": {
+    "task_id": "evidence-cleanup"
+   },
+   "packaging_status": "CURRENT",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": true,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-019",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/EXECUTION_BINDING_RAW.json",
+   "sha256": "1bafff04960b61a6b12c1b61882ab23c0ae9d6213493677a386de6f1519ab131",
+   "bytes": 3058,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/EXECUTION_BINDING_RAW.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-020",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/PROFILE_EFFECTIVE_READBACK.json",
+   "sha256": "54c3d57f63e18bbc863f6970e74e18e1a444b2c57b6d6cc15c72e1dabc2e3aea",
+   "bytes": 466,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/PROFILE_EFFECTIVE_READBACK.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-021",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/MUTATION_PERMIT_RECEIPT.json",
+   "sha256": "8e99e02b7d4006a6b3db779b8244b001c122e2c8ade0857ed40ee28e65c60354",
+   "bytes": 975,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/MUTATION_PERMIT_RECEIPT.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-022",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/ORDERED_LIFECYCLE_EVENT_SLICE.json",
+   "sha256": "9e320067324306d12e65d8f4a049573c4f764fa96b45286db8cce80d9de10057",
+   "bytes": 4708,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/ORDERED_LIFECYCLE_EVENT_SLICE.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-023",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/PRE_MUTATION_ADMISSION_RECEIPT.json",
+   "sha256": "8d6d8f12100cdac87ef91c4ab59ac489e09224237b5e6d7a8f0177931d5cb789",
+   "bytes": 2084,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/PRE_MUTATION_ADMISSION_RECEIPT.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-024",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/FIRST_MUTATION_ORDERING_RECEIPT.json",
+   "sha256": "b48110892dedcda554e44c2e07912785ea090bf3b8cbb805872eb6b42950e9d6",
+   "bytes": 3864,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/FIRST_MUTATION_ORDERING_RECEIPT.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-025",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/REPOCONTEXT_PRE_MUTATION_READBACK.json",
+   "sha256": "277f7921e20738fdeaab1e580925e806c82712314e44a0018dd5ed0ea42f2fb1",
+   "bytes": 918,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/REPOCONTEXT_PRE_MUTATION_READBACK.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-026",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/PD04_PACKET.json",
+   "sha256": "8a7f2a81a0544123f11a4c8875db735d84f11326242ad690ea835b4c3522c9bc",
+   "bytes": 1411,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/PD04_PACKET.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-027",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/TASKSPEC_RAW.json",
+   "sha256": "3d483fd0dc65240447af3f47b045402a28551f831573062745a36b5837d590f9",
+   "bytes": 941,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/TASKSPEC_RAW.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-028",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/WORKORDER_RAW.json",
+   "sha256": "b777c45832881b84a32992f35fcc6976ed7f96c67b343bfcc5b44f6771f94980",
+   "bytes": 511,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/WORKORDER_RAW.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-029",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/ECP_RAW.json",
+   "sha256": "533804e576d3d000bfe791c0c2e5e59cc3abca9971b0c25a49bc92cebad47b41",
+   "bytes": 413,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/ECP_RAW.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-030",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/EXACT_HEAD_QUALIFICATION.json",
+   "sha256": "af0aff556f412db06ca71dfddbb451938e6a2c199a02a396f77cf8af168ff243",
+   "bytes": 1999,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/EXACT_HEAD_QUALIFICATION.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-031",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/NAMED_CAPABILITY_CONSUMPTION_RECEIPT.json",
+   "sha256": "a2141f1c55b613495940c9ce949039e315c9684a743c37ece491a7d9d760698b",
+   "bytes": 11805,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/NAMED_CAPABILITY_CONSUMPTION_RECEIPT.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-032",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/LOCAL_CLOSURE_RECEIPT.json",
+   "sha256": "da11be212f1d374cb5e433b5fb8f5264fcb74467ce200ec4df85f25ed4e04213",
+   "bytes": 1261,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/LOCAL_CLOSURE_RECEIPT.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-033",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/INDEPENDENT_RECEIPT.json",
+   "sha256": "e44e8206a6388005fec91ebf4c9a8d5d941ec9a2e658a7d20bcfc7b84055680c",
+   "bytes": 2731,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/INDEPENDENT_RECEIPT.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-034",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/SECRET_SCAN_RECEIPT.json",
+   "sha256": "09b161ac2ca30bd5768ed2cadd4db3f0b6a57ca16f4afd3db08a3443d28a22f3",
+   "bytes": 176,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/SECRET_SCAN_RECEIPT.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-035",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/R4_CONTRACT.json",
+   "sha256": "78883752bc487d2f337d28661d2daf7c52798182715b999f43f6a388d4be001d",
+   "bytes": 17426,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/R4_CONTRACT.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-036",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/GATE_CALIBRATION_ROWS.json",
+   "sha256": "71086a1c7c0a4cbd15ca6768f91db5428aee3320821de3dbb3f96128be9b5146",
+   "bytes": 5723,
+   "linkage_mode": "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/GATE_CALIBRATION_ROWS.json"
+   },
+   "packaging_status": "REFERENCED_IMMUTABLE",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": true,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": false
+   }
+  },
+  {
+   "id": "E-037",
+   "type": "historical_raw_artifact",
+   "path_or_external_exact_ref": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9:acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/W1_R4_FINAL_PACKAGING.json",
+   "sha256": "5054e7e456e4cf8577d5084598147af5de2380f38ceba5a3c5b0110dfa80bdb7",
+   "bytes": 7169,
+   "linkage_mode": "HISTORICAL_SUPERSEDED",
+   "linkage_subject": {
+    "historical_commit": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+    "relative_path": "acceptance/evidence/7e1f912d863b8c155eb9ae5ae9682b0e185450fc/W1_R4_FINAL_PACKAGING.json"
+   },
+   "packaging_status": "HISTORICAL_SUPERSEDED",
+   "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+   "linkage_check": {
+    "direct_final_subject_ok": false,
+    "transitive_lineage_ok": false,
+    "workorder_checkpoint_ok": false,
+    "compiler_contract_ok": false,
+    "historical_only": true
+   }
+  }
+ ],
+ "required_evidence": [
+  "EVIDENCE_ONLY_CONTRACT.json",
+  "compiler_raw/",
+  "compiled/thin-prompt.md",
+  "SOURCE_IDENTITY_READBACK.json",
+  "R4_HISTORICAL_EVIDENCE_INVENTORY.json",
+  "GATE_CALIBRATION_ROWS_R4_EVIDENCE_CLEANUP.json",
+  "COMPILER_PROVENANCE_ADJUDICATION_R4.json",
+  "W2_COMPILER_PROVENANCE_GUARD.json",
+  "EVIDENCE_LINKAGE_RECLASSIFICATION.json",
+  "HISTORICAL_PACKAGING_SUPERSESSION.json",
+  "W1_R4_EVIDENCE_CLEANUP_FINAL_PACKAGING.json",
+  "W1_CARRY_FORWARD_GATE.json",
+  "REDACTION_RECEIPT.json",
+  "SECRET_SCAN_RECEIPT.json"
+ ],
+ "required_evidence_count": 14,
+ "missing_required_evidence": [],
+ "linkage_summary": {
+  "COMPILER_CONTRACT_BOUND": 10,
+  "DIRECT_FINAL_SUBJECT": 1,
+  "HISTORICAL_SUPERSEDED": 3,
+  "WORKORDER_CHECKPOINT": 3,
+  "TRANSITIVE_PRE_MUTATION_LINEAGE": 20
+ },
+ "manifest_hash_source": "COMMITTED_GIT_BLOB_BYTES",
+ "denominator": {
+  "evidence_item_count": 37,
+  "calibration_gates": 8,
+  "calibration_gates_required": 8,
+  "linkage_modes": [
+   "COMPILER_CONTRACT_BOUND",
+   "DIRECT_FINAL_SUBJECT",
+   "HISTORICAL_SUPERSEDED",
+   "TRANSITIVE_PRE_MUTATION_LINEAGE",
+   "WORKORDER_CHECKPOINT"
+  ]
+ },
+ "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY",
+ "non_claims": [
+  "NOT_EXTERNALLY_ACCEPTED",
+  "NO_W1_SOURCE_MUTATION",
+  "NO_REMOTE_MERGE",
+  "NO_RELEASE",
+  "NO_PRODUCTION",
+  "NO_WORLD_EFFECT_ACCEPTANCE",
+  "W2_PRODUCT_MUTATION_NOT_EXECUTED"
+ ],
+ "generated_at_utc": "2026-10-03T05:52:20Z"
+}

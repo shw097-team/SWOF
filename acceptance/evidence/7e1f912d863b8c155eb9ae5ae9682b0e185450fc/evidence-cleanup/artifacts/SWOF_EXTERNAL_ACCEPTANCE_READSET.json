@@ -1,0 +1,30 @@
+{
+ "schema": "SWOF-EXTERNAL-ACCEPTANCE-READSET/1",
+ "round": "R4_EVIDENCE_CLEANUP",
+ "order_id": "SWOF-CONSTRUCTION-002-W1-R4-EVIDENCE-CLEANUP-001",
+ "changeset": "EVIDENCE_ONLY",
+ "subject": {
+  "repo": "shw097-team/SWOF",
+  "pr_number": 4,
+  "branch": "repair/w1-r4-binding-order-proof",
+  "source_candidate_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+  "historical_evidence_commit_sha": "206ab073e92541cbb0d2acab8a3beebbcfe8c9e9",
+  "evidence_commit_sha": "BOUND_BY_POST_COMMIT_REMOTE_READBACK"
+ },
+ "allowed_operations": [
+  "read_pr_metadata",
+  "read_exact_commit",
+  "read_diff",
+  "read_exact_evidence_commit",
+  "read_evidence_manifest_and_receipts",
+  "compare_commits"
+ ],
+ "forbidden_operations": [
+  "create_or_update_file",
+  "merge",
+  "release",
+  "production_promotion"
+ ],
+ "review_instruction": "Do not re-review R4 as if it were a new source candidate. The source subject is unchanged. Review the evidence-only cleanup against the four R4 acceptance findings, and separately report W2 entry readiness.",
+ "claim_ceiling": "W1_R4_EVIDENCE_CLEANUP_CANDIDATE_AND_W2_ENTRY_HANDOFF_ONLY"
+}

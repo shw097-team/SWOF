@@ -1,0 +1,11 @@
+# command: prompt_contract_compiler.py compile C:\Projects\Agent_Workspace\HG-KSEOS\var\swof-w1-r4-evidence-cleanup\contract\EVIDENCE_ONLY_CONTRACT.json --out-dir C:\Projects\Agent_Workspace\HG-KSEOS\var\swof-w1-r4-evidence-cleanup\compiler_raw\compiled
+# rc=0
+{
+  "verdict": "PROMPT_COMPILE_PASS",
+  "error_count": 0,
+  "errors": [],
+  "task_id": "SWOF-W1-R4-EVIDENCE-ONLY-CLEANUP-W2-ENTRY-001",
+  "contract_sha256": "b617c82fdfa314bb60e229843ffd72b00ea723e6a509d04cb28126940e4ea47f",
+  "claim_ceiling": "LOCAL"
+}
+

@@ -1,0 +1,34 @@
+{
+ "source_identity": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\SOURCE_IDENTITY_READBACK.json",
+ "inventory": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\R4_HISTORICAL_EVIDENCE_INVENTORY.json",
+ "supersession": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\HISTORICAL_PACKAGING_SUPERSESSION.json",
+ "final_packaging": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-w1-r4-evidence-cleanup\\artifacts\\W1_R4_EVIDENCE_CLEANUP_FINAL_PACKAGING.json",
+ "supersession_sha256": "93953b5928ba762d23cccd11654f39a358ed5b5980419f4d5fc21113369097fb",
+ "final_packaging_sha256": "8542e90c6caf3e6ea4a8aa672360cedd6aaa04624fe24ff876673f85ccca4d9e",
+ "pr_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+ "validation": {
+  "calibration_gate_count": 8,
+  "calibration_required_count": 8,
+  "calibration_verdict": "PASS",
+  "linkage_item_count": 39,
+  "linkage_corrected_item_count": 4,
+  "linkage_verdict": "PASS",
+  "compiler_provenance_state": "NONRETROACTIVE_DEFECT_ADJUDICATED",
+  "compiler_guard_verdict": "PASS",
+  "current_compiler_verdicts": {
+   "lint": "PROMPT_COMPILE_PASS",
+   "activation": "PROMPT_COMPILE_PASS",
+   "acceptance": "PROMPT_COMPILE_PASS",
+   "compile": "PROMPT_COMPILE_PASS",
+   "duplication": "PROMPT_COMPILE_PASS"
+  },
+  "hash_mismatch_count": 0,
+  "byte_mismatch_count": 0,
+  "invalid_direct_link_count": 0,
+  "invalid_transitive_link_count": 0,
+  "invalid_compiler_contract_link_count": 0,
+  "invalid_workorder_checkpoint_link_count": 0,
+  "missing_required_evidence_count": 0
+ },
+ "verdict": "PASS"
+}
