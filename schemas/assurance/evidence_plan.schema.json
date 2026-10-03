@@ -1,0 +1,55 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/assurance/evidence_plan.schema.json",
+ "title": "EvidencePlan - raw-proof / subject / environment binding (closed)",
+ "description": "Shape of an evidence plan. Each required entry is a 3-element array [kind, linkage_mode, environment]. The decision law is enforced in src/assurance/evidence.py and NOT expressible here: a summary boolean with no raw artifact is FORGED_SUMMARY, a matching transport hash with a different subject is WRONG_SUBJECT (hash integrity proves transport, not meaning), a pre-mutation artifact sold as direct final is DIRECT_FINAL_CLAIM_ON_PRE_MUTATION, a moving branch tip sold as an immutable SHA is BRANCH_TIP_SUBSTITUTION, and the per-linkage-mode counters are kept separate so one mixed counter cannot both over- and under-report. This schema is closed: unknown properties are rejected.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "plan_id",
+  "subject_id",
+  "subject_sha",
+  "oracle_id",
+  "required",
+  "checker_id",
+  "producer_id"
+ ],
+ "properties": {
+  "plan_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "subject_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "subject_sha": {
+   "type": "string",
+   "minLength": 1
+  },
+  "oracle_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "required": {
+   "type": "array",
+   "items": {
+    "type": "array",
+    "minItems": 3,
+    "maxItems": 3,
+    "items": {
+     "type": "string",
+     "minLength": 1
+    }
+   }
+  },
+  "checker_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "producer_id": {
+   "type": "string",
+   "minLength": 1
+  }
+ }
+}
