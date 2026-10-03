@@ -1,0 +1,20 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/profile/execution_context.schema.json",
+ "title": "W1 execution-context objects (PD-PKG-05)",
+ "type": "object",
+ "required": [
+  "team_topology",
+  "execution_context_profile",
+  "permission_envelope",
+  "context_handoff_packet",
+  "capability_projection_profile",
+  "qualification_handoff"
+ ],
+ "properties": {
+  "design_topology_is_runtime_parallelism": {
+   "const": false
+  }
+ },
+ "additionalProperties": true
+}

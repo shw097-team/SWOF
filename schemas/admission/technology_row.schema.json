@@ -1,0 +1,41 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/admission/technology_row.schema.json",
+ "title": "Technology admission row (PI-PKG-05 19.2, reduced)",
+ "type": "object",
+ "required": [
+  "tech_id",
+  "canonical_identity",
+  "disposition"
+ ],
+ "properties": {
+  "disposition": {
+   "enum": [
+    "REUSE",
+    "WRAP",
+    "TRANSLATE",
+    "ADAPT",
+    "COMPOSE",
+    "BUILD_MINIMUM",
+    "BUILD_NEW_EXCEPTION"
+   ]
+  },
+  "selected": {
+   "type": "boolean"
+  },
+  "installed": {
+   "type": "boolean"
+  },
+  "qualified": {
+   "type": "boolean"
+  },
+  "active": {
+   "type": "boolean"
+  },
+  "rejected_for_primary_slot": {
+   "type": "boolean"
+  }
+ },
+ "description": "selected != installed != qualified != active; each is a separate gate.",
+ "additionalProperties": true
+}
