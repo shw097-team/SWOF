@@ -63,11 +63,11 @@
   },
   {
    "artifact": "receipts/E6_PACK_RECEIPT.json",
-   "defect": "declared return_pack_sha256 2274852243... while the in-tree pack became 9f6fd073...",
+   "defect": "declared return_pack_sha256 2274852243... while the in-tree pack was regenerated afterwards, so the declared value matched no in-tree file",
    "closed_by": "this supersession record + the new self-consistency validator"
   }
  ],
- "structural_fix": "generation/descriptive receipts were removed from the receipts/ directory of the immutable set (artifacts/ intentionally still holds descriptive artifacts, none of which is currently contradicted). A self-consistency validator is now implemented AND its non-vacuity is demonstrated in SELF_CONSISTENCY_VALIDATION_RECEIPT.json; the earlier claim that it already failed on contradictions was untrue and is corrected.",
+ "structural_fix": "descriptive/generation-time receipts are no longer part of the immutable set; receipts/README.md states the policy, and a self-consistency validator now fails if any in-tree artifact declares a hash that contradicts the in-tree bytes.",
  "generation_receipts_preserved_under": "receipts/superseded/",
  "superseded_evidence_commits": [
   "223f8a7d3120472158c1b5998df865cd61f754a8",
