@@ -1,0 +1,27 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/capability/named_consumption.schema.json",
+ "title": "SWOF-NAMED-CAPABILITY-CONSUMPTION/1",
+ "type": "object",
+ "required": [
+  "schema",
+  "workorder_id",
+  "source_candidate_sha",
+  "rows",
+  "counts"
+ ],
+ "properties": {
+  "schema": {
+   "const": "SWOF-NAMED-CAPABILITY-CONSUMPTION/1"
+  },
+  "counts": {
+   "type": "object",
+   "properties": {
+    "unconsumed": {
+     "const": 0
+    }
+   }
+  }
+ },
+ "additionalProperties": true
+}
