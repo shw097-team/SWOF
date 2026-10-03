@@ -4,6 +4,7 @@ The decisive test here is `test_opa_selected_for_predev_cannot_be_serialized_as_
 external reviewer's counterexample (canonical `SELECTED_FOR_PREDEV` collapsed into the execution
 label `DEFERRED`) must be UNREPRESENTABLE, not merely discouraged.
 """
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -148,6 +149,63 @@ class TestLedger(unittest.TestCase):
     def test_unknown_disposition_evidence_kind_is_refused(self):
         with self.assertRaises(LedgerDefect):
             row(disposition_evidence="PROBABLY").consume()
+
+
+class TestReceiptSchema(unittest.TestCase):
+    """The schema must be load-bearing: it has to accept a faithful receipt and reject coercion."""
+
+    SCHEMA = ROOT / "schemas" / "capability" / "named_consumption.schema.json"
+
+    def _validate(self, instance):
+        import jsonschema
+        jsonschema.validate(instance, json.loads(self.SCHEMA.read_text(encoding="utf-8")))
+
+    def test_real_receipt_conforms(self):
+        inst = json.loads((Path(__file__).resolve().parents[3] / "schemas" / "capability"
+                           / "_conformance_sample.json").read_text(encoding="utf-8"))
+        self._validate(inst)
+
+    def test_schema_rejects_execution_label_as_source_disposition(self):
+        import jsonschema
+        inst = {
+            "schema": "SWOF-NAMED-CAPABILITY-CONSUMPTION/1", "workorder_id": "W", "source_candidate_sha": "a" * 40,
+            "rows": [{"row_id": "R", "family": "capability", "source_locator": "L",
+                      "source_disposition": "DEFERRED",
+                      "canonical_source_text": "SELECTED_FOR_PREDEV",
+                      "disposition_evidence": "SOURCE_VERBATIM",
+                      "execution_disposition": "DEFERRED"}],
+            "counts": {"total": 1, "unconsumed": 0},
+        }
+        with self.assertRaises(jsonschema.ValidationError):
+            self._validate(inst)
+
+    def test_schema_rejects_assigned_row_using_a_non_terminal_token(self):
+        import jsonschema
+        inst = {
+            "schema": "SWOF-NAMED-CAPABILITY-CONSUMPTION/1", "workorder_id": "W", "source_candidate_sha": "a" * 40,
+            "rows": [{"row_id": "R", "family": "capability", "source_locator": "L",
+                      "source_disposition": "SELECTED_FOR_PREDEV",
+                      "canonical_source_text": "internal seam",
+                      "disposition_evidence": "ASSIGNED_TERMINAL_SET",
+                      "execution_disposition": "DEFERRED"}],
+            "counts": {"total": 1, "unconsumed": 0},
+        }
+        with self.assertRaises(jsonschema.ValidationError):
+            self._validate(inst)
+
+    def test_schema_rejects_nonzero_unconsumed(self):
+        import jsonschema
+        inst = {
+            "schema": "SWOF-NAMED-CAPABILITY-CONSUMPTION/1", "workorder_id": "W", "source_candidate_sha": "a" * 40,
+            "rows": [{"row_id": "R", "family": "capability", "source_locator": "L",
+                      "source_disposition": "CONSTRUCTION_ONLY",
+                      "canonical_source_text": "must be constructed",
+                      "disposition_evidence": "ASSIGNED_TERMINAL_SET",
+                      "execution_disposition": "DEFERRED"}],
+            "counts": {"total": 1, "unconsumed": 3},
+        }
+        with self.assertRaises(jsonschema.ValidationError):
+            self._validate(inst)
 
 
 if __name__ == "__main__":
