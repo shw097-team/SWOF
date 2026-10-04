@@ -1,0 +1,102 @@
+{
+  "schema": "SWOF-W2-R6-COMPILER-BUNDLE-MANIFEST/1",
+  "bundle_root": "construction-acceptance-prompt-compiler",
+  "file_count": 18,
+  "files": [
+    {
+      "rel": "agents/openai.yaml",
+      "sha256": "41073cc05dd16042d692f5a07a0d241196cea0794a22dd415ac55224f5c62db9",
+      "bytes": 430
+    },
+    {
+      "rel": "assets/icon.svg",
+      "sha256": "fbb6c7314886573cd56c3f86884a65afe3b5f4ce4bf1ee6baeeeb1fa50aea7a4",
+      "bytes": 2922
+    },
+    {
+      "rel": "construction-acceptance-prompt-compiler_SKILL.md",
+      "sha256": "214c7f048f7361fe0bc4a324a0c99aaaf0df4191a430b645b8a97d24620064b6",
+      "bytes": 7534
+    },
+    {
+      "rel": "references/acceptance-evidence.md",
+      "sha256": "7c0602976678806c24bc367a1984b1b0a5e9ac94618903bb0c8912bdda47c8b7",
+      "bytes": 2488
+    },
+    {
+      "rel": "references/activation-runtime.md",
+      "sha256": "4d69e27dc1176bc3c17062578f9e1d6336154d7b0d9f8e8780bb50b74c25dc29",
+      "bytes": 2592
+    },
+    {
+      "rel": "references/contract-model.md",
+      "sha256": "a2da82dff78893330925ca6c18d2e386619832e523234f2b2039838f6742c47b",
+      "bytes": 3168
+    },
+    {
+      "rel": "references/prompt-contract.schema.json",
+      "sha256": "cbcc9998cee3ba59f919417aacbc121ab20fc611f1c47c62cafcaa34bbf13612",
+      "bytes": 25671
+    },
+    {
+      "rel": "references/rendering-and-antipatterns.md",
+      "sha256": "8db369edec9ca54045ae6eafc54117abe792e34b22f44aaa7edc15f5d65bb47a",
+      "bytes": 2360
+    },
+    {
+      "rel": "references/source-routing.md",
+      "sha256": "fa9a95e534673e021c8c9af25b70a4b59eb0a78067166e79b925bed06bb5ea59",
+      "bytes": 4261
+    },
+    {
+      "rel": "references/termination-permissions.md",
+      "sha256": "5bedc535d3291434c026383081b2ce50ff428b11e1a1e43f32d34a6d6aa0639d",
+      "bytes": 1971
+    },
+    {
+      "rel": "scripts/evo004_contract.json",
+      "sha256": "c75171c6e38c35b77b75a07373eb993a00645e27ba462dee8639b43e5a372304",
+      "bytes": 38689
+    },
+    {
+      "rel": "scripts/evo004r5_contract.json",
+      "sha256": "c30fb88c6ecd31b92167d00ee1d338f9cac181ed68586b9d565e1936c32d4d56",
+      "bytes": 42377
+    },
+    {
+      "rel": "scripts/evo005r6_contract.json",
+      "sha256": "25f0f060f35a4e9c10ae3261948e20bc5476c435abfec88b9cf683877cfb6981",
+      "bytes": 53321
+    },
+    {
+      "rel": "scripts/evo005r7_contract.json",
+      "sha256": "7acdd66792e642b79c7543629d48b384f8397c09d47ddb57217758fe7fdcee82",
+      "bytes": 58845
+    },
+    {
+      "rel": "scripts/prompt_contract_compiler.py",
+      "sha256": "2c282ad6539a465c3b1d751868cab98437a8f35e9728be686117e364a70857d9",
+      "bytes": 30930
+    },
+    {
+      "rel": "tests/fixtures/baseline.json",
+      "sha256": "34ea95acc850f42fd784f3d39ae8ffaf0a79302791fab7fb5bd06cd7aff68080",
+      "bytes": 10873
+    },
+    {
+      "rel": "tests/fixtures/golden.json",
+      "sha256": "accbbf66b47dd43a6959aa878a7f9950860e6e6629200752f8c6034397bd2ba8",
+      "bytes": 7204
+    },
+    {
+      "rel": "tests/test_prompt_contract_compiler.py",
+      "sha256": "0fd01241a923e7256a3a6a12e1685e9c48b9579e4d3f531b8ea9bfabb716dd00",
+      "bytes": 6410
+    }
+  ],
+  "duplication_source": {
+    "path": "SWOF_HGK_ACA_RBWI.md",
+    "sha256": "b9a26f959233bc63c21bb4ad764ded3efc6ba6b02c2d29c40c92e33b0bb5670d",
+    "bytes": 3812419
+  }
+}
