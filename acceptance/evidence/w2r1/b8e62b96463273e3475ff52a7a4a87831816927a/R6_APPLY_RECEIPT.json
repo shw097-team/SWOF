@@ -1,0 +1,24 @@
+{
+ "workorder": "WO-SWOF-W2-R006",
+ "repair_id": "SWOF-W2-CLOSURE-R2",
+ "base": "3ade7d0edec5d3304672be2cfa696e570aaab193",
+ "branch": "wo/swof-w2-closure-r1",
+ "codex_exit": 0,
+ "duration_s": 2752.3,
+ "candidate": "b8e62b96463273e3475ff52a7a4a87831816927a",
+ "candidate_changed": true,
+ "containment_ok": true,
+ "reverted": [],
+ "changed_paths": [
+  "src/security/humangate.py",
+  "src/security/rights.py",
+  "src/security/tests/test_humangate_currentness.py",
+  "src/security/tests/test_rights.py"
+ ],
+ "focused": {
+  "root": "src/security/tests",
+  "ran": 353,
+  "exit_code": 0,
+  "raw_log": "writer_logs/FOCUSED_WO-SWOF-W2-R006.log"
+ }
+}

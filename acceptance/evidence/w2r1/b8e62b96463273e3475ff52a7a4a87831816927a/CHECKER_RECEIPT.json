@@ -1,0 +1,65 @@
+{
+ "schema": "SWOF-W2-R2-FRESH-INDEPENDENT-CHECKER-RECEIPT/1",
+ "checker_identity": "r3-fresh-context-verifier-b8e62b96-cwd-C-Users-user-verify_r3",
+ "checker_mode": "FRESH_CONTEXT_VERIFY_ONLY",
+ "checker_is_not_maker": true,
+ "checker_read_only": true,
+ "read_only_attestation": "scratch confined to C:/Users/user/verify_r3; repo HEAD unchanged",
+ "subject": "b8e62b96463273e3475ff52a7a4a87831816927a",
+ "base": "3ade7d0edec5d3304672be2cfa696e570aaab193",
+ "product_verdict": "PASS",
+ "governance_verdict": "PASS",
+ "wave_verdict": "PASS",
+ "blocking_findings": [],
+ "p3_benign_operation_no_token": "DENY_P3_TOKEN_REQUIRED",
+ "unclassifiable_operation": "SAFE_STOP_UNKNOWN_RUIN",
+ "known_benign_operation_stays_ungated": true,
+ "canonical_ruin_valid_token": "HARD_VETO_RUIN",
+ "canonical_unknown_ruin_valid_token": "SAFE_STOP_UNKNOWN_RUIN",
+ "malformed_enums_fail_closed": true,
+ "base_failopens_reproduced_then_closed": true,
+ "base_failopen_scope_note": "At round-3 BASE 3ade7d0e (R5) the canonical RUIN+valid-token case was ALREADY refused; the checker correctly reports it did NOT reproduce there. That fail-open existed at the EARLIER candidate edb53142 (R4) and was fixed by R5. At BASE the checker DID reproduce the operation-axis fail-open and consequential ACT-* classes asserted at benign tiers being ungated; both are closed at HEAD. Stated base-relative to avoid an over-claim.",
+ "regression": {
+  "w1_total": 113,
+  "grand_total": 828,
+  "all_roots_exit_0": true,
+  "roots": {
+   "tests": 16,
+   "src/fabric/tests": 21,
+   "src/knowledge/tests": 25,
+   "src/admission/tests": 17,
+   "src/profile/tests": 12,
+   "src/capability/tests": 22,
+   "src/security/tests": 353,
+   "src/effect/tests": 116,
+   "src/assurance/tests": 144,
+   "src/observability/tests": 102
+  }
+ },
+ "tok_inv_attacks_hold": 14,
+ "paths_that_skip_the_token_or_veto": [
+  "LATENT_NOT_EXPLOITABLE: human_gate_route(action, risk=...' kwarg is ignored (no in-repo caller passes it); the integrated seam re-derives the route and raises ROUTE_UNDERSTATES_ACTION, so it cannot skip the veto."
+ ],
+ "non_blocking_findings": [
+  "operation classification is enforced in the gate predicate, not inside verify_approval_token; the integrated seam refuses, so not a bypass (was also true at BASE).",
+  "asymmetric malformed-enum strictness: malformed effect_risk_tier/operation are unapprovable even with a valid token; malformed permission_class/autonomy_tier are gated and then a valid Ed25519 human token may approve. Matches the gate's stated contract; never ungated.",
+  "non-canonical but non-weakening legacy ruin_class alias can over-block ('MAYBE' -> SAFE_STOP).",
+  "README still cites the old security count (191 vs 353 actual) - stale doc, not a defect."
+ ],
+ "noncanonical_identifiers_in_code": [
+  "read (rights.py _OPERATION_BENIGN) - not in the canonical ACT-* action vocabulary",
+  "HIGH_RISK_ACTIONS entry names (live_world_effect, credential_access, production_promotion, remote_merge, destructive_scope_expansion, constitution_change) - 0 occurrences in PI06 DOC-03",
+  "ApprovalRequest field 'operation_class' - canonical field names are 'operation'/'action_class'",
+  "human:/model:/tool:/provider:/agent:/mcp:/a2a:/automation:/svc:/service: ref prefixes - not defined in DOC-03",
+  "envelope vocabulary (writer_version/compatibility_class/IF06B ABI constants) - not enumerated in 16.1",
+  "route/edge strings ARTIFACT:HUMAN_GATE, ARTIFACT:RUIN_*, HUMAN_GATE:*, RUIN:* - invented; canonical reason codes are VETO_RUIN / SAFE_STOP_UNKNOWN_RUIN",
+  "ruin_class - confirmed 0 occurrences in PI06; correctly confined to a non-weakening legacy alias"
+ ],
+ "verdict_basis": "PI06 DOC-03 read directly as authority; every fixture built from the canonical field domains, not implementation attributes. BASE fail-opens reproduced and closed at HEAD; positive control preserved (no overfit); all malformed enum domains fail closed; no integrated path skips the token or the ruin veto; regression 828/828 with W1=113 preserved.",
+ "raw_transcript": {
+  "path": "checker_live/ROUND3_FINAL_task-0.log",
+  "sha256": "33f496a66b44f16e2abf88141f86bf07495bc5379e98d970dd874cf66fea7a5e",
+  "bytes": 30624
+ },
+ "note": "This is LOCAL/PROJECT independent verification (Gate F). It is NOT the external challenge verdict, and no maker/checker may self-promote it into external acceptance."
+}

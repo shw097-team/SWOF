@@ -1,0 +1,146 @@
+{
+ "schema": "SWOF-W2-R2-VERIFICATION/1",
+ "subject": "d99c50370b8e53be0fa12024a0867fe7a5fc134c",
+ "finding_dispositions": {
+  "R1-BLK-1 signature delegation is real": "CLOSED",
+  "R1-BLK-2 approver != actor": "CLOSED",
+  "R1-BLK-3 route re-derivation": "CLOSED"
+ },
+ "probes_total": 12,
+ "probes_holding": 12,
+ "all_hold": true,
+ "rows": [
+  {
+   "probe": "R2-1a",
+   "finding": "R1-BLK-1",
+   "case": "honest registry + untampered token -> APPROVE",
+   "expected": true,
+   "observed": {
+    "ok": true,
+    "code": "APPROVE_BASIS_SATISFIED"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R2-1b",
+   "finding": "R1-BLK-1",
+   "case": "honest registry + payload changed AFTER signing (no re-sign)",
+   "expected": "DENY_TOKEN_INTEGRITY",
+   "observed": {
+    "ok": false,
+    "code": "DENY_TOKEN_INTEGRITY"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R2-1b2",
+   "finding": "R1-BLK-1",
+   "case": "honest registry + a tampered exact-binding field is denied (precedence check: DENY_EXACT_BINDING comes before the signature stage)",
+   "expected": "DENY_EXACT_BINDING",
+   "observed": {
+    "ok": false,
+    "code": "DENY_EXACT_BINDING"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R2-1c",
+   "finding": "R1-BLK-1",
+   "case": "FORGED shape-valid signature + honest registry",
+   "expected": "DENY_TOKEN_INTEGRITY",
+   "observed": {
+    "ok": false,
+    "code": "DENY_TOKEN_INTEGRITY"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R2-1d",
+   "finding": "R1-BLK-1",
+   "case": "no registry at all -> fail closed",
+   "expected": "DENY_TOKEN_INTEGRITY",
+   "observed": {
+    "ok": false,
+    "code": "DENY_TOKEN_INTEGRITY"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R2-1e",
+   "finding": "R1-BLK-1",
+   "case": "registry returning a non-True truthy value -> fail closed",
+   "expected": "DENY_TOKEN_INTEGRITY",
+   "observed": {
+    "ok": false,
+    "code": "DENY_TOKEN_INTEGRITY"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R2-1f",
+   "finding": "R1-BLK-1",
+   "case": "registry raising -> fail closed",
+   "expected": "DENY_TOKEN_INTEGRITY",
+   "observed": {
+    "ok": false,
+    "code": "DENY_TOKEN_INTEGRITY"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R2-2",
+   "finding": "R1-BLK-2",
+   "case": "approver == actor (self-issued)",
+   "expected": "DENY_FALSE_AUTHORITY",
+   "observed": {
+    "ok": false,
+    "code": "DENY_FALSE_AUTHORITY"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R2-3a",
+   "finding": "R1-BLK-3",
+   "case": "required=False route + high-risk request -> understated",
+   "expected": "ROUTE_UNDERSTATES_ACTION",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "ROUTE_UNDERSTATES_ACTION"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R2-3b",
+   "finding": "R1-BLK-3",
+   "case": "required=False route + no request -> not re-derivable",
+   "expected": "ROUTE_NOT_REDERIVABLE_FAIL_CLOSED",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "ROUTE_NOT_REDERIVABLE_FAIL_CLOSED"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R2-3c",
+   "finding": "R1-NB-5",
+   "case": "P3 request + bare string -> canonical DENY_P3_TOKEN_REQUIRED",
+   "expected": "DENY_P3_TOKEN_REQUIRED",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "DENY_P3_TOKEN_REQUIRED"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R2-3d",
+   "finding": "R1-NB-5",
+   "case": "P2 request + bare string -> NOT_A_CANONICAL_APPROVAL_TOKEN (the P3 code must NOT fire for a non-P3 action)",
+   "expected": "NOT_A_CANONICAL_APPROVAL_TOKEN",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "NOT_A_CANONICAL_APPROVAL_TOKEN"
+   },
+   "holds": true
+  }
+ ]
+}
