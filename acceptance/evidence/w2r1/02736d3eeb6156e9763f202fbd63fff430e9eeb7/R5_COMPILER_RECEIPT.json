@@ -1,0 +1,72 @@
+{
+  "schema": "SWOF-W2-R5-COMPILER-RECEIPT/1",
+  "artifact": "R5_COMPILER_RECEIPT",
+  "task_id": "SWOF-W2-CLOSURE-R5",
+  "repair_id": "SWOF-W2-CLOSURE-R5",
+  "compiler_bundle": "construction-acceptance-prompt-compiler (scripts/prompt_contract_compiler.py)",
+  "compiler_bundle_sha256": "2c282ad6539a465c3b1d751868cab98437a8f35e9728be686117e364a70857d9",
+  "contract": "specs/R5_PROMPT_CONTRACT.json",
+  "contract_sha256": "53d505a80a450ce27479b57fa708c60ce228523e1d88ae60f32eee06e07103e1",
+  "stages": [
+    {
+      "stage": "lint",
+      "verdict": "PROMPT_COMPILE_PASS",
+      "error_count": 0,
+      "validator": "prompt_contract_compiler.py lint"
+    },
+    {
+      "stage": "activation",
+      "verdict": "PROMPT_COMPILE_PASS",
+      "error_count": 0,
+      "validator": "prompt_contract_compiler.py activation"
+    },
+    {
+      "stage": "acceptance",
+      "verdict": "PROMPT_COMPILE_PASS",
+      "error_count": 0,
+      "validator": "prompt_contract_compiler.py acceptance"
+    },
+    {
+      "stage": "compile",
+      "verdict": "PROMPT_COMPILE_PASS",
+      "error_count": 0,
+      "validator": "prompt_contract_compiler.py compile"
+    },
+    {
+      "stage": "duplication",
+      "verdict": "PROMPT_COMPILE_PASS",
+      "error_count": 0,
+      "rule": "PL-001",
+      "threshold": 0.25,
+      "sources": [
+        {
+          "source": "specs/R4_PROMPT_CONTRACT.json",
+          "ratio": 0.165912
+        }
+      ]
+    }
+  ],
+  "compiler_state": "PROMPT_COMPILE_PASS",
+  "claim_ceiling": "LOCAL",
+  "render_policy": {
+    "max_prompt_chars": 20000,
+    "thin_prompt_chars": 9329,
+    "within_budget": true
+  },
+  "artifacts": {
+    "thin_prompt": {
+      "path": "R5_COMPILED/thin-prompt.md",
+      "sha256": "e39ab2ccd2a52f084e604be9b92cae504d47fbaff742d7bd71c7affae858d3b3"
+    },
+    "compiler_report": {
+      "path": "R5_COMPILED/compiler-report.json",
+      "sha256": "52b8f5559313fc7256bc218c2eb04d96f09e138a1063542af840cb96cf18624a"
+    },
+    "compiler_receipt": {
+      "path": "R5_COMPILED/compiler-receipt.json",
+      "sha256": "5f7bf774d1a3c8741e6f87482f6cbe5dfb49075a7a979b6ccc24828980fca5d8"
+    }
+  },
+  "disposition": "R5 task-time compile previously PROMPT_COMPILE_R5_ADJUDICATED_VIA_ACCEPTED_PRIOR_COMPILER; this run performs the required task-time canonical compile, reproducing PROMPT_COMPILE_PASS on the R5 contract.",
+  "generated_at": "2026-10-04T14:49:00+00:00"
+}

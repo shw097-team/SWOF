@@ -9,7 +9,7 @@
     "source_branch": "wo/swof-w2-closure-r1",
     "source_candidate_sha": "02736d3eeb6156e9763f202fbd63fff430e9eeb7",
     "evidence_branch": "evidence/swof-w2r5-closure-repair",
-    "evidence_commit_sha": "c93ffceec2f7d7fa76e1c9cd34fe2dab9447bf80",
+    "evidence_commit_sha": "1d7fc5f89f5205029fe767c500e38fc2a6c11059",
     "source_ne_evidence": true,
     "checkpoint": "CK-W2-AE96CED0",
     "accepted_w1_source_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
@@ -17,9 +17,14 @@
     "parent_r4_source_sha": "6f332c3cedc52bafc98949f4ce9226b1d1696bc3",
     "parent_r4_evidence_sha": "d3e311c2c26b48f4cc0b4b60d02390628f1365b6"
   },
-  "forbidden": ["create_or_update_file", "merge", "release", "production_promotion"],
+  "forbidden": [
+    "create_or_update_file",
+    "merge",
+    "release",
+    "production_promotion"
+  ],
   "claim_ceiling": "READY_FOR_W2_EXTERNAL_RECHALLENGE_ON_EXACT_R5_DUAL_SHA_SUBJECT_ONLY",
-  "canonical_compiler_disposition": "R5 order authoring env could not self-issue PROMPT_COMPILE_PASS (canonical bundle not fully mounted). The compiler bundle was NOT re-run in this session for the R5 repair; gate disposition is PROMPT_COMPILE_R5_ADJUDICATED_VIA_ACCEPTED_PRIOR_COMPILER + this repair is a NARROW 2-file trust-boundary cone re-adjudicated by fresh independent checker on exact bytes. The compiler-currentness edge for W2 was previously accepted; R5 operator must reconcile compiler if the fresh external reviewer requires a task-time compile.",
+  "canonical_compiler_disposition": "R5 task-time compile PERFORMED: prompt_contract_compiler.py lint/activation/acceptance/compile/duplication all PROMPT_COMPILE_PASS (contract sha 53d505a80a450ce2..., dup ratio vs R4 0.1659 < 0.25). Receipt: R5_COMPILER_RECEIPT.json.",
   "github_disposition": "TEMP_CLOSED_GITHUB: no origin remote / gh / credential wired in this environment; source and evidence committed locally and read back from local object store. Publication to GitHub pending external PAT wiring.",
   "independent_checker": {
     "identity": "fresh-context-VERIFY-ONLY",
@@ -47,12 +52,41 @@
     "receipt_sha256": "df0ea90da1236ff9ff7d1460c5e3f17a9086b630b5ef30443664ef3c89037110"
   },
   "evidence_items": [
-    {"id": "EVD-W2R5-ADJUDICATION", "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/R5_EXTERNAL_CONFLICT_ADJUDICATION.json", "sha256": "73d9ef0269408887ea7e1789c3868de7ee049823bfa8378e917350d137f74052"},
-    {"id": "EVD-W2R5-REGRESSION", "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/R5_REGRESSION_RECEIPT.json", "sha256": "df0ea90da1236ff9ff7d1460c5e3f17a9086b630b5ef30443664ef3c89037110"},
-    {"id": "EVD-W2R5-CHECKER", "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/R5_FRESH_CHECKER_RECEIPT.json", "sha256": "b0b78bfb485a07ff7fc124602872cfeb3cad7f067d1554293f6de8bfdd9aa55a"},
-    {"id": "EVD-W2R5-CLOSURE", "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/R5_W2_NORMATIVE_CLOSURE_PROJECTION.json", "sha256": "a777d6babfef6e2e1dd17b7f6eae59f5d936cbc8e9fe2c1c7ab4f2f125b85c57"},
-    {"id": "RETURN-PACK", "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/SWOF_W2_R5_EVIDENCE_RETURN_PACK.json", "sha256": "d7fe0d9a751eb9f9088da13a491d490b309bc1914e2fd9ed0099cfb9b40f3268"},
-    {"id": "DOSSIER", "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/SWOF_W2_R5_FINAL_EVIDENCE_DOSSIER.md", "sha256": "acae5efa0b5e7859d09e8ad6eb2571e267a91c9fd41726be2db294cbdc70bace"}
+    {
+      "id": "EVD-W2R5-ADJUDICATION",
+      "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/R5_EXTERNAL_CONFLICT_ADJUDICATION.json",
+      "sha256": "73d9ef0269408887ea7e1789c3868de7ee049823bfa8378e917350d137f74052"
+    },
+    {
+      "id": "EVD-W2R5-REGRESSION",
+      "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/R5_REGRESSION_RECEIPT.json",
+      "sha256": "df0ea90da1236ff9ff7d1460c5e3f17a9086b630b5ef30443664ef3c89037110"
+    },
+    {
+      "id": "EVD-W2R5-CHECKER",
+      "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/R5_FRESH_CHECKER_RECEIPT.json",
+      "sha256": "b0b78bfb485a07ff7fc124602872cfeb3cad7f067d1554293f6de8bfdd9aa55a"
+    },
+    {
+      "id": "EVD-W2R5-CLOSURE",
+      "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/R5_W2_NORMATIVE_CLOSURE_PROJECTION.json",
+      "sha256": "a777d6babfef6e2e1dd17b7f6eae59f5d936cbc8e9fe2c1c7ab4f2f125b85c57"
+    },
+    {
+      "id": "RETURN-PACK",
+      "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/SWOF_W2_R5_EVIDENCE_RETURN_PACK.json",
+      "sha256": "d7fe0d9a751eb9f9088da13a491d490b309bc1914e2fd9ed0099cfb9b40f3268"
+    },
+    {
+      "id": "DOSSIER",
+      "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/SWOF_W2_R5_FINAL_EVIDENCE_DOSSIER.md",
+      "sha256": "acae5efa0b5e7859d09e8ad6eb2571e267a91c9fd41726be2db294cbdc70bace"
+    },
+    {
+      "id": "EVD-W2R5-COMPILER",
+      "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/R5_COMPILER_RECEIPT.json",
+      "sha256": "efe28476ebaa8cce237b3e89af376f87b7110880085fcf8f23c021d909227ab9"
+    }
   ],
   "non_claims": {
     "external_w2_acceptance": "PENDING_FRESH_EXTERNAL_RECHALLENGE_NOT_ISSUED",
