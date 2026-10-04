@@ -1,0 +1,53 @@
+{
+  "schema": "SWOF-W2-R6-POLICY-TRUST-ADJUDICATION/1",
+  "repair_id": "SWOF-W2-CLOSURE-R6",
+  "changeset": "NARROW_REPAIR",
+  "mode": "DETERMINISTIC_READ_ONLY_ADJUDICATION_THEN_BRANCH_A_REPAIR",
+  "subject": {
+    "r5_source_sha": "02736d3eeb6156e9763f202fbd63fff430e9eeb7",
+    "r5_evidence_sha": "a6ee9b5ce8b0b0905be4952c32b2ddd747929c25",
+    "r6_source_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+  },
+  "equal_rank_conflict": {
+    "report_A": {"file": "SWOF_W2R5_POST_REPAIR_EXTERNAL_CHALLENGE_REACCEPTANCE_REPORT_2026-10-04.md",
+                 "verdict": "FAIL_CHALLENGE", "finding": "F-W2R5-EXT-001 caller-controlled canonical policy floor"},
+    "report_B": {"file": "SWOF_W2R5_POST_REPAIR_EXTERNAL_CHALLENGE_REPORT_2026-10-04.md",
+                 "verdict": "TEMP_CLOSED_CHALLENGE", "finding": "EG-W2R5-EXT-001 evidence-only; policy provenance deferred to W3 TT"},
+    "resolution_basis": "read-only exact-source probes + frozen PI06 authority",
+    "resolution": "A_BLOCKER_CONFIRMED"
+  },
+  "a1_public_surface": {"question": "ApprovalRequest publicly exported + accepted by W2 verification path?",
+    "evidence": "src/security/__init__.py exports ApprovalRequest; rights.py assert_human_gate_satisfied accepts it (single gate call site rights.py)", "verdict": "YES"},
+  "a2_policy_owner": {"question": "frozen PI06 assigns required_authn_assurance/risk/permission/authority ownership to policy/classifier owners?",
+    "evidence": "PI06 DOC-03 matrix: required_authn_assurance owner=policy, consumer=authn validator, invariant=meets floor; effect_risk_tier owner=risk compiler; permission_class owner=permission classifier; CRITICAL/P4/P5 => AAC3", "verdict": "YES"},
+  "a3_runtime_provenance": {"question": "current W2 runtime enforces a trusted canonical request resolver boundary?",
+    "evidence": "R5 02736d3e: VerificationContext has decision_resolver + authority_policy but NO request_resolver; floor read from caller-declared required_authn_assurance", "verdict": "NO (pre-repair)"},
+  "a4_downgrade_reachability": {"question": "caller can present CRITICAL/P4/P5 semantics with weaker policy fields and verifier accepts weaker AAC?",
+    "evidence": "R5 test_r008_exact_floor_aac2_request_passes: caller-declared AAC2 floor honored; monotone compare accepts AAC2>=AAC2 before signature", "verdict": "YES (pre-repair)"},
+  "a5_contract_scope": {"question": "verifier enforceably typed as consuming only prevalidated policy-owned requests?",
+    "evidence": "pre-repair none; post-repair request_resolver pins policy fields with DENY_REQUEST_UNRESOLVED/DENY_REQUEST_POLICY_MISMATCH", "verdict": "NO pre / ENFORCED post"},
+  "a6_current_scope": {"question": "this security API part of W2 substrate acceptance surface?",
+    "evidence": "ApprovalRequest + verifier are public W2 substrate exports consumed by assert_human_gate_satisfied", "verdict": "YES"},
+  "branch_predicates": {
+    "A_BLOCKER_CONFIRMED": {"public_admitted_surface": true, "frozen_pi06_requires_stronger": true,
+      "caller_controls_weaker_fields": true, "no_trusted_resolver_prevents": true,
+      "full_route_accepts_weaker": true, "chosen": true},
+    "B_CURRENT_W2_SCOPE_NONBLOCKING": false, "C_UNRESOLVED": false
+  },
+  "challenge_cases": {
+    "T1_CRITICAL_calleraac2": "post-repair DENY_REQUEST_POLICY_MISMATCH (A1)",
+    "T2_P4_calleraac2": "post-repair DENY_REQUEST_POLICY_MISMATCH (A2)",
+    "T3_protectedP5_weaker": "post-repair DENY_REQUEST_POLICY_MISMATCH (A3)",
+    "T4_lower_effect_risk_tier": "DENY_REQUEST_POLICY_MISMATCH (A4)",
+    "T5_lower_permission_class": "DENY_REQUEST_POLICY_MISMATCH (A5)",
+    "T6_lower_autonomy_tier": "DENY_REQUEST_POLICY_MISMATCH (A6)",
+    "T7_lower_required_authority": "DENY_REQUEST_POLICY_MISMATCH (A7)",
+    "T8_local_adapter_missing_floor": "DENY_AUTHN preserved (A11)",
+    "T9_exact_owner_control": "PASS preserved (A12)"
+  },
+  "root_cause": "caller-supplied ApprovalRequest policy/classification fields treated as trusted policy truth",
+  "decision": "A_BLOCKER_CONFIRMED",
+  "repair": {"class": "NARROW_REPAIR", "files": ["src/security/humangate.py","src/security/tests/test_humangate_currentness.py","src/security/tests/test_rights.py"],
+    "seam": "owner-injected request_resolver(request_id) -> current canonical ApprovalRequest; policy-owned fields pinned; fail-closed; floor read from trusted request",
+    "no_second_policy_engine": true, "no_global_aac3_force": true, "no_adapter_fallback": true}
+}

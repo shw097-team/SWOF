@@ -1,0 +1,15 @@
+# command : cross-tree full-route counterexample F-W2R5-EXT-001 (CRITICAL semantic, caller AAC2 floor, AAC2 decision/token)
+# phase   : w2_candidate_w2r6_adjudication
+# started : 2026-10-04T16:36:12Z
+------------------------------------------------------------------------------
+[OBSERVED] subject R5 source 02736d3eeb6156e9763f202fbd63fff430e9eeb7
+R5 test_r008_exact_floor_aac2_request_passes: caller-declared AAC2 floor honored (OK) - verifier reads caller floor as truth; no trusted-request resolver seam.
+
+[VERDICT-R5] R5 accepts caller-declared AAC2 floor even on security-relevant request: caller controls policy floor.
+
+[OBSERVED] subject R6 source 94e4c15e1040a159d0eb6ac3ef4089b421e60bf9 (repaired)
+TestR6TrustedRequestBoundary A1-A13 all PASS (13/13): DENY_REQUEST_UNRESOLVED / DENY_REQUEST_POLICY_MISMATCH on downgrade.
+
+[VERDICT-R6] caller-declared AAC2 floor on trusted CRITICAL/AAC3 request: DENY_REQUEST_POLICY_MISMATCH.
+
+FINAL: BLOCKER_CONFIRMED (Branch A). R5 accepts downgrade; R6 rejects. F-W2R5-EXT-001 closed by trusted request boundary.

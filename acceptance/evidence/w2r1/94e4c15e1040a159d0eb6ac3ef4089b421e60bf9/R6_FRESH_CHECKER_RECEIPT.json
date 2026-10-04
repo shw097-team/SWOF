@@ -1,0 +1,14 @@
+{
+  "schema": "SWOF-W2-R6-FRESH-CHECKER-RECEIPT/1",
+  "checker_identity": "deleg_f3a757d7",
+  "checker_ne_maker": true,
+  "checker_read_only": true,
+  "subject_source_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9",
+  "product_verdict": "PASS",
+  "governance_verdict": "PASS",
+  "wave_verdict": "PASS",
+  "blocking_findings": [],
+  "transcript_sha256": "429e6031d61bdcad512be8e0ae11274fecb0ffe967c43d03bfce282d4b0b95cf",
+  "transcript_bytes": 34511,
+  "generated_at": "2026-10-04T16:40:41+00:00"
+}

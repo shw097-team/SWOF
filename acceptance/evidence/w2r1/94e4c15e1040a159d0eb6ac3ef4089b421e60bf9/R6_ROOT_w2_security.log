@@ -1,0 +1,16 @@
+# command : C:\Users\user\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe -m unittest discover -s src/security/tests -t src/security/tests
+# cwd     : C:/Projects/Agent_Workspace/SWOF/.w2r6-worktree
+# git HEAD: 94e4c15e1040a159d0eb6ac3ef4089b421e60bf9
+# branch  : wo/swof-w2-closure-r6
+# python  : C:\Users\user\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe
+# phase   : w2_candidate_w2r6
+# started : 2026-10-04T16:36:03Z
+# duration: 0.302s
+# exit_code: 0
+------------------------------------------------------------------------------
+
+.....................................................................................................................................................................................................................................................................................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 421 tests in 0.118s
+
+OK

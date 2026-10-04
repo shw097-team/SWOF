@@ -1,0 +1,71 @@
+{
+  "schema": "SWOF_W2_R6_EVIDENCE_RETURN_PACK/1",
+  "repair_id": "SWOF-W2-CLOSURE-R6",
+  "source_candidate_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9",
+  "parent_evidence_sha": "a6ee9b5ce8b0b0905be4952c32b2ddd747929c25",
+  "evidence_commit_sha": "PREPUBLICATION / assigned by publication receipt",
+  "artifacts": [
+    {
+      "path": "R6_POLICY_TRUST_ADJUDICATION.json",
+      "sha256": "7ca9649aec8e708fef5fd13bb7b96c16316231bea5d55b891822d0c6c0a337e9",
+      "bytes": 4462
+    },
+    {
+      "path": "R6_RAW_ADJUDICATION_TRANSCRIPT.log",
+      "sha256": "ee60ff08fc28d070847325821636ea43ce6f2ea1832021becd9836a4e7d58221",
+      "bytes": 1074
+    },
+    {
+      "path": "R6_RAW_FOCUSED_PROBES.log",
+      "sha256": "3cbc1dfa5343172d18cd86cdad82d4527b39aad9c28cfeb18aecaa5851c418aa",
+      "bytes": 3291
+    },
+    {
+      "path": "R6_FULL_REGRESSION_INDEX.json",
+      "sha256": "e803700ec5f01e811e3c65cdb4f8ab9de1cb183074c1022556fa39af00a45b42",
+      "bytes": 5002
+    },
+    {
+      "path": "R6_FRESH_CHECKER_TRANSCRIPT.log",
+      "sha256": "429e6031d61bdcad512be8e0ae11274fecb0ffe967c43d03bfce282d4b0b95cf",
+      "bytes": 34511
+    },
+    {
+      "path": "R6_FRESH_CHECKER_FINDINGS.json",
+      "sha256": "d751c8e54b4f00d0aa48140b2ec35b9fc50d26952f7b66bb03c62330000fd4a0",
+      "bytes": 1769
+    },
+    {
+      "path": "R6_FRESH_CHECKER_RECEIPT.json",
+      "sha256": "77b595075cb21249295a5033543b22ef79ca39f7d234d87f684353585c82ec88",
+      "bytes": 511
+    },
+    {
+      "path": "R6_W2_NORMATIVE_CLOSURE_PROJECTION.json",
+      "sha256": "366bf0228c0d09f44d0e3189d531293ea6a7321c26a4357fb6ed6bf5af232723",
+      "bytes": 2970
+    },
+    {
+      "path": "R6_COMPILER_RECEIPT.json",
+      "sha256": "78a4e80f16c596eb7e900c7bc710f110ecac32cbd4f4a8e8274a8078ad883b2f",
+      "bytes": 748
+    },
+    {
+      "path": "R6_COMPILED_THIN_PROMPT.md",
+      "sha256": "70929a06be8b5d73147e399866463853ef9f17993412e2699674f1d0745e864e",
+      "bytes": 10623
+    },
+    {
+      "path": "R6_EVIDENCE_MANIFEST.json",
+      "sha256": "3608f54b679ada3b3fd5b8cbb15ef306869ba8491ee0e1134b998d6bb1887da0",
+      "bytes": 9274
+    },
+    {
+      "path": "SWOF_W2_R6_FINAL_EVIDENCE_DOSSIER.md",
+      "sha256": "3b9318c9377438bff7018c5cc73157e052121489c39d29d54ac9a7be400f82a3",
+      "bytes": 3844
+    }
+  ],
+  "manifest_sha256": "053c58d971cf6cf566dfed3e8e6c4ab740064aa1089ff8382e19f34b6a4d66e8",
+  "generated_at": "2026-10-04T16:42:11+00:00"
+}

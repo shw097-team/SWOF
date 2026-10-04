@@ -1,0 +1,244 @@
+{
+  "schema": "SWOF-W2-R6-EVIDENCE-MANIFEST/1",
+  "repair_id": "SWOF-W2-CLOSURE-R6",
+  "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9",
+  "parent_evidence_sha": "a6ee9b5ce8b0b0905be4952c32b2ddd747929c25",
+  "item_count": 26,
+  "items": [
+    {
+      "relative_path": "R6_COMPILED/compiler-receipt.json",
+      "kind": "artifact",
+      "sha256": "ea2c1352979ac905f56fc4850f1899280fcda0860ebac572fedea5f45aa24bc6",
+      "bytes": 545,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_COMPILED/compiler-report.json",
+      "kind": "artifact",
+      "sha256": "977177c4cd72fb0feb8a3ac025a738fb8124c2321dd2932c3679fa4ae4ea6954",
+      "bytes": 227,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_COMPILED/thin-prompt.md",
+      "kind": "artifact",
+      "sha256": "70929a06be8b5d73147e399866463853ef9f17993412e2699674f1d0745e864e",
+      "bytes": 10623,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_COMPILED_THIN_PROMPT.md",
+      "kind": "compiled_prompt",
+      "sha256": "70929a06be8b5d73147e399866463853ef9f17993412e2699674f1d0745e864e",
+      "bytes": 10623,
+      "producer": "compiler",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_COMPILER_RECEIPT.json",
+      "kind": "compiler_receipt",
+      "sha256": "78a4e80f16c596eb7e900c7bc710f110ecac32cbd4f4a8e8274a8078ad883b2f",
+      "bytes": 748,
+      "producer": "compiler",
+      "raw_vs_summary": "summary",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_EVIDENCE_MANIFEST.json",
+      "kind": "manifest",
+      "sha256": "51c69e8ed03f767ef50de90de723af986377b44a550b74ddfc89f0932966c7c9",
+      "bytes": 8569,
+      "producer": "hermes-maker",
+      "raw_vs_summary": "summary",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_FRESH_CHECKER_FINDINGS.json",
+      "kind": "checker_findings",
+      "sha256": "d751c8e54b4f00d0aa48140b2ec35b9fc50d26952f7b66bb03c62330000fd4a0",
+      "bytes": 1769,
+      "producer": "hermes-checker",
+      "raw_vs_summary": "summary",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_FRESH_CHECKER_RECEIPT.json",
+      "kind": "checker_receipt",
+      "sha256": "77b595075cb21249295a5033543b22ef79ca39f7d234d87f684353585c82ec88",
+      "bytes": 511,
+      "producer": "hermes-checker",
+      "raw_vs_summary": "summary",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_FRESH_CHECKER_TRANSCRIPT.log",
+      "kind": "checker_transcript",
+      "sha256": "429e6031d61bdcad512be8e0ae11274fecb0ffe967c43d03bfce282d4b0b95cf",
+      "bytes": 34511,
+      "producer": "hermes-checker",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_FULL_REGRESSION_INDEX.json",
+      "kind": "regression_index",
+      "sha256": "e803700ec5f01e811e3c65cdb4f8ab9de1cb183074c1022556fa39af00a45b42",
+      "bytes": 5002,
+      "producer": "hermes-maker",
+      "raw_vs_summary": "summary",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_POLICY_TRUST_ADJUDICATION.json",
+      "kind": "adjudication",
+      "sha256": "7ca9649aec8e708fef5fd13bb7b96c16316231bea5d55b891822d0c6c0a337e9",
+      "bytes": 4462,
+      "producer": "hermes-maker",
+      "raw_vs_summary": "summary",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_RAW_ADJUDICATION_TRANSCRIPT.log",
+      "kind": "raw_transcript",
+      "sha256": "ee60ff08fc28d070847325821636ea43ce6f2ea1832021becd9836a4e7d58221",
+      "bytes": 1074,
+      "producer": "hermes-maker",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_RAW_FOCUSED_PROBES.log",
+      "kind": "raw_probes",
+      "sha256": "3cbc1dfa5343172d18cd86cdad82d4527b39aad9c28cfeb18aecaa5851c418aa",
+      "bytes": 3291,
+      "producer": "hermes-maker",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_ROOT_w1_admission.log",
+      "kind": "artifact",
+      "sha256": "9bed75a79e0638b387f92a700f8af7486bf261517852066a35d4607fb9e6b369",
+      "bytes": 691,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_ROOT_w1_capability.log",
+      "kind": "artifact",
+      "sha256": "48276cec75048e4edf66a3bc57fa10b8a74e319c411e740cd5f1b80ee07ffe85",
+      "bytes": 698,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_ROOT_w1_fabric.log",
+      "kind": "artifact",
+      "sha256": "d4839154aaf4a37ef722ed6c929bf45ecada0e023ee12dfe159bd72df877b7a3",
+      "bytes": 689,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_ROOT_w1_knowledge.log",
+      "kind": "artifact",
+      "sha256": "0ccc5b66ca45811bf723c05889a95919068d360dbfbcd7dbb14005aabfb980b4",
+      "bytes": 699,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_ROOT_w1_profile.log",
+      "kind": "artifact",
+      "sha256": "f13973a1e0f8f39d7786a20e016fe2e348abc2f3e4e03c1bc65e947e57080a85",
+      "bytes": 682,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_ROOT_w1_tests.log",
+      "kind": "artifact",
+      "sha256": "9dbb2269c9149a03c9db926337e0157e8ccf13e470d01ed2e79ce729decaa3da",
+      "bytes": 658,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_ROOT_w2_assurance.log",
+      "kind": "artifact",
+      "sha256": "e240a6458e27c6d8a86630c32819ae2e38ccaa3f0bb15c54af068cd179b39cc8",
+      "bytes": 819,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_ROOT_w2_effect.log",
+      "kind": "artifact",
+      "sha256": "8c7a80bac7dce01bb3c0ef35be0e880fa62fa44819fc62ec6dc9d233023bc9b8",
+      "bytes": 785,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_ROOT_w2_observability.log",
+      "kind": "artifact",
+      "sha256": "d11781b1c96f858514b71c30d5215ab2c6a606c2535b3ddf055512fee1fd849f",
+      "bytes": 785,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_ROOT_w2_security.log",
+      "kind": "artifact",
+      "sha256": "1201cd0cd81c7994b7c0b0c77f22a671f206ec91ac4115a7b6d59c8e211e9434",
+      "bytes": 1094,
+      "producer": "hermes",
+      "raw_vs_summary": "raw",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "R6_W2_NORMATIVE_CLOSURE_PROJECTION.json",
+      "kind": "hgk_closure_projection",
+      "sha256": "366bf0228c0d09f44d0e3189d531293ea6a7321c26a4357fb6ed6bf5af232723",
+      "bytes": 2970,
+      "producer": "hermes-maker",
+      "raw_vs_summary": "summary",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "SWOF_W2_R6_EVIDENCE_RETURN_PACK.json",
+      "kind": "return_pack",
+      "sha256": "053e2f7f1d848c0da500de5dcd1f6cbec35a93e2626f5ae107a8f8846efe879e",
+      "bytes": 2512,
+      "producer": "hermes-packer",
+      "raw_vs_summary": "summary",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    },
+    {
+      "relative_path": "SWOF_W2_R6_FINAL_EVIDENCE_DOSSIER.md",
+      "kind": "dossier",
+      "sha256": "3b9318c9377438bff7018c5cc73157e052121489c39d29d54ac9a7be400f82a3",
+      "bytes": 3844,
+      "producer": "hermes-maker",
+      "raw_vs_summary": "summary",
+      "source_subject_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9"
+    }
+  ],
+  "generated_at": "2026-10-04T16:42:11+00:00"
+}

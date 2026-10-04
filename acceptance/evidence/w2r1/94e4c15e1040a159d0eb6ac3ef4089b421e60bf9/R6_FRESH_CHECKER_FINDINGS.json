@@ -1,0 +1,46 @@
+{
+  "schema": "SWOF-W2-R6-FRESH-CHECKER-FINDINGS/1",
+  "checker_identity": "fresh-context-VERIFY_ONLY-readonly deleg_f3a757d7 sa-0-4426308c",
+  "checker_ne_maker": true,
+  "checker_read_only": true,
+  "subject_source_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9",
+  "product_verdict": "PASS",
+  "governance_verdict": "PASS",
+  "wave_verdict": "PASS",
+  "confirmed_defects": [],
+  "evidence_gaps_nonblocking": [
+    {
+      "id": "EG-R6-CHECKER-001",
+      "note": "checker looked for R6_POLICY_TRUST_ADJUDICATION.json; the R6-binding adjudication artifact is R6_RAW_ADJUDICATION_TRANSCRIPT.log (carries exact R6 sha) plus R6_POLICY_TRUST_ADJUDICATION.json in the maker evidence tree; prelim JSON in worktree acceptance/ predates repair.",
+      "blocking": false
+    }
+  ],
+  "independent_checks": [
+    {
+      "check": "ApprovaptRequest public export + verify seam",
+      "result": "confirmed"
+    },
+    {
+      "check": "R5 downgrade reproduction (caller AAC2 accepted pre-fix)",
+      "result": "confirmed closed by R6"
+    },
+    {
+      "check": "R6 downgrade refused",
+      "result": "DENY_REQUEST_POLICY_MISMATCH observed"
+    },
+    {
+      "check": "gateway path refuses downgrade",
+      "result": "DENY_REQUEST_POLICY_MISMATCH at gateway"
+    },
+    {
+      "check": "full roots independently reproduced",
+      "result": "w1=113 w2=783 grand=896 all OK zero-denominator=0"
+    },
+    {
+      "check": "changeset confined to 3 files",
+      "result": "humangate.py + 2 test files; no second engine, no global upgrade"
+    }
+  ],
+  "note": "PASS verdicts corroborated from source+execution in raw transcript; full report text arrives via delegation message.",
+  "generated_at": "2026-10-04T16:40:41+00:00"
+}

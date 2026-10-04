@@ -1,0 +1,26 @@
+# command : "C:/Projects/Agent_Workspace/HG-KSEOS/.venv/Scripts/python.exe" -m unittest src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary -v
+# cwd     : C:/Projects/Agent_Workspace/SWOF/.w2r6-worktree
+# git HEAD: 94e4c15e1040a159d0eb6ac3ef4089b421e60bf9
+# phase   : w2_candidate_w2r6_focused
+# started : 2026-10-04T16:36:11Z
+# duration: 0.469s
+# exit_code: 0
+------------------------------------------------------------------------------
+test_a10_stale_or_superseded_trusted_request_is_denied (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a10_stale_or_superseded_trusted_request_is_denied) ... ok
+test_a11_local_adapter_missing_floor_remains_deny_authn (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a11_local_adapter_missing_floor_remains_deny_authn) ... ok
+test_a12_exact_trusted_request_with_valid_decision_and_token_is_approved (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a12_exact_trusted_request_with_valid_decision_and_token_is_approved) ... ok
+test_a13_exact_floors_remain_exact_on_a_benign_request (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a13_exact_floors_remain_exact_on_a_benign_request) ... ok
+test_a1_trusted_critical_aac3_caller_clone_aac2_is_policy_mismatch (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a1_trusted_critical_aac3_caller_clone_aac2_is_policy_mismatch) ... ok
+test_a2_trusted_p4_aac3_caller_clone_aac2_is_policy_mismatch (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a2_trusted_p4_aac3_caller_clone_aac2_is_policy_mismatch) ... ok
+test_a3_trusted_protected_p5_aac3_caller_clone_aac2_is_policy_mismatch (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a3_trusted_protected_p5_aac3_caller_clone_aac2_is_policy_mismatch) ... ok
+test_a4_caller_lowers_effect_risk_tier_is_policy_mismatch (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a4_caller_lowers_effect_risk_tier_is_policy_mismatch) ... ok
+test_a5_caller_lowers_permission_class_is_policy_mismatch (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a5_caller_lowers_permission_class_is_policy_mismatch) ... ok
+test_a6_caller_lowers_autonomy_tier_is_policy_mismatch (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a6_caller_lowers_autonomy_tier_is_policy_mismatch) ... ok
+test_a7_caller_lowers_required_authority_is_policy_mismatch (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a7_caller_lowers_required_authority_is_policy_mismatch) ... ok
+test_a8_missing_trusted_request_resolver_is_deny_request_unresolved (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a8_missing_trusted_request_resolver_is_deny_request_unresolved) ... ok
+test_a9_trusted_request_not_found_is_deny_request_unresolved (src.security.tests.test_humangate_currentness.TestR6TrustedRequestBoundary.test_a9_trusted_request_not_found_is_deny_request_unresolved) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.012s
+
+OK
