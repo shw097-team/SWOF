@@ -1,0 +1,93 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/capability/named_consumption.schema.json",
+ "title": "SWOF-NAMED-CAPABILITY-CONSUMPTION/1",
+ "description": "W1 named-capability consumption receipt. Encodes R2-002: the canonical source-side Pre-Implementation disposition and the current execution disposition are independent axes. An execution label is never a valid source disposition.",
+ "type": "object",
+ "required": ["schema", "workorder_id", "source_candidate_sha", "rows", "counts"],
+ "additionalProperties": true,
+ "properties": {
+  "schema": {"const": "SWOF-NAMED-CAPABILITY-CONSUMPTION/1"},
+  "workorder_id": {"type": "string", "minLength": 1},
+  "source_candidate_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+  "build_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+  "rows": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "type": "object",
+    "required": ["row_id", "family", "source_locator", "source_disposition",
+                 "canonical_source_text", "disposition_evidence", "execution_disposition"],
+    "additionalProperties": true,
+    "properties": {
+     "row_id": {"type": "string", "minLength": 1},
+     "family": {"enum": ["capability", "workflow"]},
+     "source_locator": {"type": "string", "minLength": 1},
+
+     "source_disposition": {
+      "description": "Axis A - canonical source-side Pre-Implementation terminal disposition, copied verbatim. Never an execution-axis label.",
+      "not": {"enum": ["CONSUMED_ACTIVE", "CONSUMED_INACTIVE", "NOT_ACTIVE_WITH_REASON", "DEFERRED"]},
+      "anyOf": [
+       {"enum": ["SELECTED_FOR_PREDEV",
+                 "ADOPT_WITH_ADAPTER",
+                 "ADOPT_WITH_ADAPTER_CONDITIONAL_ON_DOC09",
+                 "REJECTED_FOR_PRIMARY_POLICY_SLOT",
+                 "REUSE_AS_REFERENCE",
+                 "TEMP_CLOSED_PREDEV_EXACT_SERVER_PIN",
+                 "SELECTED_FOR_PREDEV_QUALIFICATION",
+                 "CONSTRUCTION_ONLY",
+                 "TRANSLATE",
+                 "REFERENCE_ONLY",
+                 "METHOD_DONOR_ONLY",
+                 "SECURITY_SUPPORT_ONLY",
+                 "QUARANTINE/EVAL_ONLY",
+                 "REJECT"]},
+       {"pattern": "^TEMP_CLOSED_"}
+      ]
+     },
+
+     "disposition_evidence": {
+      "description": "SOURCE_VERBATIM: the token appears in the quoted source line. ASSIGNED_TERMINAL_SET: the source states no disposition for this row, so a terminal-set token is assigned.",
+      "enum": ["SOURCE_VERBATIM", "ASSIGNED_TERMINAL_SET"]
+     },
+     "canonical_source_text": {"type": "string", "minLength": 1},
+
+     "execution_disposition": {
+      "description": "Axis B - current W1 execution state. Independent of, and never rewriting, Axis A.",
+      "enum": ["CONSUMED_ACTIVE", "CONSUMED_INACTIVE", "NOT_ACTIVE_WITH_REASON", "DEFERRED"]
+     },
+     "consumer": {"type": "string"},
+     "readback_proof": {"type": "string"},
+     "not_active_reason": {"type": "string"},
+     "fallback_ref": {"type": "string"},
+     "provider_off_ref": {"type": "string"}
+    },
+    "allOf": [
+     {"if": {"properties": {"execution_disposition": {"const": "CONSUMED_ACTIVE"}}, "required": ["execution_disposition"]},
+      "then": {"properties": {"consumer": {"minLength": 1}, "readback_proof": {"minLength": 1}}}},
+     {"if": {"properties": {"execution_disposition": {"const": "NOT_ACTIVE_WITH_REASON"}}, "required": ["execution_disposition"]},
+      "then": {"properties": {"not_active_reason": {"minLength": 1}}}},
+     {"if": {"properties": {"disposition_evidence": {"const": "ASSIGNED_TERMINAL_SET"}}, "required": ["disposition_evidence"]},
+      "then": {"properties": {"source_disposition": {"enum": ["SELECTED_FOR_PREDEV_QUALIFICATION",
+                                                              "CONSTRUCTION_ONLY", "TRANSLATE",
+                                                              "REFERENCE_ONLY", "METHOD_DONOR_ONLY",
+                                                              "SECURITY_SUPPORT_ONLY",
+                                                              "QUARANTINE/EVAL_ONLY", "REJECT"]}}}}
+    ]
+   }
+  },
+  "counts": {
+   "type": "object",
+   "required": ["total", "unconsumed"],
+   "properties": {
+    "total": {"type": "integer", "minimum": 1},
+    "consumed_active": {"type": "integer", "minimum": 0},
+    "consumed_inactive": {"type": "integer", "minimum": 0},
+    "not_active_with_reason": {"type": "integer", "minimum": 0},
+    "deferred": {"type": "integer", "minimum": 0},
+    "unconsumed": {"const": 0},
+    "distinct_source_dispositions": {"type": "integer", "minimum": 1}
+   }
+  }
+ }
+}

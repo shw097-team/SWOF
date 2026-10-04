@@ -1,0 +1,140 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/effect/effect_record.schema.json",
+ "title": "EffectRecord - effect / observation / reconciliation record (fail-closed)",
+ "description": "Shape of an effect record. Decision law enforced in src/effect/state.py and src/effect/substrate.py and NOT expressible here: a provider response is an OBSERVATION and never world-state truth, OBSERVED -> RECONCILED is not a legal transition (OBSERVED -> READBACK -> RECONCILED is the only route to truth), a stale or ambiguous readback fails closed into UNKNOWN_EFFECT, and provider_success true does not imply RECONCILED. This schema is closed: unknown properties are rejected.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "effect_id",
+  "subject_id",
+  "state",
+  "intent_digest",
+  "environment"
+ ],
+ "properties": {
+  "effect_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "subject_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "state": {
+   "enum": [
+    "INTENDED",
+    "ATTEMPTED",
+    "OBSERVED",
+    "READBACK",
+    "RECONCILED",
+    "UNKNOWN_EFFECT",
+    "PARTIAL_EFFECT",
+    "DENIED",
+    "FAILED",
+    "COMPENSATED",
+    "IRREVERSIBLE"
+   ]
+  },
+  "intent_digest": {
+   "type": "string",
+   "minLength": 1
+  },
+  "environment": {
+   "type": "string",
+   "minLength": 1
+  },
+  "intent": {},
+  "attempts": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "actor",
+     "attempt_key",
+     "at"
+    ],
+    "properties": {
+     "actor": {
+      "type": "string"
+     },
+     "attempt_key": {
+      "type": "string",
+      "minLength": 1
+     },
+     "at": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "observations": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "payload",
+     "provider_success",
+     "at"
+    ],
+    "properties": {
+     "payload": {},
+     "provider_success": {
+      "type": [
+       "boolean",
+       "null"
+      ],
+      "description": "The provider's own claim. True does NOT mean RECONCILED."
+     },
+     "at": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "readbacks": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "payload",
+     "matches_expected",
+     "at",
+     "stale"
+    ],
+    "properties": {
+     "payload": {},
+     "matches_expected": {
+      "type": [
+       "boolean",
+       "null"
+      ],
+      "description": "null means ambiguous; anything but true fails closed."
+     },
+     "at": {
+      "type": "string"
+     },
+     "stale": {
+      "type": "boolean",
+      "description": "A stale readback cannot reach RECONCILED."
+     }
+    }
+   }
+  },
+  "provider_success": {
+   "type": [
+    "boolean",
+    "null"
+   ]
+  },
+  "reason_code": {
+   "type": "string"
+  },
+  "correlation_id": {
+   "type": "string"
+  }
+ }
+}
