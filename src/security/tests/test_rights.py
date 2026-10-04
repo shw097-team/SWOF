@@ -122,6 +122,7 @@ def _release_request(**overrides):
         purpose_ref="purpose:release", scope=("release",), data_class="INTERNAL",
         effect_digest=DIGEST, consumer_audience_hash=DIGEST, effect_risk_tier="LOW",
         permission_class="P2", autonomy_tier="T2", required_authority="HA3",
+        required_authn_assurance="AAC2", adapter_kind="canonical",
         rollback_ref="rollback:1", independent_checker_required=False, ruin_class="NONE",
         request_id="req-1", decision_id="dec-1", decision_basis_hash=R007_DECISION_BASIS,
         generation_bundle_digest=DIGEST, rollback_digest=DIGEST,
@@ -657,6 +658,44 @@ class TestCanonicalOperationAxisR6(unittest.TestCase):
                 shim = human_gate_route(operation)
                 self.assertEqual(shim.route, RUIN_SAFE_STOP_ROUTE)
                 self.assertTrue(shim.required)
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R008 (R4): the HumanGate seam is policy-bound to the REQUEST authn floor. The request
+# carries `required_authn_assurance` (DOC-03 14.R / 15.2, AAC1|AAC2|AAC3) and a MISSING floor fails
+# closed through the SAME gated seam - a bare default is never a proxy for a policy floor.
+# ---------------------------------------------------------------------------------------------
+class TestPolicyBoundAuthnFloorAtSeamR008(unittest.TestCase):
+
+    def _seam(self, request):
+        route = human_gate_required(request)
+        return assert_human_gate_satisfied(
+            route, _valid_token(), requesting_actor="human:dave", request=request,
+            ctx=_release_ctx())
+
+    def test_r008_exact_floor_aac2_request_passes(self):
+        request = _release_request(effect_risk_tier="LOW", permission_class="P3",
+                                   required_authn_assurance="AAC2")
+        self.assertIsNone(self._seam(request))
+
+    def test_r008_missing_request_floor_fails_closed_at_the_seam(self):
+        # Every other axis is satisfiable (LOW/P2, HA3 decision, AAC2 token); only the floor is absent.
+        request = _release_request(effect_risk_tier="LOW", permission_class="P2",
+                                   required_authn_assurance="")
+        original = _valid_token(approval_basis_hash=approval_basis_hash(
+            R007_DECISION_BASIS, DIGEST, DIGEST, DIGEST, DIGEST, "1.0"))
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            assert_human_gate_satisfied(human_gate_required(request), original,
+                                        requesting_actor="human:dave", request=request,
+                                        ctx=_release_ctx())
+        self.assertEqual(str(caught.exception), "DENY_AUTHN")
+
+    def test_r008_canonical_floor_field_is_required_on_gated_requests(self):
+        request = _release_request(effect_risk_tier="LOW", permission_class="P3",
+                                   required_authn_assurance="AAC3")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(request)
+        self.assertEqual(str(caught.exception), "DENY_AUTHN")
 
 
 if __name__ == "__main__":

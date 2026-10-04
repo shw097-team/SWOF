@@ -26,6 +26,36 @@ key_id, key_generation)` returning bytes or a cryptography key, and the verifier
 shape-checked); request->decision->token lineage (`request_id`/`decision_id`) is exact-bound;
 audience, declared generations and the independent-checker flag are mandatory wherever canonical
 says so. RUIN/UNKNOWN_RUIN precedence and the single gate predicate live in `rights.py`.
+
+WO-SWOF-W2-R008 (R4): the trusted-context authn floor is now POLICY-BOUND, not an implementation
+constant. PI06 DOC-03 14.R declares `required_authn_assurance: AAC1 | AAC2 | AAC3` as a REQUIRED
+`HumanGatePolicy` field (15.2 field matrix `required_authn_assurance | AAC1..AAC3 | 1 | Y | policy`)
+and the ApprovalRequirement registry lists it in `required`. The request therefore CARRIES its own
+floor. A gated canonical request with a MISSING or MALFORMED floor CANNOT express AAC2: it FAILS
+CLOSED (`DENY_AUTHN`), because the old hard-coded `_DEFAULT_REQUIRED_AUTHN_ASSURANCE = "AAC2"` made
+a CRITICAL/AAC3 request satisfiable by an AAC2 decision. Request-specific floors are preserved
+exactly (AAC1/AAC2/AAC3) - no global AAC3 force and no renamed default. The token's authn assurance
+must ALSO meet the request floor and must not be weaker than the resolved decision; the verifier
+compares assurance CLASSES exactly and does NOT compare token `approver`/`authority_class` to the
+decision (the canonical source does not define that mirroring - see R008_TECHNICAL_DEBT below).
+
+R008_TECHNICAL_DEBT (W3 preflight TT): the canonical source does NOT define the ApprovalToken
+`approver`/`authority_class` fields as MIRRORS of the current HumanGateDecision. 15.4A "Migration
+alias"/field-governance prose marks approver/authority_class "revoke/downgrade invalid", and
+`ApprovalDecisionBasisV1` (the bound decision digest, 15.3/15.5) already covers the decision's
+approver/authority_class/authn, so a decision-side change invalidates the basis. Adding a token-side
+EQUALITY rule would be invented semantics, so it is NOT added here; it is recorded as a W3 preflight
+TT. The authn ASSURANCE comparison below is different: 15.3 requires
+`authn_assurance_class ... meets request floor`, so the token/decision floor comparison is canonical.
+
+R008 authn-context owner interface: requirement (6) of the WorkOrder asks for
+`TEMP_CLOSED_AUTHN_CONTEXT_OWNER` ONLY "if current authn-context validity is required but no
+qualified owner interface exists". A qualified owner interface DOES exist in this cone and is
+already wired: `ctx.max_reauth_age_seconds` (the owner-supplied freshness deadline),
+`ctx.authn_session_generation` and `ctx.credential_generation` (the owner-supplied CURRENT
+generations), each of which fails closed with DENY_AUTHN / DENY_STALE_GENERATION when unavailable or
+stale. The requirement is therefore satisfied without a second authn registry, and
+`TEMP_CLOSED_AUTHN_CONTEXT_OWNER` is NOT emitted (no qualified owner interface is missing).
 """
 from __future__ import annotations
 
@@ -42,10 +72,10 @@ INTEGRITY_PROFILE_ID = "SWOF-HG-INTEGRITY-001"
 
 TOKEN_STATES = ("ACTIVE", "CONSUMED", "REVOKED", "EXPIRED")
 AUTHN_ASSURANCE_CLASSES = ("AAC1", "AAC2", "AAC3")
-# R007: the trusted-context human-gate authn floor. The canonical ApprovalRequest in this cone does
-# not carry an explicit floor field, so the floor is the canonical multi-factor class AAC2; a
-# decision at a LOWER class fails closed (DENY_AUTHN). No HA/AAC ordering is invented anywhere.
-_DEFAULT_REQUIRED_AUTHN_ASSURANCE = "AAC2"
+# R008: the canonical request-level authn floor domain (PI06 DOC-03 14.R / 15.2, field
+# `required_authn_assurance: AAC1 | AAC2 | AAC3`). There is NO implementation-local default: a
+# missing or malformed request floor FAILS CLOSED. `AUTHN_ASSURANCE_ORDER` is the ONLY ordering this
+# library knows; no HA/AAC ranking is invented anywhere.
 
 # IF-06B ABI/envelope constants (canonical ApprovalToken 1.0.0). The reader ABI is 1.0; a token
 # written for a newer major cannot be read, and an unrecognised writer/compatibility class is a
@@ -485,6 +515,14 @@ class ApprovalRequest:
     permission_class: str | None = None
     autonomy_tier: str | None = None
     required_authority: str = ""
+    # R008: the canonical per-request authn assurance floor (DOC-03 14.R / 15.2). It is REQUIRED on
+    # a gated canonical request: ABSENT ("") is DISTINCT from malformed and BOTH fail closed - the
+    # field is NEVER defaulted. The floor is preserved exactly (AAC1 stays AAC1, ...).
+    required_authn_assurance: str = ""
+    # R008: the EXPLICIT, NAMED non-canonical adapter seam. A canonical request is "canonical" and
+    # MUST carry its own floor; only an explicitly-labelled "local_adapter" request may fall back to
+    # the named local floor, and never to a silent AAC2. An unrecognised kind fails closed.
+    adapter_kind: str = "canonical"
     rollback_ref: str = ""
     independent_checker_required: bool = False
     ruin_class: str = "NONE"
@@ -864,14 +902,37 @@ def _authority_satisfied(ctx, decision, required_authority):
     return (True, "")
 
 
-def _required_authn_floor(request) -> str:
-    """The authn assurance (AAC) floor a decision must meet for this request.
+# R008: the canonical request-level authn-floor adapter kinds. "canonical" is the only kind a
+# canonical `ApprovalRequest` may use; "local_adapter" is the single explicit, named legacy/internal
+# seam whose ONLY effect is to supply a floor a non-canonical request omitted. It can never let a
+# canonical request pass silently, and it is never weaker than the canonical minimum class.
+ADAPTER_KINDS = ("canonical", "local_adapter")
+LOCAL_ADAPTER_AUTHN_FLOOR = "AAC2"
 
-    The canonical ApprovalRequest in this cone carries no explicit floor, so the floor is the
-    canonical trusted-context value `AAC2` (multi-factor): a decision at a LOWER class fails closed.
-    A stricter floor belongs to an owner-injected policy, never to an in-library HA/AAC ranking.
+
+def _required_authn_floor(request):
+    """The EXACT validated authn assurance (AAC) floor this request declares, or None.
+
+    DOC-03 14.R / 15.2 make `required_authn_assurance` a REQUIRED `HumanGatePolicy` field with the
+    domain `AAC1 | AAC2 | AAC3`; the request therefore carries its own floor. This returns the
+    request's own value ONLY when it is a canonical member of that domain. An ABSENT ("", None) or
+    MALFORMED ("AAC9", 2, ...) floor returns None so the caller FAILS CLOSED: the removed
+    `_DEFAULT_REQUIRED_AUTHN_ASSURANCE = "AAC2"` silently satisfied a CRITICAL/AAC3 request with an
+    AAC2 decision, which is exactly the defect R008 removes. Request-specific floors are returned
+    EXACTLY (AAC1 stays AAC1, AAC2 stays AAC2, AAC3 stays AAC3) - never globally forced to AAC3 and
+    never replaced by a renamed default.
+
+    The single NON-CANONICAL exception is a request that EXPLICITLY declares
+    `adapter_kind == "local_adapter"`: an internal/legacy adapter may omit the field and receive the
+    named `LOCAL_ADAPTER_AUTHN_FLOOR`. That seam cannot be reached by a canonical request (default
+    `adapter_kind == "canonical"`), and an unrecognised adapter kind still returns None (fail closed).
     """
-    return _DEFAULT_REQUIRED_AUTHN_ASSURANCE
+    value = getattr(request, "required_authn_assurance", None)
+    if isinstance(value, str) and value in AUTHN_ASSURANCE_CLASSES:
+        return value
+    if getattr(request, "adapter_kind", "canonical") == "local_adapter":
+        return LOCAL_ADAPTER_AUTHN_FLOOR
+    return None
 
 
 def _resolve_public_key(registry, issuer_id, key_id, key_generation):
@@ -1062,13 +1123,28 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
         ctx, decision, request.required_authority)
     if not authority_ok:
         return _deny(authority_code, "authority_class=%r" % decision.authority_class)
+    # R008: the authn floor is the EXACT validated request floor (never an implementation default).
+    # A missing/malformed request floor, an unreadable decision class, an AAC downgrade, OR a token
+    # weaker than either the floor or the resolved decision all FAIL CLOSED with DENY_AUTHN, and this
+    # runs BEFORE the signature check (a signature is not a proxy for a sufficient-authn approval).
+    request_floor = _required_authn_floor(request)
+    request_assurance = AUTHN_ASSURANCE_ORDER.get(request_floor)
+    if request_assurance is None:
+        return _deny("DENY_AUTHN",
+                     "request declares no canonical required_authn_assurance floor")
     decision_assurance = AUTHN_ASSURANCE_ORDER.get(
         getattr(decision, "authn_assurance_class", None))
-    request_assurance = AUTHN_ASSURANCE_ORDER.get(_required_authn_floor(request))
-    if decision_assurance is None or request_assurance is None:
-        return _deny("DENY_AUTHN", "authn assurance floor unavailable")
+    if decision_assurance is None:
+        return _deny("DENY_AUTHN", "decision carries no canonical authn_assurance_class")
     if decision_assurance < request_assurance:
         return _deny("DENY_AUTHN", "decision authn assurance below the request floor")
+    token_assurance = AUTHN_ASSURANCE_ORDER.get(token.authn_assurance_class)
+    if token_assurance is None:
+        return _deny("DENY_AUTHN", "token carries no canonical authn_assurance_class")
+    if token_assurance < request_assurance:
+        return _deny("DENY_AUTHN", "token authn assurance below the request floor")
+    if token_assurance < decision_assurance:
+        return _deny("DENY_AUTHN", "token authn assurance weaker than the resolved decision")
     try:
         recomputed_decision_basis = approval_decision_basis_hash(decision)
     except Exception:

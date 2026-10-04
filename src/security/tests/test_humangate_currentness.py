@@ -19,10 +19,12 @@ sys.path.insert(0, str(ROOT / "src"))
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey  # noqa: E402
 
 from security.humangate import (  # noqa: E402
-    APPROVAL_BASIS_FRAME, APPROVAL_DECISION_BASIS_FIELDS, DECISION_EXECUTABLE_STATES, DOMAIN_FRAME,
-    JCS_PROFILE, ApprovalDecision, ApprovalRequest, ApprovalToken, HumanGateDecision, JCSError,
-    NonceLedger, VerificationContext, approval_basis_hash, approval_decision_basis_hash,
-    canonical_payload_bytes, jcs_dumps, verify_approval_token,
+    ADAPTER_KINDS, APPROVAL_BASIS_FRAME, APPROVAL_DECISION_BASIS_FIELDS, AUTHN_ASSURANCE_CLASSES,
+    AUTHN_ASSURANCE_ORDER, DECISION_EXECUTABLE_STATES, DOMAIN_FRAME, JCS_PROFILE, _CLASS_ABSENT,
+    _CLASS_MALFORMED, _CLASS_VALID, _classify_domain, _required_authn_floor, ApprovalDecision,
+    ApprovalRequest, ApprovalToken, HumanGateDecision, JCSError, NonceLedger, VerificationContext,
+    approval_basis_hash, approval_decision_basis_hash, canonical_payload_bytes, jcs_dumps,
+    verify_approval_token,
 )
 from security.rights import (  # noqa: E402
     EFFECT_RISK_TIERS, HIGH_RISK_ACTIONS, HumanGateBypassAttempt, HumanGateRoute, RightsDenied,
@@ -145,6 +147,7 @@ def _release_request(**overrides):
         purpose_ref="purpose:release", scope=("release",), data_class="INTERNAL",
         effect_digest=DIGEST, consumer_audience_hash=DIGEST, effect_risk_tier="LOW",
         permission_class="P2", autonomy_tier="T2", required_authority="HA3",
+        required_authn_assurance="AAC2", adapter_kind="canonical",
         rollback_ref="rollback:1", independent_checker_required=False, ruin_class="NONE",
         request_id="req-1", decision_id="dec-1", decision_basis_hash=R007_APPROVAL_DECISION_BASIS,
         generation_bundle_digest=DIGEST, rollback_digest=DIGEST,
@@ -1270,6 +1273,193 @@ class TestCanonicalSignedSetsR007(unittest.TestCase):
         self.assertEqual(approval_decision_basis_hash(_current_decision()),
                          R007_APPROVAL_DECISION_BASIS)
 
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R008 (R4). The authn-assurance floor is POLICY-BOUND at the request, not a
+# hard-coded implementation default. Every expected value below is derived from the frozen
+# canonical domain (PI06 DOC-03 14.R / 15.2), NOT from the helper under test.
+# ---------------------------------------------------------------------------------------------
+class TestRequiredAuthnFloorResolutionR008(unittest.TestCase):
+    """The floor RESOLVER returns the EXACT validated request floor - never a default."""
+
+    def test_r008_floor_domain_is_the_canonical_aac_triple(self):
+        self.assertEqual(AUTHN_ASSURANCE_CLASSES, ("AAC1", "AAC2", "AAC3"))
+        self.assertEqual(AUTHN_ASSURANCE_ORDER, {"AAC1": 1, "AAC2": 2, "AAC3": 3})
+        self.assertEqual(ADAPTER_KINDS, ("canonical", "local_adapter"))
+
+    def test_r008_floor_returns_each_canonical_request_value_exactly(self):
+        for floor in ("AAC1", "AAC2", "AAC3"):
+            with self.subTest(floor=floor):
+                self.assertEqual(
+                    _required_authn_floor(_release_request(required_authn_assurance=floor)), floor)
+
+    def test_r008_missing_validated_floor_is_none_not_a_default(self):
+        # The removed constant was AAC2; a MISSING floor must never resolve to it (or any value).
+        for missing in ("", None, "   "):
+            with self.subTest(missing=repr(missing)):
+                self.assertIsNone(
+                    _required_authn_floor(_release_request(required_authn_assurance=missing)))
+
+    def test_r008_malformed_validated_floor_is_none_not_a_default(self):
+        for malformed in ("AAC9", "aac2", 2, ("AAC2",), "AAC2 "):
+            with self.subTest(malformed=repr(malformed)):
+                self.assertIsNone(
+                    _required_authn_floor(_release_request(required_authn_assurance=malformed)))
+
+    def test_r008_floor_classification_distinguishes_absent_valid_and_malformed(self):
+        self.assertEqual(_classify_domain(None, AUTHN_ASSURANCE_CLASSES), (_CLASS_ABSENT, None))
+        self.assertEqual(_classify_domain("AAC2", AUTHN_ASSURANCE_CLASSES),
+                         (_CLASS_VALID, "AAC2"))
+        self.assertEqual(_classify_domain("AAC9", AUTHN_ASSURANCE_CLASSES),
+                         (_CLASS_MALFORMED, "AAC9"))
+
+    def test_r008_explicit_local_adapter_seam_is_named_and_canonical_requests_cannot_reach_it(self):
+        # A canonical request (the default) NEVER falls back; only the explicit, named adapter does.
+        self.assertIsNone(_required_authn_floor(_release_request(
+            required_authn_assurance="", adapter_kind="canonical")))
+        self.assertIsNone(_required_authn_floor(_release_request(
+            required_authn_assurance="", adapter_kind="something-else")))
+        self.assertEqual(
+            _required_authn_floor(_release_request(
+                required_authn_assurance="", adapter_kind="local_adapter")), "AAC2")
+
+
+class TestPolicyBoundAuthnFloorR008(unittest.TestCase):
+    """A1-A10: floor vs decision vs token, holding authority/lineage constant.
+
+    The request fixture always declares `required_authority="HA3"`, the resolved decision carries
+    `authority_class="HA3"` and an EXACT token/decision/request lineage; the resolution sits BEFORE
+    the signature check, so these cases exercise the authn(DECISION)/authn(TOKEN) axes by themselves.
+    """
+
+    def _resolved(self, **decision_overrides):
+        return _decision_registry({"dec-1": _current_decision(**decision_overrides)})
+
+    def test_r008_a1_request_aac1_decision_aac1_may_pass(self):
+        decision = _verify(request_over={"required_authn_assurance": "AAC1"},
+                           token_over={"authn_assurance_class": "AAC1"},
+                           ctx_over={"decision_resolver": self._resolved(
+                               authn_assurance_class="AAC1")})
+        self.assertTrue(decision.ok, decision.code)
+
+    def test_r008_a2_request_aac2_decision_aac1_is_denied(self):
+        decision = _verify(request_over={"required_authn_assurance": "AAC2"},
+                           token_over={"authn_assurance_class": "AAC1"},
+                           ctx_over={"decision_resolver": self._resolved(
+                               authn_assurance_class="AAC1")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_AUTHN"))
+
+    def test_r008_a3_request_aac2_decision_aac2_may_pass(self):
+        decision = _verify(request_over={"required_authn_assurance": "AAC2"},
+                           token_over={"authn_assurance_class": "AAC2"},
+                           ctx_over={"decision_resolver": self._resolved(
+                               authn_assurance_class="AAC2")})
+        self.assertTrue(decision.ok, decision.code)
+
+    def test_r008_a4_request_aac3_decision_aac2_is_denied(self):
+        decision = _verify(request_over={"required_authn_assurance": "AAC3"},
+                           token_over={"authn_assurance_class": "AAC2"},
+                           ctx_over={"decision_resolver": self._resolved(
+                               authn_assurance_class="AAC2")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_AUTHN"))
+
+    def test_r008_a5_request_aac3_decision_aac3_may_pass(self):
+        decision = _verify(request_over={"required_authn_assurance": "AAC3"},
+                           token_over={"authn_assurance_class": "AAC3"},
+                           ctx_over={"decision_resolver": self._resolved(
+                               authn_assurance_class="AAC3")})
+        self.assertTrue(decision.ok, decision.code)
+
+    def test_r008_a6_missing_request_floor_fails_closed_never_implicit_aac2(self):
+        # The decision and token are BOTH AAC2 - exactly what the removed default demanded - so an
+        # implicit AAC2 would let this pass. It must be DENY_AUTHN instead.
+        for missing in ("", None):
+            with self.subTest(missing=repr(missing)):
+                decision = _verify(request_over={"required_authn_assurance": missing},
+                                   token_over={"authn_assurance_class": "AAC2"},
+                                   ctx_over={"decision_resolver": self._resolved(
+                                       authn_assurance_class="AAC2")})
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_AUTHN"))
+
+    def test_r008_a7_malformed_or_unknown_floor_is_denied(self):
+        for malformed in ("AAC9", "aac2", "AAC0", 2):
+            with self.subTest(malformed=repr(malformed)):
+                decision = _verify(request_over={"required_authn_assurance": malformed},
+                                   ctx_over={"decision_resolver": self._resolved(
+                                       authn_assurance_class="AAC3")})
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_AUTHN"))
+
+    def test_r008_a8_critical_request_aac3_decision_and_token_aac2_is_denied(self):
+        request = _verify(request_over={"effect_risk_tier": "CRITICAL",
+                                        "required_authn_assurance": "AAC3"},
+                          token_over={"authn_assurance_class": "AAC2"},
+                          ctx_over={"decision_resolver": self._resolved(
+                              authn_assurance_class="AAC2")})
+        self.assertEqual((request.ok, request.code), (False, "DENY_AUTHN"))
+
+    def test_r008_a9_critical_request_aac3_decision_and_token_aac3_proceeds(self):
+        decision = _verify(request_over={"effect_risk_tier": "CRITICAL",
+                                         "required_authn_assurance": "AAC3"},
+                           token_over={"authn_assurance_class": "AAC3"},
+                           ctx_over={"decision_resolver": self._resolved(
+                               authn_assurance_class="AAC3")})
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+    def test_r008_a10_sufficient_authority_does_not_compensate_for_weak_authn(self):
+        # A top-of-domain HA5 decision still cannot rescue an AAC downgrade: the axes are independent.
+        decision = _verify(request_over={"required_authority": "HA5",
+                                         "required_authn_assurance": "AAC3"},
+                           token_over={"authn_assurance_class": "AAC2"},
+                           ctx_over={"decision_resolver": self._resolved(
+                               authority_class="HA5", authn_assurance_class="AAC2")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_AUTHN"))
+
+
+class TestTokenAndDecisionAuthnFloorR008(unittest.TestCase):
+    """B1-B7: the signed token and the owner-resolved decision must each meet the request floor."""
+
+    def _resolved(self, **decision_overrides):
+        return _decision_registry({"dec-1": _current_decision(**decision_overrides)})
+
+    def test_r008_b1_decision_meets_floor_but_token_below_floor_is_denied(self):
+        decision = _verify(request_over={"required_authn_assurance": "AAC2"},
+                           token_over={"authn_assurance_class": "AAC1"},
+                           ctx_over={"decision_resolver": self._resolved(
+                               authn_assurance_class="AAC2")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_AUTHN"))
+
+    def test_r008_b2_token_meets_floor_but_decision_below_floor_is_denied(self):
+        decision = _verify(request_over={"required_authn_assurance": "AAC2"},
+                           token_over={"authn_assurance_class": "AAC2"},
+                           ctx_over={"decision_resolver": self._resolved(
+                               authn_assurance_class="AAC1")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_AUTHN"))
+
+    def test_r008_b3_both_meet_the_exact_request_floor_an_aac1_request_proceeds(self):
+        # An AAC1 request is NOT force-upgraded to AAC3: the exact floor AAC1 is satisfiable.
+        decision = _verify(request_over={"required_authn_assurance": "AAC1"},
+                           token_over={"authn_assurance_class": "AAC1"},
+                           ctx_over={"decision_resolver": self._resolved(
+                               authn_assurance_class="AAC1")})
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+    def test_r008_b4_absent_decision_resolver_is_deny_decision_unresolved(self):
+        decision = _verify(ctx_over={"decision_resolver": None})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_DECISION_UNRESOLVED"))
+
+    def test_r008_b5_absent_authority_policy_is_temp_closed(self):
+        decision = _verify(ctx_over={"authority_policy": None})
+        self.assertEqual((decision.ok, decision.code), (False, "TEMP_CLOSED_AUTHORITY_RESOLUTION"))
+
+    def test_r008_b6_valid_signature_with_insufficient_authority_is_denied(self):
+        # The token IS genuinely signed over the framed canonical bytes; authority still refuses it.
+        decision = _verify(ctx_over={"decision_resolver": self._resolved(authority_class="HA1")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_INSUFFICIENT_AUTHORITY"))
+
+    def test_r008_b7_decision_bound_to_another_request_is_denied(self):
+        decision = _verify(ctx_over={"decision_resolver": self._resolved(request_id="req-other")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_DECISION_REQUEST_MISMATCH"))
 
 
 if __name__ == "__main__":
