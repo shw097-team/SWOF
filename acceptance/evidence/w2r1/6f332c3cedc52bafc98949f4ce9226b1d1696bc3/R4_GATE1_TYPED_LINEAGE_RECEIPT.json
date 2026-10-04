@@ -25,7 +25,7 @@
  "gate8_lifecycle_points_to_final_checkpoint": true,
  "assertion": "lifecycle.last_checkpoint_id == the final source-bound checkpoint",
  "note": "the spine is the authority for this assertion; the receipt is generated after the projection so it cannot name a checkpoint the next projection replaces",
- "requirements": [
+ "requirements_project_scoped": [
   [
    "REQ-HGK-SWOF-W2R2-001",
    "FROZEN"
@@ -55,7 +55,7 @@
    "FROZEN"
   ]
  ],
- "taskspecs": [
+ "taskspecs_all_rows": [
   [
    "TS-REQ-HGK-SWOF-W2R2-001"
   ],
@@ -90,7 +90,7 @@
    "TS-WO-SWOF-W2-004"
   ]
  ],
- "workorders": [
+ "workorders_all_rows": [
   [
    "WO-REQ-HGK-SWOF-W2R2-001"
   ],
@@ -125,7 +125,7 @@
    "WO-SWOF-W2-004"
   ]
  ],
- "acceptances": [
+ "acceptances_all_rows": [
   [
    "ACC-REQ-HGK-SWOF-W2R2-001",
    "PASS"
@@ -171,8 +171,9 @@
    "PASS"
   ]
  ],
- "requirement_count": 7,
- "taskspec_count": 11,
- "workorder_count": 11,
- "acceptance_count": 11
+ "counts_note": "requirements_project_scoped is scoped to this project; the taskspec/workorder/acceptance lists are ALL spine rows and therefore include earlier rounds. The scoped denominator for this repair is denominator_after in the projection.",
+ "requirement_count_project_scoped": 7,
+ "taskspec_count_all_rows": 11,
+ "workorder_count_all_rows": 11,
+ "acceptance_count_all_rows": 11
 }
