@@ -9,7 +9,7 @@
     "source_branch": "wo/swof-w2-closure-r1",
     "source_candidate_sha": "02736d3eeb6156e9763f202fbd63fff430e9eeb7",
     "evidence_branch": "evidence/swof-w2r5-closure-repair",
-    "evidence_commit_sha": "33740fac2958ef56b15e40a6c143a4e713bb7bc0",
+    "evidence_commit_sha": "c93ffceec2f7d7fa76e1c9cd34fe2dab9447bf80",
     "source_ne_evidence": true,
     "checkpoint": "CK-W2-AE96CED0",
     "accepted_w1_source_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
