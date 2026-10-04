@@ -92,5 +92,7 @@
    "nested_head_sha": "b8e62b96463273e3475ff52a7a4a87831816927a",
    "nested_matches_top": false
   }
- ]
+ ],
+ "adjudication_scope": "BASELINE_ONLY_NOT_CURRENT_SUBJECT",
+ "adjudication_note": "This record adjudicates the R4 BASELINE (pre-repair) state. Superseded subject strings it quotes describe the baseline under challenge, NOT this repair subject. It is not a statement about the current final subject."
 }
