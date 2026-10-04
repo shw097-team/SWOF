@@ -1,0 +1,61 @@
+{
+ "schema": "SWOF-W2-R3-FRESH-INDEPENDENT-CHECKER-RECEIPT/1",
+ "checker_identity": "fresh-verify-w2r3-check4-0b8ecb0",
+ "checker_mode": "FRESH_CONTEXT_VERIFY_ONLY",
+ "checker_is_not_maker": true,
+ "checker_read_only": true,
+ "subject": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+ "base": "b8e62b96463273e3475ff52a7a4a87831816927a",
+ "product_verdict": "PASS",
+ "governance_verdict": "PASS",
+ "wave_verdict": "PASS",
+ "blocking_findings": [],
+ "independent_basis_vector_computed": "2a868198e40141f4ccfdcf5767fcb4f5950a3c241fc04b32de7d173cb79e6992",
+ "shipped_basis_function_matches_frozen_formula": true,
+ "old_recipe_rejected": true,
+ "set_permutation_invariant": true,
+ "set_permutation_counterexample": null,
+ "schema_annotations_present": true,
+ "authority_seam_absent_fails_closed": true,
+ "authority_attacks_holds": 14,
+ "retained_invariants": {
+  "p3_floor": "DENY_P3_TOKEN_REQUIRED",
+  "ruin": "HARD_VETO_RUIN",
+  "unknown_ruin": "SAFE_STOP_UNKNOWN_RUIN",
+  "unknown_operation": "RUIN_SAFE_STOP",
+  "low_risk_ungated": true
+ },
+ "regression": {
+  "w1_total": 113,
+  "grand_total": 857,
+  "all_roots_exit_0": true,
+  "roots": {
+   "tests": 16,
+   "src/security/tests": 382,
+   "src/effect/tests": 116,
+   "src/assurance/tests": 144,
+   "src/observability/tests": 102,
+   "src/fabric/tests": 21,
+   "src/knowledge/tests": 25,
+   "src/admission/tests": 17,
+   "src/profile/tests": 12,
+   "src/capability/tests": 22
+  }
+ },
+ "noncanonical_identifiers_in_code": [
+  "TEMP_CLOSED_AUTHORITY_RESOLUTION"
+ ],
+ "non_blocking_findings": [
+  "TEMP_CLOSED_AUTHORITY_RESOLUTION is a maker-defined denial code absent from the canonical source; strictly fail-closed, never authorizes.",
+  "HumanGateDecision.revoked/.superseded are refusal-only currentness booleans read only to deny (DENY_DECISION_NOT_EXECUTABLE), never to grant.",
+  "APPROVAL_DECISION_BASIS_FIELDS (13) omits approver/authn fields the doc never enumerates for ApprovalDecisionBasisV1; interpretation is self-consistent and refusal-safe.",
+  "resource and scope use the same bytewise-UTF8 sort; equivalent within the canonical-ASCII identifier domain; not stress-tested for non-ASCII resource IDs."
+ ],
+ "verdict_basis": "Independent read-only check at frozen 0b8ecb0; §15.5 formula derived from the source text by the checker itself; base defects reproduced live; set permutation sweep byte-identical with no counterexample; 14 authority attacks behaved as required; retained invariants hold; regression 857 with W1 113 preserved.",
+ "raw_transcript": {
+  "path": "checker_live/ROUND4_R3_task-0.log",
+  "sha256": "83eb73292b8a4cba80cce90cc27608e07b05b51c3adb70670f8991d8f018f3c9",
+  "bytes": 42273
+ },
+ "note": "LOCAL/PROJECT independent verification (Gate F). NOT the external challenge verdict."
+}

@@ -1,0 +1,63 @@
+{
+ "schema": "SWOF-W2-R3-BASELINE-ADJUDICATION/1",
+ "baseline_source": "b8e62b96463273e3475ff52a7a4a87831816927a",
+ "method": "independent recomputation from the frozen PI06 formula; no maker helper used for any expected value",
+ "rows": [
+  {
+   "finding": "A",
+   "check": "canonical PI06 direct-concatenation digest",
+   "computed": "2a868198e40141f4ccfdcf5767fcb4f5950a3c241fc04b32de7d173cb79e6992",
+   "report_B_expected": "2a868198e40141f4ccfdcf5767fcb4f5950a3c241fc04b32de7d173cb79e6992",
+   "matches_report_B": true
+  },
+  {
+   "finding": "A",
+   "check": "newline-separated recipe digest",
+   "computed": "b7965468fb4b11f51c44342d8aefe92c2120a8eb5ed648678f3c09d85eb91080",
+   "report_B_claims_impl": "b7965468fb4b11f51c44342d8aefe92c2120a8eb5ed648678f3c09d85eb91080",
+   "matches_report_B": true
+  },
+  {
+   "finding": "A",
+   "check": "the two recipes DIFFER (a real canonical-byte mismatch)",
+   "differ": true
+  },
+  {
+   "finding": "A",
+   "check": "shipped approval_basis_hash uses inter-field newline join",
+   "uses_newline_join": false,
+   "source_head": "def approval_basis_hash(decision_basis_hash, effect_digest, generation_bundle_digest,\n                        rollback_digest, consumer_audience_hash, if06b_version) -> str:\n    \"\"\"SHA-256 hex of b\"SWOF-D03-APPROVAL-BASIS-V1\\\\n\" || the six fields joined in that exact order.\n\n    The six fields are joined with a single newline separator in this order: decision_basis_hash,\n    effect_digest, generation_bundle_digest, rollback_digest, consumer_audience_hash,"
+  },
+  {
+   "finding": "C",
+   "check": "schema declares x-swof-collection-semantics",
+   "occurrences": 0,
+   "array_properties": 2
+  },
+  {
+   "finding": "C",
+   "check": "JCS of two permutations of the same SET differ",
+   "a": "b'{\"resource\":[\"artifact:a\",\"artifact:b\"],\"scope\":[\"scope:a\",\"scope:b\"],\"x\":1}'",
+   "b": "b'{\"resource\":[\"artifact:b\",\"artifact:a\"],\"scope\":[\"scope:b\",\"scope:a\"],\"x\":1}'",
+   "differ": true,
+   "meaning": "the canonical signed bytes are order-dependent => one semantic set has >1 canonical representation"
+  },
+  {
+   "finding": "C",
+   "check": "canonical_payload_bytes normalises resource/scope",
+   "mentions_resource_sort": false,
+   "source_head": "def canonical_payload_bytes(token) -> bytes:\n    \"\"\"The exact bytes a verifier signs/verifies: DOMAIN_FRAME || JCS(token without `signature`).\n\n    These are the bytes the trusted key resolver's Ed25519 public key verifies the signature\n    against. JCS is applied to the token body with the `signature` field removed, and the fixed\n    domain frame is prefixed for domain separation.\n    \"\"\"\n    body = {key: value for key, value in _token_body(token).items() if key != \"signature\"}"
+  },
+  {
+   "finding": "B",
+   "check": "verifier consumes request.required_authority",
+   "occurrences_in_humangate": 1,
+   "human_gate_decision_resolver_present": false
+  },
+  {
+   "finding": "B",
+   "check": "rights.py references required_authority",
+   "occurrences": 0
+  }
+ ]
+}

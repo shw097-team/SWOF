@@ -1,0 +1,297 @@
+{
+ "schema": "SWOF-W2-REPAIR-RC1-RC2-ADJUDICATION/1",
+ "subject_source_sha": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+ "module": "src/security/rights.py",
+ "canonical_law": "PI-PKG-06 exact-bound ApprovalToken + currentness/non-expiry admission semantics",
+ "R-C1_verdict": "PRODUCT_DEFECT_CONFIRMED:F-W2-EXT-001",
+ "R-C2_verdict": "PRODUCT_DEFECT_CONFIRMED:F-W2-EXT-002",
+ "cases": [
+  {
+   "probe": "R-C1.1",
+   "case": "expired entitlement, trusted currentness omitted",
+   "call": "check_rights(expired_scope, 'doc.read')  [now=None]",
+   "canonical_expectation": "DENY (fail closed: expiry exists but cannot be evaluated)",
+   "observed": {
+    "allowed": true,
+    "reason": "ENTITLED"
+   },
+   "verdict": "REPRODUCED_FAIL_OPEN"
+  },
+  {
+   "probe": "R-C1.2",
+   "case": "expired entitlement, currentness supplied and past expiry",
+   "call": "check_rights(expired_scope, 'doc.read', now=NOW_AFTER)",
+   "canonical_expectation": "DENY",
+   "observed": {
+    "allowed": false,
+    "reason": "EXPIRED"
+   },
+   "verdict": "NOT_REPRODUCED"
+  },
+  {
+   "probe": "R-C1.3",
+   "case": "boundary now == expiry",
+   "call": "check_rights(expired_scope, 'doc.read', now=EXACT_EXPIRY)",
+   "canonical_expectation": "DENY",
+   "observed": {
+    "allowed": false,
+    "reason": "EXPIRED"
+   },
+   "verdict": "NOT_REPRODUCED"
+  },
+  {
+   "probe": "R-C1.4",
+   "case": "malformed/unknown currentness",
+   "call": "check_rights(expired_scope, 'doc.read', now='not-a-timestamp')",
+   "canonical_expectation": "DENY",
+   "observed": {
+    "allowed": false,
+    "reason": "EXPIRED"
+   },
+   "verdict": "NOT_REPRODUCED"
+  },
+  {
+   "probe": "R-C1.5",
+   "case": "revoked scope",
+   "call": "check_rights(revoked_scope, 'doc.read', now=NOW_AFTER)",
+   "canonical_expectation": "DENY",
+   "observed": {
+    "allowed": false,
+    "reason": "REVOKED"
+   },
+   "verdict": "NOT_REPRODUCED"
+  },
+  {
+   "probe": "R-C1.6",
+   "case": "positive control: non-expiring low-risk entitlement",
+   "call": "check_rights(no_expiry_scope, 'doc.read')",
+   "canonical_expectation": "ENTITLED",
+   "observed": {
+    "allowed": true,
+    "reason": "ENTITLED"
+   },
+   "verdict": "CONTROL_OK"
+  },
+  {
+   "probe": "R-C1.7",
+   "case": "positive control: live expiring entitlement, currentness omitted",
+   "call": "check_rights(live_scope, 'doc.read')",
+   "canonical_expectation": "ENTITLED or DENY(needs currentness) - must never exceed the currentness law",
+   "observed": {
+    "allowed": true,
+    "reason": "ENTITLED"
+   },
+   "verdict": "OBSERVED"
+  },
+  {
+   "probe": "R-C1.8",
+   "case": "EXPIRED credential scope, credential use attempted",
+   "call": "assert_credential_scope(expired_scope, 'api.call')",
+   "canonical_expectation": "RightsDenied (expired credential must not be used)",
+   "observed": {
+    "returned": "None"
+   },
+   "verdict": "REPRODUCED_FAIL_OPEN"
+  },
+  {
+   "probe": "R-C1.9",
+   "case": "EXPIRED credential scope (re-run, explicit)",
+   "call": "assert_credential_scope(expired_scope, 'api.call')",
+   "canonical_expectation": "RightsDenied",
+   "observed": {
+    "returned": "None"
+   },
+   "verdict": "REPRODUCED_FAIL_OPEN"
+  },
+  {
+   "probe": "R-C1.10",
+   "case": "positive control: live credential scope",
+   "call": "assert_credential_scope(live_scope, 'api.call')",
+   "canonical_expectation": "no raise",
+   "observed": {
+    "returned": "None"
+   },
+   "verdict": "CONTROL_OK"
+  },
+  {
+   "probe": "R-C2.1",
+   "case": "arbitrary non-empty approval string",
+   "call": "assert_human_gate_satisfied(live_world_effect, 'sure go ahead')",
+   "canonical_expectation": "REJECT (not an exact-bound current approval token)",
+   "observed": {
+    "returned": "None"
+   },
+   "verdict": "REPRODUCED_SYNTACTIC_ONLY"
+  },
+  {
+   "probe": "R-C2.2",
+   "case": "bare word 'approved'",
+   "call": "assert_human_gate_satisfied(live_world_effect, 'approved')",
+   "canonical_expectation": "REJECT",
+   "observed": {
+    "returned": "None"
+   },
+   "verdict": "REPRODUCED_SYNTACTIC_ONLY"
+  },
+  {
+   "probe": "R-C2.3",
+   "case": "arbitrary string, unrelated requesting actor (self-approval check passes)",
+   "call": "assert_human_gate_satisfied(route, 'sure go ahead', requesting_actor='bob')",
+   "canonical_expectation": "REJECT",
+   "observed": {
+    "returned": "None"
+   },
+   "verdict": "REPRODUCED_SYNTACTIC_ONLY"
+  },
+  {
+   "probe": "R-C2.4",
+   "case": "self-approval",
+   "call": "assert_human_gate_satisfied(route, 'bob', requesting_actor='bob')",
+   "canonical_expectation": "REJECT",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "approval reference equals the requesting actor: self-approval refused"
+   },
+   "verdict": "NOT_REPRODUCED"
+  },
+  {
+   "probe": "R-C2.5",
+   "case": "empty approval",
+   "call": "assert_human_gate_satisfied(route, '')",
+   "canonical_expectation": "REJECT",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "route ARTIFACT:HUMAN_GATE requires an approval reference (HUMAN_GATE:live_world_effect)"
+   },
+   "verdict": "NOT_REPRODUCED"
+  },
+  {
+   "probe": "R-C2.6",
+   "case": "whitespace-only approval",
+   "call": "assert_human_gate_satisfied(route, '   ')",
+   "canonical_expectation": "REJECT",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "route ARTIFACT:HUMAN_GATE requires an approval reference (HUMAN_GATE:live_world_effect)"
+   },
+   "verdict": "NOT_REPRODUCED"
+  },
+  {
+   "probe": "R-C2.wrong subject/hash",
+   "case": "dimension: wrong subject/hash",
+   "call": "assert_human_gate_satisfied(route, <str>)",
+   "canonical_expectation": "must be REJECTED by an exact-bound verifier",
+   "observed": {
+    "expressible": false,
+    "why": "the seam takes only a bare string; no token structure, subject, nonce, generation or currentness input exists, so these dimensions cannot be evaluated at all"
+   },
+   "verdict": "NOT_EXPRESSIBLE_IN_CURRENT_SEAM"
+  },
+  {
+   "probe": "R-C2.wrong operation",
+   "case": "dimension: wrong operation",
+   "call": "assert_human_gate_satisfied(route, <str>)",
+   "canonical_expectation": "must be REJECTED by an exact-bound verifier",
+   "observed": {
+    "expressible": false,
+    "why": "the seam takes only a bare string; no token structure, subject, nonce, generation or currentness input exists, so these dimensions cannot be evaluated at all"
+   },
+   "verdict": "NOT_EXPRESSIBLE_IN_CURRENT_SEAM"
+  },
+  {
+   "probe": "R-C2.broader target/scope",
+   "case": "dimension: broader target/scope",
+   "call": "assert_human_gate_satisfied(route, <str>)",
+   "canonical_expectation": "must be REJECTED by an exact-bound verifier",
+   "observed": {
+    "expressible": false,
+    "why": "the seam takes only a bare string; no token structure, subject, nonce, generation or currentness input exists, so these dimensions cannot be evaluated at all"
+   },
+   "verdict": "NOT_EXPRESSIBLE_IN_CURRENT_SEAM"
+  },
+  {
+   "probe": "R-C2.expired token",
+   "case": "dimension: expired token",
+   "call": "assert_human_gate_satisfied(route, <str>)",
+   "canonical_expectation": "must be REJECTED by an exact-bound verifier",
+   "observed": {
+    "expressible": false,
+    "why": "the seam takes only a bare string; no token structure, subject, nonce, generation or currentness input exists, so these dimensions cannot be evaluated at all"
+   },
+   "verdict": "NOT_EXPRESSIBLE_IN_CURRENT_SEAM"
+  },
+  {
+   "probe": "R-C2.revoked token",
+   "case": "dimension: revoked token",
+   "call": "assert_human_gate_satisfied(route, <str>)",
+   "canonical_expectation": "must be REJECTED by an exact-bound verifier",
+   "observed": {
+    "expressible": false,
+    "why": "the seam takes only a bare string; no token structure, subject, nonce, generation or currentness input exists, so these dimensions cannot be evaluated at all"
+   },
+   "verdict": "NOT_EXPRESSIBLE_IN_CURRENT_SEAM"
+  },
+  {
+   "probe": "R-C2.stale authority generation",
+   "case": "dimension: stale authority generation",
+   "call": "assert_human_gate_satisfied(route, <str>)",
+   "canonical_expectation": "must be REJECTED by an exact-bound verifier",
+   "observed": {
+    "expressible": false,
+    "why": "the seam takes only a bare string; no token structure, subject, nonce, generation or currentness input exists, so these dimensions cannot be evaluated at all"
+   },
+   "verdict": "NOT_EXPRESSIBLE_IN_CURRENT_SEAM"
+  },
+  {
+   "probe": "R-C2.replayed nonce",
+   "case": "dimension: replayed nonce",
+   "call": "assert_human_gate_satisfied(route, <str>)",
+   "canonical_expectation": "must be REJECTED by an exact-bound verifier",
+   "observed": {
+    "expressible": false,
+    "why": "the seam takes only a bare string; no token structure, subject, nonce, generation or currentness input exists, so these dimensions cannot be evaluated at all"
+   },
+   "verdict": "NOT_EXPRESSIBLE_IN_CURRENT_SEAM"
+  },
+  {
+   "probe": "R-C2.sibling/previous approval reuse",
+   "case": "dimension: sibling/previous approval reuse",
+   "call": "assert_human_gate_satisfied(route, <str>)",
+   "canonical_expectation": "must be REJECTED by an exact-bound verifier",
+   "observed": {
+    "expressible": false,
+    "why": "the seam takes only a bare string; no token structure, subject, nonce, generation or currentness input exists, so these dimensions cannot be evaluated at all"
+   },
+   "verdict": "NOT_EXPRESSIBLE_IN_CURRENT_SEAM"
+  },
+  {
+   "probe": "R-C2.unauthenticated approver",
+   "case": "dimension: unauthenticated approver",
+   "call": "assert_human_gate_satisfied(route, <str>)",
+   "canonical_expectation": "must be REJECTED by an exact-bound verifier",
+   "observed": {
+    "expressible": false,
+    "why": "the seam takes only a bare string; no token structure, subject, nonce, generation or currentness input exists, so these dimensions cannot be evaluated at all"
+   },
+   "verdict": "NOT_EXPRESSIBLE_IN_CURRENT_SEAM"
+  },
+  {
+   "probe": "R-C2.pos",
+   "case": "positive control: valid independent current exact-bound approval",
+   "call": "assert_human_gate_satisfied(route, <typed current exact-bound token>)",
+   "canonical_expectation": "ACCEPT",
+   "observed": {
+    "expressible": false,
+    "why": "no typed approval artifact exists to construct a valid positive control"
+   },
+   "verdict": "POSITIVE_CONTROL_NOT_CONSTRUCTIBLE"
+  }
+ ],
+ "root_cause_R-C1": [
+  "src/security/rights.py:94-95 - _expired() returns False when now is None, so an expired grant is treated as live whenever the caller omits currentness",
+  "src/security/rights.py:146-158 - assert_credential_scope() validates shape/subject/use/revoked/membership but never consults expires_at at all"
+ ],
+ "root_cause_R-C2": [
+  "src/security/rights.py:129-143 - assert_human_gate_satisfied() accepts any non-empty string that is not exactly the requesting actor; no subject/hash/operation/target/scope/data-class/approver/issue-time/expiry/nonce/replay/generation/revocation checks exist"
+ ]
+}

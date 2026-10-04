@@ -1,0 +1,8 @@
+{
+  "claim_ceiling": "LOCAL",
+  "contract_sha256": "a42d763e77bcdc202f0a64ed5ecac541046423b1c8810fb15c617317913d1790",
+  "error_count": 0,
+  "errors": [],
+  "task_id": "SWOF-W2-CLOSURE-R4",
+  "verdict": "PROMPT_COMPILE_PASS"
+}

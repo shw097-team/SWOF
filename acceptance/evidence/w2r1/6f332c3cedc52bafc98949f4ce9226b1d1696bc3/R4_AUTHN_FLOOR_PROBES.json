@@ -1,0 +1,165 @@
+{
+ "schema": "SWOF-W2-R4-AUTHN-FLOOR-PROBES/1",
+ "subject": "6f332c3cedc52bafc98949f4ce9226b1d1696bc3",
+ "canonical_domain": "AAC1 < AAC2 < AAC3 (PI06 DOC-03 required_authn_assurance)",
+ "probes_total": 18,
+ "probes_holding": 18,
+ "all_hold": true,
+ "rows": [
+  {
+   "probe": "A1",
+   "case": "request floor AAC1 + decision AAC1 -> pass",
+   "holds": true,
+   "observed": {
+    "ok": true,
+    "code": "APPROVE_BASIS_SATISFIED"
+   }
+  },
+  {
+   "probe": "A2",
+   "case": "request floor AAC2 + decision AAC1 -> DENY_AUTHN",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_AUTHN"
+   }
+  },
+  {
+   "probe": "A3",
+   "case": "request floor AAC2 + decision AAC2 -> pass",
+   "holds": true,
+   "observed": {
+    "ok": true,
+    "code": "APPROVE_BASIS_SATISFIED"
+   }
+  },
+  {
+   "probe": "A4",
+   "case": "request floor AAC3 + decision AAC2 -> DENY_AUTHN",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_AUTHN"
+   }
+  },
+  {
+   "probe": "A5",
+   "case": "request floor AAC3 + decision AAC3 -> pass",
+   "holds": true,
+   "observed": {
+    "ok": true,
+    "code": "APPROVE_BASIS_SATISFIED"
+   }
+  },
+  {
+   "probe": "A6/None",
+   "case": "floor absent(None) + AAC3 decision -> fail closed, never implicit AAC2",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_AUTHN"
+   }
+  },
+  {
+   "probe": "A6/''",
+   "case": "floor absent(empty) + AAC3 decision -> fail closed, never implicit AAC2",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_AUTHN"
+   }
+  },
+  {
+   "probe": "A6/'AAC9'",
+   "case": "floor malformed AAC9 + AAC3 decision -> fail closed, never implicit AAC2",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_AUTHN"
+   }
+  },
+  {
+   "probe": "A6/2",
+   "case": "floor int 2 + AAC3 decision -> fail closed, never implicit AAC2",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_AUTHN"
+   }
+  },
+  {
+   "probe": "A8-CRITICAL-AAC2",
+   "case": "CRITICAL, request requires AAC3, decision AAC2 -> DENY_AUTHN",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_AUTHN"
+   }
+  },
+  {
+   "probe": "A9-CRITICAL-AAC3",
+   "case": "CRITICAL, request requires AAC3, decision AAC3 -> pass authn floor",
+   "holds": true,
+   "observed": {
+    "ok": true,
+    "code": "APPROVE_BASIS_SATISFIED"
+   }
+  },
+  {
+   "probe": "A10",
+   "case": "strong authority HA5 + weak authn AAC2 vs required AAC3 -> DENY_AUTHN",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_AUTHN"
+   }
+  },
+  {
+   "probe": "B1",
+   "case": "token AAC1 below request floor AAC3 (decision ok) -> deny",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_AUTHN"
+   }
+  },
+  {
+   "probe": "P-p3",
+   "case": "P3 + benign op + no token -> DENY_P3_TOKEN_REQUIRED",
+   "holds": true,
+   "observed": {
+    "raised": "DENY_P3_TOKEN_REQUIRED"
+   }
+  },
+  {
+   "probe": "P-ruin",
+   "case": "canonical RUIN + valid token -> HARD_VETO_RUIN",
+   "holds": true,
+   "observed": {
+    "raised": "HARD_VETO_RUIN"
+   }
+  },
+  {
+   "probe": "P-unk",
+   "case": "UNKNOWN_RUIN -> SAFE_STOP_UNKNOWN_RUIN",
+   "holds": true,
+   "observed": {
+    "raised": "SAFE_STOP_UNKNOWN_RUIN"
+   }
+  },
+  {
+   "probe": "P-basis",
+   "case": "exact PI06 15.5 literal golden vector retained",
+   "holds": true,
+   "observed": {
+    "got": "2a868198e40141f4ccfd..."
+   }
+  },
+  {
+   "probe": "P-set",
+   "case": "schema resource/scope still carry x-swof-collection-semantics: set",
+   "holds": true,
+   "observed": {}
+  }
+ ]
+}

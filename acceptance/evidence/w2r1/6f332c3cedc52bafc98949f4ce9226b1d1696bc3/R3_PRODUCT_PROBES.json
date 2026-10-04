@@ -1,0 +1,187 @@
+{
+ "schema": "SWOF-W2-R3-VERIFICATION-PROBES/1",
+ "subject": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+ "findings": {
+  "A_exact_basis_bytes": "CLOSED",
+  "B_authority_lineage": "CLOSED",
+  "C_canonical_sets": "CLOSED",
+  "prior_invariants": "RETAINED"
+ },
+ "probes_total": 17,
+ "probes_holding": 17,
+ "all_hold": true,
+ "rows": [
+  {
+   "probe": "A1",
+   "finding": "A",
+   "case": "literal golden vector from the frozen formula",
+   "holds": true,
+   "observed": {
+    "got": "2a868198e40141f4ccfdcf5767fcb4f5950a3c241fc04b32de7d173cb79e6992",
+    "want": "2a868198e40141f4ccfdcf5767fcb4f5950a3c241fc04b32de7d173cb79e6992"
+   }
+  },
+  {
+   "probe": "A2",
+   "finding": "A",
+   "case": "the old newline-separated recipe is REJECTED",
+   "holds": true,
+   "observed": {
+    "old": "b7965468fb4b11f51c44342d8aefe92c2120a8eb5ed648678f3c09d85eb91080"
+   }
+  },
+  {
+   "probe": "A3",
+   "finding": "A",
+   "case": "otherwise-valid token with wrong basis -> deny",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_DECISION_BASIS_MISMATCH"
+   }
+  },
+  {
+   "probe": "B1",
+   "finding": "B",
+   "case": "insufficient authority for the requirement",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_INSUFFICIENT_AUTHORITY"
+   }
+  },
+  {
+   "probe": "B3",
+   "finding": "B",
+   "case": "unknown authority class HA9",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_INSUFFICIENT_AUTHORITY"
+   }
+  },
+  {
+   "probe": "B4",
+   "finding": "B",
+   "case": "nonexistent decision_id",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_DECISION_UNRESOLVED"
+   }
+  },
+  {
+   "probe": "B5",
+   "finding": "B",
+   "case": "decision bound to ANOTHER request",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_DECISION_REQUEST_MISMATCH"
+   }
+  },
+  {
+   "probe": "B6",
+   "finding": "B",
+   "case": "decision_id not matching the token",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "DENY_DECISION_TOKEN_MISMATCH"
+   }
+  },
+  {
+   "probe": "B9",
+   "finding": "B",
+   "case": "absent authority_policy -> fail closed",
+   "holds": true,
+   "observed": {
+    "ok": false,
+    "code": "TEMP_CLOSED_AUTHORITY_RESOLUTION"
+   }
+  },
+  {
+   "probe": "B8",
+   "finding": "B",
+   "case": "canonical current decision + sufficient authority -> PASS (positive control)",
+   "holds": true,
+   "observed": {
+    "ok": true,
+    "code": "APPROVE_BASIS_SATISFIED"
+   }
+  },
+  {
+   "probe": "C1/C2",
+   "finding": "C",
+   "case": "permuting a 3-atom resource AND 3-atom scope yields IDENTICAL canonical bytes",
+   "holds": true,
+   "observed": {
+    "equal": true,
+    "resource": [
+     "artifact:z",
+     "artifact:a",
+     "artifact:m"
+    ],
+    "scope": [
+     "scope:beta",
+     "scope:alpha",
+     "scope:gamma"
+    ]
+   }
+  },
+  {
+   "probe": "C4",
+   "finding": "C",
+   "case": "duplicate resource atom -> deny",
+   "holds": true,
+   "observed": {
+    "raised": "resource contains a duplicate atom"
+   }
+  },
+  {
+   "probe": "C6",
+   "finding": "C",
+   "case": "schema resource annotation == \"set\"",
+   "holds": true,
+   "observed": {
+    "got": "set"
+   }
+  },
+  {
+   "probe": "C7",
+   "finding": "C",
+   "case": "schema scope annotation == \"set\"",
+   "holds": true,
+   "observed": {
+    "got": "set"
+   }
+  },
+  {
+   "probe": "P-p3",
+   "finding": "prior",
+   "case": "P3 + benign op + no token -> DENY_P3_TOKEN_REQUIRED",
+   "holds": true,
+   "observed": {
+    "raised": "DENY_P3_TOKEN_REQUIRED"
+   }
+  },
+  {
+   "probe": "P-ruin",
+   "finding": "prior",
+   "case": "canonical RUIN + valid token -> HARD_VETO_RUIN",
+   "holds": true,
+   "observed": {
+    "raised": "HARD_VETO_RUIN"
+   }
+  },
+  {
+   "probe": "P-unknownruin",
+   "finding": "prior",
+   "case": "canonical UNKNOWN_RUIN -> SAFE_STOP_UNKNOWN_RUIN",
+   "holds": true,
+   "observed": {
+    "raised": "SAFE_STOP_UNKNOWN_RUIN"
+   }
+  }
+ ]
+}

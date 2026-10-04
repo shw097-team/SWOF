@@ -1,0 +1,60 @@
+{
+ "schema": "SWOF-W2-R4-FRESH-INDEPENDENT-CHECKER-RECEIPT/1",
+ "checker_identity": "fresh-5th-checker-swof-w2r4-r008-6f332c3",
+ "checker_mode": "FRESH_CONTEXT_VERIFY_ONLY",
+ "checker_is_not_maker": true,
+ "checker_read_only": true,
+ "subject": "6f332c3cedc52bafc98949f4ce9226b1d1696bc3",
+ "base": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+ "product_verdict": "PASS",
+ "governance_verdict": "PASS",
+ "wave_verdict": "PASS",
+ "blocking_findings": [],
+ "base_defect_reproduced_then_closed": true,
+ "request_floor_is_carried": true,
+ "fixed_aac2_default_removed": true,
+ "aac_lattice_cells": 27,
+ "aac_lattice_all_hold": true,
+ "critical_aac3_holdout": "DENY_AUTHN (positive control AAC3/AAC3 passes)",
+ "missing_or_malformed_floor_fails_closed": true,
+ "local_adapter_unreachable_from_canonical": true,
+ "strong_authority_does_not_compensate_weak_authn": true,
+ "request_floors_not_globally_forced": true,
+ "retained_invariants": {
+  "basis_golden_vector": "2a868198e40141f4ccfdcf5767fcb4f5950a3c241fc04b32de7d173cb79e6992",
+  "old_recipe_rejected": true,
+  "set_permutation_invariant": true,
+  "p3_floor": "DENY_P3_TOKEN_REQUIRED",
+  "ruin": "HARD_VETO_RUIN",
+  "unknown_ruin": "SAFE_STOP_UNKNOWN_RUIN",
+  "low_risk_ungated": true
+ },
+ "regression": {
+  "w1_total": 113,
+  "grand_total": 883,
+  "all_roots_exit_0": true,
+  "roots": {
+   "tests": 16,
+   "src/security/tests": 408,
+   "src/effect/tests": 116,
+   "src/assurance/tests": 144,
+   "src/observability/tests": 102,
+   "src/fabric/tests": 21,
+   "src/knowledge/tests": 25,
+   "src/admission/tests": 17,
+   "src/profile/tests": 12,
+   "src/capability/tests": 22
+  }
+ },
+ "noncanonical_identifiers_in_code": [
+  "adapter_kind / ADAPTER_KINDS / LOCAL_ADAPTER_AUTHN_FLOOR='AAC2' (the explicitly-labelled non-canonical seam; default 'canonical', unreachable from a canonical request, unknown kind fails closed, cannot weaken a declared floor)",
+  "ruin_class (non-canonical legacy alias; used only when the canonical field is absent and never weakening)"
+ ],
+ "verdict_basis": "Every expected value derived independently from frozen PI06 DOC-03. Base defect reproduced structurally and behaviourally; the full 27-cell request x decision x token lattice reconstructed from the monotone AAC domain matches exactly; floor attacks all fail closed; local adapter seam unreachable from a canonical request; weakening resisted; AAC1/AAC2 not force-upgraded; all retained invariants hold; regression 883 with W1 113.",
+ "raw_transcript": {
+  "path": "checker_live/ROUND5_R4_task-0.log",
+  "sha256": "a9ac2b5f21a23e2491b1b53243177a2592fe1f0836d4ed5910c7fa6f6533ac67",
+  "bytes": 38194
+ },
+ "note": "LOCAL/PROJECT independent verification (Gate 7). NOT the external challenge verdict."
+}

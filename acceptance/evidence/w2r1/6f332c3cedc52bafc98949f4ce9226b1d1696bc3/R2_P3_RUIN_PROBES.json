@@ -1,0 +1,242 @@
+{
+ "schema": "SWOF-W2-R2-P3-RUIN-INTEGRITY-PROBES/1",
+ "subject": "edb53142dda94e1b0e4926bebc008b06f42cbcfb",
+ "findings": {
+  "F-W2-R2-001_risk_tier_gate_and_ruin": "NOT_CLOSED",
+  "W2R1-EXT-002_basis_lineage_integrity": "CLOSED"
+ },
+ "probes_total": 19,
+ "probes_holding": 10,
+ "all_hold": false,
+ "rows": [
+  {
+   "probe": "D1-P3",
+   "finding": "F-W2-R2-001",
+   "case": "P3 + benign operation 'read' + NO token",
+   "expected": "DENY_P3_TOKEN_REQUIRED",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "SAFE_STOP_UNKNOWN_RUIN"
+   },
+   "holds": false
+  },
+  {
+   "probe": "D1-P4",
+   "finding": "F-W2-R2-001",
+   "case": "P4 + benign operation 'read' + NO token",
+   "expected": "DENY_P3_TOKEN_REQUIRED",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "SAFE_STOP_UNKNOWN_RUIN"
+   },
+   "holds": false
+  },
+  {
+   "probe": "D1-P5",
+   "finding": "F-W2-R2-001",
+   "case": "P5 + benign operation 'read' + NO token",
+   "expected": "DENY_P3_TOKEN_REQUIRED",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "SAFE_STOP_UNKNOWN_RUIN"
+   },
+   "holds": false
+  },
+  {
+   "probe": "D1-perm-only",
+   "finding": "F-W2-R2-001",
+   "case": "P3 via permission_class only + benign op + no token",
+   "expected": "DENY_P3_TOKEN_REQUIRED",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "SAFE_STOP_UNKNOWN_RUIN"
+   },
+   "holds": false
+  },
+  {
+   "probe": "D1-P2-control",
+   "finding": "F-W2-R2-001",
+   "case": "P2 + benign op + no token -> must remain ungated",
+   "expected": true,
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "SAFE_STOP_UNKNOWN_RUIN"
+   },
+   "holds": false
+  },
+  {
+   "probe": "D2-RUIN-token",
+   "finding": "F-W2-R2-001",
+   "case": "valid typed token + ruin_class=RUIN -> token cannot override",
+   "expected": "HARD_VETO_RUIN",
+   "observed": {
+    "ok": null,
+    "code": null,
+    "returned": "None"
+   },
+   "holds": false
+  },
+  {
+   "probe": "D2-RUIN-notoken",
+   "finding": "F-W2-R2-001",
+   "case": "no token + ruin_class=RUIN",
+   "expected": "HARD_VETO_RUIN",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "NOT_A_CANONICAL_APPROVAL_TOKEN"
+   },
+   "holds": false
+  },
+  {
+   "probe": "D2-UNKNOWN_RUIN-token",
+   "finding": "F-W2-R2-001",
+   "case": "valid typed token + ruin_class=UNKNOWN_RUIN -> token cannot override",
+   "expected": "SAFE_STOP_UNKNOWN_RUIN",
+   "observed": {
+    "ok": null,
+    "code": null,
+    "returned": "None"
+   },
+   "holds": false
+  },
+  {
+   "probe": "D2-UNKNOWN_RUIN-notoken",
+   "finding": "F-W2-R2-001",
+   "case": "no token + ruin_class=UNKNOWN_RUIN",
+   "expected": "SAFE_STOP_UNKNOWN_RUIN",
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "NOT_A_CANONICAL_APPROVAL_TOKEN"
+   },
+   "holds": false
+  },
+  {
+   "probe": "D3-basis",
+   "finding": "W2R1-EXT-002",
+   "case": "valid token but WRONG approval_basis_hash",
+   "expected": "DENY_APPROVAL_BASIS",
+   "observed": {
+    "ok": false,
+    "code": "DENY_APPROVAL_BASIS",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "D3-reqid",
+   "finding": "W2R1-EXT-002",
+   "case": "wrong request_id lineage",
+   "expected": "DENY_EXACT_BINDING",
+   "observed": {
+    "ok": false,
+    "code": "DENY_EXACT_BINDING",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "D3-decid",
+   "finding": "W2R1-EXT-002",
+   "case": "wrong decision_id lineage",
+   "expected": "DENY_EXACT_BINDING",
+   "observed": {
+    "ok": false,
+    "code": "DENY_EXACT_BINDING",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "D3-generation",
+   "finding": "W2R1-EXT-002",
+   "case": "ctx supplies a generation that CONFLICTS with the token's binding (authn_session_generation 99 != token's 7)",
+   "expected": "DENY_STALE_GENERATION",
+   "observed": {
+    "ok": false,
+    "code": "DENY_STALE_GENERATION",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "D3-generation-cred",
+   "finding": "W2R1-EXT-002",
+   "case": "conflicting credential_generation",
+   "expected": "DENY_STALE_GENERATION",
+   "observed": {
+    "ok": false,
+    "code": "DENY_STALE_GENERATION",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "D3-generation-key",
+   "finding": "W2R1-EXT-002",
+   "case": "conflicting key_generation (maps to the token's key_generation)",
+   "expected": "DENY_TOKEN_INTEGRITY",
+   "observed": {
+    "ok": false,
+    "code": "DENY_TOKEN_INTEGRITY",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "D3-generation-absent-ok",
+   "finding": "W2R1-EXT-002",
+   "case": "a context generation with NO token counterpart (rights_generation) is NOT a binding skip: it is simply nothing to compare, and must still PASS",
+   "expected": true,
+   "observed": {
+    "ok": true,
+    "code": "APPROVE_BASIS_SATISFIED",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "D3-audience",
+   "finding": "W2R1-EXT-002",
+   "case": "gated request with NO expected audience",
+   "expected": "DENY_AUDIENCE_MISMATCH",
+   "observed": {
+    "ok": false,
+    "code": "DENY_AUDIENCE_MISMATCH",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "D3-forged",
+   "finding": "W2R1-EXT-002",
+   "case": "FORGED signature (shape-valid, wrong key)",
+   "expected": "DENY_TOKEN_INTEGRITY",
+   "observed": {
+    "ok": false,
+    "code": "DENY_TOKEN_INTEGRITY",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "D3-positive",
+   "finding": "W2R1-EXT-002",
+   "case": "fully valid framed Ed25519 token -> PASS (positive control)",
+   "expected": true,
+   "observed": {
+    "ok": true,
+    "code": "APPROVE_BASIS_SATISFIED",
+    "returned": null
+   },
+   "holds": true
+  }
+ ],
+ "SUPERSEDED": {
+  "by": [
+   "evidence/R2_CANONICAL_RUIN_PROBE.json",
+   "evidence/R2_CANONICAL_FLOOR_PROBE.json"
+  ],
+  "reason": "This battery's fixtures were built from the implementation's own attribute names (effect_risk_tier=\"P3\"/\"P4\"/\"P5\" and ruin_class), which are NOT the canonical field domains. The canonical EffectRiskTier enum is LOW|MEDIUM|HIGH|CRITICAL|RUIN|UNKNOWN_RUIN and ruin_class does not exist in the canonical source. The battery therefore passed while a canonical RUIN fail-open was present. Retained as historical evidence of a self-confirming probe design.",
+  "verdict_on_current_subject": "FAILS_AS_EXPECTED (non-canonical fixtures; R5 correctly fails closed on an invalid effect_risk_tier and correctly ignores the non-canonical alias)"
+ }
+}

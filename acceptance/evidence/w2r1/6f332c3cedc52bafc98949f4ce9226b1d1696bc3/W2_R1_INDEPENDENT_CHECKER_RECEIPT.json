@@ -1,0 +1,71 @@
+{
+ "schema": "SWOF-W2-R1-INDEPENDENT-CHECKER-RECEIPT/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W2-REPAIR-001",
+ "repair_id": "SWOF-W2-CLOSURE-R1",
+ "subject": "7a0b4acbe14daca2061ba9b927013adf8aaf48b5",
+ "checker_identity": "hermes-subagent-fresh-context-swof-w2-r3-final-verify",
+ "checker_is_not_maker": true,
+ "checker_read_only": true,
+ "product_verdict": "PASS",
+ "governance_verdict": "PASS",
+ "wave_verdict": "PASS",
+ "verdict": "PASS",
+ "lane_count": 1,
+ "rounds_of_checking": 4,
+ "raw_transcript": "evidence/checker_live/R3_FINAL_task-0.log",
+ "raw_transcript_sha256": "5faecfce2e3d447c7b728d609eae4a60245b6b33b589f769b14ac3188fab3afb",
+ "prior_round_transcripts": [
+  "evidence/checker_live/R1_task-0.log",
+  "evidence/checker_live/R1_task-1.log"
+ ],
+ "schema_fidelity": {
+  "canonical_required": 42,
+  "schema_required": 42,
+  "missing": [],
+  "extra": [],
+  "verdict": "EXACT"
+ },
+ "independently_verified": {
+  "both_original_external_defects_closed": true,
+  "three_R1_blocking_findings_closed": true,
+  "canonical_42_field_fidelity": true,
+  "w1_regression_denominator_preserved": 113,
+  "grand_total": 735,
+  "zero_denominator_roots": []
+ },
+ "open_non_blocking": [
+  {
+   "id": "TT-W2-003",
+   "what": "runtime accepts broader version forms than the canonical pattern (if06b_version '1' or '1.0.0.0', min_reader_version '1')",
+   "exploitable": false,
+   "note": "the major must still be '1' and min_reader '1' <= reader '1.0', so no privilege path exists; recorded for W3 preflight rather than churning a frozen PASS subject"
+  },
+  {
+   "id": "TT-W2-004",
+   "what": "independent_checker_required=true is not enforced when autonomy_tier != T3 (the canonical allOf would require the evidence ref)",
+   "exploitable": false,
+   "note": "T3 itself correctly denies with DENY_T3_CHECKER; outside T3 the field has no consumer"
+  },
+  {
+   "id": "TT-W2-005",
+   "what": "a P3/P4/P5 effect_risk_tier with a benign operation name reaches an authorizing outcome with no token, because the route is re-derived from operation only",
+   "exploitable": false,
+   "note": "encoded as intended by the in-repo accepted test test_r2_10_agreed_low_risk_route_returns_none; the disagreement is between two input fields, and operation is the declared gating authority. A W3 TaskSpec that treats effect_risk_tier as an independent gate must reconcile this."
+  },
+  {
+   "id": "TT-W2-006",
+   "what": "README documented test counts are stale (says 191 security / 666 total; actual 260 / 735)",
+   "exploitable": false,
+   "note": "documentation hygiene only; NOT fixed because editing README now would move the frozen PASS subject"
+  }
+ ],
+ "blocking_findings": [],
+ "non_claims": [
+  "NOT_EXTERNALLY_ACCEPTED",
+  "W3_NOT_STARTED",
+  "NO_MERGE",
+  "NO_RELEASE",
+  "NO_PRODUCTION",
+  "NO_WORLD_EFFECT_ACCEPTANCE"
+ ]
+}

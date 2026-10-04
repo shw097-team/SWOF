@@ -1,0 +1,96 @@
+{
+ "schema": "SWOF-W2-R4-BASELINE-ADJUDICATION/1",
+ "baseline_source": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+ "baseline_evidence": "1033ef3eb1856f1e5b237bf7dc76c98a42ff5ee9",
+ "rows": [
+  {
+   "finding": "EXT-001",
+   "check": "_DEFAULT_REQUIRED_AUTHN_ASSURANCE constant",
+   "value": "AAC2"
+  },
+  {
+   "finding": "EXT-001",
+   "check": "_required_authn_floor body ignores the request",
+   "returns_constant": false,
+   "body": "\"\"\"The authn assurance (AAC) floor a decision must meet for this request."
+  },
+  {
+   "finding": "EXT-001",
+   "check": "ApprovalRequest carries required_authn_assurance",
+   "field_present": false,
+   "occurrences_total": 0
+  },
+  {
+   "finding": "EXT-001",
+   "check": "fields actually declared on ApprovalRequest",
+   "fields": [
+    "subject",
+    "subject_hash",
+    "semantic_version",
+    "actor",
+    "operation",
+    "operation_class",
+    "target_system",
+    "resource",
+    "environment",
+    "purpose_ref",
+    "scope",
+    "data_class",
+    "effect_digest",
+    "consumer_audience_hash",
+    "effect_risk_tier",
+    "permission_class",
+    "autonomy_tier",
+    "required_authority",
+    "rollback_ref",
+    "independent_checker_required",
+    "ruin_class",
+    "request_id",
+    "decision_id",
+    "decision_basis_hash",
+    "generation_bundle_digest",
+    "rollback_digest",
+    "authn_session_generation",
+    "credential_generation",
+    "key_generation",
+    "rights_generation",
+    "consent_generation",
+    "security_policy_generation",
+    "provider_generation",
+    "ruin_generation",
+    "revocation_generation"
+   ]
+  },
+  {
+   "finding": "EXT-001",
+   "check": "canonical doc declares required_authn_assurance AAC1..AAC3",
+   "mentions": 3,
+   "aac_domain_present": true
+  },
+  {
+   "finding": "EXT-001",
+   "check": "canonical CRITICAL -> AAC3",
+   "critical_aac3": true
+  },
+  {
+   "finding": "EXT-002",
+   "check": "committed dossier carries obsolete blocker prose",
+   "says_typed_api_cannot_resolve": false,
+   "says_checkpoint_not_bound": true,
+   "has_R1": false
+  },
+  {
+   "finding": "EXT-002",
+   "check": "in-tree Return Pack claim ceiling claims publication",
+   "claims_published": true,
+   "evidence_sha_is_null": true
+  },
+  {
+   "finding": "EXT-002",
+   "check": "readset top-level vs NESTED publication subject",
+   "top_source": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+   "nested_head_sha": "b8e62b96463273e3475ff52a7a4a87831816927a",
+   "nested_matches_top": false
+  }
+ ]
+}

@@ -1,0 +1,718 @@
+{
+ "schema": "SWOF-W2-R3-NORMATIVE-CLOSURE-PROJECTION/1",
+ "project": "HGK-P0-SWOF-W2",
+ "final_source_candidate_sha": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+ "typed_api_only": true,
+ "no_direct_sql_writes": true,
+ "sql_used": "SELECT-only readback",
+ "denominator_scope_fix": "the historic W2 requirements were registered under project_id 'HGK-P0'; denominator() joins requirements.project_id so it returned 0/0. Those rows are NOT rewritten - the governed population is re-admitted under the correct project scope and the historic mis-scoping is disclosed here.",
+ "actions": [
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R2-ADJUDICATION",
+   "note": "UNIQUE constraint failed: evidence_refs.evidence_id"
+  },
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R3-PROBES",
+   "sha256": "40b37dc03cbfb033cf1c6f6294ccc52bb7d009cd4c0f40f4fb7cde85cdc8dfae"
+  },
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R2-P3FLOOR-PROBES",
+   "note": "UNIQUE constraint failed: evidence_refs.evidence_id"
+  },
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R2-REGRESSION",
+   "note": "UNIQUE constraint failed: evidence_refs.evidence_id"
+  },
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R2-CHECKER",
+   "note": "UNIQUE constraint failed: evidence_refs.evidence_id"
+  },
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R2-HGKEBC",
+   "note": "UNIQUE constraint failed: evidence_refs.evidence_id"
+  },
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R2-TRANSPORT",
+   "note": "UNIQUE constraint failed: evidence_refs.evidence_id"
+  },
+  {
+   "step": "governed_row",
+   "requirement": "REQ-HGK-SWOF-W2R2-001",
+   "note": "UNIQUE constraint failed: requirements.requirement_id"
+  },
+  {
+   "step": "governed_row",
+   "requirement": "REQ-HGK-SWOF-W2R2-002",
+   "note": "UNIQUE constraint failed: requirements.requirement_id"
+  },
+  {
+   "step": "governed_row",
+   "requirement": "REQ-HGK-SWOF-W2R2-003",
+   "note": "UNIQUE constraint failed: requirements.requirement_id"
+  },
+  {
+   "step": "governed_row",
+   "requirement": "REQ-HGK-SWOF-W2R2-004",
+   "note": "UNIQUE constraint failed: requirements.requirement_id"
+  },
+  {
+   "step": "governed_row",
+   "requirement": "REQ-HGK-SWOF-W2R2-005",
+   "note": "UNIQUE constraint failed: requirements.requirement_id"
+  },
+  {
+   "step": "governed_row",
+   "requirement": "REQ-HGK-SWOF-W2R3-001",
+   "acceptance": "ACC-REQ-HGK-SWOF-W2R3-001",
+   "workorder": "WO-REQ-HGK-SWOF-W2R3-001",
+   "acceptance_result": "PASS"
+  },
+  {
+   "step": "per_obligation_checkpoint",
+   "checkpoint_id": "CK-W2-5E318CBA"
+  },
+  {
+   "step": "per_obligation_checkpoint",
+   "checkpoint_id": "CK-W2-693DA1D9"
+  },
+  {
+   "step": "per_obligation_checkpoint",
+   "checkpoint_id": "CK-W2-63788E5C"
+  },
+  {
+   "step": "per_obligation_checkpoint",
+   "checkpoint_id": "CK-W2-53395ACF"
+  },
+  {
+   "step": "per_obligation_checkpoint",
+   "checkpoint_id": "CK-W2-CC358B03"
+  },
+  {
+   "step": "per_obligation_checkpoint",
+   "checkpoint_id": "CK-W2-B89FB708"
+  },
+  {
+   "step": "final_normative_checkpoint",
+   "checkpoint_id": "CK-W2-ADA77206"
+  }
+ ],
+ "before": {
+  "workorders": [
+   {
+    "workorder_id": "WO-REQ-HGK-SWOF-W2R2-001",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-REQ-HGK-SWOF-W2R2-002",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-REQ-HGK-SWOF-W2R2-003",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-REQ-HGK-SWOF-W2R2-004",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-REQ-HGK-SWOF-W2R2-005",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-001",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-002",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-003",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-004",
+    "state": "VERIFIED"
+   }
+  ],
+  "acceptances": [
+   {
+    "acceptance_id": "ACC-REQ-HGK-SWOF-W2R2-001",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-REQ-HGK-SWOF-W2R2-002",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-REQ-HGK-SWOF-W2R2-003",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-REQ-HGK-SWOF-W2R2-004",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-REQ-HGK-SWOF-W2R2-005",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-001",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-002",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-003",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-004",
+    "verdict": "PASS"
+   }
+  ],
+  "evidence_refs": [
+   {
+    "evidence_id": "EVD-W2R1-ADJUDICATION"
+   },
+   {
+    "evidence_id": "EVD-W2R1-CHECKER"
+   },
+   {
+    "evidence_id": "EVD-W2R1-HGKEBC"
+   },
+   {
+    "evidence_id": "EVD-W2R1-POSTPROBES"
+   },
+   {
+    "evidence_id": "EVD-W2R1-REDUCER"
+   },
+   {
+    "evidence_id": "EVD-W2R1-REGRESSION"
+   },
+   {
+    "evidence_id": "EVD-W2R1-TRANSPORT"
+   },
+   {
+    "evidence_id": "EVD-W2R2-ADJUDICATION"
+   },
+   {
+    "evidence_id": "EVD-W2R2-CHECKER"
+   },
+   {
+    "evidence_id": "EVD-W2R2-HGKEBC"
+   },
+   {
+    "evidence_id": "EVD-W2R2-P3FLOOR-PROBES"
+   },
+   {
+    "evidence_id": "EVD-W2R2-P3R4-PROBES"
+   },
+   {
+    "evidence_id": "EVD-W2R2-REGRESSION"
+   },
+   {
+    "evidence_id": "EVD-W2R2-TRANSPORT"
+   }
+  ],
+  "checkpoints": [
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-001",
+    "state_digest": "8fa57f12245a0687dcb1cf049fbe079077515334b731e302fa1a7f833049b2fc",
+    "source_digest": "1bdf4bd2aabfb660a7f021485404e7998d75f195dc60a27fd422df9d6a5cb871",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-002",
+    "state_digest": "cef0a67d484c07a95c68de96afb0b5ad0702f96d28aa59b4f3c6a3b699360fed",
+    "source_digest": "1bdf4bd2aabfb660a7f021485404e7998d75f195dc60a27fd422df9d6a5cb871",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-003",
+    "state_digest": "2be714e992f32de998476f56e9a4722d8a28305fa9a0395879000b3492a36f10",
+    "source_digest": "1bdf4bd2aabfb660a7f021485404e7998d75f195dc60a27fd422df9d6a5cb871",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-004",
+    "state_digest": "65ac349a5702e9b66953b5b87751dd3e57ad0672bcdee8194b67db8a66406d9f",
+    "source_digest": "1bdf4bd2aabfb660a7f021485404e7998d75f195dc60a27fd422df9d6a5cb871",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CK-W2-739F2765",
+    "state_digest": "886013b9fae57353421aa92fd2c13285b71ee351edd974769b75d7cf4df58cff",
+    "source_digest": "886013b9fae57353421aa92fd2c13285b71ee351edd974769b75d7cf4df58cff",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-AA474940",
+    "state_digest": "8699de7d4ceafc185f737614c5aa95ed596422c3ce8265d40287dc5bba954518",
+    "source_digest": "8699de7d4ceafc185f737614c5aa95ed596422c3ce8265d40287dc5bba954518",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-3CD873EA",
+    "state_digest": "4c6896820628d47d6558d1bc18b80712bfbb093b9990a2de8681ee4067f2bcd8",
+    "source_digest": "4c6896820628d47d6558d1bc18b80712bfbb093b9990a2de8681ee4067f2bcd8",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-28289CA2",
+    "state_digest": "e90f901f32e3ef3e7a47a3519dc49a6956cf7565cddb68ed8cc3f9ae1d39c394",
+    "source_digest": "e90f901f32e3ef3e7a47a3519dc49a6956cf7565cddb68ed8cc3f9ae1d39c394",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-D085E4F9",
+    "state_digest": "7331fc44f6fdd4a8e369738e0d7c5fc8a849c70dc352f10f3988528362605c02",
+    "source_digest": "7331fc44f6fdd4a8e369738e0d7c5fc8a849c70dc352f10f3988528362605c02",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-CE94CEBC",
+    "state_digest": "f22c556b86b1485f652dbf9c95115283f74f1dfe335aabf4830f06399a3efb7b",
+    "source_digest": "f22c556b86b1485f652dbf9c95115283f74f1dfe335aabf4830f06399a3efb7b",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-D648909A",
+    "state_digest": "18ce5595a0d2bf0413af65690d18e925dd0eae2422fabe53092a5e8be252a5d6",
+    "source_digest": "18ce5595a0d2bf0413af65690d18e925dd0eae2422fabe53092a5e8be252a5d6",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-5A9A0EF7",
+    "state_digest": "55673965447344026683569fb63ce6d51c8087af3391a4674d916881e7ec29dc",
+    "source_digest": "55673965447344026683569fb63ce6d51c8087af3391a4674d916881e7ec29dc",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-FCB9A634",
+    "state_digest": "ba2182c89930eb38f72de9285cbd461659c973e3a6f8992c01c3243a26eeb9db",
+    "source_digest": "ba2182c89930eb38f72de9285cbd461659c973e3a6f8992c01c3243a26eeb9db",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-F361E936",
+    "state_digest": "df06e10031c086d25c6611169757808f695b0edc066e224001d554a21ab0afa1",
+    "source_digest": "df06e10031c086d25c6611169757808f695b0edc066e224001d554a21ab0afa1",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-4838741E",
+    "state_digest": "85b103e6fdb576411020c4c582e508b4c92b4b51e2d1a32cab596a1853c0e5ca",
+    "source_digest": "85b103e6fdb576411020c4c582e508b4c92b4b51e2d1a32cab596a1853c0e5ca",
+    "repo_head": ""
+   }
+  ],
+  "lifecycle": [
+   {
+    "project_id": "HGK-P0-SWOF-W2",
+    "state": "VERIFYING",
+    "last_checkpoint_id": "CK-W2-4838741E"
+   }
+  ],
+  "requirements": [
+   {
+    "requirement_id": "REQ-HGK-SWOF-W2R2-001",
+    "state": "FROZEN"
+   },
+   {
+    "requirement_id": "REQ-HGK-SWOF-W2R2-002",
+    "state": "FROZEN"
+   },
+   {
+    "requirement_id": "REQ-HGK-SWOF-W2R2-003",
+    "state": "FROZEN"
+   },
+   {
+    "requirement_id": "REQ-HGK-SWOF-W2R2-004",
+    "state": "FROZEN"
+   },
+   {
+    "requirement_id": "REQ-HGK-SWOF-W2R2-005",
+    "state": "FROZEN"
+   }
+  ]
+ },
+ "after": {
+  "workorders": [
+   {
+    "workorder_id": "WO-REQ-HGK-SWOF-W2R2-001",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-REQ-HGK-SWOF-W2R2-002",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-REQ-HGK-SWOF-W2R2-003",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-REQ-HGK-SWOF-W2R2-004",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-REQ-HGK-SWOF-W2R2-005",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-REQ-HGK-SWOF-W2R3-001",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-001",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-002",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-003",
+    "state": "VERIFIED"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-004",
+    "state": "VERIFIED"
+   }
+  ],
+  "acceptances": [
+   {
+    "acceptance_id": "ACC-REQ-HGK-SWOF-W2R2-001",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-REQ-HGK-SWOF-W2R2-002",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-REQ-HGK-SWOF-W2R2-003",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-REQ-HGK-SWOF-W2R2-004",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-REQ-HGK-SWOF-W2R2-005",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-REQ-HGK-SWOF-W2R3-001",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-001",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-002",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-003",
+    "verdict": "PASS"
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-004",
+    "verdict": "PASS"
+   }
+  ],
+  "evidence_refs": [
+   {
+    "evidence_id": "EVD-W2R1-ADJUDICATION"
+   },
+   {
+    "evidence_id": "EVD-W2R1-CHECKER"
+   },
+   {
+    "evidence_id": "EVD-W2R1-HGKEBC"
+   },
+   {
+    "evidence_id": "EVD-W2R1-POSTPROBES"
+   },
+   {
+    "evidence_id": "EVD-W2R1-REDUCER"
+   },
+   {
+    "evidence_id": "EVD-W2R1-REGRESSION"
+   },
+   {
+    "evidence_id": "EVD-W2R1-TRANSPORT"
+   },
+   {
+    "evidence_id": "EVD-W2R2-ADJUDICATION"
+   },
+   {
+    "evidence_id": "EVD-W2R2-CHECKER"
+   },
+   {
+    "evidence_id": "EVD-W2R2-HGKEBC"
+   },
+   {
+    "evidence_id": "EVD-W2R2-P3FLOOR-PROBES"
+   },
+   {
+    "evidence_id": "EVD-W2R2-P3R4-PROBES"
+   },
+   {
+    "evidence_id": "EVD-W2R2-REGRESSION"
+   },
+   {
+    "evidence_id": "EVD-W2R2-TRANSPORT"
+   },
+   {
+    "evidence_id": "EVD-W2R3-PROBES"
+   }
+  ],
+  "checkpoints": [
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-001",
+    "state_digest": "8fa57f12245a0687dcb1cf049fbe079077515334b731e302fa1a7f833049b2fc",
+    "source_digest": "1bdf4bd2aabfb660a7f021485404e7998d75f195dc60a27fd422df9d6a5cb871",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-002",
+    "state_digest": "cef0a67d484c07a95c68de96afb0b5ad0702f96d28aa59b4f3c6a3b699360fed",
+    "source_digest": "1bdf4bd2aabfb660a7f021485404e7998d75f195dc60a27fd422df9d6a5cb871",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-003",
+    "state_digest": "2be714e992f32de998476f56e9a4722d8a28305fa9a0395879000b3492a36f10",
+    "source_digest": "1bdf4bd2aabfb660a7f021485404e7998d75f195dc60a27fd422df9d6a5cb871",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-004",
+    "state_digest": "65ac349a5702e9b66953b5b87751dd3e57ad0672bcdee8194b67db8a66406d9f",
+    "source_digest": "1bdf4bd2aabfb660a7f021485404e7998d75f195dc60a27fd422df9d6a5cb871",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CK-W2-739F2765",
+    "state_digest": "886013b9fae57353421aa92fd2c13285b71ee351edd974769b75d7cf4df58cff",
+    "source_digest": "886013b9fae57353421aa92fd2c13285b71ee351edd974769b75d7cf4df58cff",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-AA474940",
+    "state_digest": "8699de7d4ceafc185f737614c5aa95ed596422c3ce8265d40287dc5bba954518",
+    "source_digest": "8699de7d4ceafc185f737614c5aa95ed596422c3ce8265d40287dc5bba954518",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-3CD873EA",
+    "state_digest": "4c6896820628d47d6558d1bc18b80712bfbb093b9990a2de8681ee4067f2bcd8",
+    "source_digest": "4c6896820628d47d6558d1bc18b80712bfbb093b9990a2de8681ee4067f2bcd8",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-28289CA2",
+    "state_digest": "e90f901f32e3ef3e7a47a3519dc49a6956cf7565cddb68ed8cc3f9ae1d39c394",
+    "source_digest": "e90f901f32e3ef3e7a47a3519dc49a6956cf7565cddb68ed8cc3f9ae1d39c394",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-D085E4F9",
+    "state_digest": "7331fc44f6fdd4a8e369738e0d7c5fc8a849c70dc352f10f3988528362605c02",
+    "source_digest": "7331fc44f6fdd4a8e369738e0d7c5fc8a849c70dc352f10f3988528362605c02",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-CE94CEBC",
+    "state_digest": "f22c556b86b1485f652dbf9c95115283f74f1dfe335aabf4830f06399a3efb7b",
+    "source_digest": "f22c556b86b1485f652dbf9c95115283f74f1dfe335aabf4830f06399a3efb7b",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-D648909A",
+    "state_digest": "18ce5595a0d2bf0413af65690d18e925dd0eae2422fabe53092a5e8be252a5d6",
+    "source_digest": "18ce5595a0d2bf0413af65690d18e925dd0eae2422fabe53092a5e8be252a5d6",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-5A9A0EF7",
+    "state_digest": "55673965447344026683569fb63ce6d51c8087af3391a4674d916881e7ec29dc",
+    "source_digest": "55673965447344026683569fb63ce6d51c8087af3391a4674d916881e7ec29dc",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-FCB9A634",
+    "state_digest": "ba2182c89930eb38f72de9285cbd461659c973e3a6f8992c01c3243a26eeb9db",
+    "source_digest": "ba2182c89930eb38f72de9285cbd461659c973e3a6f8992c01c3243a26eeb9db",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-F361E936",
+    "state_digest": "df06e10031c086d25c6611169757808f695b0edc066e224001d554a21ab0afa1",
+    "source_digest": "df06e10031c086d25c6611169757808f695b0edc066e224001d554a21ab0afa1",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-4838741E",
+    "state_digest": "85b103e6fdb576411020c4c582e508b4c92b4b51e2d1a32cab596a1853c0e5ca",
+    "source_digest": "85b103e6fdb576411020c4c582e508b4c92b4b51e2d1a32cab596a1853c0e5ca",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-5E318CBA",
+    "state_digest": "f22c556b86b1485f652dbf9c95115283f74f1dfe335aabf4830f06399a3efb7b",
+    "source_digest": "f22c556b86b1485f652dbf9c95115283f74f1dfe335aabf4830f06399a3efb7b",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-693DA1D9",
+    "state_digest": "18ce5595a0d2bf0413af65690d18e925dd0eae2422fabe53092a5e8be252a5d6",
+    "source_digest": "18ce5595a0d2bf0413af65690d18e925dd0eae2422fabe53092a5e8be252a5d6",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-63788E5C",
+    "state_digest": "55673965447344026683569fb63ce6d51c8087af3391a4674d916881e7ec29dc",
+    "source_digest": "55673965447344026683569fb63ce6d51c8087af3391a4674d916881e7ec29dc",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-53395ACF",
+    "state_digest": "ba2182c89930eb38f72de9285cbd461659c973e3a6f8992c01c3243a26eeb9db",
+    "source_digest": "ba2182c89930eb38f72de9285cbd461659c973e3a6f8992c01c3243a26eeb9db",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-CC358B03",
+    "state_digest": "df06e10031c086d25c6611169757808f695b0edc066e224001d554a21ab0afa1",
+    "source_digest": "df06e10031c086d25c6611169757808f695b0edc066e224001d554a21ab0afa1",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-B89FB708",
+    "state_digest": "47a8afacf04b6075f6e6ffae87c994f0bd87c0eaeaf05dca46c9b7098e7f227b",
+    "source_digest": "47a8afacf04b6075f6e6ffae87c994f0bd87c0eaeaf05dca46c9b7098e7f227b",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-ADA77206",
+    "state_digest": "334f5654c80f33cc79d87ebf08ff80274cd8943fa6a7a1b8d97cdfb7547fe263",
+    "source_digest": "334f5654c80f33cc79d87ebf08ff80274cd8943fa6a7a1b8d97cdfb7547fe263",
+    "repo_head": ""
+   }
+  ],
+  "lifecycle": [
+   {
+    "project_id": "HGK-P0-SWOF-W2",
+    "state": "VERIFYING",
+    "last_checkpoint_id": "CK-W2-ADA77206"
+   }
+  ],
+  "requirements": [
+   {
+    "requirement_id": "REQ-HGK-SWOF-W2R2-001",
+    "state": "FROZEN"
+   },
+   {
+    "requirement_id": "REQ-HGK-SWOF-W2R2-002",
+    "state": "FROZEN"
+   },
+   {
+    "requirement_id": "REQ-HGK-SWOF-W2R2-003",
+    "state": "FROZEN"
+   },
+   {
+    "requirement_id": "REQ-HGK-SWOF-W2R2-004",
+    "state": "FROZEN"
+   },
+   {
+    "requirement_id": "REQ-HGK-SWOF-W2R2-005",
+    "state": "FROZEN"
+   },
+   {
+    "requirement_id": "REQ-HGK-SWOF-W2R3-001",
+    "state": "FROZEN"
+   }
+  ]
+ },
+ "final_checkpoint_id": "CK-W2-ADA77206",
+ "exact_source_binding": {
+  "canonical_binding_field": "checkpoints.source_digest",
+  "why_not_repo_head": "the canonical checkpoint schema carries source_digest/state_digest and the typed ProjectLifecycleController.checkpoint() sets repo_head to \"\"; repo_head is NOT the binding surface for this schema and no field was invented. The binding is the recomputable digest of the stored payload.",
+  "source_digest_recorded": "334f5654c80f33cc79d87ebf08ff80274cd8943fa6a7a1b8d97cdfb7547fe263",
+  "recomputed_from_stored_payload": "334f5654c80f33cc79d87ebf08ff80274cd8943fa6a7a1b8d97cdfb7547fe263",
+  "recompute_matches": true,
+  "payload_evidence_refs": [
+   "EVD-W2R2-CHECKER",
+   "SRC:0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+   "EVIDENCE_SHA:470d212a74aa2c6d5c39012a8d70b337d24d35f556ea891d6c2d28551b32881d"
+  ],
+  "payload_names_exact_source_sha": true,
+  "lifecycle_last_checkpoint_id": "CK-W2-ADA77206",
+  "lifecycle_points_at_final": true,
+  "resolves_to_exact_source_sha": true,
+  "recompute_recipe": "sha256_text(canonical_json(payload)) where payload is the stored project_lifecycles.intent_json[\"_checkpoint\"] object below",
+  "raw_stored_payload": {
+   "project_id": "HGK-P0-SWOF-W2",
+   "run_id": "RUN-SWOF-W2-001",
+   "state": "VERIFYING",
+   "current_workorder": null,
+   "attempt_budget": 3,
+   "attempts_used": 2,
+   "evidence_refs": [
+    "EVD-W2R2-CHECKER",
+    "SRC:0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+    "EVIDENCE_SHA:470d212a74aa2c6d5c39012a8d70b337d24d35f556ea891d6c2d28551b32881d"
+   ]
+  },
+  "raw_canonical_json_bytes_sha256": "334f5654c80f33cc79d87ebf08ff80274cd8943fa6a7a1b8d97cdfb7547fe263",
+  "raw_checkpoint_row": {
+   "checkpoint_id": "CK-W2-ADA77206",
+   "state_digest": "334f5654c80f33cc79d87ebf08ff80274cd8943fa6a7a1b8d97cdfb7547fe263",
+   "source_digest": "334f5654c80f33cc79d87ebf08ff80274cd8943fa6a7a1b8d97cdfb7547fe263",
+   "repo_head": ""
+  }
+ },
+ "denominator_after": {
+  "project_id": "HGK-P0-SWOF-W2",
+  "state": "VERIFYING",
+  "requirements_total": 6,
+  "requirements_frozen": 6,
+  "taskspecs_total": 6,
+  "workorders_total": 6,
+  "workorders_open": [],
+  "workorders_open_count": 0,
+  "acceptances_total": 6,
+  "acceptances_open": [],
+  "acceptances_open_count": 0,
+  "required_active_capabilities": [
+   "openspec",
+   "gstack.plan-eng-review",
+   "gstack.review",
+   "gstack.qa",
+   "gstack.cso",
+   "gstack.ship",
+   "gstack.office-hours",
+   "gstack.retro"
+  ],
+  "required_active_capabilities_total": 8,
+  "required_active_capabilities_open": [],
+  "required_active_capabilities_open_count": 0,
+  "required_local_scope_open": 0,
+  "guard_required_workorders_terminal": true,
+  "denominator_available": true
+ },
+ "denominator_nonvacuous": true,
+ "generated_at_utc": "2026-10-04T08:03:38Z"
+}

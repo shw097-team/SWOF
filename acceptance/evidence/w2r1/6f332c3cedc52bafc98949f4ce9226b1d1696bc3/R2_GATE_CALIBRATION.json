@@ -1,0 +1,87 @@
+{
+ "schema": "SWOF-GATE-CALIBRATION/1",
+ "artifact": "SWOF_W2_R2_GATE_CALIBRATION",
+ "order_id": "SWOF-W2-CLOSURE-R2",
+ "repair_id": "SWOF-W2-CLOSURE-R2",
+ "subject_under_calibration": "edb53142dda94e1b0e4926bebc008b06f42cbcfb",
+ "base": "7a0b4acbe14daca2061ba9b927013adf8aaf48b5",
+ "objective": "Prevent consequential/high-risk operations from bypassing exact Human authority, preserve ruin/safety precedence, bind W2 local closure to the exact repaired source, and hand external acceptance one internally consistent source/evidence subject. NOT green-test maximisation.",
+ "gates": [
+  {
+   "gate": "A", "name": "Compiler / source / RepoContext / gate calibration", "risk": "S2",
+   "strictness": "canonical Compiler lint+activation+acceptance+compile PASS; duplication identifies no second control plane",
+   "deterministic_oracle": "the canonical prompt-contract compiler under 知識庫/實作相關DOC/HG-KSEOS/construction-acceptance-prompt-compiler/",
+   "negative_cases": ["missing support bundle -> PROMPT_COMPILE_BLOCKED", "second RBWI artifact -> duplication FAIL"],
+   "raw_evidence": "evidence/R2_COMPILER_RECEIPT.json",
+   "fail_closed": "PROMPT_COMPILE_BLOCKED"
+  },
+  {
+   "gate": "B", "name": "HumanGate risk/ruin trigger", "risk": "S3",
+   "strictness": "P3/P4/P5 by RISK TIER or PERMISSION CLASS independently require a valid exact token; operation name may only tighten; RUIN/UNKNOWN_RUIN hard veto before approval and not overridable by any token",
+   "deterministic_oracle": "PI-PKG-06 DOC-03 TOK-INV-001 + TOK-INV-009",
+   "negative_cases": ["P3/P4/P5 + benign operation + no token", "valid token + RUIN", "valid token + UNKNOWN_RUIN", "P3 via permission_class only", "route object understating a P3 request"],
+   "positive_controls": ["P2 + benign operation stays ungated", "P3 + valid exact token PASS"],
+   "anti_overfit": "an independent lattice over {tier} x {operation name} x {token present} - the decay path must be a classification lattice, not a name list",
+   "raw_evidence": "evidence/R2_P3_RUIN_PROBES.json",
+   "fail_closed": "FAIL_SECURITY"
+  },
+  {
+   "gate": "C", "name": "canonical ApprovalToken basis / lineage / integrity", "risk": "S3",
+   "strictness": "exact request->decision->token lineage; approval_basis_hash recomputed; RFC 8785 JCS over payload minus signature; fixed domain frame; real Ed25519 over exactly the framed bytes with current key generation; audience mandatory on gated paths; fail closed when required currentness/basis is unavailable",
+   "deterministic_oracle": "PI-PKG-06 DOC-03 §15.5 + §16.1 SWOF-HG-INTEGRITY-001 + TOK-INV-002/006/010/011/012",
+   "negative_cases": ["wrong approval_basis_hash", "wrong request_id", "wrong decision_id", "conflicting generation", "missing expected audience", "forged signature", "signature over unframed bytes", "stale key generation"],
+   "positive_controls": ["correct Ed25519 signature over the exact framed JCS bytes PASSES"],
+   "llm_judge_policy": "ADVISORY_ONLY - a deterministic source/runtime contradiction outranks any model judgement",
+   "raw_evidence": "evidence/R2_P3_RUIN_PROBES.json",
+   "fail_closed": "TEMP_CLOSED_RUNTIME if exact JCS/Ed25519 capability cannot be qualified"
+  },
+  {
+   "gate": "D", "name": "product tests and regression", "risk": "S3",
+   "strictness": "focused first-failing tests -> smallest repair -> focused PASS -> adversarial -> full preserved W1/W2 regression; denominator must not shrink silently",
+   "baseline": "735 (W1 113 + W2 622) from the prior accepted evidence",
+   "hard_rule": "more tests is NOT a substitute for the canonical counterexamples",
+   "raw_evidence": "evidence/R2_TEST_DENOMINATOR.json",
+   "fail_closed": "FAIL on any silent shrink"
+  },
+  {
+   "gate": "E", "name": "exact-subject source freeze", "risk": "S3",
+   "strictness": "exact 40-hex source SHA; clean/readback workspace; no acceptance-affecting untracked mutation; all downstream artifacts bind this SHA",
+   "raw_evidence": "git rev-parse HEAD + git status --porcelain",
+   "fail_closed": "TEMP_CLOSED_STATE"
+  },
+  {
+   "gate": "F", "name": "fresh canonical-oracle independent checker", "risk": "S3",
+   "strictness": "fresh-context, read-only, VERIFY_ONLY, checker != maker; PI06/RBWI is authority and repo tests are evidence; must explicitly attack TOK-INV-001..014, the risk matrix, ruin precedence, §15.5, §16.1 and the lineage; a deterministic canonical contradiction may NOT be downgraded because repo tests agree with each other",
+   "deterministic_oracle": "canonical PI06 + RBWI (NOT candidate tests)",
+   "raw_evidence": "evidence/R2_FRESH_CHECKER_TRANSCRIPT.log + receipt",
+   "fail_closed": "checker FAIL/PARTIAL routes back to maker; checker never repairs"
+  },
+  {
+   "gate": "G", "name": "canonical HGK normative closure", "risk": "S3",
+   "strictness": "typed HGK APIs only (no consumer SQL writes); final normative checkpoint canonically bound to the exact new source SHA via the schema's actual binding surface and proven by RECOMPUTATION; all governed WorkOrders terminal; all acceptances terminal PASS and evidence-bound; lifecycle points at that checkpoint; denominator queries the same scope and is NONZERO/non-vacuous",
+   "deterministic_oracle": "HG-KSEOS var/shared-spine/hg-kseos.db (canonical) + the project scope's own rows",
+   "negative_cases": ["repo_head-only binding (empty)", "0/0 denominator", "foreign/stale subject substituted on resume"],
+   "hard_rule": "0/0 is ALWAYS invalid for this closure",
+   "raw_evidence": "evidence/R2_W2_NORMATIVE_CLOSURE_PROJECTION.json",
+   "fail_closed": "TEMP_CLOSED_STATE"
+  },
+  {
+   "gate": "H", "name": "LocalClosure and evidence regeneration", "risk": "S3",
+   "strictness": "regenerate, never hand-edit, from raw final state; all artifacts agree on PR/branch/source SHA/evidence root/checkpoint/checker/claim ceiling; descriptor SHA-256 and byte counts computed from COMMITTED bytes; empty-file SHA or 0-byte placeholder for a nonempty descriptor is a hard failure; secret-scan denominator semantically unambiguous",
+   "negative_cases": ["e3b0c442 empty-file SHA recorded for a non-empty descriptor", "stale/null PR or branch", "item count mislabelled as bytes"],
+   "raw_evidence": "evidence/R2_EVIDENCE_DESCRIPTOR_REGISTER.json",
+   "fail_closed": "TEMP_CLOSED_EVIDENCE"
+  },
+  {
+   "gate": "I", "name": "publication and remote readback", "risk": "S3",
+   "strictness": "A-H PASS on ONE exact source subject; PR.head.sha == source_candidate_sha; separate sanitized evidence commit; source_candidate_sha != evidence_commit_sha; remote readback of exact bytes; NOT merged",
+   "negative_cases": ["published subject whose exact independent receipt is PARTIAL", "manufactured PR/SHA"],
+   "raw_evidence": "evidence/R2_PUBLICATION_RECEIPT.json",
+   "fail_closed": "TEMP_CLOSED_GITHUB (preserve local closure; never manufacture a PR/SHA)"
+  }
+ ],
+ "tt_cr_policy": "Every non-blocking residual is registered as a TT with an activation condition. A TT may not be used to downgrade a deterministic canonical contradiction.",
+ "hitl_boundary": "HITL only at true authority edges: equal-rank source conflict, credential/permission grant, repository visibility policy, mutation outside authorised roots, destructive scope expansion, live consequential effects, merge/release/production. Routine repair/test/typed-state/evidence work proceeds without repeated HITL.",
+ "runtime_capability_note": "Ed25519 is provided by the present `cryptography` capability. RFC 8785 JCS is NOT available in the environment and is implemented exactly in src/security/humangate.py (jcs_dumps); it must be attacked as exact, not accepted as 'sorted JSON'. If exactness were unavailable, the mandated state is TEMP_CLOSED_RUNTIME - approximating is forbidden.",
+ "generated_at_utc": "2026-10-04T00:00:00Z"
+}

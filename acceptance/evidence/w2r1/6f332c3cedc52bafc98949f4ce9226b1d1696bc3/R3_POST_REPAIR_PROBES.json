@@ -1,0 +1,172 @@
+{
+ "schema": "SWOF-W2-R1-POST-REPAIR-PROBES/1",
+ "subject": "repaired source HEAD (see receipt)",
+ "defect_F_W2_EXT_001_rights_currentness": "NO_LONGER_REPRODUCES",
+ "defect_F_W2_EXT_002_humangate_syntactic": "NO_LONGER_REPRODUCES",
+ "probes_total": 14,
+ "probes_holding": 14,
+ "all_hold": true,
+ "rows": [
+  {
+   "probe": "R-C1.1",
+   "case": "expired entitlement + trusted currentness OMITTED",
+   "must_refuse": true,
+   "refused": true,
+   "observed": {
+    "allowed": false,
+    "reason": "CURRENTNESS_UNAVAILABLE_FAIL_CLOSED",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C1.2",
+   "case": "expired entitlement + currentness past expiry",
+   "must_refuse": true,
+   "refused": true,
+   "observed": {
+    "allowed": false,
+    "reason": "EXPIRED",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C1.3",
+   "case": "boundary now == expiry",
+   "must_refuse": true,
+   "refused": true,
+   "observed": {
+    "allowed": false,
+    "reason": "EXPIRED",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C1.4",
+   "case": "malformed currentness",
+   "must_refuse": true,
+   "refused": true,
+   "observed": {
+    "allowed": false,
+    "reason": "EXPIRED",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C1.6",
+   "case": "POSITIVE CONTROL: no-expiry scope, currentness omitted (must NOT refuse)",
+   "must_refuse": false,
+   "refused": false,
+   "observed": {
+    "allowed": true,
+    "reason": "ENTITLED",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C1.7",
+   "case": "live expiring scope + currentness supplied (must NOT refuse)",
+   "must_refuse": false,
+   "refused": false,
+   "observed": {
+    "allowed": true,
+    "reason": "ENTITLED",
+    "returned": null
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C1.8",
+   "case": "EXPIRED credential scope + currentness OMITTED",
+   "must_refuse": true,
+   "refused": true,
+   "observed": {
+    "raised": "RightsDenied",
+    "message": "CURRENTNESS_UNAVAILABLE_FAIL_CLOSED"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C1.9",
+   "case": "EXPIRED credential scope + currentness supplied",
+   "must_refuse": true,
+   "refused": true,
+   "observed": {
+    "raised": "RightsDenied",
+    "message": "EXPIRED_CREDENTIAL_SCOPE"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C1.10",
+   "case": "POSITIVE CONTROL: live credential scope",
+   "must_refuse": false,
+   "refused": false,
+   "observed": {
+    "allowed": null,
+    "reason": null,
+    "returned": "None"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C2.1",
+   "case": "bare approval string 'sure go ahead'",
+   "must_refuse": true,
+   "refused": true,
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "NOT_A_CANONICAL_APPROVAL_TOKEN"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C2.2",
+   "case": "bare approval string 'approved'",
+   "must_refuse": true,
+   "refused": true,
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "NOT_A_CANONICAL_APPROVAL_TOKEN"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C2.3",
+   "case": "bare string + unrelated requesting_actor",
+   "must_refuse": true,
+   "refused": true,
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "NOT_A_CANONICAL_APPROVAL_TOKEN"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C2.4",
+   "case": "self-approval (string == requesting_actor)",
+   "must_refuse": true,
+   "refused": true,
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "NOT_A_CANONICAL_APPROVAL_TOKEN"
+   },
+   "holds": true
+  },
+  {
+   "probe": "R-C2.5",
+   "case": "empty approval string",
+   "must_refuse": true,
+   "refused": true,
+   "observed": {
+    "raised": "HumanGateBypassAttempt",
+    "message": "NOT_A_CANONICAL_APPROVAL_TOKEN"
+   },
+   "holds": true
+  }
+ ]
+}
