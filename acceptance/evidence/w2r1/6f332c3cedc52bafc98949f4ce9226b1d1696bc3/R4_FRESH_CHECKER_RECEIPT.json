@@ -55,7 +55,7 @@
   "path": "checker_live/ROUND5_R4_task-0.log",
   "sha256": "a9ac2b5f21a23e2491b1b53243177a2592fe1f0836d4ed5910c7fa6f6533ac67",
   "bytes": 38194,
-  "path_in_committed_tree": "historical/checker_live/ROUND5_R4_task-0.log",
+  "path_in_committed_tree": "checker_live/ROUND5_R4_task-0.log",
   "retrievable_from_publication": true
  },
  "note": "LOCAL/PROJECT independent verification (Gate 7). NOT the external challenge verdict."

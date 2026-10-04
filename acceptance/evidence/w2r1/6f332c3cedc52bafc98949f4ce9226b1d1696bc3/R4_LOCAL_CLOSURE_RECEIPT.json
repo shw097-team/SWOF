@@ -28,9 +28,10 @@
   },
   "G-R4-2": {
    "claim": "the identical probe set no longer reproduces A, B or C",
-   "probes_holding": 17,
-   "probes_total": 17,
-   "findings": {
+   "probes_holding": 18,
+   "probes_total": 18,
+   "probes_battery": "R4_AUTHN_FLOOR_PROBES.json",
+   "carried_r3_findings": {
     "A_exact_basis_bytes": "CLOSED",
     "B_authority_lineage": "CLOSED",
     "C_canonical_sets": "CLOSED",
@@ -82,7 +83,7 @@
  "gate_set_passed": true,
  "independent_checker": {
   "receipt": "evidence\\R4_FRESH_CHECKER_RECEIPT.json",
-  "sha256": "b295e8b39eb0e1b99963e691013d141d6fdac8a197777770020c63b3f0d11553",
+  "sha256": "0569f713a280df35b4fc1816368d03f580348c36ffe838840dd3f8668c66c6da",
   "checker_identity": "fresh-5th-checker-swof-w2r4-r008-6f332c3",
   "product_verdict": "PASS",
   "governance_verdict": "PASS",
@@ -170,5 +171,5 @@
   "NO_PRODUCTION",
   "NO_WORLD_EFFECT_ACCEPTANCE"
  ],
- "generated_at_utc": "2026-10-04T10:41:57Z"
+ "generated_at_utc": "2026-10-04T11:18:46Z"
 }
