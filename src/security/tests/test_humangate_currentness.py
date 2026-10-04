@@ -113,6 +113,15 @@ def _decision_registry(mapping=None):
     return lambda decision_id: decisions.get(decision_id)
 
 
+def _request_resolver(trusted):
+    """The OWNER-CALLABLE trusted request resolver (R6): the CURRENT request for its id, else None.
+
+    Mirrors `_decision_registry`: the resolver is keyed by `request_id`, so a stale/superseded id
+    that does not match the trusted request yields None (fail closed), never a wrong request.
+    """
+    return lambda request_id: trusted if trusted.request_id == request_id else None
+
+
 def _valid_token(**overrides):
     fields = dict(
         token_id="tok-1", request_id="req-1", decision_id="dec-1", subject="svc-a",
@@ -166,17 +175,24 @@ def _release_ctx(**overrides):
         # owner policy that is sufficient for the request's declared HA requirement.
         decision_resolver=_decision_registry(),
         authority_policy=_authority_policy,
+        # R6 (F-W2R5-EXT-001): the trusted current request of the default fixture. The plain
+        # fixture request is its own trusted current request; a case that wants a DIVERGENT trusted
+        # request overrides this seam explicitly.
+        request_resolver=_request_resolver(_release_request()),
     )
     fields.update(overrides)
     return VerificationContext(**fields)
 
 
 def _verify(token_over=None, request_over=None, ctx_over=None):
+    request = _release_request(**(request_over or {}))
+    ctx_fields = dict(ctx_over or {})
+    # R6 (F-W2R5-EXT-001): every pre-R6 case keeps its original meaning by making the caller request
+    # its own TRUSTED current request. A case that needs a divergent trusted request overrides
+    # `request_resolver` explicitly through `ctx_over`.
+    ctx_fields.setdefault("request_resolver", _request_resolver(request))
     return verify_approval_token(
-        _valid_token(**(token_over or {})),
-        _release_request(**(request_over or {})),
-        _release_ctx(**(ctx_over or {})),
-    )
+        _valid_token(**(token_over or {})), request, _release_ctx(**ctx_fields))
 
 class TestRightsCurrentness(unittest.TestCase):
     def test_01_expired_entitlement_without_now_fails_closed(self):
@@ -506,7 +522,7 @@ class TestRouteReDerivationR2(unittest.TestCase):
         request = _release_request(effect_risk_tier="LOW", permission_class="P3")
         self.assertIsNone(assert_human_gate_satisfied(
             route, _valid_token(), requesting_actor="human:dave", request=request,
-            ctx=_release_ctx()))
+            ctx=_release_ctx(request_resolver=_request_resolver(request))))
 
 
 # WO-SWOF-W2-R003: the canonical ApprovalToken 1.0.0 required-name set (PI-PKG-06::DOC-03
@@ -631,7 +647,7 @@ class TestCanonicalGatePredicateD1(unittest.TestCase):
         request = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P3")
         self.assertIsNone(self._seam(
             request, _valid_token(operation="read"), requesting_actor="human:dave",
-            ctx=_release_ctx()))
+            ctx=_release_ctx(request_resolver=_request_resolver(request))))
 
     def test_r4_d1_06_p2_benign_operation_without_token_is_allowed(self):
         request = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2")
@@ -1462,6 +1478,137 @@ class TestTokenAndDecisionAuthnFloorR008(unittest.TestCase):
     def test_r008_b7_decision_bound_to_another_request_is_denied(self):
         decision = _verify(ctx_over={"decision_resolver": self._resolved(request_id="req-other")})
         self.assertEqual((decision.ok, decision.code), (False, "DENY_DECISION_REQUEST_MISMATCH"))
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R006R (R6). Branch A: the trusted request boundary (F-W2R5-EXT-001).
+# The policy-owned request fields (required_authn_assurance, effect_risk_tier, permission_class,
+# autonomy_tier, required_authority, ...) are DERIVED by policy owners, never caller choice. The
+# verifier pins the caller request to the OWNER-INJECTED `request_resolver` and reads the authn
+# floor from the TRUSTED request, so a caller can never declare its way to a weaker floor.
+# ---------------------------------------------------------------------------------------------
+class TestR6TrustedRequestBoundary(unittest.TestCase):
+    """A1-A13: a caller-declared policy downgrade is refused; a matching trusted request passes."""
+
+    def _resolved(self, **decision_overrides):
+        return _decision_registry({"dec-1": _current_decision(**decision_overrides)})
+
+    def _denied(self, expected_code, request_over=None, trusted=None, ctx_over=None,
+                token_over=None):
+        request = _release_request(**(request_over or {}))
+        fields = dict(ctx_over or {})
+        if trusted is not None:
+            fields["request_resolver"] = _request_resolver(trusted)
+        decision = _verify(token_over=token_over, request_over=request_over, ctx_over=fields)
+        self.assertEqual((decision.ok, decision.code), (False, expected_code))
+        return request
+
+    # A1: a CRITICAL/AAC3 trusted request cloned as CRITICAL/AAC2 (same binding) is refused.
+    def test_a1_trusted_critical_aac3_caller_clone_aac2_is_policy_mismatch(self):
+        self._denied(
+            "DENY_REQUEST_POLICY_MISMATCH",
+            request_over={"effect_risk_tier": "CRITICAL", "required_authn_assurance": "AAC2"},
+            trusted=_release_request(effect_risk_tier="CRITICAL",
+                                     required_authn_assurance="AAC3"))
+
+    # A2: a P4/AAC3 trusted request cloned as P4/AAC2 is refused.
+    def test_a2_trusted_p4_aac3_caller_clone_aac2_is_policy_mismatch(self):
+        self._denied(
+            "DENY_REQUEST_POLICY_MISMATCH",
+            request_over={"permission_class": "P4", "required_authn_assurance": "AAC2"},
+            trusted=_release_request(permission_class="P4", required_authn_assurance="AAC3"))
+
+    # A3: a protected P5/AAC3 trusted request cloned as P5/AAC2 is refused.
+    def test_a3_trusted_protected_p5_aac3_caller_clone_aac2_is_policy_mismatch(self):
+        self._denied(
+            "DENY_REQUEST_POLICY_MISMATCH",
+            request_over={"permission_class": "P5", "required_authn_assurance": "AAC2"},
+            trusted=_release_request(permission_class="P5", required_authn_assurance="AAC3"))
+
+    # A4: the caller lowers effect_risk_tier below the trusted current value.
+    def test_a4_caller_lowers_effect_risk_tier_is_policy_mismatch(self):
+        self._denied(
+            "DENY_REQUEST_POLICY_MISMATCH",
+            request_over={"effect_risk_tier": "LOW", "required_authn_assurance": "AAC3"},
+            trusted=_release_request(effect_risk_tier="CRITICAL",
+                                     required_authn_assurance="AAC3"))
+
+    # A5: the caller lowers the permission_class below the trusted current value.
+    def test_a5_caller_lowers_permission_class_is_policy_mismatch(self):
+        self._denied(
+            "DENY_REQUEST_POLICY_MISMATCH",
+            request_over={"permission_class": "P2"},
+            trusted=_release_request(permission_class="P3"))
+
+    # A6: the caller lowers the autonomy_tier below the trusted current value.
+    def test_a6_caller_lowers_autonomy_tier_is_policy_mismatch(self):
+        self._denied(
+            "DENY_REQUEST_POLICY_MISMATCH",
+            request_over={"autonomy_tier": "T2"},
+            trusted=_release_request(autonomy_tier="T3"))
+
+    # A7: the caller lowers the required_authority below the trusted current value.
+    def test_a7_caller_lowers_required_authority_is_policy_mismatch(self):
+        self._denied(
+            "DENY_REQUEST_POLICY_MISMATCH",
+            request_over={"required_authority": "HA3"},
+            trusted=_release_request(required_authority="HA5"))
+
+    # A8: the gate demanded a trusted resolver; an ABSENT one on a gated (canonical-floor) path
+    # FAILS CLOSED as DENY_REQUEST_UNRESOLVED, never treated as "skip".
+    def test_a8_missing_trusted_request_resolver_is_deny_request_unresolved(self):
+        self._denied(
+            "DENY_REQUEST_UNRESOLVED",
+            request_over={"required_authn_assurance": "AAC3"},
+            ctx_over={"request_resolver": None})
+
+    # A9: a resolver that does not know the request_id resolves to None (absent/stale) -> DENY.
+    def test_a9_trusted_request_not_found_is_deny_request_unresolved(self):
+        self._denied(
+            "DENY_REQUEST_UNRESOLVED",
+            request_over={"required_authn_assurance": "AAC3"},
+            trusted=_release_request(request_id="req-other", required_authn_assurance="AAC3"))
+
+    # A10: a stale/superseded trusted request is refused: a foreign request_id resolves to None,
+    # and a same-id request whose policy axis moved is a policy mismatch.
+    def test_a10_stale_or_superseded_trusted_request_is_denied(self):
+        self._denied(
+            "DENY_REQUEST_UNRESOLVED",
+            request_over={"required_authn_assurance": "AAC3"},
+            trusted=_release_request(request_id="req-superseded",
+                                     required_authn_assurance="AAC3"))
+        self._denied(
+            "DENY_REQUEST_POLICY_MISMATCH",
+            request_over={"required_authn_assurance": "AAC3"},
+            trusted=_release_request(effect_risk_tier="HIGH",
+                                     required_authn_assurance="AAC3"))
+
+    # A11: local_adapter with a missing floor is still DENY_AUTHN - no regression, and the removed
+    # adapter selector can not substitute a floor.
+    def test_a11_local_adapter_missing_floor_remains_deny_authn(self):
+        self._denied(
+            "DENY_AUTHN",
+            request_over={"adapter_kind": "local_adapter", "required_authn_assurance": ""})
+
+    # A12: a resolver that returns the SAME request keeps the valid path sane.
+    def test_a12_exact_trusted_request_with_valid_decision_and_token_is_approved(self):
+        trusted = _release_request()
+        decision = _verify(ctx_over={"request_resolver": _request_resolver(trusted)})
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+    # A13: legitimate AAC1/AAC2/AAC3 floors stay EXACT on a benign (LOW/P1) request - there is no
+    # global force-upgrade to AAC3.
+    def test_a13_exact_floors_remain_exact_on_a_benign_request(self):
+        for floor in ("AAC1", "AAC2", "AAC3"):
+            with self.subTest(floor=floor):
+                decision = _verify(
+                    request_over={"effect_risk_tier": "LOW", "permission_class": "P1",
+                                  "required_authn_assurance": floor},
+                    token_over={"authn_assurance_class": floor},
+                    ctx_over={"decision_resolver": self._resolved(
+                        authn_assurance_class=floor)})
+                self.assertEqual((decision.ok, decision.code),
+                                 (True, "APPROVE_BASIS_SATISFIED"))
 
 
 if __name__ == "__main__":

@@ -56,6 +56,13 @@ already wired: `ctx.max_reauth_age_seconds` (the owner-supplied freshness deadli
 generations), each of which fails closed with DENY_AUTHN / DENY_STALE_GENERATION when unavailable or
 stale. The requirement is therefore satisfied without a second authn registry, and
 `TEMP_CLOSED_AUTHN_CONTEXT_OWNER` is NOT emitted (no qualified owner interface is missing).
+
+R6 repair WO-SWOF-W2-R006R (F-W2R5-EXT-001): `ApprovalRequest` is public, so a caller could declare a
+LOWER `required_authn_assurance` on an otherwise CRITICAL/P4/P5 request and have the R008 floor honor
+it - a deterministic downgrade. The fix is the smallest legal seam, mirroring `decision_resolver`:
+a THIRD owner-injected `request_resolver` that resolves the CURRENT canonical request, to which the
+caller request is pinned on the policy-owned fields. The authn floor is then read from the TRUSTED
+request. This adds NO second policy engine, NO global AAC3 force-upgrade and NO adapter fallback.
 """
 from __future__ import annotations
 
@@ -187,6 +194,13 @@ APPROVAL_DENY_CODES = (
     "DENY_DECISION_UNRESOLVED", "DENY_DECISION_REQUEST_MISMATCH", "DENY_DECISION_TOKEN_MISMATCH",
     "DENY_DECISION_NOT_EXECUTABLE", "DENY_INSUFFICIENT_AUTHORITY", "DENY_DECISION_BASIS_MISMATCH",
     "TEMP_CLOSED_AUTHORITY_RESOLUTION",
+    # R6 (F-W2R5-EXT-001): the TRUSTED REQUEST BOUNDARY. The policy-owned request fields
+    # (required_authn_assurance, effect_risk_tier, permission_class, autonomy_tier,
+    # required_authority, ...) are DERIVED by the policy/risk-compiler/permission-classifier owners,
+    # never caller choice. A gated path whose CURRENT canonical ApprovalRequest cannot be resolved,
+    # or whose caller-supplied policy fields diverge from it, FAILS CLOSED before the authn floor
+    # is consulted.
+    "DENY_REQUEST_UNRESOLVED", "DENY_REQUEST_POLICY_MISMATCH",
 )
 
 # ---------------------------------------------------------------------------------------------
@@ -566,10 +580,20 @@ class VerificationContext:
     the request's requirement. This library defines NO HA ordering: an absent or malformed
     `authority_policy` FAILS CLOSED with TEMP_CLOSED_AUTHORITY_RESOLUTION instead of guessing a
     ranking. Neither seam is an authority grant; both are refusal inputs.
+
+    R6 (F-W2R5-EXT-001): `request_resolver` is the THIRD OWNER-INJECTED seam. It is called as
+    `request_resolver(request_id)` and MUST return the CURRENT canonical `ApprovalRequest` (or None
+    for an absent/stale/foreign request). The policy-owned request fields are DERIVED, never caller
+    choice, so the verifier compares the caller-supplied request to this resolved current request
+    and takes the authn floor from the TRUSTED request. `None`, a non-callable, a callable that
+    raises or has an incompatible arity, and any object that is not an `ApprovalRequest` all
+    resolve to None, which FAILS CLOSED with DENY_REQUEST_UNRESOLVED. An ABSENT resolver on a gated
+    path FAILS CLOSED - it is never treated as "skip". This seam is a refusal input, never a grant.
     """
 
     decision_resolver: object = None
     authority_policy: object = None
+    request_resolver: object = None
     commit_time: str = ""
     rights_generation: int | None = None
     consent_generation: int | None = None
@@ -876,6 +900,45 @@ def _resolve_current_decision(ctx, decision_id):
     return resolved if isinstance(resolved, HumanGateDecision) else None
 
 
+# R6 (F-W2R5-EXT-001): the policy-owned request fields the caller may NEVER dictate. These are the
+# axes the policy/risk-compiler/permission-classifier owners derive deterministically; the verifier
+# pins the caller-supplied request to the trusted current request on exactly these fields. Lineage
+# fields (request_id/decision_id/subject/binding) are already exact-bound by `_binding_errors`.
+_REQUEST_POLICY_FIELDS = (
+    "operation", "operation_class", "effect_risk_tier", "permission_class", "autonomy_tier",
+    "required_authority", "required_authn_assurance", "rollback_ref",
+    "independent_checker_required",
+)
+
+
+def _resolve_current_request(ctx, request_id):
+    """Resolve `request_id` to the current canonical ApprovalRequest, else None (fail closed).
+
+    R6 (F-W2R5-EXT-001): the OWNER-INJECTED `request_resolver` is the trusted source of the
+    policy-owned request fields. It is called as `request_resolver(request_id)` and MUST return the
+    CURRENT canonical `ApprovalRequest`, or None for an absent/stale/foreign request. `None`, a
+    non-callable, an object whose `resolve(request_id)` is not callable, a callable that raises or
+    has an incompatible arity, and any look-alike object that is not an `ApprovalRequest` all
+    resolve to None, which the verifier refuses with DENY_REQUEST_UNRESOLVED. This mirrors
+    `_resolve_current_decision` and grants no authority: the resolver is a refusal input that lets
+    the verifier refuse a caller-declared policy downgrade.
+    """
+    resolver = getattr(ctx, "request_resolver", None)
+    if resolver is None:
+        return None
+    try:
+        if callable(resolver):
+            resolved = resolver(request_id)
+        else:
+            resolve = getattr(resolver, "resolve", None)
+            if not callable(resolve):
+                return None
+            resolved = resolve(request_id)
+    except Exception:
+        return None
+    return resolved if isinstance(resolved, ApprovalRequest) else None
+
+
 def _authority_satisfied(ctx, decision, required_authority):
     """(ok, code) for the request's `required_authority` against a resolved decision.
 
@@ -1090,6 +1153,33 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
             return _deny("DENY_NO_ROLLBACK", "rollback_ref required and must match request")
 
     # ----------------------------------------------------------------------------------------
+    # R6 (F-W2R5-EXT-001): the TRUSTED REQUEST BOUNDARY, FIRST-FAIL, before the authn floor.
+    # A request that carries a canonical `required_authn_assurance` is asserting a security-policy
+    # floor, so the caller must NOT be the source of that (or any other policy-owned) truth: the
+    # verifier resolves the CURRENT canonical request through the OWNER-INJECTED `request_resolver`
+    # and pins the caller request to it. An absent resolver, an unresolvable/stale/foreign request,
+    # or ANY divergence in the policy-owned fields FAILS CLOSED. The floor then comes from the
+    # TRUSTED request, never the caller-declared one. An ABSENT/malformed caller floor cannot express
+    # a gated canonical request and still fails closed below with DENY_AUTHN (no policy boundary is
+    # consulted for it).
+    # ----------------------------------------------------------------------------------------
+    trusted_request = None
+    if _required_authn_floor(request) is not None:
+        trusted_request = _resolve_current_request(ctx, request.request_id)
+        if trusted_request is None or trusted_request.request_id != request.request_id:
+            return _deny("DENY_REQUEST_UNRESOLVED",
+                         "no trusted current request resolver/request_id=%r"
+                         % request.request_id)
+        mismatches = [
+            name for name in _REQUEST_POLICY_FIELDS
+            if getattr(request, name, None) != getattr(trusted_request, name, None)
+        ]
+        if mismatches:
+            return _deny("DENY_REQUEST_POLICY_MISMATCH", ",".join(mismatches))
+    if trusted_request is None:
+        trusted_request = request
+
+    # ----------------------------------------------------------------------------------------
     # R007: request -> HumanGateDecision -> ApprovalToken authority/decision lineage, FIRST-FAIL.
     # A signature is NOT a proxy for canonical authority: a well-signed token bound to a decision
     # that was never resolved, to another request, to a mismatched decision id, to a
@@ -1116,14 +1206,16 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
     if _epoch(decision.decided_at) is None:
         return _deny("DENY_DECISION_NOT_EXECUTABLE", "decided_at is not a trusted UTC instant")
     authority_ok, authority_code = _authority_satisfied(
-        ctx, decision, request.required_authority)
+        ctx, decision, trusted_request.required_authority)
     if not authority_ok:
         return _deny(authority_code, "authority_class=%r" % decision.authority_class)
-    # R008: the authn floor is the EXACT validated request floor (never an implementation default).
-    # A missing/malformed request floor, an unreadable decision class, an AAC downgrade, OR a token
-    # weaker than either the floor or the resolved decision all FAIL CLOSED with DENY_AUTHN, and this
-    # runs BEFORE the signature check (a signature is not a proxy for a sufficient-authn approval).
-    request_floor = _required_authn_floor(request)
+
+    # R008: the authn floor is the EXACT validated TRUSTED-request floor (never a caller default,
+    # never an implementation default). A missing/malformed floor, an unreadable decision class, an
+    # AAC downgrade, OR a token weaker than either the floor or the resolved decision all FAIL CLOSED
+    # with DENY_AUTHN, and this runs BEFORE the signature check (a signature is not a proxy for a
+    # sufficient-authn approval).
+    request_floor = _required_authn_floor(trusted_request)
     request_assurance = AUTHN_ASSURANCE_ORDER.get(request_floor)
     if request_assurance is None:
         return _deny("DENY_AUTHN",

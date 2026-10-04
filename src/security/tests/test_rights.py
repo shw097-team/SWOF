@@ -69,6 +69,11 @@ def _decision_registry(mapping=None):
     decisions = dict(mapping or {"dec-1": _current_decision()})
     return lambda decision_id: decisions.get(decision_id)
 
+
+def _request_resolver(trusted):
+    """R6: the owner-callable trusted CURRENT request resolver, keyed by request_id (else None)."""
+    return lambda request_id: trusted if trusted.request_id == request_id else None
+
 # WO-SWOF-W2-R004: the signature is a REAL Ed25519 signature. The TEST key never leaves this
 # module; the library performs the verification against a public key resolved by the registered
 # resolver, and only the resolver supplies key material.
@@ -240,9 +245,10 @@ class TestHumanGateSatisfaction(unittest.TestCase):
 
     def test_verified_exact_bound_token_passes(self):
         route = human_gate_route("release")
+        request = _release_request()
         self.assertIsNone(assert_human_gate_satisfied(
             route, _valid_token(), requesting_actor="human:alice",
-            request=_release_request(), ctx=_release_ctx()))
+            request=request, ctx=_release_ctx(request_resolver=_request_resolver(request))))
 
     def test_ungated_route_is_honoured_only_when_rederivation_agrees(self):
         request = _release_request(operation="read")
@@ -330,7 +336,7 @@ class TestCanonicalGatePredicateR4(unittest.TestCase):
         route = human_gate_required(request)
         self.assertIsNone(assert_human_gate_satisfied(
             route, _valid_token(), requesting_actor="human:alice", request=request,
-            ctx=_release_ctx()))
+            ctx=_release_ctx(request_resolver=_request_resolver(request))))
 
 
 # ---------------------------------------------------------------------------------------------
@@ -342,6 +348,9 @@ class TestGatedAuthorityLineageR007(unittest.TestCase):
     def _seam(self, ctx):
         request = _release_request(effect_risk_tier="LOW", permission_class="P3")
         route = human_gate_required(request)
+        # R6: inject the matching trusted current request so these lineage cases still exercise the
+        # decision/authority seam rather than the (separately covered) trusted-request boundary.
+        ctx = replace(ctx, request_resolver=_request_resolver(request))
         return assert_human_gate_satisfied(
             route, _valid_token(), requesting_actor="human:dave", request=request, ctx=ctx)
 
@@ -400,16 +409,18 @@ class TestRealEd25519SeamR4(unittest.TestCase):
 
     def test_unknown_key_is_refused(self):
         forged = _valid_token(signature=SIGNATURE)
+        request = _release_request()
         with self.assertRaises(HumanGateBypassAttempt) as caught:
             assert_human_gate_satisfied(
                 human_gate_route("release"), forged, requesting_actor="human:alice",
-                request=_release_request(), ctx=_release_ctx())
+                request=request, ctx=_release_ctx(request_resolver=_request_resolver(request)))
         self.assertEqual(str(caught.exception), "DENY_TOKEN_INTEGRITY")
 
     def test_real_signature_passes(self):
+        request = _release_request()
         self.assertIsNone(assert_human_gate_satisfied(
             human_gate_route("release"), _valid_token(), requesting_actor="human:alice",
-            request=_release_request(), ctx=_release_ctx()))
+            request=request, ctx=_release_ctx(request_resolver=_request_resolver(request))))
 
 
 # ---------------------------------------------------------------------------------------------
@@ -669,9 +680,10 @@ class TestPolicyBoundAuthnFloorAtSeamR008(unittest.TestCase):
 
     def _seam(self, request):
         route = human_gate_required(request)
+        ctx = _release_ctx(request_resolver=_request_resolver(request))
         return assert_human_gate_satisfied(
             route, _valid_token(), requesting_actor="human:dave", request=request,
-            ctx=_release_ctx())
+            ctx=ctx)
 
     def test_r008_exact_floor_aac2_request_passes(self):
         request = _release_request(effect_risk_tier="LOW", permission_class="P3",
@@ -687,14 +699,17 @@ class TestPolicyBoundAuthnFloorAtSeamR008(unittest.TestCase):
         with self.assertRaises(HumanGateBypassAttempt) as caught:
             assert_human_gate_satisfied(human_gate_required(request), original,
                                         requesting_actor="human:dave", request=request,
-                                        ctx=_release_ctx())
+                                        ctx=_release_ctx(request_resolver=_request_resolver(request)))
         self.assertEqual(str(caught.exception), "DENY_AUTHN")
 
     def test_r008_canonical_floor_field_is_required_on_gated_requests(self):
         request = _release_request(effect_risk_tier="LOW", permission_class="P3",
                                    required_authn_assurance="AAC3")
+        ctx = _release_ctx(request_resolver=_request_resolver(request))
         with self.assertRaises(HumanGateBypassAttempt) as caught:
-            self._seam(request)
+            assert_human_gate_satisfied(
+                human_gate_required(request), _valid_token(), requesting_actor="human:dave",
+                request=request, ctx=ctx)
         self.assertEqual(str(caught.exception), "DENY_AUTHN")
 
 
