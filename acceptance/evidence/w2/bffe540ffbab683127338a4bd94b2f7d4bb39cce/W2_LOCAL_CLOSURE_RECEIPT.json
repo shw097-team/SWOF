@@ -163,10 +163,122 @@
   }
  ],
  "publication_state": {
-  "remote_push": "TEMP_CLOSED_GITHUB_NO_CREDENTIAL",
-  "reason": "no git remote is configured, gh is absent and no GitHub credential exists in this environment, so the authoritative remote readback is UNAVAILABLE; the exact local source and evidence commit identities are frozen instead",
-  "pr": "TEMP_CLOSED_GITHUB_NO_CREDENTIAL",
-  "remote_ci": "N/A_WITH_REASON (no remote publication)"
+  "schema": "SWOF-W2-PUBLICATION-RECEIPT/1",
+  "order_id": "SWOF-CONSTRUCTION-002-W2",
+  "generated_at_utc": "2026-10-04T02:20:00Z",
+  "credential": {
+   "auth_mode": "fine-grained personal access token supplied by the user for THIS run",
+   "authenticated_as": "shw097",
+   "repo_permissions_observed": {
+    "admin": true,
+    "maintain": true,
+    "push": true,
+    "triage": true,
+    "pull": true
+   },
+   "handling": "used in-process only, passed to git/curl through an environment variable, never printed, never written into any evidence artifact or repository file, never persisted in .git/config; the temp copy was deleted after the run",
+   "no_token_in_evidence": true
+  },
+  "prior_state": {
+   "remote_push": "TEMP_CLOSED_GITHUB_NO_CREDENTIAL",
+   "reason": "before this run there was no configured remote, no gh CLI and no credential in the environment"
+  },
+  "remote_state_before_push": {
+   "repo": "shw097-team/SWOF",
+   "visibility": "private",
+   "default_branch": "main",
+   "main_sha": "acdbfaadd19d12927eb5bd542b09ed230bbc481e",
+   "w1_accepted_source_ref": "refs/heads/repair/w1-r4-binding-order-proof = 7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+   "w1_accepted_evidence_ref": "refs/heads/evidence/w1-r4-evidence-cleanup = 84ea30c216ac319c4e55df1b07ee2ee3372bcc88",
+   "w1_accepted_tuple_intact_on_remote": true,
+   "pr4": {
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "base": "main",
+    "head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   }
+  },
+  "pushes": [
+   {
+    "ref": "wo/swof-w2-security-effect-assurance",
+    "type": "source_candidate",
+    "local_sha": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+    "remote_sha_after_push": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+    "new_branch": true,
+    "match": true
+   },
+   {
+    "ref": "evidence/swof-w2-substrate",
+    "type": "evidence",
+    "local_sha_at_first_publication": "5deaf2d1474c18a527c1b7b784f6766214df338f",
+    "remote_sha_after_push": "5deaf2d1474c18a527c1b7b784f6766214df338f",
+    "new_branch": true,
+    "match": true,
+    "mode": "created as an orphan lineage; later revisions are ADVANCED on top, never force-pushed"
+   }
+  ],
+  "pull_request": {
+   "number": 6,
+   "state": "open",
+   "draft": true,
+   "merged": false,
+   "html_url": "https://github.com/shw097-team/SWOF/pull/6",
+   "base": "main",
+   "base_sha": "acdbfaadd19d12927eb5bd542b09ed230bbc481e",
+   "head_ref": "wo/swof-w2-security-effect-assurance",
+   "head_sha": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+   "head_equals_source_candidate": true,
+   "base_policy_basis": "the repository's accepted review base is main (PR #4 used the same base); main was NOT advanced and W1 was NOT merged merely to simplify the diff"
+  },
+  "remote_readback": {
+   "method": "GitHub REST /git/commits and /git/trees?recursive=1 plus /contents per-file blob sha, compared against locally re-derived git object ids",
+   "source_commit": {
+    "tree_local": "c29cacd76c388d990ce33ea675d976e701e572b6",
+    "tree_remote": "c29cacd76c388d990ce33ea675d976e701e572b6",
+    "trees_match": true
+   },
+   "evidence_commit": {
+    "tree_local": "2bc171ab8b083db2124d976a5e9ab53452b87082",
+    "tree_remote": "2bc171ab8b083db2124d976a5e9ab53452b87082",
+    "trees_match": true
+   },
+   "spot_blob_checks": [
+    {
+     "path": "SWOF_EVIDENCE_RETURN_PACK.json",
+     "match": true
+    },
+    {
+     "path": "SECRET_SCAN_RECEIPT.json",
+     "match": true
+    },
+    {
+     "path": "REDACTION_RECEIPT.json",
+     "match": true
+    },
+    {
+     "path": "EVIDENCE_READBACK.json",
+     "match": true
+    },
+    {
+     "path": "CHECKER_RECEIPT.json",
+     "match": true
+    }
+   ],
+   "conclusion": "the remote commit objects and their trees are byte-identical to the local objects; a git tree sha equality is a complete identity for every blob beneath it"
+  },
+  "remote_ci": {
+   "disposition": "N_A_WITH_REASON",
+   "reason": "the repository contains no .github/workflows directory (REST contents probe returned 404), so no portable remote CI is defined for this repo; the RBWI explicitly allows N/A_WITH_REASON for host-bound predicates",
+   "candidate_job_secrets": "none (no workflow exists)"
+  },
+  "merge_release_production": {
+   "merge": "NOT_PERFORMED",
+   "release": "NOT_PERFORMED",
+   "production": "NOT_PERFORMED",
+   "world_effect_acceptance": "NOT_PERFORMED"
+  },
+  "claim_effect": "publication_state moves from TEMP_CLOSED_GITHUB_NO_CREDENTIAL to PUBLISHED_LOCALLY_AND_REMOTELY_READ_BACK; external acceptance is still NOT granted and remains PENDING_READ_ONLY_GPT_ACCEPTANCE"
  },
  "claim_ceiling": "W2_LOCAL_CONSTRUCTION_CLOSED / W2_PRODUCT_SUBSTRATE_INDEPENDENT_CHECK_PASS / W2_GOVERNANCE_EVIDENCE_INDEPENDENT_CHECK_PASS_ON_SUBSTANCE_WITH_TWO_DISCLOSED_NON_BLOCKING_ITEMS / W1_ACCEPTED_BASELINE_PRESERVED / W2_SOURCE_AND_EVIDENCE_COMMITS_FROZEN_LOCALLY / PUBLICATION_TEMP_CLOSED_GITHUB_NO_CREDENTIAL / READY_FOR_W2_EXTERNAL_ACCEPTANCE / WAVE_VERDICT_PARTIAL / NOT_W3_STARTED / NOT_MERGED / NOT_RELEASED / NOT_PRODUCTION / NO_WORLD_EFFECT_ACCEPTANCE",
  "non_claims": [
@@ -188,5 +300,5 @@
   "pre_mutation_seq": 8,
   "permit_seq": 9
  },
- "generated_at_utc": "2026-10-03T18:00:04Z"
+ "generated_at_utc": "2026-10-04T01:00:10Z"
 }

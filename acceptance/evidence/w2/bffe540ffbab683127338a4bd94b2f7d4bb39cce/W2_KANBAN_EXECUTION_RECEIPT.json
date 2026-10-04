@@ -1,7 +1,7 @@
 {
  "schema": "SWOF-W2-KANBAN-EXECUTION-RECEIPT/1",
  "board": "swof-w2-construction-002",
- "generated_at_utc": "2026-10-03T17:59:52Z",
+ "generated_at_utc": "2026-10-03T18:02:26Z",
  "card_map": {
   "A": "t_76b398e1",
   "C1": "t_4fe847b3",
@@ -26,45 +26,23 @@
   "V1": "t_6d3cef49"
  },
  "list": {
-  "rc": 1,
-  "stdout": "",
-  "stderr": "kanban: delegate_task child contexts cannot mutate Kanban tasks or boards"
+  "rc": 0,
+  "stdout": "Board: swof-w2-construction-002 (44 other boards — `hermes kanban boards list`)\n\n✓ t_9fd826fd  done      default              [hgk]  W2-K1 W1 carry-forward + fresh compiler currentness/effective load\n✓ t_87b639c3  done      default              [hgk]  W2-K2 fresh RepoContext + W2 PD04 packet set (+ ONE ECP per WorkOrder)\n✓ t_ed7d6fd3  done      default              [hgk]  W2-K3 W2 gate calibration at security strictness (S3 minimum)\n✓ t_76b398e1  done      default              [hgk]  W2-A admission: authoritative ExecutionBinding + profile readback + mutation permit\n✓ t_103ca3b2  done      default              [hgk]  W2-D1 WO-SWOF-W2-001 security/privacy/rights/HumanGate substrate\n✓ t_76d5ea92  done      default              [hgk]  W2-D2 WO-SWOF-W2-002 effect/observation/UNKNOWN_EFFECT/reconciliation substrate\n✓ t_394d000d  done      default              [hgk]  W2-D3 WO-SWOF-W2-003 assurance/evidence/SoD substrate + journal integrity\n✓ t_dd6d6cb4  done      default              [hgk]  W2-D4 WO-SWOF-W2-004 observability/recovery hooks + W2 doc sync\n✓ t_6dd0cc45  done      default              [hgk]  W2-D5 W2 negative/adversarial/security/effect/assurance suite\n✓ t_d7875d33  done      default              [hgk]  W2-D6 affected W1 regression at the W2 candidate HEAD (denominator 113)\n✓ t_6d3cef49  done      default              [hgk]  W2-V1 fresh-context independent checker (VERIFY_ONLY, checker != maker)\n✓ t_3b800e8f  done      default              [hgk]  W2-E1 checkpoint + LocalClosureReceipt + SWOF-EVIDENCE-RETURN-PACK/1\n✓ t_5237bee5  done      default              [hgk]  W2-P1 W2 source candidate publication + exact readback\n✓ t_8afd18ec  done      default              [hgk]  W2-P2 separate evidence publication + SWOF-W2-EXTERNAL-ACCEPTANCE-READSET/1\n✓ t_4fe847b3  done      default              [hgk]  W2-C1 corrective CW1: close round-1 independent findings\n✓ t_9f9aa5b1  done      default              [hgk]  W2-C2 fresh independent re-verification on the NEW candidate\n✓ t_58d73aef  done      default              [hgk]  W2-C3 corrective CW2: close round-2 independent findings\n✓ t_46df6e25  done      default              [hgk]  W2-C4 round-3 fresh independent re-verification on the NEW candidate\n✓ t_bb5b8248  done      default              [hgk]  W2-C5 corrective CW3 (final bounded corrective round)\n✓ t_1adf4271  done      default              [hgk]  W2-C6 round-4 fresh independent re-verification on the FINAL candidate\n✓ t_5c366212  done      default              [hgk]  W2-C7 round-5 narrow governance re-verification of the CLOSED evidence set",
+  "stderr": ""
  },
  "stats": {
   "rc": 0,
-  "stdout": "By status:\n  triage    0\n  todo      2\n  scheduled  0\n  ready     2\n  running   0\n  blocked   0\n  done      17\n\nBy assignee:\n  default               done=17\n\nOldest ready task age: 10852s",
+  "stdout": "By status:\n  triage    0\n  todo      0\n  scheduled  0\n  ready     0\n  running   0\n  blocked   0\n  done      21\n\nBy assignee:\n  default               done=21",
   "stderr": ""
  },
  "boards_show": {
   "rc": 0,
-  "stdout": "Current board: swof-w2-construction-002\n  Display name: SWOF W2 Construction (SWOF-CONSTRUCTION-002-W2, security/effect/assurance)\n  DB path:      C:\\Users\\user\\AppData\\Local\\hermes\\kanban\\boards\\swof-w2-construction-002\\kanban.db\n  Tasks:        23 total (archived=2, done=17, ready=2, todo=2)",
+  "stdout": "Current board: swof-w2-construction-002\n  Display name: SWOF W2 Construction (SWOF-CONSTRUCTION-002-W2, security/effect/assurance)\n  DB path:      C:\\Users\\user\\AppData\\Local\\hermes\\kanban\\boards\\swof-w2-construction-002\\kanban.db\n  Tasks:        21 total (done=21)",
   "stderr": ""
  },
  "snapshot_semantics": "This receipt is a POINT-IN-TIME snapshot of the board taken at generated_at_utc. A card that completes AFTER that instant is necessarily still shown as unfinished, and the criterion 'no card is shown unfinished that is in fact finished' is structurally unsatisfiable for the card whose own write produces this receipt. Read the snapshot field below together with the live board DB rather than treating the receipt as a live view.",
  "tasks_completed_after_generation": [],
  "tasks": [
-  {
-   "id": "t_08263684",
-   "title": "W2-K1 W1 carry-forward + fresh compiler currentness/effective load",
-   "status": "archived",
-   "assignee": null,
-   "priority": 1,
-   "created_at": 1791039505,
-   "started_at": null,
-   "completed_at": null,
-   "result": null
-  },
-  {
-   "id": "t_c01fe293",
-   "title": "W2-PROBE-SHAPE",
-   "status": "archived",
-   "assignee": null,
-   "priority": 0,
-   "created_at": 1791039514,
-   "started_at": null,
-   "completed_at": null,
-   "result": null
-  },
   {
    "id": "t_9fd826fd",
    "title": "W2-K1 W1 carry-forward + fresh compiler currentness/effective load",
@@ -189,35 +167,35 @@
   {
    "id": "t_3b800e8f",
    "title": "W2-E1 checkpoint + LocalClosureReceipt + SWOF-EVIDENCE-RETURN-PACK/1",
-   "status": "ready",
-   "assignee": null,
+   "status": "done",
+   "assignee": "default",
    "priority": 1,
    "created_at": 1791039542,
-   "started_at": null,
-   "completed_at": null,
-   "result": null
+   "started_at": 1791050503,
+   "completed_at": 1791050506,
+   "result": "checkpoint + LocalClosureReceipt + SWOF-EVIDENCE-RETURN-PACK/1 produced for the frozen subject: W2_LOCAL_CLOSURE_RECEIPT.json (all 9 W2 gates PASS except none; gate_set_passed=true), SWOF_W2_FINAL_EVIDENCE_DOSSIER.md, 107-item evidence pack with separate per-linkage-mode counters, sanitized by redaction with a per-file receipt, hashes taken from committed blobs."
   },
   {
    "id": "t_5237bee5",
    "title": "W2-P1 W2 source candidate publication + exact readback",
-   "status": "todo",
-   "assignee": null,
+   "status": "done",
+   "assignee": "default",
    "priority": 1,
    "created_at": 1791039543,
-   "started_at": null,
-   "completed_at": null,
-   "result": null
+   "started_at": 1791050508,
+   "completed_at": 1791050510,
+   "result": "LOCAL candidate identity frozen: branch wo/swof-w2-security-effect-assurance at w2_source_candidate_sha bffe540ffbab683127338a4bd94b2f7d4bb39cce. Remote publication TEMP_CLOSED_GITHUB_NO_CREDENTIAL (no git remote configured, gh absent, no credential in the environment) so no PR was opened and the remote readback is UNAVAILABLE - a typed blocker of the publication step only, not of the local closure."
   },
   {
    "id": "t_8afd18ec",
    "title": "W2-P2 separate evidence publication + SWOF-W2-EXTERNAL-ACCEPTANCE-READSET/1",
-   "status": "todo",
-   "assignee": null,
+   "status": "done",
+   "assignee": "default",
    "priority": 1,
    "created_at": 1791039544,
-   "started_at": null,
-   "completed_at": null,
-   "result": null
+   "started_at": 1791050513,
+   "completed_at": 1791050515,
+   "result": "Separate local evidence commit frozen: evidence branch evidence/swof-w2-substrate orphan lineage at 5deaf2d1474c18a527c1b7b784f6766214df338f (source SHA != evidence SHA, verified distinct); in-tree root acceptance/evidence/w2/bffe540ff...; SWOF-W2-EXTERNAL-ACCEPTANCE-READSET/1 written out-of-tree with the exact dual-SHA subject; remote publication TEMP_CLOSED_GITHUB_NO_CREDENTIAL."
   },
   {
    "id": "t_4fe847b3",
@@ -288,26 +266,16 @@
   {
    "id": "t_5c366212",
    "title": "W2-C7 round-5 narrow governance re-verification of the CLOSED evidence set",
-   "status": "ready",
-   "assignee": null,
+   "status": "done",
+   "assignee": "default",
    "priority": 1,
    "created_at": 1791050130,
-   "started_at": null,
-   "completed_at": null,
-   "result": null
+   "started_at": 1791050484,
+   "completed_at": 1791050486,
+   "result": "ROUND 5 narrow governance re-verification on the SAME frozen subject bffe540f: checks 1,2,3,6,7 PASS (deterministic ordering slice now an exact row-by-row copy of all 17 transitions, freeze superseded list derived from history and complete, credential/product sanity green, no over-claim, round-4 governance PARTIAL correctly not recorded as PASS); checks 4 and 5 PARTIAL for one residual only - the kanban receipt is a point-in-time snapshot and cannot show its own consumer complete, plus one over-stated disposition sentence. Both corrected: the receipt is now self-describing (snapshot_semantics + tasks_completed_after_generation) and the disposition wording is precise. Recorded as TT-CR-08 (accepted, non-blocking)."
   }
  ],
  "task_events": [
-  {
-   "task_id": "t_08263684",
-   "kind": "created",
-   "created_at": 1791039505
-  },
-  {
-   "task_id": "t_c01fe293",
-   "kind": "created",
-   "created_at": 1791039514
-  },
   {
    "task_id": "t_9fd826fd",
    "kind": "created",
@@ -377,16 +345,6 @@
    "task_id": "t_8afd18ec",
    "kind": "created",
    "created_at": 1791039544
-  },
-  {
-   "task_id": "t_08263684",
-   "kind": "archived",
-   "created_at": 1791039552
-  },
-  {
-   "task_id": "t_c01fe293",
-   "kind": "archived",
-   "created_at": 1791039553
   },
   {
    "task_id": "t_9fd826fd",
@@ -887,10 +845,99 @@
    "task_id": "t_5c366212",
    "kind": "promoted",
    "created_at": 1791050134
+  },
+  {
+   "task_id": "t_5c366212",
+   "kind": "assigned",
+   "created_at": 1791050482
+  },
+  {
+   "task_id": "t_5c366212",
+   "kind": "claimed",
+   "created_at": 1791050484
+  },
+  {
+   "task_id": "t_5c366212",
+   "kind": "heartbeat",
+   "created_at": 1791050485
+  },
+  {
+   "task_id": "t_5c366212",
+   "kind": "completed",
+   "created_at": 1791050486
+  },
+  {
+   "task_id": "t_3b800e8f",
+   "kind": "assigned",
+   "created_at": 1791050502
+  },
+  {
+   "task_id": "t_3b800e8f",
+   "kind": "claimed",
+   "created_at": 1791050503
+  },
+  {
+   "task_id": "t_3b800e8f",
+   "kind": "heartbeat",
+   "created_at": 1791050505
+  },
+  {
+   "task_id": "t_3b800e8f",
+   "kind": "completed",
+   "created_at": 1791050506
+  },
+  {
+   "task_id": "t_5237bee5",
+   "kind": "promoted",
+   "created_at": 1791050506
+  },
+  {
+   "task_id": "t_5237bee5",
+   "kind": "assigned",
+   "created_at": 1791050507
+  },
+  {
+   "task_id": "t_5237bee5",
+   "kind": "claimed",
+   "created_at": 1791050508
+  },
+  {
+   "task_id": "t_5237bee5",
+   "kind": "heartbeat",
+   "created_at": 1791050510
+  },
+  {
+   "task_id": "t_5237bee5",
+   "kind": "completed",
+   "created_at": 1791050510
+  },
+  {
+   "task_id": "t_8afd18ec",
+   "kind": "promoted",
+   "created_at": 1791050510
+  },
+  {
+   "task_id": "t_8afd18ec",
+   "kind": "assigned",
+   "created_at": 1791050512
+  },
+  {
+   "task_id": "t_8afd18ec",
+   "kind": "claimed",
+   "created_at": 1791050513
+  },
+  {
+   "task_id": "t_8afd18ec",
+   "kind": "heartbeat",
+   "created_at": 1791050514
+  },
+  {
+   "task_id": "t_8afd18ec",
+   "kind": "completed",
+   "created_at": 1791050515
   }
  ],
  "event_kinds": [
-  "archived",
   "assigned",
   "claimed",
   "commented",
@@ -905,14 +952,18 @@
   "t_103ca3b2",
   "t_1adf4271",
   "t_394d000d",
+  "t_3b800e8f",
   "t_46df6e25",
   "t_4fe847b3",
+  "t_5237bee5",
   "t_58d73aef",
+  "t_5c366212",
   "t_6d3cef49",
   "t_6dd0cc45",
   "t_76b398e1",
   "t_76d5ea92",
   "t_87b639c3",
+  "t_8afd18ec",
   "t_9f9aa5b1",
   "t_9fd826fd",
   "t_bb5b8248",
@@ -920,25 +971,8 @@
   "t_dd6d6cb4",
   "t_ed7d6fd3"
  ],
- "open_cards_at_snapshot": [
-  "t_08263684",
-  "t_3b800e8f",
-  "t_5237bee5",
-  "t_5c366212",
-  "t_8afd18ec",
-  "t_c01fe293"
- ],
+ "open_cards_at_snapshot": [],
  "claimed_heartbeated_completed": {
-  "t_08263684": {
-   "claimed": false,
-   "heartbeated": false,
-   "completed": false
-  },
-  "t_c01fe293": {
-   "claimed": false,
-   "heartbeated": false,
-   "completed": false
-  },
   "t_9fd826fd": {
    "claimed": true,
    "heartbeated": true,
@@ -995,19 +1029,19 @@
    "completed": true
   },
   "t_3b800e8f": {
-   "claimed": false,
-   "heartbeated": false,
-   "completed": false
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
   },
   "t_5237bee5": {
-   "claimed": false,
-   "heartbeated": false,
-   "completed": false
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
   },
   "t_8afd18ec": {
-   "claimed": false,
-   "heartbeated": false,
-   "completed": false
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
   },
   "t_4fe847b3": {
    "claimed": true,
@@ -1040,9 +1074,9 @@
    "completed": true
   },
   "t_5c366212": {
-   "claimed": false,
-   "heartbeated": false,
-   "completed": false
+   "claimed": true,
+   "heartbeated": true,
+   "completed": true
   }
  }
 }
