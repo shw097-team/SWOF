@@ -89,6 +89,7 @@
   },
   "resource": {
    "type": "array",
+   "x-swof-collection-semantics": "set",
    "minItems": 1,
    "uniqueItems": true,
    "items": {
@@ -106,6 +107,7 @@
   },
   "scope": {
    "type": "array",
+   "x-swof-collection-semantics": "set",
    "minItems": 1,
    "uniqueItems": true,
    "items": {

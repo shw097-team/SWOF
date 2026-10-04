@@ -17,8 +17,8 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
 
 from security.humangate import (  # noqa: E402
-    ApprovalRequest, ApprovalToken, NonceLedger, VerificationContext, approval_basis_hash,
-    canonical_payload_bytes,
+    ApprovalRequest, ApprovalToken, HumanGateDecision, NonceLedger, VerificationContext,
+    approval_basis_hash, canonical_payload_bytes,
 )
 from security.rights import (  # noqa: E402
     EFFECT_RISK_TIERS, HIGH_RISK_ACTIONS, HumanGateBypassAttempt, HumanGateRoute, NONE_ROUTE,
@@ -35,6 +35,39 @@ DIGEST = "a" * 64
 SIGNATURE = "A" * 86
 
 BASIS = approval_basis_hash(DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0")
+# WO-SWOF-W2-R007: the LITERAL frozen 15.5 approval basis for the fixture request, whose
+# `decision_basis_hash` is R007_DECISION_BASIS. Source-derived, not helper-derived.
+R007_FIXTURE_APPROVAL_BASIS = (
+    "519bb5449ba2548c613d41292cdcee499608ea651fa2b06f5198f98752c6d937"
+)
+
+# WO-SWOF-W2-R007: the LITERAL frozen ApprovalDecisionBasisV1 JCS digest (same fixture as the
+# currentness suite); it is an independent source constant, not a call to the helper under test.
+R007_DECISION_BASIS = "85d40a3e42a96bebd63c1cf323d7d359825c43ed6447a57c38ba5897525ab4f7"
+
+
+def _authority_policy(decision_authority_class, required_authority):
+    """TEST owner policy: only the exact HA class the request declares is sufficient."""
+    return decision_authority_class == required_authority
+
+
+def _current_decision(**overrides):
+    fields = dict(
+        decision_id="dec-1", request_id="req-1", decision="APPROVE", approver="human:carol",
+        authority_class="HA3", authn_assurance_class="AAC2", reason_codes=("HG-RULE-001",),
+        decided_at="2026-06-01T00:15:00Z", evidence_ref="evidence:decision-1",
+        integrity_ref="integrity:decision-1", revoked=False, superseded=False,
+    )
+    fields.update(overrides)
+    decision = HumanGateDecision(**fields)
+    if "decision_basis_hash" in overrides:
+        return decision
+    return replace(decision, decision_basis_hash=R007_DECISION_BASIS)
+
+
+def _decision_registry(mapping=None):
+    decisions = dict(mapping or {"dec-1": _current_decision()})
+    return lambda decision_id: decisions.get(decision_id)
 
 # WO-SWOF-W2-R004: the signature is a REAL Ed25519 signature. The TEST key never leaves this
 # module; the library performs the verification against a public key resolved by the registered
@@ -64,7 +97,8 @@ def _valid_token(**overrides):
         effect_digest=DIGEST, consumer_audience_hash=DIGEST, approver="human:carol",
         authority_class="HUMAN_OPERATOR", approver_authn_context_ref="authn:ctx-1",
         authn_assurance_class="AAC2", reauthenticated_at="2026-06-01T00:00:00Z",
-        authn_session_generation=7, credential_generation=8, approval_basis_hash=BASIS,
+        authn_session_generation=7, credential_generation=8,
+        approval_basis_hash=R007_FIXTURE_APPROVAL_BASIS,
         if06b_version="1.0", payload_schema_version="1.0.0", min_reader_version="1.0",
         writer_version="DOC03-r2", compatibility_class="STRICT_MAJOR_ADDITIVE_MINOR",
         evidence_link="evidence:approval-basis-1",
@@ -87,9 +121,9 @@ def _release_request(**overrides):
         operation="release", target_system="swof", resource=("artifact:app",), environment="prod",
         purpose_ref="purpose:release", scope=("release",), data_class="INTERNAL",
         effect_digest=DIGEST, consumer_audience_hash=DIGEST, effect_risk_tier="LOW",
-        permission_class="P2", autonomy_tier="T2", required_authority="HUMAN_GATE:release",
+        permission_class="P2", autonomy_tier="T2", required_authority="HA3",
         rollback_ref="rollback:1", independent_checker_required=False, ruin_class="NONE",
-        request_id="req-1", decision_id="dec-1", decision_basis_hash=DIGEST,
+        request_id="req-1", decision_id="dec-1", decision_basis_hash=R007_DECISION_BASIS,
         generation_bundle_digest=DIGEST, rollback_digest=DIGEST,
     )
     fields.update(overrides)
@@ -102,6 +136,7 @@ def _release_ctx(**overrides):
         expected_consumer_audience_hash=DIGEST,
         trusted_key_registry=_honest_registry,
         nonce_ledger=NonceLedger(), max_reauth_age_seconds=3600,
+        decision_resolver=_decision_registry(), authority_policy=_authority_policy,
     )
     fields.update(overrides)
     return VerificationContext(**fields)
@@ -295,6 +330,38 @@ class TestCanonicalGatePredicateR4(unittest.TestCase):
         self.assertIsNone(assert_human_gate_satisfied(
             route, _valid_token(), requesting_actor="human:alice", request=request,
             ctx=_release_ctx()))
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R007: the gated seam must carry the decision/authority lineage and FAIL CLOSED when
+# no canonical current decision is resolvable - a signature is never a proxy for authority.
+# ---------------------------------------------------------------------------------------------
+class TestGatedAuthorityLineageR007(unittest.TestCase):
+
+    def _seam(self, ctx):
+        request = _release_request(effect_risk_tier="LOW", permission_class="P3")
+        route = human_gate_required(request)
+        return assert_human_gate_satisfied(
+            route, _valid_token(), requesting_actor="human:dave", request=request, ctx=ctx)
+
+    def test_gated_route_without_a_resolvable_decision_fails_closed(self):
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(_release_ctx(decision_resolver=None))
+        self.assertEqual(str(caught.exception), "DENY_DECISION_UNRESOLVED")
+
+    def test_gated_route_with_insufficient_authority_fails_closed(self):
+        resolver = _decision_registry({"dec-1": _current_decision(authority_class="HA1")})
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(_release_ctx(decision_resolver=resolver))
+        self.assertEqual(str(caught.exception), "DENY_INSUFFICIENT_AUTHORITY")
+
+    def test_gated_route_with_absent_authority_policy_is_temp_closed(self):
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(_release_ctx(authority_policy=None))
+        self.assertEqual(str(caught.exception), "TEMP_CLOSED_AUTHORITY_RESOLUTION")
+
+    def test_gated_route_with_current_decision_and_authority_passes(self):
+        self.assertIsNone(self._seam(_release_ctx()))
 
 
 class TestRuinPrecedenceR4(unittest.TestCase):

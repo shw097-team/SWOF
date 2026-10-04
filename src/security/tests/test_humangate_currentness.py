@@ -19,8 +19,9 @@ sys.path.insert(0, str(ROOT / "src"))
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey  # noqa: E402
 
 from security.humangate import (  # noqa: E402
-    APPROVAL_BASIS_FRAME, DOMAIN_FRAME, JCS_PROFILE, ApprovalDecision, ApprovalRequest,
-    ApprovalToken, JCSError, NonceLedger, VerificationContext, approval_basis_hash,
+    APPROVAL_BASIS_FRAME, APPROVAL_DECISION_BASIS_FIELDS, DECISION_EXECUTABLE_STATES, DOMAIN_FRAME,
+    JCS_PROFILE, ApprovalDecision, ApprovalRequest, ApprovalToken, HumanGateDecision, JCSError,
+    NonceLedger, VerificationContext, approval_basis_hash, approval_decision_basis_hash,
     canonical_payload_bytes, jcs_dumps, verify_approval_token,
 )
 from security.rights import (  # noqa: E402
@@ -38,6 +39,22 @@ COMMIT = "2026-06-01T00:30:00Z"
 DIGEST = "a" * 64
 SIGNATURE = "A" * 86
 
+# WO-SWOF-W2-R007: the LITERAL frozen PI06 15.5 golden vector. The expected value is an
+# independent source-derived constant for the six fields below and is NOT produced by calling
+# `approval_basis_hash`; a regression in the byte recipe cannot move both sides together.
+R007_SIX_FIELDS = (DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0")
+R007_FROZEN_APPROVAL_BASIS = (
+    "2a868198e40141f4ccfdcf5767fcb4f5950a3c241fc04b32de7d173cb79e6992"
+)
+# The recipe that ADDED five inter-field newline bytes; the frozen source rejects it.
+R007_OLD_BASIS = "b7965468fb4b11f51c44342d8aefe92c2120a8eb5ed648678f3c09d85eb91080"
+
+# WO-SWOF-W2-R007: the LITERAL frozen ApprovalDecisionBasisV1 JCS digest. Independent source
+# constant for the decision fixture below; it does NOT call the helper under test.
+R007_APPROVAL_DECISION_BASIS = (
+    "85d40a3e42a96bebd63c1cf323d7d359825c43ed6447a57c38ba5897525ab4f7"
+)
+
 # WO-SWOF-W2-R004: the signature is a REAL Ed25519 signature. The TEST key never leaves this
 # module; the library performs the verification against a public key resolved by the registered
 # resolver, and only the resolver supplies key material.
@@ -45,6 +62,11 @@ _PRIVATE_KEY = Ed25519PrivateKey.from_private_bytes(bytes(range(32)))
 _PUBLIC_BYTES = _PRIVATE_KEY.public_key().public_bytes_raw()
 
 BASIS = approval_basis_hash(DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0")
+# WO-SWOF-W2-R007: the LITERAL frozen 15.5 approval basis for the fixture request, whose
+# `decision_basis_hash` is R007_APPROVAL_DECISION_BASIS. Source-derived, not helper-derived.
+R007_FIXTURE_APPROVAL_BASIS = (
+    "519bb5449ba2548c613d41292cdcee499608ea651fa2b06f5198f98752c6d937"
+)
 
 
 def _sign_payload(payload: bytes) -> str:
@@ -59,6 +81,36 @@ def _honest_registry(issuer_id, key_id, key_generation):
     return _PUBLIC_BYTES
 
 
+def _authority_policy(decision_authority_class, required_authority):
+    """A TEST owner policy: the request names its own required HA class; only that class is enough.
+
+    This library defines NO HA ordering. The test policy is deliberately literal: the decision's
+    authority class must equal the class the request declares as required.
+    """
+    return decision_authority_class == required_authority
+
+
+def _current_decision(**overrides):
+    """The canonical CURRENT HumanGateDecision fixture the owner resolver would return."""
+    fields = dict(
+        decision_id="dec-1", request_id="req-1", decision="APPROVE", approver="human:carol",
+        authority_class="HA3", authn_assurance_class="AAC2", reason_codes=("HG-RULE-001",),
+        decided_at="2026-06-01T00:15:00Z", evidence_ref="evidence:decision-1",
+        integrity_ref="integrity:decision-1", revoked=False, superseded=False,
+    )
+    fields.update(overrides)
+    decision = HumanGateDecision(**fields)
+    if "decision_basis_hash" in overrides:
+        return decision
+    return replace(decision, decision_basis_hash=R007_APPROVAL_DECISION_BASIS)
+
+
+def _decision_registry(mapping=None):
+    """An owner-callable resolver: a mapping of decision_id -> current decision, else None."""
+    decisions = dict(mapping) if mapping is not None else {"dec-1": _current_decision()}
+    return lambda decision_id: decisions.get(decision_id)
+
+
 def _valid_token(**overrides):
     fields = dict(
         token_id="tok-1", request_id="req-1", decision_id="dec-1", subject="svc-a",
@@ -68,7 +120,8 @@ def _valid_token(**overrides):
         effect_digest=DIGEST, consumer_audience_hash=DIGEST, approver="human:carol",
         authority_class="HUMAN_OPERATOR", approver_authn_context_ref="authn:ctx-1",
         authn_assurance_class="AAC2", reauthenticated_at="2026-06-01T00:00:00Z",
-        authn_session_generation=7, credential_generation=8, approval_basis_hash=BASIS,
+        authn_session_generation=7, credential_generation=8,
+        approval_basis_hash=R007_FIXTURE_APPROVAL_BASIS,
         if06b_version="1.0", payload_schema_version="1.0.0", min_reader_version="1.0",
         writer_version="DOC03-r2", compatibility_class="STRICT_MAJOR_ADDITIVE_MINOR",
         evidence_link="evidence:approval-basis-1",
@@ -91,9 +144,9 @@ def _release_request(**overrides):
         operation="release", target_system="swof", resource=("artifact:app",), environment="prod",
         purpose_ref="purpose:release", scope=("release",), data_class="INTERNAL",
         effect_digest=DIGEST, consumer_audience_hash=DIGEST, effect_risk_tier="LOW",
-        permission_class="P2", autonomy_tier="T2", required_authority="HUMAN_GATE:release",
+        permission_class="P2", autonomy_tier="T2", required_authority="HA3",
         rollback_ref="rollback:1", independent_checker_required=False, ruin_class="NONE",
-        request_id="req-1", decision_id="dec-1", decision_basis_hash=DIGEST,
+        request_id="req-1", decision_id="dec-1", decision_basis_hash=R007_APPROVAL_DECISION_BASIS,
         generation_bundle_digest=DIGEST, rollback_digest=DIGEST,
     )
     fields.update(overrides)
@@ -106,6 +159,10 @@ def _release_ctx(**overrides):
         expected_consumer_audience_hash=DIGEST,
         trusted_key_registry=_honest_registry,
         nonce_ledger=NonceLedger(), max_reauth_age_seconds=3600,
+        # WO-SWOF-W2-R007: the positive control injects a canonical CURRENT decision and an
+        # owner policy that is sufficient for the request's declared HA requirement.
+        decision_resolver=_decision_registry(),
+        authority_policy=_authority_policy,
     )
     fields.update(overrides)
     return VerificationContext(**fields)
@@ -716,13 +773,23 @@ class TestTokenIntegrityLineageBasisD3(unittest.TestCase):
         self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
 
     def test_r4_d3_13_basis_recipe_is_exact(self):
+        # WO-SWOF-W2-R007: PI06 15.5 is DIRECT concatenation with exactly ONE newline (the one
+        # inside the frame). The old `"\n".join` recipe is asserted UNEQUAL, not reproduced.
         import hashlib
-        expected = hashlib.sha256(
-            APPROVAL_BASIS_FRAME + ("\n".join((DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0")))
-            .encode("utf-8")).hexdigest()
-        self.assertEqual(approval_basis_hash(DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0"),
-                         expected)
-        self.assertEqual(approval_basis_hash(DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0"), BASIS)
+        frame = APPROVAL_BASIS_FRAME
+        direct_material = frame + ("".join(R007_SIX_FIELDS)).encode("utf-8")
+        old_material = frame + ("\n".join(R007_SIX_FIELDS)).encode("utf-8")
+        self.assertEqual(
+            approval_basis_hash(DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0"),
+            hashlib.sha256(direct_material).hexdigest())
+        self.assertEqual(
+            approval_basis_hash(DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0"),
+            R007_FROZEN_APPROVAL_BASIS)
+        self.assertNotEqual(hashlib.sha256(old_material).hexdigest(),
+                            R007_FROZEN_APPROVAL_BASIS)
+        self.assertEqual(hashlib.sha256(old_material).hexdigest(), R007_OLD_BASIS)
+        self.assertNotEqual(R007_OLD_BASIS, R007_FROZEN_APPROVAL_BASIS)
+        self.assertEqual(BASIS, R007_FROZEN_APPROVAL_BASIS)
 
 
 # ---------------------------------------------------------------------------------------------
@@ -1033,6 +1100,176 @@ class TestCanonicalOperationAxisR6(unittest.TestCase):
                 predicate = human_gate_required(ApprovalRequest(operation=operation))
                 self.assertEqual((shim.required, shim.route), (predicate.required, predicate.route))
                 self.assertEqual(shim.route, "ARTIFACT:RUIN_SAFE_STOP")
+
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R007. A. Exact frozen 15.5 basis bytes.
+# ---------------------------------------------------------------------------------------------
+class TestExactBasisBytesR007(unittest.TestCase):
+
+    def test_r007_a1_literal_golden_vector(self):
+        # A1: the expected digest is an independent LITERAL source constant; this test does NOT
+        # call approval_basis_hash to build its expected value.
+        import hashlib
+        independent_material = APPROVAL_BASIS_FRAME + "".join(R007_SIX_FIELDS).encode("utf-8")
+        self.assertEqual(hashlib.sha256(independent_material).hexdigest(),
+                         R007_FROZEN_APPROVAL_BASIS)
+        self.assertEqual(approval_basis_hash(*R007_SIX_FIELDS), R007_FROZEN_APPROVAL_BASIS)
+
+    def test_r007_a2_old_newline_recipe_is_rejected(self):
+        import hashlib
+        old_material = APPROVAL_BASIS_FRAME + "\n".join(R007_SIX_FIELDS).encode("utf-8")
+        old_digest = hashlib.sha256(old_material).hexdigest()
+        self.assertEqual(old_digest, R007_OLD_BASIS)
+        self.assertNotEqual(old_digest, R007_FROZEN_APPROVAL_BASIS)
+        decision = _verify(token_over={"approval_basis_hash": R007_OLD_BASIS})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_APPROVAL_BASIS"))
+
+    def test_r007_a3_wrong_basis_hash_is_denied(self):
+        decision = _verify(token_over={"approval_basis_hash": "b" * 64})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_APPROVAL_BASIS"))
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R007. B. Current authority + HumanGateDecision lineage.
+# ---------------------------------------------------------------------------------------------
+class TestAuthorityDecisionLineageR007(unittest.TestCase):
+
+    def _resolved(self, **decision_overrides):
+        return _decision_registry({"dec-1": _current_decision(**decision_overrides)})
+
+    def test_r007_b1_insufficient_authority_is_denied(self):
+        decision = _verify(ctx_over={"decision_resolver": self._resolved(authority_class="HA1")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_INSUFFICIENT_AUTHORITY"))
+
+    def test_r007_b2_unknown_authority_class_is_denied(self):
+        decision = _verify(ctx_over={"decision_resolver": self._resolved(authority_class="HA9")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_INSUFFICIENT_AUTHORITY"))
+
+    def test_r007_b3_revoked_superseded_or_non_executable_is_denied(self):
+        self.assertEqual(DECISION_EXECUTABLE_STATES, ("APPROVE",))
+        for over in ({"revoked": True}, {"superseded": True}, {"decision": "DENY"},
+                     {"decision": "SAFE_STOP"}, {"decision": "VETO"}):
+            with self.subTest(over=over):
+                decision = _verify(ctx_over={"decision_resolver": self._resolved(**over)})
+                self.assertEqual((decision.ok, decision.code),
+                                 (False, "DENY_DECISION_NOT_EXECUTABLE"))
+
+    def test_r007_b3b_malformed_decided_at_is_denied(self):
+        decision = _verify(ctx_over={"decision_resolver": self._resolved(decided_at="not-a-time")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_DECISION_NOT_EXECUTABLE"))
+
+    def test_r007_b4_nonexistent_decision_id_is_denied(self):
+        unknown = _verify(ctx_over={"decision_resolver": _decision_registry({})})
+        self.assertEqual((unknown.ok, unknown.code), (False, "DENY_DECISION_UNRESOLVED"))
+        absent = _verify(ctx_over={"decision_resolver": None})
+        self.assertEqual((absent.ok, absent.code), (False, "DENY_DECISION_UNRESOLVED"))
+        lookalike = _verify(ctx_over={"decision_resolver": lambda decision_id: object()})
+        self.assertEqual((lookalike.ok, lookalike.code), (False, "DENY_DECISION_UNRESOLVED"))
+
+    def test_r007_b5_decision_bound_to_another_request_is_denied(self):
+        decision = _verify(ctx_over={"decision_resolver": self._resolved(request_id="req-other")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_DECISION_REQUEST_MISMATCH"))
+
+    def test_r007_b6_decision_id_not_matching_the_token_is_denied(self):
+        decision = _verify(ctx_over={"decision_resolver": self._resolved(decision_id="dec-other")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_DECISION_TOKEN_MISMATCH"))
+
+    def test_r007_b7_caller_basis_does_not_match_recomputed_jcs_basis(self):
+        decision = _verify(request_over={"decision_basis_hash": "c" * 64})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_DECISION_BASIS_MISMATCH"))
+        # The recomputable basis is the frozen field set EXCLUDING the digest itself.
+        self.assertNotIn("decision_basis_hash", APPROVAL_DECISION_BASIS_FIELDS)
+
+    def test_r007_b8_current_decision_and_sufficient_authority_pass(self):
+        decision = _verify()
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+    def test_r007_b9_absent_authority_policy_fails_closed(self):
+        # Do NOT invent an HA ordering: an absent policy seam is TEMP-CLOSED, not a guess.
+        decision = _verify(ctx_over={"authority_policy": None})
+        self.assertEqual((decision.ok, decision.code), (False, "TEMP_CLOSED_AUTHORITY_RESOLUTION"))
+
+    def test_r007_b10_request_without_required_authority_is_denied(self):
+        decision = _verify(request_over={"required_authority": ""})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_INSUFFICIENT_AUTHORITY"))
+
+    def test_r007_b11_decision_authn_downgrade_is_denied(self):
+        decision = _verify(
+            ctx_over={"decision_resolver": self._resolved(authn_assurance_class="AAC1")})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_AUTHN"))
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R007. C. Canonical signed sets.
+# ---------------------------------------------------------------------------------------------
+class TestCanonicalSignedSetsR007(unittest.TestCase):
+
+    def _schema_properties(self):
+        path = Path(__file__).resolve().parents[3] / "schemas" / "security" / "approval_token.schema.json"
+        return json.loads(path.read_text(encoding="utf-8"))["properties"]
+
+    def test_r007_c1_resource_permutation_is_one_representation(self):
+        first = _valid_token(resource=("artifact:a", "artifact:b"))
+        second = _valid_token(resource=("artifact:b", "artifact:a"))
+        self.assertEqual(canonical_payload_bytes(first), canonical_payload_bytes(second))
+
+    def test_r007_c2_scope_permutation_is_one_representation(self):
+        first = _valid_token(scope=("scope:b", "scope:a"))
+        second = _valid_token(scope=("scope:a", "scope:b"))
+        self.assertEqual(canonical_payload_bytes(first), canonical_payload_bytes(second))
+
+    def test_r007_c3_framed_digest_is_invariant_under_set_permutation(self):
+        import hashlib
+        first = _valid_token(resource=("artifact:a", "artifact:b"), scope=("s2", "s1"))
+        second = _valid_token(resource=("artifact:b", "artifact:a"), scope=("s1", "s2"))
+        self.assertEqual(hashlib.sha256(canonical_payload_bytes(first)).hexdigest(),
+                         hashlib.sha256(canonical_payload_bytes(second)).hexdigest())
+
+    def test_r007_c3b_permuted_token_and_request_agree(self):
+        request = _release_request(resource=("artifact:b", "artifact:a"), scope=("s2", "s1"))
+        token = _valid_token(resource=("artifact:a", "artifact:b"), scope=("s1", "s2"))
+        decision = verify_approval_token(token, request, _release_ctx())
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+    def test_r007_c4_duplicate_atom_is_denied(self):
+        for over in ({"resource": ("artifact:app", "artifact:app")},
+                     {"scope": ("release", "release")}):
+            with self.subTest(over=over):
+                unsigned = _valid_token(signature=SIGNATURE, **over)
+                with self.assertRaises(JCSError):
+                    canonical_payload_bytes(unsigned)
+                decision = verify_approval_token(unsigned, _release_request(), _release_ctx())
+                self.assertFalse(decision.ok)
+
+    def test_r007_c5_malformed_atom_is_denied(self):
+        for over in ({"resource": ("artifact:app", "   ")}, {"scope": ("release", "")},
+                     {"resource": ("artifact:app", 17)}, {"scope": "not-a-set"}):
+            with self.subTest(over=over):
+                unsigned = _valid_token(signature=SIGNATURE, **over)
+                with self.assertRaises(JCSError):
+                    canonical_payload_bytes(unsigned)
+                decision = verify_approval_token(unsigned, _release_request(), _release_ctx())
+                self.assertFalse(decision.ok)
+
+    def test_r007_c6_resource_annotation_is_set(self):
+        self.assertEqual(self._schema_properties()["resource"]["x-swof-collection-semantics"],
+                         "set")
+
+    def test_r007_c7_scope_annotation_is_set(self):
+        self.assertEqual(self._schema_properties()["scope"]["x-swof-collection-semantics"], "set")
+
+    def test_r007_c8_decision_reason_codes_are_a_canonical_set(self):
+        first = _current_decision(reason_codes=("z-code", "a-code"))
+        second = _current_decision(reason_codes=("a-code", "z-code"))
+        self.assertEqual(approval_decision_basis_hash(first),
+                         approval_decision_basis_hash(second))
+
+    def test_r007_c9_decision_basis_is_the_frozen_literal(self):
+        self.assertEqual(approval_decision_basis_hash(_current_decision()),
+                         R007_APPROVAL_DECISION_BASIS)
+
 
 
 if __name__ == "__main__":

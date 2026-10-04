@@ -42,6 +42,10 @@ INTEGRITY_PROFILE_ID = "SWOF-HG-INTEGRITY-001"
 
 TOKEN_STATES = ("ACTIVE", "CONSUMED", "REVOKED", "EXPIRED")
 AUTHN_ASSURANCE_CLASSES = ("AAC1", "AAC2", "AAC3")
+# R007: the trusted-context human-gate authn floor. The canonical ApprovalRequest in this cone does
+# not carry an explicit floor field, so the floor is the canonical multi-factor class AAC2; a
+# decision at a LOWER class fails closed (DENY_AUTHN). No HA/AAC ordering is invented anywhere.
+_DEFAULT_REQUIRED_AUTHN_ASSURANCE = "AAC2"
 
 # IF-06B ABI/envelope constants (canonical ApprovalToken 1.0.0). The reader ABI is 1.0; a token
 # written for a newer major cannot be read, and an unrecognised writer/compatibility class is a
@@ -56,6 +60,18 @@ KNOWN_COMPATIBILITY_CLASSES = ("STRICT_MAJOR_ADDITIVE_MINOR",)
 DOMAIN_FRAME = b"SWOF:PI-PKG-06:DOC-03:APPROVAL-TOKEN:V1\x00"
 # R4: the approval-basis domain separator (PI06 section 15.5).
 APPROVAL_BASIS_FRAME = b"SWOF-D03-APPROVAL-BASIS-V1\n"
+
+# R007 (WO-SWOF-W2-R007): the frozen PI06 15.3 HumanGateDecision authority axis. `authority_class`
+# is the canonical approval-authority class HA1..HA5; this library NEVER invents their ordering - an
+# owner-injected `authority_policy` seam decides sufficiency, and an absent seam FAILS CLOSED with
+# TEMP_CLOSED_AUTHORITY_RESOLUTION rather than guessing a ranking.
+APPROVAL_AUTHORITY_CLASSES = ("HA1", "HA2", "HA3", "HA4", "HA5")
+DECISION_STATES = ("APPROVE", "DENY", "VETO", "REVOKE", "SAFE_STOP")
+DECISION_EXECUTABLE_STATES = ("APPROVE",)
+AUTHN_ASSURANCE_ORDER = {"AAC1": 1, "AAC2": 2, "AAC3": 3}
+# R007: the canonical SET-valued signed arrays (PI06 16.2). They are normalized at the canonical
+# representation boundary BEFORE JCS so one semantic set has exactly ONE signed byte form.
+SET_VALUED_SIGNED_FIELDS = ("resource", "scope")
 
 JCS_PROFILE = "RFC8785"
 
@@ -135,6 +151,12 @@ APPROVAL_DENY_CODES = (
     "DENY_AUDIENCE_MISMATCH", "DENY_TOKEN_TIME", "DENY_FALSE_AUTHORITY", "DENY_AUTHN",
     "DENY_STALE_GENERATION", "DENY_NO_ROLLBACK", "DENY_APPROVAL_BASIS", "DENY_TOKEN_INTEGRITY",
     "DENY_REPLAY", "DENY_T3_CHECKER",
+    # R007: the request -> HumanGateDecision -> ApprovalToken authority/decision lineage. A gated
+    # path with no resolvable decision FAILS CLOSED; an absent authority policy is TEMP-CLOSED
+    # rather than a guessed HA ordering.
+    "DENY_DECISION_UNRESOLVED", "DENY_DECISION_REQUEST_MISMATCH", "DENY_DECISION_TOKEN_MISMATCH",
+    "DENY_DECISION_NOT_EXECUTABLE", "DENY_INSUFFICIENT_AUTHORITY", "DENY_DECISION_BASIS_MISMATCH",
+    "TEMP_CLOSED_AUTHORITY_RESOLUTION",
 )
 
 # ---------------------------------------------------------------------------------------------
@@ -232,26 +254,70 @@ def jcs_dumps(obj) -> bytes:
     return _jcs_value(obj).encode("utf-8")
 
 
-def canonical_payload_bytes(token) -> bytes:
-    """The exact bytes a verifier signs/verifies: DOMAIN_FRAME || JCS(token without `signature`).
+def _canonical_set(atoms, key_name):
+    """The canonical form of a SET-valued signed array (PI06 16.2).
 
-    These are the bytes the trusted key resolver's Ed25519 public key verifies the signature
-    against. JCS is applied to the token body with the `signature` field removed, and the fixed
-    domain frame is prefixed for domain separation.
+    `resource` sorts by canonical resource-ID lexical order and `scope` by bytewise UTF-8 lexical
+    order; both are de-duplicated. A malformed atom (non-string, or an empty/whitespace-only
+    string) or a repeated atom is refused with `JCSError` rather than silently accepting a second
+    byte form. Both current domains sort identically bytewise, so ONE callable owns the rule.
+    """
+    if isinstance(atoms, (str, bytes, bytearray)) or not isinstance(atoms, (tuple, list, set,
+                                                                           frozenset)):
+        raise JCSError("%s must be a set of string atoms" % key_name)
+    seen = []
+    for atom in atoms:
+        if not isinstance(atom, str) or not atom.strip():
+            raise JCSError("%s atom is not a non-empty string" % key_name)
+        seen.append(atom)
+    if len(set(seen)) != len(seen):
+        raise JCSError("%s contains a duplicate atom" % key_name)
+    return tuple(sorted(seen, key=lambda atom: atom.encode("utf-8")))
+
+
+def _canonical_token_body(token) -> dict:
+    """The token body with the SET-valued signed arrays normalized BEFORE JCS (PI06 16.2).
+
+    Normalization happens at the canonical representation boundary, so two permutations of the
+    SAME semantic set yield identical canonical bytes. A set that cannot be normalized raises
+    `JCSError`; the verifier turns that into a typed refusal, so this never silently accepts a
+    malformed signed collection.
     """
     body = {key: value for key, value in _token_body(token).items() if key != "signature"}
-    return DOMAIN_FRAME + jcs_dumps(body)
+    for field in SET_VALUED_SIGNED_FIELDS:
+        body[field] = _canonical_set(body.get(field), field)
+    return body
+
+
+def canonical_payload_bytes(token) -> bytes:
+    """The exact bytes a verifier signs/verifies: DOMAIN_FRAME || JCS(canonical token body).
+
+    These are the bytes the trusted key resolver's Ed25519 public key verifies the signature
+    against. JCS is applied to the token body with the `signature` field removed AND with the
+    set-valued signed arrays (`resource`, `scope`) normalized to their unique sorted canonical form
+    FIRST, and the fixed domain frame is prefixed for domain separation. A token whose signed set
+    cannot be normalized raises `JCSError` rather than emitting a second byte representation.
+    """
+    return DOMAIN_FRAME + jcs_dumps(_canonical_token_body(token))
 
 
 def approval_basis_hash(decision_basis_hash, effect_digest, generation_bundle_digest,
                         rollback_digest, consumer_audience_hash, if06b_version) -> str:
-    """SHA-256 hex of b"SWOF-D03-APPROVAL-BASIS-V1\\n" || the six fields joined in that exact order.
+    """SHA-256 hex of the EXACT frozen PI06 15.5 material.
 
-    The six fields are joined with a single newline separator in this order: decision_basis_hash,
-    effect_digest, generation_bundle_digest, rollback_digest, consumer_audience_hash,
-    if06b_version.
+    PI06 15.5 is DIRECT byte concatenation with exactly ONE newline, the newline already inside
+    `APPROVAL_BASIS_FRAME`; there are NO separator bytes between the six fields:
+
+        SHA256(b"SWOF-D03-APPROVAL-BASIS-V1\\n" || decision_basis_hash || effect_digest ||
+               generation_bundle_digest || rollback_digest || consumer_audience_hash ||
+               if06b_version)
+
+    WO-SWOF-W2-R007 replaced the previous `"\\n".join(...)` materialization, which inserted five
+    EXTRA inter-field newline bytes and contradicted the frozen source (its own docstring had
+    documented the wrong recipe, so the maker test and the maker implementation agreed while both
+    disagreed with PI06).
     """
-    material = "\n".join((
+    material = "".join((
         "" if decision_basis_hash is None else str(decision_basis_hash),
         "" if effect_digest is None else str(effect_digest),
         "" if generation_bundle_digest is None else str(generation_bundle_digest),
@@ -266,6 +332,68 @@ def _token_body(token) -> dict:
     """The token as a mapping, without deep-copying containers (the canonical form must see the
     exact field values)."""
     return {name: getattr(token, name) for name in token.__dataclass_fields__}
+
+
+# R007: the FROZEN PI06 15.3 HumanGateDecision field set whose JCS is `decision_basis_hash`. It is
+# a LITERAL so a drift in the basis shape is a visible source change, never a silent re-hash.
+# `decision_basis_hash` is deliberately EXCLUDED: the digest is the hash OF this basis, so a
+# self-referential basis is neither recomputable nor a valid basis.
+APPROVAL_DECISION_BASIS_FIELDS = (
+    "if06b_version", "payload_schema_version", "min_reader_version", "writer_version",
+    "compatibility_class", "decision_id", "request_id", "decision", "authority_class",
+    "reason_codes", "decided_at", "evidence_ref", "integrity_ref",
+)
+
+
+def approval_decision_basis_hash(decision) -> str:
+    """SHA-256 hex of JCS(ApprovalDecisionBasisV1) for a resolved decision (PI06 15.3 / 15.5).
+
+    `decision_basis_hash = SHA256(JCS(ApprovalDecisionBasisV1))` over the FROZEN field set, with
+    the set-valued `reason_codes` de-duplicated and sorted (PI06 16.2) so ONE semantic decision has
+    exactly ONE canonical basis digest. Raises `JCSError` when the basis cannot be canonicalized;
+    the verifier turns that into `DENY_DECISION_BASIS_MISMATCH`.
+    """
+    body = {}
+    for name in APPROVAL_DECISION_BASIS_FIELDS:
+        value = getattr(decision, name, None)
+        if name == "reason_codes":
+            value = _canonical_set(value, "reason_codes")
+        body[name] = value
+    return hashlib.sha256(jcs_dumps(body)).hexdigest()
+
+
+@dataclass(frozen=True)
+class HumanGateDecision:
+    """The canonical Human decision a token is bound to (PI06 15.3 HumanGateDecision 1.0.0).
+
+    This is a value object supplied by an OWNER through the injected `decision_resolver`; it is
+    never self-asserted by the caller of the verifier. It carries both the decision facts (the
+    approver, the authority class, the authn assurance class, the executable state, the
+    revocation/supersession state) and the `ApprovalDecisionBasisV1` fields whose JCS is the
+    `decision_basis_hash`. The verifier, not this object, is the authority.
+    """
+
+    # IF-06B ABI/envelope (same law as the token).
+    if06b_version: str = IF06B_ABI_MAJOR + ".0"
+    payload_schema_version: str = PAYLOAD_SCHEMA_VERSION
+    min_reader_version: str = READER_ABI
+    writer_version: str = KNOWN_WRITER_VERSIONS[0]
+    compatibility_class: str = KNOWN_COMPATIBILITY_CLASSES[0]
+    # Lineage.
+    decision_id: str = ""
+    request_id: str = ""
+    decision: str = ""
+    approver: str = ""
+    authority_class: str = ""
+    authn_assurance_class: str = ""
+    reason_codes: tuple[str, ...] = ()
+    decision_basis_hash: str = ""
+    decided_at: str = ""
+    evidence_ref: str = ""
+    integrity_ref: str = ""
+    # Currentness / executability.
+    revoked: bool = False
+    superseded: bool = False
 
 
 @dataclass(frozen=True)
@@ -391,8 +519,19 @@ class VerificationContext:
 
     `expected_consumer_audience_hash` is mandatory for a gated route: a gated request whose
     audience is absent or malformed is refused with DENY_AUDIENCE_MISMATCH.
+
+    R007: `decision_resolver` and `authority_policy` are the two OWNER-INJECTED authority seams.
+    `decision_resolver(decision_id)` resolves a decision id to the CURRENT canonical
+    `HumanGateDecision` (or returns None for unknown/absent/stale); anything that is not a
+    `HumanGateDecision` fails closed. `authority_policy(decision_authority_class,
+    request_required_authority)` returns True ONLY when the decision's authority class satisfies
+    the request's requirement. This library defines NO HA ordering: an absent or malformed
+    `authority_policy` FAILS CLOSED with TEMP_CLOSED_AUTHORITY_RESOLUTION instead of guessing a
+    ranking. Neither seam is an authority grant; both are refusal inputs.
     """
 
+    decision_resolver: object = None
+    authority_policy: object = None
     commit_time: str = ""
     rights_generation: int | None = None
     consent_generation: int | None = None
@@ -675,6 +814,66 @@ def _declaration_errors(request, ctx):
         if ctx_value != declared:
             errors.append("%s:request_vs_ctx_mismatch" % name)
     return errors
+def _resolve_current_decision(ctx, decision_id):
+    """Resolve `decision_id` to the current canonical HumanGateDecision, else None (fail closed).
+
+    The OWNER-INJECTED resolver may be a callable `resolver(decision_id)` or an object exposing
+    `resolve(decision_id)`. `None`, a non-callable, a callable that raises or has an incompatible
+    arity, and any look-alike object that is not a `HumanGateDecision` all resolve to None, which
+    the verifier refuses with DENY_DECISION_UNRESOLVED.
+    """
+    resolver = getattr(ctx, "decision_resolver", None)
+    if resolver is None:
+        return None
+    try:
+        if callable(resolver):
+            resolved = resolver(decision_id)
+        else:
+            resolve = getattr(resolver, "resolve", None)
+            if not callable(resolve):
+                return None
+            resolved = resolve(decision_id)
+    except Exception:
+        return None
+    return resolved if isinstance(resolved, HumanGateDecision) else None
+
+
+def _authority_satisfied(ctx, decision, required_authority):
+    """(ok, code) for the request's `required_authority` against a resolved decision.
+
+    The request DECLARES the authority it needs, so the declaration must be present and canonical
+    (a missing/blank requirement is DENY_INSUFFICIENT_AUTHORITY, never an implicit pass), and the
+    decision must carry a canonical HA class. Sufficiency is decided ONLY by the OWNER-INJECTED
+    `authority_policy(decision_authority_class, required_authority)` seam: this library defines NO
+    HA ordering, so an absent/malformed seam FAILS CLOSED with TEMP_CLOSED_AUTHORITY_RESOLUTION and
+    a policy that does not return exactly True is DENY_INSUFFICIENT_AUTHORITY.
+    """
+    if not _is_nonempty_str(required_authority):
+        return (False, "DENY_INSUFFICIENT_AUTHORITY")
+    if getattr(decision, "authority_class", None) not in APPROVAL_AUTHORITY_CLASSES:
+        return (False, "DENY_INSUFFICIENT_AUTHORITY")
+    policy = getattr(ctx, "authority_policy", None)
+    if not callable(policy):
+        return (False, "TEMP_CLOSED_AUTHORITY_RESOLUTION")
+    try:
+        holds = policy(decision.authority_class, required_authority)
+    except Exception:
+        return (False, "TEMP_CLOSED_AUTHORITY_RESOLUTION")
+    if holds is not True:
+        return (False, "DENY_INSUFFICIENT_AUTHORITY")
+    return (True, "")
+
+
+def _required_authn_floor(request) -> str:
+    """The authn assurance (AAC) floor a decision must meet for this request.
+
+    The canonical ApprovalRequest in this cone carries no explicit floor, so the floor is the
+    canonical trusted-context value `AAC2` (multi-factor): a decision at a LOWER class fails closed.
+    A stricter floor belongs to an owner-injected policy, never to an in-library HA/AAC ranking.
+    """
+    return _DEFAULT_REQUIRED_AUTHN_ASSURANCE
+
+
 def _resolve_public_key(registry, issuer_id, key_id, key_generation):
     """Resolve an Ed25519 public key from the injected resolver, or None on any failure.
 
@@ -743,9 +942,10 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
 
     Order: non-canonical token -> shape -> envelope -> token_state -> ruin precedence -> exact
     binding (incl. lineage) -> audience -> time -> false authority (incl. approver != actor) ->
-    authn -> generations -> rollback -> basis recompute -> integrity (real Ed25519 over the
-    RFC8785-framed bytes) -> replay -> checker -> T3. A merely-invalid token never raises; a
-    non-canonical input object type fails closed with a typed decision too.
+    authn -> generations -> rollback -> decision/authority lineage (R007) -> basis recompute ->
+    integrity (real Ed25519 over the RFC8785-framed bytes) -> replay -> checker -> T3. A
+    merely-invalid token never raises; a non-canonical input object type fails closed with a typed
+    decision too.
     """
     if not isinstance(token, ApprovalToken):
         return _deny("NOT_A_CANONICAL_APPROVAL_TOKEN", "token is not an ApprovalToken")
@@ -832,7 +1032,52 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
         if not _is_nonempty_str(token.rollback_ref) or token.rollback_ref != request.rollback_ref:
             return _deny("DENY_NO_ROLLBACK", "rollback_ref required and must match request")
 
-    # R4 3.4: the basis hash is RECOMPUTED from the request's six fields, never shape-trusted.
+    # ----------------------------------------------------------------------------------------
+    # R007: request -> HumanGateDecision -> ApprovalToken authority/decision lineage, FIRST-FAIL.
+    # A signature is NOT a proxy for canonical authority: a well-signed token bound to a decision
+    # that was never resolved, to another request, to a mismatched decision id, to a
+    # non-executable/revoked/superseded decision, to an insufficient authority class, to a
+    # downgraded authn, or to a caller-supplied basis string is refused HERE, before the signature
+    # is even examined. A gated path with no resolvable decision FAILS CLOSED.
+    # ----------------------------------------------------------------------------------------
+    if not _is_nonempty_str(request.required_authority):
+        return _deny("DENY_INSUFFICIENT_AUTHORITY", "request declares no required_authority")
+    decision = _resolve_current_decision(ctx, token.decision_id)
+    if decision is None:
+        return _deny("DENY_DECISION_UNRESOLVED",
+                     "decision_id=%r is not current" % token.decision_id)
+    if decision.request_id != request.request_id:
+        return _deny("DENY_DECISION_REQUEST_MISMATCH",
+                     "decision.request_id=%r" % decision.request_id)
+    if decision.decision_id != token.decision_id:
+        return _deny("DENY_DECISION_TOKEN_MISMATCH",
+                     "decision.decision_id=%r" % decision.decision_id)
+    if decision.revoked is not False or decision.superseded is not False:
+        return _deny("DENY_DECISION_NOT_EXECUTABLE", "decision is revoked/superseded")
+    if decision.decision not in DECISION_EXECUTABLE_STATES:
+        return _deny("DENY_DECISION_NOT_EXECUTABLE", "decision=%r" % decision.decision)
+    if _epoch(decision.decided_at) is None:
+        return _deny("DENY_DECISION_NOT_EXECUTABLE", "decided_at is not a trusted UTC instant")
+    authority_ok, authority_code = _authority_satisfied(
+        ctx, decision, request.required_authority)
+    if not authority_ok:
+        return _deny(authority_code, "authority_class=%r" % decision.authority_class)
+    decision_assurance = AUTHN_ASSURANCE_ORDER.get(
+        getattr(decision, "authn_assurance_class", None))
+    request_assurance = AUTHN_ASSURANCE_ORDER.get(_required_authn_floor(request))
+    if decision_assurance is None or request_assurance is None:
+        return _deny("DENY_AUTHN", "authn assurance floor unavailable")
+    if decision_assurance < request_assurance:
+        return _deny("DENY_AUTHN", "decision authn assurance below the request floor")
+    try:
+        recomputed_decision_basis = approval_decision_basis_hash(decision)
+    except Exception:
+        return _deny("DENY_DECISION_BASIS_MISMATCH", "decision basis is not canonical")
+    if request.decision_basis_hash != recomputed_decision_basis:
+        return _deny("DENY_DECISION_BASIS_MISMATCH",
+                     "request.decision_basis_hash does not recompute from the decision basis")
+
+    # R4 3.4 / R007: the basis hash is RECOMPUTED from the request's six fields, never shape-trusted.
     expected_basis = approval_basis_hash(
         request.decision_basis_hash, request.effect_digest, request.generation_bundle_digest,
         request.rollback_digest, request.consumer_audience_hash, token.if06b_version)
@@ -844,7 +1089,13 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
     if ctx.key_generation is not None and token.key_generation != ctx.key_generation:
         return _deny("DENY_TOKEN_INTEGRITY", "key_generation mismatch")
 
-    if not _verify_signature(token, ctx):
+    try:
+        signature_ok = _verify_signature(token, ctx)
+    except JCSError as exc:
+        # R007: a signed set (resource/scope) that cannot be canonicalized is refused, never
+        # silently accepted under a second byte form.
+        return _deny("DENY_TOKEN_INTEGRITY", "canonical bytes unavailable: %s" % exc)
+    if not signature_ok:
         return _deny("DENY_TOKEN_INTEGRITY",
                      "Ed25519 signature not verified over RFC8785-framed bytes")
 
