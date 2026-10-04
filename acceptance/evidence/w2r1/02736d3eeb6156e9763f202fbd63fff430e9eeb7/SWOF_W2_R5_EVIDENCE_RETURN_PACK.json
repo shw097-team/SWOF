@@ -29,8 +29,10 @@
     {"id": "EVD-W2R5-REGRESSION", "kind": "TEST_LOG", "path": "evidence/R5_REGRESSION_RECEIPT.json", "sha256": "df0ea90da1236ff9ff7d1460c5e3f17a9086b630b5ef30443664ef3c89037110"},
     {"id": "EVD-W2R5-CHECKER", "kind": "INDEPENDENT_RECEIPT", "path": "evidence/R5_FRESH_CHECKER_RECEIPT.json", "sha256": "b0b78bfb485a07ff7fc124602872cfeb3cad7f067d1554293f6de8bfdd9aa55a"},
     {"id": "EVD-W2R5-CLOSURE", "kind": "CLOSURE_PROJECTION", "path": "evidence/R5_W2_NORMATIVE_CLOSURE_PROJECTION.json", "sha256": "a777d6babfef6e2e1dd17b7f6eae59f5d936cbc8e9fe2c1c7ab4f2f125b85c57"},
-    {"id": "PORTABLE-DOSSIER", "kind": "DOSSIER", "path": "evidence/SWOF_W2_R5_FINAL_EVIDENCE_DOSSIER.md", "sha256": "<set-by-packer>"}
+    {"id": "PORTABLE-DOSSIER", "kind": "DOSSIER", "path": "evidence/SWOF_W2_R5_FINAL_EVIDENCE_DOSSIER.md", "sha256": "acae5efa0b5e7859d09e8ad6eb2571e267a91c9fd41726be2db294cbdc70bace"}
   ],
+  "published_evidence_commit_sha": "a6ee9b5ce8b0b0905be4952c32b2ddd747929c25",
+  "evidence_branch": "evidence/swof-w2r5-closure-repair",
   "stale_duplicate_disclosure": "R5_APPLY_RECEIPT.json (128147db...) names WO-SWOF-W2-R005 but carries repair_id SWOF-W2-CLOSURE-R2 and candidate 3ade7d0e; R5_BASE.json (4594d370...) is a base snapshot. Both are EARLIER-ROUND leftovers and are NOT part of this R5 return pack. The authoritative R5 product delta is the single commit 02736d3e = [src/security/humangate.py, src/security/tests/test_humangate_currentness.py]. Exclusion is disclosed, not hidden.",
   "non_claims": {
     "external_w2_acceptance": "NOT_ISSUED_PENDING_FRESH_EXTERNAL_RECHALLENGE",
