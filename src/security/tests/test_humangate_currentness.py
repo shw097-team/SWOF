@@ -24,7 +24,8 @@ from security.humangate import (  # noqa: E402
     canonical_payload_bytes, jcs_dumps, verify_approval_token,
 )
 from security.rights import (  # noqa: E402
-    EFFECT_RISK_TIERS, HumanGateBypassAttempt, HumanGateRoute, RightsDenied, RightsScope,
+    EFFECT_RISK_TIERS, HIGH_RISK_ACTIONS, HumanGateBypassAttempt, HumanGateRoute, RightsDenied,
+    RightsScope,
     assert_credential_scope, assert_human_gate_satisfied, check_rights, currentness_required,
     human_gate_required, human_gate_route,
 )
@@ -933,6 +934,105 @@ class TestCanonicalRuinAndFailClosedEnumsR5(unittest.TestCase):
         self.assertEqual(human_gate_required(request).route, "ARTIFACT:RUIN_HARD_VETO")
 
 
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R006 (R6): the OPERATION / ACTION_CLASS axis fails CLOSED. DOC-03 L867 makes `operation`
+# a required field over a known action enum and L874 does the same for `action_class`: an operation
+# that cannot be classified is an UNKNOWN_RUIN-classed outcome and SAFE-STOPS rather than passing
+# ungated. L396-410 classifies on the EFFECT, so a benign-looking name never buys a weaker route.
+# ---------------------------------------------------------------------------------------------
+class TestCanonicalOperationAxisR6(unittest.TestCase):
+
+    UNKNOWN_OPERATIONS = (
+        "definitely-not-a-known-operation", "unknown_action", "delete", "merge",
+        "create_or_update_file",
+    )
+
+    def _seam(self, request, approval="", **kwargs):
+        route = human_gate_required(request)
+        return assert_human_gate_satisfied(route, approval, request=request, **kwargs)
+
+    def test_r6_01_unknown_operation_safe_stops_at_the_seam(self):
+        for operation in self.UNKNOWN_OPERATIONS:
+            with self.subTest(operation=operation):
+                request = _release_request(operation=operation)
+                route = human_gate_required(request)
+                self.assertEqual((route.required, route.route), (True, "ARTIFACT:RUIN_SAFE_STOP"))
+                self.assertEqual(route.authority_edge, "RUIN:SAFE_STOP")
+                with self.assertRaises(HumanGateBypassAttempt) as caught:
+                    self._seam(request, "", ctx=_release_ctx())
+                self.assertEqual(str(caught.exception), "SAFE_STOP_UNKNOWN_RUIN")
+
+    def test_r6_02_unknown_operation_is_not_rescued_by_a_valid_token(self):
+        request = _release_request(operation="definitely-not-a-known-operation")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(request, _valid_token(), requesting_actor="human:dave", ctx=_release_ctx())
+        self.assertEqual(str(caught.exception), "SAFE_STOP_UNKNOWN_RUIN")
+
+    def test_r6_03_empty_and_non_string_operation_safe_stop(self):
+        for operation in ("", None, 17):
+            with self.subTest(operation=repr(operation)):
+                request = _release_request(operation=operation)
+                route = human_gate_required(request)
+                self.assertTrue(route.required)
+                self.assertEqual(route.route, "ARTIFACT:RUIN_SAFE_STOP")
+
+    def test_r6_04_known_benign_operation_is_the_positive_control(self):
+        for operation in ("read", "ACT-READ-LOCAL"):
+            for tier in ("LOW", "MEDIUM"):
+                for permission in ("P0", "P1", "P2"):
+                    with self.subTest(operation=operation, tier=tier, permission=permission):
+                        request = _release_request(operation=operation, effect_risk_tier=tier,
+                                                   permission_class=permission)
+                        self.assertFalse(human_gate_required(request).required)
+                        self.assertEqual(human_gate_required(request).route, "NONE")
+                        self.assertIsNone(self._seam(request, ""))
+
+    def test_r6_05_known_high_risk_operation_still_gates_with_its_edge(self):
+        for operation in sorted(HIGH_RISK_ACTIONS):
+            with self.subTest(operation=operation):
+                request = _release_request(operation=operation, effect_risk_tier="LOW",
+                                           permission_class="P2")
+                route = human_gate_required(request)
+                self.assertTrue(route.required)
+                self.assertEqual(route.authority_edge, "HUMAN_GATE:%s" % operation)
+                # A LOW/P2 classification does not by itself demand a typed token, but the route is
+                # gated by the named high-risk operation and refuses a non-canonical approval.
+                with self.assertRaises(HumanGateBypassAttempt) as caught:
+                    self._seam(request, "", ctx=_release_ctx())
+                self.assertEqual(str(caught.exception), "NOT_A_CANONICAL_APPROVAL_TOKEN")
+
+    def test_r6_06_consequential_canonical_class_tightens_a_benign_asserted_tier(self):
+        request = _release_request(operation="ACT-DELETE-IRREV", effect_risk_tier="LOW",
+                                   permission_class="P2")
+        route = human_gate_required(request)
+        self.assertTrue(route.required)
+        self.assertEqual(route.route, "ARTIFACT:HUMAN_GATE")
+        self.assertEqual(route.authority_edge, "HUMAN_GATE:ACT-DELETE-IRREV")
+        # LOW/P2 does not by itself force a typed token, so the refusal is the code for a
+        # non-canonical approval; what matters is that the tightened route REFUSES the empty string
+        # instead of passing, because the canonical class named by the effect is consequential.
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(request, "", ctx=_release_ctx())
+        self.assertEqual(str(caught.exception), "NOT_A_CANONICAL_APPROVAL_TOKEN")
+
+    def test_r6_07_unknown_operation_still_safe_stops_with_a_ruin_classification(self):
+        request = _release_request(operation="unknown_action", effect_risk_tier="RUIN")
+        self.assertEqual(human_gate_required(request).route, "ARTIFACT:RUIN_HARD_VETO")
+        request = _release_request(operation="unknown_action", effect_risk_tier="LOW",
+                                   permission_class="P2", autonomy_tier="T3")
+        route = human_gate_required(request)
+        self.assertTrue(route.required)
+        self.assertEqual(route.route, "ARTIFACT:RUIN_SAFE_STOP")
+
+    def test_r6_08_route_shim_and_predicate_agree_on_the_unknown_operation(self):
+        for operation in self.UNKNOWN_OPERATIONS:
+            with self.subTest(operation=operation):
+                shim = human_gate_route(operation)
+                predicate = human_gate_required(ApprovalRequest(operation=operation))
+                self.assertEqual((shim.required, shim.route), (predicate.required, predicate.route))
+                self.assertEqual(shim.route, "ARTIFACT:RUIN_SAFE_STOP")
 
 
 if __name__ == "__main__":

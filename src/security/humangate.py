@@ -339,6 +339,10 @@ class ApprovalRequest:
     semantic_version: str = ""
     actor: str = ""
     operation: str = ""
+    # WO-SWOF-W2-R006 (R6): the canonical DOC-03 action_class axis. A DECLARED class must be a
+    # canonical operation/action value; an unrecognised declared class is unclassifiable and the gate
+    # SAFE-STOPS rather than guessing a benign mapping. Absent (None) means "resolve from `operation`".
+    operation_class: str | None = None
     target_system: str = ""
     resource: tuple[str, ...] = ()
     environment: str = ""

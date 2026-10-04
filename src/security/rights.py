@@ -33,6 +33,14 @@ alias when `effect_risk_tier` is absent, and it may never weaken a present canon
 present-but-malformed `effect_risk_tier` / `permission_class` / `autonomy_tier` fails closed instead
 of being treated as ungated (DOC-03 15.6). `human_gate_route` and `human_gate_required` share the ONE
 predicate, and `verify_approval_token` returns a typed decision for a malformed nonce ledger.
+
+W2 repair WO-SWOF-W2-R006 (R6): the OPERATION axis of the gate is now canonical and fails closed.
+DOC-03 L867/L874 classify `operation` / `action_class` against a known action enum, and an
+unclassifiable operation is an UNKNOWN_RUIN-classed outcome, not a benign one. The predicate
+therefore resolves the operation through ONE canonical classifier: a KNOWN benign operation keeps
+the classification-driven route, a KNOWN operation that names an authority edge tightens it, and an
+UNCLASSIFIABLE operation (unknown name, empty, non-string, or an unestablished canonical value)
+returns the SAFE_STOP route. The operation name may tighten the route; it may NEVER weaken it.
 """
 from __future__ import annotations
 
@@ -55,6 +63,65 @@ HUMAN_GATE_ROUTE = "ARTIFACT:HUMAN_GATE"
 RUIN_HARD_VETO_ROUTE = "ARTIFACT:RUIN_HARD_VETO"
 RUIN_SAFE_STOP_ROUTE = "ARTIFACT:RUIN_SAFE_STOP"
 NONE_ROUTE = "NONE"
+
+# WO-SWOF-W2-R006 (R6): the canonical OPERATION axis (DOC-03 L867 `operation` / L874 `action_class`).
+# An operation is classified against the canonical 09.1 ACTION_EFFECT_CLASS_MATRIX names plus the
+# benign operation names the accepted control suite already uses, so a known benign action does not
+# regress. Anything else - an unrecognised name, an empty or non-string value, or a canonical value
+# whose operation vocabulary cannot be established with confidence - is UNCLASSIFIABLE and SAFE-STOPS.
+# Over-blocking is the accepted cost; fail-open is not. No benign mapping is guessed here: the set is
+# exactly the spec-quoted matrix names, the high-risk actions the gate already names, and `read`,
+# the benign action name the accepted tests use.
+_OPERATION_CLASS_MATRIX = frozenset({
+    "ACT-READ-LOCAL", "ACT-DESIGN-WRITE", "ACT-EXTERNAL-READ", "ACT-EXTERNAL-WRITE-REV",
+    "ACT-EXTERNAL-WRITE-STATEFUL", "ACT-DATA-EXPORT", "ACT-SECRET-RESOLVE", "ACT-IDENTITY-RIGHTS",
+    "ACT-MERGE", "ACT-DEPLOY-RELEASE", "ACT-FINANCIAL", "ACT-PHYSICAL", "ACT-DELETE-IRREV",
+})
+_OPERATION_BENIGN = frozenset({"read"})
+# R6: the canonical action classes whose EFFECT is consequential. DOC-03 L396-410 classifies on the
+# EFFECT, "not on how harmless the prompt text appears", so a request that names one of these classes
+# TIGHTENS to a gated route with a class-derived authority edge, however benign its asserted tier is.
+# The local read/design classes and the external READ class carry no tightening of their own.
+_OPERATION_TIGHTENED = frozenset({
+    "ACT-EXTERNAL-WRITE-REV", "ACT-EXTERNAL-WRITE-STATEFUL", "ACT-DATA-EXPORT",
+    "ACT-SECRET-RESOLVE", "ACT-IDENTITY-RIGHTS", "ACT-MERGE", "ACT-DEPLOY-RELEASE",
+    "ACT-FINANCIAL", "ACT-PHYSICAL", "ACT-DELETE-IRREV",
+})
+_OPERATION_KNOWN = frozenset(_OPERATION_CLASS_MATRIX | _OPERATION_BENIGN | HIGH_RISK_ACTIONS)
+
+
+def classify_operation(value):
+    """The canonical operation/action classification of a value as a (state, value) pair.
+
+    ABSENT is `None`; VALID is a name in the canonical operation set; everything else - an
+    unrecognised name, an empty or blank string, or any non-string - is MALFORMED, which the gate
+    treats as unclassifiable and SAFE-STOPS. A caller may extend VALID only by supplying an
+    explicit canonical `operation_class`, never by guessing a benign mapping.
+    """
+    if value is None:
+        return (_CLASS_ABSENT, None)
+    if isinstance(value, str) and value in _OPERATION_KNOWN:
+        return (_CLASS_VALID, value)
+    return (_CLASS_MALFORMED, value)
+
+
+def operation_classes(request):
+    """The operation classes a request carries, or None when it is unclassifiable.
+
+    A declaration may only CONFIRM a known operation name. A `operation_class` that is unrecognised,
+    empty, or disagrees with the resolved operation is unclassifiable, so the declaration axis can
+    never rescue an unknown operation and can never weaken the route.
+    """
+    state, value = classify_operation(getattr(request, "operation", None))
+    if state != _CLASS_VALID:
+        # An ABSENT operation is an UNNAMED action, not a benign one: it is unclassifiable and the
+        # gate SAFE-STOPS. Only a KNOWN canonical name yields a classification.
+        return None
+    declared = getattr(request, "operation_class", None)
+    if declared is not None and declared != value:
+        # A declaration may only confirm the resolved operation; it can never rescue or redirect it.
+        return None
+    return frozenset({value})
 
 # WO-SWOF-W2-R005 (R5): the token requirement is keyed to the CANONICAL classification domains.
 # A token is required by RISK when `effect_risk_tier` is HIGH/CRITICAL/RUIN/UNKNOWN_RUIN (LOW/MEDIUM
@@ -193,14 +260,20 @@ def human_gate_required(request) -> HumanGateRoute:
          A token can never satisfy these; the verifier rejects them before checking approval.
       2. a malformed `effect_risk_tier`, `permission_class` or `autonomy_tier` is unclassifiable and
          fails closed (gated, no authority edge); it is NEVER treated as ungated.
-      3. token required if ANY of:
+      3. the OPERATION axis (R6, DOC-03 L867/L874) is resolved through the ONE canonical
+         classifier `classify_operation` / `operation_classes`. An UNCLASSIFIABLE operation is an
+         UNKNOWN_RUIN-classed outcome: it SAFE-STOPS (`RUIN_SAFE_STOP_ROUTE` / "RUIN:SAFE_STOP",
+         authority edge "RUIN:SAFE_STOP") and is never ungated. A KNOWN operation that maps to an
+         explicit high-risk authority edge tightens to that edge; a KNOWN benign operation may only
+         keep the route the risk/permission/autonomy classification already decides.
+      4. token required if ANY of:
            effect_risk_tier in {"HIGH","CRITICAL","RUIN","UNKNOWN_RUIN"}
            permission_class in {"P3","P4","P5"}
            autonomy_tier == "T3"
            the operation maps to an explicit high-risk authority edge
-      4. otherwise an ABSENT classification on a NAMED benign operation is the shim's NONE route;
-         an EMPTY / non-string operation name is unknown and is gated (`HUMAN_GATE:unknown_action`),
-         so the route shim and the predicate agree on the unknown-operation rule.
+      5. otherwise a fully-classified, non-T3, canonical LOW/MEDIUM/P0..P2 action on a KNOWN benign
+         operation is the predicate's NONE route. The shim and the predicate therefore agree: an
+         unknown operation SAFE-STOPS at both entry points, and only a KNOWN benign action is ungated.
     """
     ruin = ruin_precedence_code(request)
     if ruin == "HARD_VETO_RUIN":
@@ -213,11 +286,22 @@ def human_gate_required(request) -> HumanGateRoute:
     autonomy_state, autonomy = classify_autonomy_tier(request)
     legacy_state, _ = classify_legacy_ruin_class(request)
     operation = getattr(request, "operation", None)
+    classes = operation_classes(request)
 
+    # R6: an UNCLASSIFIABLE operation - an unrecognised name, an empty/blank string, or a non-string
+    # - is an UNKNOWN_RUIN-classed outcome and SAFE-STOPS (DOC-03 L867/L874). It is never treated as
+    # ungated and can never be the reason a request passes; over-blocking is the accepted cost.
+    if classes is None:
+        return HumanGateRoute(True, RUIN_SAFE_STOP_ROUTE, "RUIN:SAFE_STOP")
     # The operation name may TIGHTEN or IDENTIFY the route: a high-risk operation always gates and
     # names its own authority edge, whatever the classification (this can never weaken the law).
     if isinstance(operation, str) and operation in HIGH_RISK_ACTIONS:
         return HumanGateRoute(True, HUMAN_GATE_ROUTE, _AUTHORITY_EDGE[operation])
+    # R6: a canonical class whose EFFECT is consequential tightens the same way, so a benign-looking
+    # asserted tier can never smuggle an irreversible/external effect past the gate.
+    if classes & _OPERATION_TIGHTENED:
+        edge = sorted(classes & _OPERATION_TIGHTENED)[0]
+        return HumanGateRoute(True, HUMAN_GATE_ROUTE, "HUMAN_GATE:%s" % edge)
     # A malformed classification is unclassifiable; it fails closed and is never treated as ungated.
     if _CLASS_MALFORMED in (risk_state, permission_state, autonomy_state, legacy_state):
         return HumanGateRoute(True, HUMAN_GATE_ROUTE, "HUMAN_GATE:unclassified")
@@ -225,19 +309,21 @@ def human_gate_required(request) -> HumanGateRoute:
         if risk in _TOKEN_REQUIRED_RISK_TIERS or autonomy == "T3" \
                 or permission in _TOKEN_REQUIRED_PERMISSION_CLASSES:
             return HumanGateRoute(True, HUMAN_GATE_ROUTE, _risk_edge(operation))
-        # a fully-classified, non-T3, canonical LOW/MEDIUM/P0..P2 action is benign.
+        # a fully-classified, non-T3, canonical LOW/MEDIUM/P0..P2 action is benign: the operation is
+        # KNOWN (an unclassifiable one SAFE-STOPPED above), so this is the positive control.
         return HumanGateRoute(False, NONE_ROUTE, "NONE")
-    # every classification is ABSENT. An EMPTY or non-string operation name is unknown -> gated by
-    # the ONE predicate (so human_gate_route("") and human_gate_required(operation="") AGREE).
-    # A named, untightened benign action is the shim's NONE route; a classification-carrying caller
-    # always reaches the VALID branch above, so this can never weaken a supplied classification.
-    if isinstance(operation, str) and operation:
-        return HumanGateRoute(False, NONE_ROUTE, "NONE")
-    return HumanGateRoute(True, HUMAN_GATE_ROUTE, "HUMAN_GATE:unknown_action")
+    # every classification is ABSENT and the operation is KNOWN. A KNOWN benign operation keeps the
+    # NONE route; a KNOWN operation with no tightening edge is untightened and stays ungated. An
+    # unclassifiable operation never reaches here: it SAFE-STOPPED above.
+    return HumanGateRoute(False, NONE_ROUTE, "NONE")
 
 
 def _risk_edge(operation) -> str:
-    """The authority edge for a classification-gated action; a high-risk op identifies its edge."""
+    """The authority edge for a classification-gated action; a high-risk op identifies its edge.
+
+    R6: only a KNOWN operation reaches a classification-gated edge with its own name; an unclassifiable
+    operation has already SAFE-STOPPED in the ONE predicate and never arrives here.
+    """
     if isinstance(operation, str) and operation in HIGH_RISK_ACTIONS:
         return _AUTHORITY_EDGE[operation]
     return "HUMAN_GATE:risk_tier"
@@ -246,14 +332,13 @@ def _risk_edge(operation) -> str:
 def human_gate_route(action, *, risk="LOW") -> HumanGateRoute:
     """Action-name shim over the ONE canonical predicate (no second authority path).
 
-    A non-string or empty action is an unknown action and is gated without an authority edge. Any
-    other action is classified by `human_gate_required` via a synthetic request whose classification
-    is ABSENT, so the operation name can identify or tighten the route but can never weaken the
-    risk/permission law. In particular `human_gate_route("")` and `human_gate_required` on a request
-    with an empty operation AGREE: an unknown operation is gated by the ONE canonical predicate.
+    A non-string or empty action is unknown and SAFE-STOPS (`RUIN_SAFE_STOP`). Any other action is
+    resolved by `human_gate_required` via a synthetic request whose classification is ABSENT, so the
+    name can identify or tighten the route but can never weaken the risk/permission law. R6: the shim
+    defers the whole operation/classification judgement to the ONE canonical predicate - including
+    the unknown-operation rule - so every entry point AGREE by construction, and a non-string action
+    is fed through as-is rather than coerced into a string that could name a known action.
     """
-    if not isinstance(action, str) or not action:
-        return human_gate_required(ApprovalRequest(operation=""))
     return human_gate_required(ApprovalRequest(operation=action))
 
 
@@ -359,6 +444,7 @@ def _ruin_veto_code(request):
 
 __all__ = [
     "EFFECT_RISK_TIERS", "HIGH_RISK_ACTIONS", "HUMAN_GATE_ROUTE", "NONE_ROUTE",
+    "classify_operation", "operation_classes",
     "RUIN_HARD_VETO_ROUTE", "RUIN_SAFE_STOP_ROUTE", "ApprovalDecision", "ApprovalRequest",
     "ApprovalToken", "HumanGateBypassAttempt", "HumanGateRoute", "NonceLedger", "RightsDecision",
     "RightsDenied", "RightsScope", "VerificationContext", "assert_credential_scope",
