@@ -4,10 +4,9 @@ WHY: a HumanGate that accepts any non-empty string is a syntactic gate, not an a
 "approved" typed by the actor who wants the action is indistinguishable from a real approval, so
 the gate refuses nothing. This module makes the approval a typed value object bound exactly to the
 request it approves and to the currentness inputs at commit time, and makes the verifier the only
-authority. It adds no cryptography of its own: it DEFINES the canonical bytes a real verifier
-signs, and it delegates the actual signature check to an injected trusted key registry
-(VERIFIER). The registry is the only place a signature may be judged; this library never claims
-to have verified a signature. It FAILS CLOSED when the registry is absent, refuses, or raises.
+authority. The canonical bytes are RFC 8785 (JCS); the signature is a REAL Ed25519 verification
+performed against a public key resolved from an injected trusted key registry, over the
+RFC8785-framed payload. This library never trusts a shape for integrity and never reads a clock.
 
 This is a refusal mechanism, not a second authority system. It grants nothing, produces no
 Product/Semantic truth, and never reads the wall clock: `commit_time` and every generation are
@@ -19,14 +18,24 @@ canonical registry, never broader. The token therefore carries the IF-06B ABI/en
 `compatibility_class`, `evidence_link`) that the canonical ApprovalToken 1.0.0 schema requires, and
 the verifier refuses an unsupported ABI major (`IF06B_VERSION_UNSUPPORTED`) or an unreadable
 envelope (`DENY_TOKEN_SCHEMA`) before any authority check runs.
+
+W2 repair WO-SWOF-W2-R004 (R4): the canonical payload is RFC8785 JCS (NOT json.dumps), prefixed
+with a fixed domain frame; the key registry became a public-key RESOLVER `registry(issuer_id,
+key_id, key_generation)` returning bytes or a cryptography key, and the verifier performs a real
+`Ed25519PublicKey.verify` over the framed bytes; `approval_basis_hash` is RECOMPUTED (not merely
+shape-checked); request->decision->token lineage (`request_id`/`decision_id`) is exact-bound;
+audience, declared generations and the independent-checker flag are mandatory wherever canonical
+says so. RUIN/UNKNOWN_RUIN precedence and the single gate predicate live in `rights.py`.
 """
 from __future__ import annotations
 
 import base64
-import json
+import decimal as _decimal
+import hashlib
+import math
 import re
 import threading
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timezone
 
 INTEGRITY_PROFILE_ID = "SWOF-HG-INTEGRITY-001"
@@ -43,9 +52,21 @@ PAYLOAD_SCHEMA_VERSION = "1.0.0"
 KNOWN_WRITER_VERSIONS = ("DOC03-r2",)
 KNOWN_COMPATIBILITY_CLASSES = ("STRICT_MAJOR_ADDITIVE_MINOR",)
 
+# R4: the fixed domain-separation frame that must prefix every signed canonical payload.
+DOMAIN_FRAME = b"SWOF:PI-PKG-06:DOC-03:APPROVAL-TOKEN:V1\x00"
+# R4: the approval-basis domain separator (PI06 section 15.5).
+APPROVAL_BASIS_FRAME = b"SWOF-D03-APPROVAL-BASIS-V1\n"
+
+JCS_PROFILE = "RFC8785"
+
 _DIGEST_RE = re.compile(r"^[0-9a-f]{64}$")
 _SIGNATURE_RE = re.compile(r"^[A-Za-z0-9_-]{86}$")
 _ISO_UTC_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$")
+
+# R4 3.6: exact dotted-numeric version syntax. `^\d+\.\d+$` for the ABI fields and
+# `^\d+\.\d+\.\d+$` for the payload schema version. "1" and "1.0.0.0" are refused.
+_ABI_VERSION_RE = re.compile(r"^\d+\.\d+$")
+_SCHEMA_VERSION_RE = re.compile(r"^\d+\.\d+\.\d+$")
 
 _DIGEST_FIELDS = ("subject_hash", "effect_digest", "consumer_audience_hash", "approval_basis_hash")
 
@@ -57,6 +78,14 @@ _REQUIRED_TEXT_FIELDS = (
 )
 
 _GENERATION_FIELDS = ("authn_session_generation", "credential_generation", "key_generation")
+
+# R4 3.5: the generation set a request may declare. Every declared generation must be present in
+# `ctx` and equal the token's; a declaration the context cannot answer is DENY_STALE_GENERATION.
+_GENERATION_REQUEST_FIELDS = (
+    "rights_generation", "consent_generation", "security_policy_generation", "provider_generation",
+    "ruin_generation", "authn_session_generation", "credential_generation", "key_generation",
+    "revocation_generation",
+)
 
 # ctx generation attribute -> matching token attribute. None means the token carries no analog,
 # so a context that requires it makes the token stale (fail closed).
@@ -77,6 +106,150 @@ _NON_HUMAN_REF_PREFIXES = (
 )
 
 _ROLLBACK_TRIGGER_TIERS = ("P3", "P4", "P5")
+
+_RUIN_CLASSES = ("NONE", "RUIN", "UNKNOWN_RUIN")
+
+# The documented refusal-code set for ApprovalToken verification (first-fail order). R4 adds
+# DENY_APPROVAL_BASIS (recomputed basis), DENY_AUDIENCE_MISMATCH (mandatory audience),
+# DENY_STALE_GENERATION (mandatory declared generations) and the ruin precedence codes
+# HARD_VETO_RUIN / SAFE_STOP_UNKNOWN_RUIN shared with the gate predicate.
+APPROVAL_DENY_CODES = (
+    "NOT_A_CANONICAL_APPROVAL_TOKEN", "DENY_TOKEN_SCHEMA", "IF06B_VERSION_UNSUPPORTED",
+    "DENY_TOKEN_STATE", "HARD_VETO_RUIN", "SAFE_STOP_UNKNOWN_RUIN", "DENY_EXACT_BINDING",
+    "DENY_AUDIENCE_MISMATCH", "DENY_TOKEN_TIME", "DENY_FALSE_AUTHORITY", "DENY_AUTHN",
+    "DENY_STALE_GENERATION", "DENY_NO_ROLLBACK", "DENY_APPROVAL_BASIS", "DENY_TOKEN_INTEGRITY",
+    "DENY_REPLAY", "DENY_T3_CHECKER",
+)
+
+# ---------------------------------------------------------------------------------------------
+# RFC 8785 (JCS) canonical serialisation. This is the profile SWOF signs; it is NOT
+# `json.dumps(sort_keys=True)` - that approximates it and silently emits non-canonical numbers
+# (e.g. `1.0` for the integer `1`) and does not sort by UTF-16 code units.
+# ---------------------------------------------------------------------------------------------
+_ESCAPES = {'"': '\\"', "\\": "\\\\", "\b": "\\b", "\f": "\\f", "\n": "\\n", "\r": "\\r",
+            "\t": "\\t"}
+_MAX_SAFE_INTEGER = 2 ** 53 - 1
+
+
+class JCSError(ValueError):
+    """A value cannot be serialised in RFC 8785 canonical form -> fail closed, never guess."""
+
+
+def _jcs_escape(text: str) -> str:
+    out = ['"']
+    for ch in text:
+        escaped = _ESCAPES.get(ch)
+        if escaped is not None:
+            out.append(escaped)
+        elif ch < " ":
+            out.append("\\u%04x" % ord(ch))
+        else:
+            out.append(ch)
+    out.append('"')
+    return "".join(out)
+
+
+def _jcs_number(value) -> str:
+    """A number per RFC 8785 / ECMAScript `Number::toString`. Raise rather than emit a wrong form.
+
+    Integers render without a fraction or exponent; a fraction-free float renders as an integer
+    (`1.0` -> `1`) and `-0.0` -> `0`. Non-integer floats use Python's shortest round-tripping
+    `repr` expanded to plain decimal notation inside the range ES6 prints without an exponent
+    ([1e-6, 1e21)); anything outside that provable range raises instead of guessing. NaN and
+    Infinity are not JSON numbers and raise.
+    """
+    if isinstance(value, bool):
+        raise JCSError("bool is not a number")
+    if isinstance(value, int):
+        if -_MAX_SAFE_INTEGER <= value <= _MAX_SAFE_INTEGER:
+            return str(value)
+        raise JCSError("integer outside the RFC8785 IEEE-754 safe range")
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise JCSError("NaN/Infinity are not JSON numbers")
+        if value == 0.0:
+            return "0"
+        magnitude = abs(value)
+        if value.is_integer() and magnitude < 1e21:
+            return str(int(value))
+        if 1e-6 <= magnitude < 1e21:
+            text = repr(value)
+            if "e" in text or "E" in text:
+                text = format(_decimal.Decimal(text), "f")
+            return text
+        raise JCSError("float outside the provable RFC8785 decimal range")
+    raise JCSError("not a JSON number: %r" % type(value).__name__)
+
+
+def _jcs_value(value) -> str:
+    if value is None:
+        return "null"
+    if value is True:
+        return "true"
+    if value is False:
+        return "false"
+    if isinstance(value, str):
+        return _jcs_escape(value)
+    if isinstance(value, (int, float)):
+        return _jcs_number(value)
+    if isinstance(value, (list, tuple)):
+        return "[" + ",".join(_jcs_value(item) for item in value) + "]"
+    if isinstance(value, dict):
+        for key in value:
+            if not isinstance(key, str):
+                raise JCSError("object keys must be strings")
+        items = []
+        for key in sorted(value, key=lambda k: k.encode("utf-16-be")):
+            items.append("%s:%s" % (_jcs_escape(key), _jcs_value(value[key])))
+        return "{" + ",".join(items) + "}"
+    raise JCSError("unsupported JSON type: %r" % type(value).__name__)
+
+
+def jcs_dumps(obj) -> bytes:
+    """RFC 8785 JCS canonical bytes. Profile is `RFC8785`; this is NOT json.dumps(sort_keys=True).
+
+    Keys sort by UTF-16 code units, strings use the JSON escapes with no unnecessary escapes and
+    are emitted as UTF-8, numbers follow ECMAScript `Number::toString`, and there is no
+    insignificant whitespace. A value that cannot be serialised canonically raises `JCSError`
+    instead of emitting an approximate form.
+    """
+    return _jcs_value(obj).encode("utf-8")
+
+
+def canonical_payload_bytes(token) -> bytes:
+    """The exact bytes a verifier signs/verifies: DOMAIN_FRAME || JCS(token without `signature`).
+
+    These are the bytes the trusted key resolver's Ed25519 public key verifies the signature
+    against. JCS is applied to the token body with the `signature` field removed, and the fixed
+    domain frame is prefixed for domain separation.
+    """
+    body = {key: value for key, value in _token_body(token).items() if key != "signature"}
+    return DOMAIN_FRAME + jcs_dumps(body)
+
+
+def approval_basis_hash(decision_basis_hash, effect_digest, generation_bundle_digest,
+                        rollback_digest, consumer_audience_hash, if06b_version) -> str:
+    """SHA-256 hex of b"SWOF-D03-APPROVAL-BASIS-V1\\n" || the six fields joined in that exact order.
+
+    The six fields are joined with a single newline separator in this order: decision_basis_hash,
+    effect_digest, generation_bundle_digest, rollback_digest, consumer_audience_hash,
+    if06b_version.
+    """
+    material = "\n".join((
+        "" if decision_basis_hash is None else str(decision_basis_hash),
+        "" if effect_digest is None else str(effect_digest),
+        "" if generation_bundle_digest is None else str(generation_bundle_digest),
+        "" if rollback_digest is None else str(rollback_digest),
+        "" if consumer_audience_hash is None else str(consumer_audience_hash),
+        "" if if06b_version is None else str(if06b_version),
+    ))
+    return hashlib.sha256(APPROVAL_BASIS_FRAME + material.encode("utf-8")).hexdigest()
+
+
+def _token_body(token) -> dict:
+    """The token as a mapping, without deep-copying containers (the canonical form must see the
+    exact field values)."""
+    return {name: getattr(token, name) for name in token.__dataclass_fields__}
 
 
 @dataclass(frozen=True)
@@ -164,23 +337,38 @@ class ApprovalRequest:
     required_authority: str = ""
     rollback_ref: str = ""
     independent_checker_required: bool = False
+    ruin_class: str = "NONE"
+    request_id: str = ""
+    decision_id: str = ""
+    decision_basis_hash: str = ""
+    generation_bundle_digest: str = ""
+    rollback_digest: str = ""
+    # R4 3.5: the generation set this request declares. A declared generation must be present in
+    # `ctx` and equal the token's; a silent skip is never allowed.
+    authn_session_generation: int | None = None
+    credential_generation: int | None = None
+    key_generation: int | None = None
+    rights_generation: int | None = None
+    consent_generation: int | None = None
+    security_policy_generation: int | None = None
+    provider_generation: int | None = None
+    ruin_generation: int | None = None
+    revocation_generation: int | None = None
 
 
 @dataclass(frozen=True)
 class VerificationContext:
     """The trusted current-at-commit inputs. Nothing here is read from the wall clock.
 
-    `trusted_key_registry` is a CALLABLE VERIFIER, not a key-existence lookup. The verifier is the
-    ONLY place a signature may be judged: it is called as
-    `registry(payload_bytes, signature, issuer_id, key_id, key_generation)` where `payload_bytes`
-    is `canonical_payload_bytes(token)`, and it MUST recompute a signature over those bytes with
-    the named key (or verify the signature against a trust store) and return EXACTLY `True` to
-    accept. Anything that is not exactly `True` - `None`, `False`, `0`, a truthy object - is
-    refused, and a verifier that raises or has an incompatible arity is refused. A registry that
-    only checks key existence and returns `True` without consulting `payload_bytes` is NOT a valid
-    verifier: it accepts forgeries. That is a contract violation by the integrator; the library
-    defers to the registry by design and therefore inherits exactly the strength of the verifier
-    it is given.
+    `trusted_key_registry` is a key RESOLVER, not a boolean verifier. It is called as
+    `registry(issuer_id, key_id, key_generation)` and MUST return the Ed25519 public key as
+    `bytes` (32) or a `cryptography` public-key object. Anything else - `None`, an exception, a
+    non-callable, or a callable that cannot supply a key - fails closed with DENY_TOKEN_INTEGRITY.
+    The verifier then performs a REAL `Ed25519PublicKey.verify(signature, framed_bytes)`; this is
+    not a shape check.
+
+    `expected_consumer_audience_hash` is mandatory for a gated route: a gated request whose
+    audience is absent or malformed is refused with DENY_AUDIENCE_MISMATCH.
     """
 
     commit_time: str = ""
@@ -215,17 +403,6 @@ class NonceLedger:
                 return False
             self._seen.add(nonce)
             return True
-
-
-def canonical_payload_bytes(token) -> bytes:
-    """The bytes a real verifier signs: UTF-8 JSON of the token EXCLUDING `signature`, with keys
-    sorted and separators (',', ':') - a deterministic canonical form.
-
-    The library performs NO cryptography; it only defines the bytes so a real verifier can
-    recompute them. Tuples serialise as JSON arrays, which is fine as long as it is deterministic.
-    """
-    body = {key: value for key, value in asdict(token).items() if key != "signature"}
-    return json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
 
 def _deny(code, detail=""):
@@ -286,15 +463,21 @@ def _envelope_error(token):
     """The IF-06B ABI/envelope gate (canonical ApprovalToken 1.0.0), fail closed.
 
     Rule 1 owns its canonical code IF06B_VERSION_UNSUPPORTED; rules 2-6 reuse the
-    DENY_TOKEN_SCHEMA family so no downstream consumer needs a new code. Every unknown or
-    unreadable envelope value is refused, never defaulted.
+    DENY_TOKEN_SCHEMA family so no downstream consumer needs a new code. The version fields must
+    match their EXACT syntax - `^\\d+\\.\\d+$` for `if06b_version`/`min_reader_version` and
+    `^\\d+\\.\\d+\\.\\d+$` for `payload_schema_version` - so "1" and "1.0.0.0" are refused.
     """
     abi = getattr(token, "if06b_version", None)
-    if not isinstance(abi, str) or not abi:
+    if not isinstance(abi, str) or not _ABI_VERSION_RE.match(abi):
         return "IF06B_VERSION_UNSUPPORTED"
     if abi.split(".")[0] != IF06B_ABI_MAJOR:
         return "IF06B_VERSION_UNSUPPORTED"
-    if token.payload_schema_version != PAYLOAD_SCHEMA_VERSION:
+    if not isinstance(token.payload_schema_version, str) \
+            or not _SCHEMA_VERSION_RE.match(token.payload_schema_version) \
+            or token.payload_schema_version != PAYLOAD_SCHEMA_VERSION:
+        return "DENY_TOKEN_SCHEMA"
+    if not isinstance(token.min_reader_version, str) \
+            or not _ABI_VERSION_RE.match(token.min_reader_version):
         return "DENY_TOKEN_SCHEMA"
     reader = _version_tuple(READER_ABI)
     required_reader = _version_tuple(token.min_reader_version)
@@ -341,11 +524,12 @@ def _schema_errors(token):
 
 
 def _binding_errors(token, request):
-    """Exact binding of the token to the request (TOK-INV-002)."""
+    """Exact binding of the token to the request (TOK-INV-002), lineage included (R4 3.4)."""
     errors = []
     scalar_fields = (
         "subject", "subject_hash", "semantic_version", "actor", "operation", "target_system",
         "environment", "purpose_ref", "data_class", "effect_digest", "consumer_audience_hash",
+        "request_id", "decision_id",
     )
     for name in scalar_fields:
         if getattr(token, name, None) != getattr(request, name, None):
@@ -361,18 +545,127 @@ def _binding_errors(token, request):
     return errors
 
 
+def _ruin_route_error(request):
+    """RUIN/UNKNOWN_RUIN precedence: a valid token can NEVER authorize a ruin class (R4 D2)."""
+    ruin_class = getattr(request, "ruin_class", "NONE")
+    if ruin_class == "RUIN":
+        return "HARD_VETO_RUIN"
+    if ruin_class == "UNKNOWN_RUIN":
+        return "SAFE_STOP_UNKNOWN_RUIN"
+    return None
+
+
+def _declaration_errors(request, ctx):
+    """The declared-generation rule (R4 3.5), fail closed.
+
+    Every generation the REQUEST declares must ALSO be present in `ctx` and equal it; a mismatch
+    or an unanswerable declaration (ctx is None) is DENY_STALE_GENERATION - never a silent skip.
+    The token side of each binding is checked separately by `_GENERATION_BINDINGS`.
+    """
+    errors = []
+    for name in _GENERATION_REQUEST_FIELDS:
+        declared = getattr(request, name, None)
+        if declared is None:
+            continue
+        if not _is_int_or_none(declared) or isinstance(declared, bool):
+            errors.append("%s:declared_malformed" % name)
+            continue
+        ctx_value = getattr(ctx, name, None)
+        if ctx_value is None:
+            errors.append("%s:declared_but_absent_in_ctx" % name)
+            continue
+        if not _is_int_or_none(ctx_value) or isinstance(ctx_value, bool):
+            errors.append("%s:ctx_malformed" % name)
+            continue
+        if ctx_value != declared:
+            errors.append("%s:request_vs_ctx_mismatch" % name)
+    return errors
+def _resolve_public_key(registry, issuer_id, key_id, key_generation):
+    """Resolve an Ed25519 public key from the injected resolver, or None on any failure.
+
+    The resolver is called as `registry(issuer_id, key_id, key_generation)` and must return bytes
+    (32) or a cryptography public-key object. Anything else - `None`, a non-callable, a callable
+    that raises, or a callable with incompatible arity - fails closed -> None.
+    """
+    if registry is None or not callable(registry):
+        return None
+    try:
+        resolved = registry(issuer_id, key_id, key_generation)
+    except Exception:
+        return None
+    if resolved is None:
+        return None
+    if isinstance(resolved, (bytes, bytearray)):
+        return bytes(resolved)
+    return resolved
+
+
+def _verify_signature(token, ctx) -> bool:
+    """A REAL Ed25519 verification over the RFC8785-framed canonical bytes.
+
+    Resolves the Ed25519 public key from the injected trusting resolver and runs
+    `Ed25519PublicKey.from_public_bytes(key).verify(signature, canonical_payload_bytes(token))`.
+    The signature must be base64url WITHOUT padding decoding to exactly 64 bytes. Any failure -
+    an unknown key, a wrong key/generation, a malformed signature, a wrong-field payload, or an
+    InvalidSignature - fails closed (returns False). This is not a shape check.
+    """
+    try:
+        from cryptography.exceptions import InvalidSignature
+        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+    except Exception:
+        return False
+
+    key = _resolve_public_key(ctx.trusted_key_registry, token.issuer_id, token.key_id,
+                              token.key_generation)
+    if key is None:
+        return False
+    raw_signature = token.signature
+    if not isinstance(raw_signature, str) or not _SIGNATURE_RE.match(raw_signature):
+        return False
+    try:
+        padding = "=" * (-len(raw_signature) % 4)
+        signature = base64.urlsafe_b64decode(raw_signature + padding)
+    except Exception:
+        return False
+    if len(signature) != 64:
+        return False
+    payload = canonical_payload_bytes(token)
+    try:
+        if isinstance(key, (bytes, bytearray)):
+            public_key = Ed25519PublicKey.from_public_bytes(bytes(key))
+        else:
+            public_key = key
+        public_key.verify(signature, payload)
+    except InvalidSignature:
+        return False
+    except Exception:
+        return False
+    return True
+
+
 def verify_approval_token(token, request, ctx) -> ApprovalDecision:
     """First-fail, deterministic verification of an exact-bound human approval token.
 
-    Order: non-canonical token -> shape -> token_state -> exact binding -> audience -> time ->
-    false authority (incl. approver != actor) -> authn -> generations -> rollback -> integrity
-    (the injected registry VERIFIER recomputes over canonical_payload_bytes) -> replay -> T3.
-    A merely-invalid token never raises; a non-canonical input object type does.
+    Order: non-canonical token -> shape -> envelope -> token_state -> ruin precedence -> exact
+    binding (incl. lineage) -> audience -> time -> false authority (incl. approver != actor) ->
+    authn -> generations -> rollback -> basis recompute -> integrity (real Ed25519 over the
+    RFC8785-framed bytes) -> replay -> checker -> T3. A merely-invalid token never raises; a
+    non-canonical input object type fails closed with a typed decision too.
     """
     if not isinstance(token, ApprovalToken):
         return _deny("NOT_A_CANONICAL_APPROVAL_TOKEN", "token is not an ApprovalToken")
     if not isinstance(request, ApprovalRequest) or not isinstance(ctx, VerificationContext):
-        raise ValueError("NOT_A_CANONICAL_APPROVAL_TOKEN: request/ctx must be canonical objects")
+        return _deny("NOT_A_CANONICAL_APPROVAL_TOKEN",
+                     "request/ctx must be canonical objects")
+    # R4 D2: a malformed ruin class is unknown ruin -> SAFE STOP, never a silent pass.
+    if getattr(request, "ruin_class", "NONE") not in _RUIN_CLASSES:
+        return _deny("SAFE_STOP_UNKNOWN_RUIN", "ruin_class is not canonical")
+
+    # R4 D2: RUIN/UNKNOWN_RUIN is a HARD VETO / SAFE STOP, evaluated FIRST: no token can
+    # satisfy it and no other approval consideration may mask it.
+    ruin = _ruin_route_error(request)
+    if ruin is not None:
+        return _deny(ruin, "ruin precedence refuses any token")
 
     errors = _schema_errors(token)
     if errors:
@@ -389,8 +682,11 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
     if binding:
         return _deny("DENY_EXACT_BINDING", ";".join(binding))
 
+    # R4 3.5: a gated route requires a trustworthy expected audience; absent/malformed fails closed.
     expected_audience = ctx.expected_consumer_audience_hash
-    if expected_audience is not None and expected_audience != token.consumer_audience_hash:
+    if not isinstance(expected_audience, str) or not _DIGEST_RE.match(expected_audience):
+        return _deny("DENY_AUDIENCE_MISMATCH", "expected consumer audience hash unavailable")
+    if expected_audience != token.consumer_audience_hash:
         return _deny("DENY_AUDIENCE_MISMATCH", "consumer audience hash mismatch")
 
     commit_epoch = _epoch(ctx.commit_time)
@@ -404,7 +700,8 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
         return _deny("DENY_TOKEN_TIME", "commit_time outside [issued_at, expires_at)")
 
     if not _is_human_ref(token.approver):
-        return _deny("DENY_FALSE_AUTHORITY", "approver=%r is not a human principal ref" % token.approver)
+        return _deny("DENY_FALSE_AUTHORITY",
+                     "approver=%r is not a human principal ref" % token.approver)
     if not _is_human_ref(token.actor):
         return _deny("DENY_FALSE_AUTHORITY", "actor=%r is not a human principal ref" % token.actor)
     if token.approver.strip() == token.actor.strip():
@@ -421,6 +718,10 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
     age = commit_epoch - reauth_epoch
     if age < 0 or age > max_age:
         return _deny("DENY_AUTHN", "reauthenticated_at not within max_reauth_age_seconds")
+
+    declaration_errors = _declaration_errors(request, ctx)
+    if declaration_errors:
+        return _deny("DENY_STALE_GENERATION", ";".join(declaration_errors))
 
     for ctx_name, token_name in _GENERATION_BINDINGS:
         ctx_value = getattr(ctx, ctx_name)
@@ -439,44 +740,38 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
         if not _is_nonempty_str(token.rollback_ref) or token.rollback_ref != request.rollback_ref:
             return _deny("DENY_NO_ROLLBACK", "rollback_ref required and must match request")
 
-    if ctx.trusted_key_registry is None:
-        return _deny("DENY_TOKEN_INTEGRITY", "no trusted key registry")
+    # R4 3.4: the basis hash is RECOMPUTED from the request's six fields, never shape-trusted.
+    expected_basis = approval_basis_hash(
+        request.decision_basis_hash, request.effect_digest, request.generation_bundle_digest,
+        request.rollback_digest, request.consumer_audience_hash, token.if06b_version)
+    if token.approval_basis_hash != expected_basis:
+        return _deny("DENY_APPROVAL_BASIS", "approval_basis_hash does not recompute")
+
+    # R4: the context key generation, when it supplies one, must equal the token's; a caller
+    # that pins a generation cannot be bypassed by a token that names another.
     if ctx.key_generation is not None and token.key_generation != ctx.key_generation:
         return _deny("DENY_TOKEN_INTEGRITY", "key_generation mismatch")
-    payload = canonical_payload_bytes(token)
-    try:
-        verified = ctx.trusted_key_registry(payload, token.signature, token.issuer_id,
-                                            token.key_id, token.key_generation)
-    except TypeError:  # an incompatible arity cannot answer -> fail closed
-        return _deny("DENY_TOKEN_INTEGRITY", "registry has incompatible arity")
-    except Exception as exc:  # a registry that cannot answer is unavailable -> fail closed
-        return _deny("DENY_TOKEN_INTEGRITY", "registry raised %s" % type(exc).__name__)
-    if verified is not True:
-        return _deny("DENY_TOKEN_INTEGRITY", "signature not verified")
+
+    if not _verify_signature(token, ctx):
+        return _deny("DENY_TOKEN_INTEGRITY",
+                     "Ed25519 signature not verified over RFC8785-framed bytes")
 
     if ctx.nonce_ledger is None:
         return _deny("DENY_REPLAY", "no nonce ledger")
     if ctx.nonce_ledger.reserve(token.nonce) is not True:
         return _deny("DENY_REPLAY", "nonce already used")
 
-    if getattr(request, "autonomy_tier", "") == "T3":
-        checker_ref = ctx.independent_checker_evidence_ref
-        if token.independent_checker_required is not True:
-            return _deny("DENY_T3_CHECKER", "independent checker not required by token")
+    # R4 3.5: whenever the token requires an independent checker, a non-empty context ref must be
+    # present AND equal the token's. T3 additionally FORCES the flag to be true.
+    checker_ref = ctx.independent_checker_evidence_ref
+    if token.independent_checker_required is True:
         if not _is_nonempty_str(checker_ref):
             return _deny("DENY_T3_CHECKER", "no independent checker evidence in ctx")
         if token.independent_checker_evidence_ref != checker_ref:
             return _deny("DENY_T3_CHECKER", "checker evidence ref mismatch")
 
+    if getattr(request, "autonomy_tier", "") == "T3":
+        if token.independent_checker_required is not True:
+            return _deny("DENY_T3_CHECKER", "independent checker not required by token")
+
     return ApprovalDecision(True, "APPROVE_BASIS_SATISFIED", "")
-
-
-def _base64url_signature(seed: bytes = b"SWOF-HG-INTEGRITY-001") -> str:
-    """A deterministic 86-char base64url shape fixture. Not a real signature; shape only."""
-    digest = b""
-    block = seed
-    while len(digest) < 64:
-        digest += block
-        block = block[::-1] + b"."
-    encoded = base64.urlsafe_b64encode(digest[:64]).decode("ascii").rstrip("=")
-    return (encoded + "A" * 86)[:86]

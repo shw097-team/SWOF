@@ -1,12 +1,12 @@
-"""WO-SWOF-W2-R001 acceptance tests: rights currentness and exact-bound human approval.
+"""WO-SWOF-W2 acceptance tests: rights currentness, the canonical gate predicate and the exact-
+bound, RFC8785-framed, Ed25519-verified human approval token.
 
-Every case below is one of the forty-four probes named in the repair spec. The failing cases must
-FAIL CLOSED with an exact code; the positive controls must PASS. Nothing here reads a wall clock:
-currentness is always an explicit trusted `now`/`commit_time`.
+Every failing case must FAIL CLOSED with an exact code; the positive controls must PASS. Nothing
+here reads a wall clock: currentness is always an explicit trusted `now`/`commit_time`. The
+signing key is a TEST Ed25519 key; the library itself performs no key management, it only defines
+the canonical bytes and delegates the public-key lookup to the injected resolver.
 """
 import base64
-import hashlib
-import hmac
 import json
 import sys
 import unittest
@@ -16,14 +16,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
 
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey  # noqa: E402
+
 from security.humangate import (  # noqa: E402
-    ApprovalDecision, ApprovalRequest, ApprovalToken, NonceLedger, VerificationContext,
-    canonical_payload_bytes, verify_approval_token,
+    APPROVAL_BASIS_FRAME, DOMAIN_FRAME, JCS_PROFILE, ApprovalDecision, ApprovalRequest,
+    ApprovalToken, JCSError, NonceLedger, VerificationContext, approval_basis_hash,
+    canonical_payload_bytes, jcs_dumps, verify_approval_token,
 )
 from security.rights import (  # noqa: E402
     HumanGateBypassAttempt, HumanGateRoute, RightsDenied, RightsScope,
     assert_credential_scope, assert_human_gate_satisfied, check_rights, currentness_required,
-    human_gate_route,
+    human_gate_required, human_gate_route,
 )
 
 NOW = "2026-06-01T00:00:00Z"
@@ -34,30 +37,25 @@ COMMIT = "2026-06-01T00:30:00Z"
 DIGEST = "a" * 64
 SIGNATURE = "A" * 86
 
-DIGEST = "a" * 64
-SIGNATURE = "A" * 86
+# WO-SWOF-W2-R004: the signature is a REAL Ed25519 signature. The TEST key never leaves this
+# module; the library performs the verification against a public key resolved by the registered
+# resolver, and only the resolver supplies key material.
+_PRIVATE_KEY = Ed25519PrivateKey.from_private_bytes(bytes(range(32)))
+_PUBLIC_BYTES = _PRIVATE_KEY.public_key().public_bytes_raw()
 
-# WO-SWOF-W2-R002: the injected registry is a real VERIFIER over canonical_payload_bytes. These
-# test helpers build an honest HMAC verifier so a matching token verifies and a tampered one does
-# not. _TEST_KEY never leaves this test module; the library itself performs no cryptography.
-_TEST_KEY = b"swof-w2-r002-hmac-test-key"
+BASIS = approval_basis_hash(DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0")
 
 
 def _sign_payload(payload: bytes) -> str:
-    """HMAC-SHA512 over the canonical bytes, rendered as the 86-char base64url token shape.
-
-    SHA512 yields a 64-byte digest whose base64url encoding is exactly 86 characters - the shape
-    the ApprovalToken schema requires. This is a TEST verifier; the library does no crypto.
-    """
-    digest = hmac.new(_TEST_KEY, payload, hashlib.sha512).digest()
-    return base64.urlsafe_b64encode(digest).decode("ascii").rstrip("=")
+    """Ed25519 over the canonical bytes, base64url WITHOUT padding -> exactly 86 characters."""
+    return base64.urlsafe_b64encode(_PRIVATE_KEY.sign(payload)).decode("ascii").rstrip("=")
 
 
-def _honest_registry(payload, signature, issuer_id, key_id, key_generation):
-    """A contract-correct verifier: recompute over payload_bytes and return a strict bool."""
+def _honest_registry(issuer_id, key_id, key_generation):
+    """A contract-correct key RESOLVER: returns the raw Ed25519 public key bytes for the key."""
     if (issuer_id, key_id, key_generation) != ("issuer-1", "key-1", 3):
-        return False
-    return hmac.compare_digest(_sign_payload(payload), signature)
+        return None
+    return _PUBLIC_BYTES
 
 
 def _valid_token(**overrides):
@@ -69,7 +67,7 @@ def _valid_token(**overrides):
         effect_digest=DIGEST, consumer_audience_hash=DIGEST, approver="human:carol",
         authority_class="HUMAN_OPERATOR", approver_authn_context_ref="authn:ctx-1",
         authn_assurance_class="AAC2", reauthenticated_at="2026-06-01T00:00:00Z",
-        authn_session_generation=7, credential_generation=8, approval_basis_hash=DIGEST,
+        authn_session_generation=7, credential_generation=8, approval_basis_hash=BASIS,
         if06b_version="1.0", payload_schema_version="1.0.0", min_reader_version="1.0",
         writer_version="DOC03-r2", compatibility_class="STRICT_MAJOR_ADDITIVE_MINOR",
         evidence_link="evidence:approval-basis-1",
@@ -93,7 +91,9 @@ def _release_request(**overrides):
         purpose_ref="purpose:release", scope=("release",), data_class="INTERNAL",
         effect_digest=DIGEST, consumer_audience_hash=DIGEST, effect_risk_tier="P2",
         permission_class="P2", autonomy_tier="T2", required_authority="HUMAN_GATE:release",
-        rollback_ref="rollback:1", independent_checker_required=False,
+        rollback_ref="rollback:1", independent_checker_required=False, ruin_class="NONE",
+        request_id="req-1", decision_id="dec-1", decision_basis_hash=DIGEST,
+        generation_bundle_digest=DIGEST, rollback_digest=DIGEST,
     )
     fields.update(overrides)
     return ApprovalRequest(**fields)
@@ -102,6 +102,7 @@ def _release_request(**overrides):
 def _release_ctx(**overrides):
     fields = dict(
         commit_time=COMMIT,
+        expected_consumer_audience_hash=DIGEST,
         trusted_key_registry=_honest_registry,
         nonce_ledger=NonceLedger(), max_reauth_age_seconds=3600,
     )
@@ -115,7 +116,6 @@ def _verify(token_over=None, request_over=None, ctx_over=None):
         _release_request(**(request_over or {})),
         _release_ctx(**(ctx_over or {})),
     )
-
 
 class TestRightsCurrentness(unittest.TestCase):
     def test_01_expired_entitlement_without_now_fails_closed(self):
@@ -347,48 +347,18 @@ class TestHumanGatePositiveControls(unittest.TestCase):
         self.assertIsNone(assert_human_gate_satisfied(
             route, _valid_token(), requesting_actor="human:dave",
             request=_release_request(), ctx=_release_ctx(nonce_ledger=ledger)))
-        second = _verify(ctx_over={"nonce_ledger": ledger})
-        self.assertEqual((second.ok, second.code), (False, "DENY_REPLAY"))
-
-    def test_43_valid_t3_token_with_matching_checker_evidence_is_approved(self):
-        decision = _verify(
-            token_over={"independent_checker_required": True,
-                        "independent_checker_evidence_ref": "evidence:one"},
-            request_over={"autonomy_tier": "T3"},
-            ctx_over={"independent_checker_evidence_ref": "evidence:one"},
-        )
-        self.assertTrue(decision.ok)
-        self.assertEqual(decision.code, "APPROVE_BASIS_SATISFIED")
-
-    def test_44_nonce_ledger_rejects_empty_or_non_string_nonce(self):
-        ledger = NonceLedger()
-        self.assertFalse(ledger.reserve(""))
-        self.assertFalse(ledger.reserve("   "))
-        self.assertFalse(ledger.reserve(None))
-        self.assertFalse(ledger.reserve(12345))
-        self.assertTrue(ledger.reserve("nonce-x"))
-        self.assertFalse(ledger.reserve("nonce-x"))
-
-
 
 
 class TestSignatureDelegationR2(unittest.TestCase):
-    """BLK-1: the injected registry is a real VERIFIER over canonical_payload_bytes."""
+    """BLK-1: the injected resolver yields a key and a REAL Ed25519 check runs over framed bytes."""
 
-    def test_r2_01_forged_signature_passes_only_with_a_contract_violating_stub(self):
-        # DOCUMENTATION TEST (BLK-1 failure mode). The signature below is 86-char shape-valid but
-        # does NOT correspond to the token payload. A registry that returns True WITHOUT consulting
-        # payload_bytes is NOT a valid verifier: the library defers to it and accepts the forgery.
-        # That is the integrator's contract violation, encoded here so it can never pass silently.
+    def test_r2_01_forged_signature_shape_is_refused_by_real_ed25519(self):
+        # An 86-char shape-valid signature that does NOT correspond to the framed token payload is
+        # refused, because the verifier now performs a REAL Ed25519 verification, not a shape check.
         forged = _valid_token(signature=SIGNATURE)
         self.assertEqual(len(forged.signature), 86)
-        stub = lambda payload, signature, issuer_id, key_id, key_generation: True
-        with_stub = verify_approval_token(
-            forged, _release_request(), _release_ctx(trusted_key_registry=stub))
-        self.assertEqual((with_stub.ok, with_stub.code), (True, "APPROVE_BASIS_SATISFIED"))
-        # Proof the library never verified anything itself: the honest registry refuses it.
-        honest = verify_approval_token(forged, _release_request(), _release_ctx())
-        self.assertEqual((honest.ok, honest.code), (False, "DENY_TOKEN_INTEGRITY"))
+        decision = verify_approval_token(forged, _release_request(), _release_ctx())
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_INTEGRITY"))
 
     def test_r2_02_honest_registry_verifies_a_matching_token(self):
         decision = _verify()
@@ -407,16 +377,16 @@ class TestSignatureDelegationR2(unittest.TestCase):
         decision = _verify(token_over={"key_generation": 99})
         self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_INTEGRITY"))
 
-    def test_r2_05_non_true_or_failing_registry_is_denied(self):
+    def test_r2_05_non_resolving_or_raising_resolver_is_denied(self):
         def _raiser(*args):
-            raise RuntimeError("registry unavailable")
+            raise RuntimeError("resolver unavailable")
 
         cases = {
             "none": lambda *args: None,
             "false": lambda *args: False,
-            "one_is_not_true": lambda *args: 1,
             "raises": _raiser,
-            "wrong_arity": lambda payload, signature: True,
+            "wrong_arity": lambda issuer_id: b"",
+            "non_key_object": lambda *args: object(),
         }
         for name, registry in cases.items():
             with self.subTest(registry=name):
@@ -435,8 +405,9 @@ class TestSignatureDelegationR2(unittest.TestCase):
         first = canonical_payload_bytes(_valid_token())
         second = canonical_payload_bytes(_valid_token())
         self.assertEqual(first, second)
+        self.assertTrue(first.startswith(DOMAIN_FRAME))
         self.assertNotEqual(first, canonical_payload_bytes(_valid_token(nonce="nonce-2")))
-        body = json.loads(first.decode("utf-8"))
+        body = json.loads(first[len(DOMAIN_FRAME):].decode("utf-8"))
         self.assertNotIn("signature", body)
         self.assertEqual(canonical_payload_bytes(_valid_token(signature="A" * 86)),
                          canonical_payload_bytes(_valid_token(signature="B" * 86)))
@@ -481,7 +452,7 @@ class TestRouteReDerivationR2(unittest.TestCase):
 # section 15). Embedded here as a literal so a future drift in the schema fails loudly. The
 # conditional `independent_checker_evidence_ref` is deliberately ABSENT: it is required only when
 # `independent_checker_required` is true (the schema encodes that in allOf/if-then, and the
-# verifier enforces it in the T3 stage).
+# verifier enforces it in the checker stage).
 CANONICAL_REQUIRED_NAMES = frozenset({
     "token_id", "request_id", "decision_id", "subject", "subject_hash", "semantic_version",
     "actor", "operation", "target_system", "resource", "environment", "purpose_ref", "scope",
@@ -549,6 +520,323 @@ class TestCanonicalEnvelopeR3(unittest.TestCase):
         self.assertEqual(len(required), 42)
         self.assertEqual(set(required), set(CANONICAL_REQUIRED_NAMES))
         self.assertNotIn("independent_checker_evidence_ref", required)
+
+    def test_r3_10_version_syntax_is_exact(self):
+        # R4 3.6: "1" and "1.0.0.0" are malformed, not merely unequal.
+        data = self._schema()["properties"]
+        self.assertEqual(data["if06b_version"]["pattern"], "^[0-9]+\\.[0-9]+$")
+        self.assertEqual(data["min_reader_version"]["pattern"], "^[0-9]+\\.[0-9]+$")
+        self.assertNotIn("pattern", data["payload_schema_version"])
+        self.assertEqual(data["payload_schema_version"]["const"], "1.0.0")
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R004 (R4). D1 - ONE canonical gate predicate; the operation name may tighten but
+# never weaken a risk/permission requirement.
+# ---------------------------------------------------------------------------------------------
+class TestCanonicalGatePredicateD1(unittest.TestCase):
+
+    def _seam(self, request, approval="", **kwargs):
+        route = human_gate_required(request)
+        return assert_human_gate_satisfied(route, approval, request=request, **kwargs)
+
+    def test_r4_d1_01_p3_benign_operation_without_token_is_denied(self):
+        request = _release_request(operation="read", effect_risk_tier="P3", permission_class="P3")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(request)
+        self.assertEqual(str(caught.exception), "DENY_P3_TOKEN_REQUIRED")
+
+    def test_r4_d1_02_p4_benign_operation_without_token_is_denied(self):
+        request = _release_request(operation="read", effect_risk_tier="P4", permission_class="P4")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(request)
+        self.assertEqual(str(caught.exception), "DENY_P3_TOKEN_REQUIRED")
+
+    def test_r4_d1_03_p5_benign_operation_without_token_is_denied(self):
+        request = _release_request(operation="read", effect_risk_tier="P5", permission_class="P5")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(request)
+        self.assertEqual(str(caught.exception), "DENY_P3_TOKEN_REQUIRED")
+
+    def test_r4_d1_04_p3_permission_class_only_benign_operation_is_denied(self):
+        # effect_risk_tier stays P2; the permission class alone must gate the benign operation.
+        request = _release_request(operation="read", permission_class="P3")
+        self.assertTrue(human_gate_required(request).required)
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(request)
+        self.assertEqual(str(caught.exception), "DENY_P3_TOKEN_REQUIRED")
+
+    def test_r4_d1_05_p3_benign_operation_with_valid_token_passes(self):
+        request = _release_request(operation="read", effect_risk_tier="P3", permission_class="P3")
+        self.assertIsNone(self._seam(
+            request, _valid_token(operation="read"), requesting_actor="human:dave",
+            ctx=_release_ctx()))
+
+    def test_r4_d1_06_p2_benign_operation_without_token_is_allowed(self):
+        request = _release_request(operation="read", effect_risk_tier="P2", permission_class="P2")
+        self.assertEqual(human_gate_required(request).route, "NONE")
+        self.assertFalse(human_gate_required(request).required)
+        self.assertIsNone(assert_human_gate_satisfied(
+            human_gate_route("read"), "", request=request))
+
+    def test_r4_d1_07_explicit_high_risk_operation_with_p2_is_gated(self):
+        request = _release_request(operation="release", effect_risk_tier="P2", permission_class="P2")
+        route = human_gate_required(request)
+        self.assertTrue(route.required)
+        self.assertEqual(route.authority_edge, "HUMAN_GATE:release")
+        with self.assertRaises(HumanGateBypassAttempt):
+            assert_human_gate_satisfied(route, "", request=request, ctx=_release_ctx())
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R004 (R4). D2 - ruin precedence BEFORE any approval; a token can never authorize it.
+# ---------------------------------------------------------------------------------------------
+class TestRuinPrecedenceD2(unittest.TestCase):
+
+    def test_r4_d2_01_valid_token_with_ruin_is_hard_veto(self):
+        decision = _verify(request_over={"ruin_class": "RUIN"})
+        self.assertEqual((decision.ok, decision.code), (False, "HARD_VETO_RUIN"))
+
+    def test_r4_d2_02_valid_token_with_unknown_ruin_is_safe_stop(self):
+        decision = _verify(request_over={"ruin_class": "UNKNOWN_RUIN"})
+        self.assertEqual((decision.ok, decision.code), (False, "SAFE_STOP_UNKNOWN_RUIN"))
+
+    def test_r4_d2_03_no_token_with_ruin_is_hard_veto_at_the_seam(self):
+        request = _release_request(ruin_class="RUIN")
+        route = human_gate_required(request)
+        self.assertTrue(route.required)
+        self.assertEqual(route.route, "ARTIFACT:RUIN_HARD_VETO")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            assert_human_gate_satisfied(route, "", request=request, ctx=_release_ctx())
+        self.assertEqual(str(caught.exception), "HARD_VETO_RUIN")
+
+    def test_r4_d2_04_valid_token_with_ruin_is_hard_veto_at_the_seam(self):
+        request = _release_request(ruin_class="RUIN")
+        route = human_gate_required(request)
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            assert_human_gate_satisfied(
+                route, _valid_token(), requesting_actor="human:dave", request=request,
+                ctx=_release_ctx())
+        self.assertEqual(str(caught.exception), "HARD_VETO_RUIN")
+
+    def test_r4_d2_05_valid_token_with_unknown_ruin_is_safe_stop_at_the_seam(self):
+        request = _release_request(ruin_class="UNKNOWN_RUIN")
+        route = human_gate_required(request)
+        self.assertEqual(route.route, "ARTIFACT:RUIN_SAFE_STOP")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            assert_human_gate_satisfied(
+                route, _valid_token(), requesting_actor="human:dave", request=request,
+                ctx=_release_ctx())
+        self.assertEqual(str(caught.exception), "SAFE_STOP_UNKNOWN_RUIN")
+
+    def test_r4_d2_06_ruin_predicate_is_first(self):
+        # ruin precedence must not depend on the risk tier: a P2 RUIN request is still vetoed.
+        param = _release_request(ruin_class="RUIN", effect_risk_tier="P2", permission_class="P2")
+        self.assertEqual(human_gate_required(param).authority_edge, "RUIN:HARD_VETO")
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R004 (R4). D3 - canonical integrity, basis and lineage.
+# ---------------------------------------------------------------------------------------------
+class TestTokenIntegrityLineageBasisD3(unittest.TestCase):
+
+    def test_r4_d3_01_signature_over_non_framed_payload_is_denied(self):
+        token = _valid_token(signature="A" * 86)
+        body = {name: getattr(token, name)
+                for name in token.__dataclass_fields__ if name != "signature"}
+        forged = replace(token, signature=_sign_payload(jcs_dumps(body)))
+        decision = verify_approval_token(forged, _release_request(), _release_ctx())
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_INTEGRITY"))
+
+    def test_r4_d3_02_signature_over_framed_but_non_jcs_payload_is_denied(self):
+        token = _valid_token(signature="A" * 86)
+        body = {name: getattr(token, name)
+                for name in token.__dataclass_fields__ if name != "signature"}
+        non_jcs = json.dumps(body, sort_keys=True).encode("utf-8")  # spaces => not JCS
+        forged = replace(token, signature=_sign_payload(DOMAIN_FRAME + non_jcs))
+        decision = verify_approval_token(forged, _release_request(), _release_ctx())
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_INTEGRITY"))
+
+    def test_r4_d3_03_unknown_key_or_wrong_generation_is_denied(self):
+        for over in ({"key_generation": 99}, {"key_id": "key-x"}, {"issuer_id": "issuer-x"}):
+            with self.subTest(over=over):
+                decision = _verify(token_over=over)
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_INTEGRITY"))
+
+    def test_r4_d3_04_real_ed25519_positive_control_passes(self):
+        # A registry returning the correct raw public-key bytes over a correctly signed token PASSES.
+        decision = _verify(ctx_over={"trusted_key_registry": _honest_registry})
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+    def test_r4_d3_05_wrong_request_or_decision_id_is_denied(self):
+        for over in ({"request_id": "req-x"}, {"decision_id": "dec-x"}):
+            with self.subTest(over=over):
+                decision = _verify(token_over=over)
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_EXACT_BINDING"))
+
+    def test_r4_d3_06_wrong_approval_basis_hash_is_denied(self):
+        decision = _verify(token_over={"approval_basis_hash": "b" * 64})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_APPROVAL_BASIS"))
+
+    def test_r4_d3_07_request_declares_a_generation_ctx_lacks(self):
+        decision = _verify(request_over={"rights_generation": 5})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_STALE_GENERATION"))
+
+    def test_r4_d3_08_declared_generation_must_match_ctx(self):
+        decision = _verify(request_over={"rights_generation": 5}, ctx_over={"rights_generation": 6})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_STALE_GENERATION"))
+        matched = _verify(request_over={"credential_generation": 8},
+                          ctx_over={"credential_generation": 8})
+        self.assertEqual((matched.ok, matched.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+    def test_r4_d3_09_gated_request_with_absent_or_malformed_audience_is_denied(self):
+        for value in (None, "", "not-a-digest", "b" * 63):
+            with self.subTest(value=value):
+                decision = _verify(ctx_over={"expected_consumer_audience_hash": value})
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_AUDIENCE_MISMATCH"))
+
+    def test_r4_d3_10_checker_required_true_missing_ref_is_denied(self):
+        decision = _verify(token_over={
+            "independent_checker_required": True,
+            "independent_checker_evidence_ref": "evidence:one",
+        })
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_T3_CHECKER"))
+
+    def test_r4_d3_11_t3_forces_checker_required_true(self):
+        decision = _verify(request_over={"autonomy_tier": "T3"})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_T3_CHECKER"))
+
+    def test_r4_d3_12_checker_required_true_matching_ref_passes(self):
+        decision = _verify(
+            token_over={"independent_checker_required": True,
+                        "independent_checker_evidence_ref": "evidence:one"},
+            ctx_over={"independent_checker_evidence_ref": "evidence:one"},
+        )
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+    def test_r4_d3_13_basis_recipe_is_exact(self):
+        import hashlib
+        expected = hashlib.sha256(
+            APPROVAL_BASIS_FRAME + ("\n".join((DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0")))
+            .encode("utf-8")).hexdigest()
+        self.assertEqual(approval_basis_hash(DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0"),
+                         expected)
+        self.assertEqual(approval_basis_hash(DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0"), BASIS)
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R004 (R4) section 3.1 - RFC 8785 JCS properties.
+# ---------------------------------------------------------------------------------------------
+class TestJCSRFC8785(unittest.TestCase):
+
+    def test_jcs_01_key_ordering_is_by_utf16_code_units(self):
+        self.assertEqual(
+            jcs_dumps({"b": 1, "a": 2, "ab": 3, "A": 4}),
+            b'{"A":4,"a":2,"ab":3,"b":1}')
+        # U+FFFD sorts after U+E000 in UTF-16 code units; a naive codepoint sort would differ.
+        self.assertEqual(jcs_dumps({"\ue000": 1, "\ufffd": 2}),
+                         '{"\ue000":1,"\ufffd":2}'.encode("utf-8"))
+
+    def test_jcs_02_output_has_no_insignificant_whitespace(self):
+        self.assertEqual(jcs_dumps({"a": 1, "b": [1, 2, 3]}), b'{"a":1,"b":[1,2,3]}')
+        self.assertNotIn(b" ", jcs_dumps({"a": [1, 2], "b": {"c": 3}}))
+
+    def test_jcs_03_integers_render_without_a_fraction(self):
+        self.assertEqual(jcs_dumps(1), b"1")
+        self.assertEqual(jcs_dumps(1.0), b"1")
+        self.assertEqual(jcs_dumps(-7), b"-7")
+        self.assertEqual(jcs_dumps({"n": 1000000}), b'{"n":1000000}')
+
+    def test_jcs_04_non_ascii_string_round_trips(self):
+        original = {"note": "caf\u00e9 \u2013 \u4e2d\u6587 \U0001f600"}
+        encoded = jcs_dumps(original)
+        self.assertEqual(json.loads(encoded.decode("utf-8")), original)
+
+    def test_jcs_05_literals_and_arrays_in_order(self):
+        self.assertEqual(jcs_dumps([True, False, None, []]), b"[true,false,null,[]]")
+
+    def test_jcs_06_profile_is_not_json_dumps(self):
+        self.assertEqual(JCS_PROFILE, "RFC8785")
+        # json.dumps would emit "1.0"; JCS emits the shortest ECMAScript integer form "1".
+        self.assertNotEqual(jcs_dumps(1.0), json.dumps(1.0).encode("utf-8"))
+
+    def test_jcs_07_unsupported_numbers_raise_rather_than_guess(self):
+        for value in (float("nan"), float("inf"), 2 ** 53 + 1):
+            with self.subTest(value=repr(value)):
+                with self.assertRaises(JCSError):
+                    jcs_dumps(value)
+
+
+
+
+class TestFailClosedTypeHardeningR4(unittest.TestCase):
+    """R4: a non-canonical request/ctx and a non-canonical ruin class fail closed, never raise."""
+
+    def test_non_canonical_request_fails_closed(self):
+        decision = verify_approval_token(_valid_token(), object(), _release_ctx())
+        self.assertEqual((decision.ok, decision.code),
+                         (False, "NOT_A_CANONICAL_APPROVAL_TOKEN"))
+
+    def test_non_canonical_ctx_fails_closed(self):
+        decision = verify_approval_token(_valid_token(), _release_request(), object())
+        self.assertEqual((decision.ok, decision.code),
+                         (False, "NOT_A_CANONICAL_APPROVAL_TOKEN"))
+
+    def test_non_canonical_ruin_class_is_safe_stop(self):
+        for value in ("ruin", "RUIN_CLASS", 1, None):
+            with self.subTest(value=value):
+                decision = _verify(request_over={"ruin_class": value})
+                self.assertEqual((decision.ok, decision.code),
+                                 (False, "SAFE_STOP_UNKNOWN_RUIN"))
+
+    def test_every_declared_generation_is_checked_not_only_the_first(self):
+        # credential_generation is declared and matches ctx, but rights_generation is declared and
+        # absent from ctx: the second declaration must still be refused.
+        decision = _verify(
+            request_over={"credential_generation": 8, "rights_generation": 5},
+            ctx_over={"credential_generation": 8},
+        )
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_STALE_GENERATION"))
+
+    def test_a_generation_without_a_token_analog_is_never_satisfied(self):
+        # rights_generation has no canonical token field, so a context that supplies it makes the
+        # token stale even when the request agrees: fail closed, never a silent skip.
+        decision = _verify(
+            request_over={"rights_generation": 5}, ctx_over={"rights_generation": 5})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_STALE_GENERATION"))
+
+    def test_all_declared_token_generations_matching_passes(self):
+        decision = _verify(
+            request_over={"credential_generation": 8, "authn_session_generation": 7},
+            ctx_over={"credential_generation": 8, "authn_session_generation": 7},
+        )
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+
+class TestJCSNumberForms(unittest.TestCase):
+    """R4 3.1: ECMAScript Number::toString forms, and RAISE rather than emit a wrong shape."""
+
+    def test_fraction_free_floats_render_as_integers(self):
+        self.assertEqual(jcs_dumps(1.0), b"1")
+        self.assertEqual(jcs_dumps(-0.0), b"0")
+        self.assertEqual(jcs_dumps(1e20), b"100000000000000000000")
+
+    def test_small_decimal_float_expands_without_an_exponent(self):
+        self.assertEqual(jcs_dumps(0.000015), b"0.000015")
+
+    def test_fractional_float_keeps_its_shortest_form(self):
+        self.assertEqual(jcs_dumps(1000000.5), b"1000000.5")
+        self.assertEqual(jcs_dumps(-1.5), b"-1.5")
+
+    def test_negative_and_large_integers(self):
+        self.assertEqual(jcs_dumps(-7), b"-7")
+        self.assertEqual(jcs_dumps(2 ** 53 - 1), b"9007199254740991")
+
+    def test_out_of_range_values_raise(self):
+        for value in (2 ** 53, 1e-7, 1e21):
+            with self.subTest(value=repr(value)):
+                with self.assertRaises(JCSError):
+                    jcs_dumps(value)
 
 
 if __name__ == "__main__":

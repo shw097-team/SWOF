@@ -16,10 +16,15 @@ syntactic string. A gated route requires a typed, exact-bound `ApprovalToken` ve
 `src/security/humangate.py`; every bare string is refused with `NOT_A_CANONICAL_APPROVAL_TOKEN`.
 
 W2 repair WO-SWOF-W2-R002 (BLK-3): the route is re-derived, never trusted. A `required=False`
-route is only honoured when an `ApprovalRequest` is supplied and `human_gate_route` agrees; a
-route that understates (or overstates) the action raises `ROUTE_UNDERSTATES_ACTION`, and an
-underivable route raises `ROUTE_NOT_REDERIVABLE_FAIL_CLOSED`. A P3/P4/P5 action without a valid
-typed token surfaces the canonical `DENY_P3_TOKEN_REQUIRED` (TOK-INV-001).
+route is only honoured when an `ApprovalRequest` is supplied and the predicate agrees; a route
+that understates the action raises `ROUTE_UNDERSTATES_ACTION`, and an underivable route raises
+`ROUTE_NOT_REDERIVABLE_FAIL_CLOSED`. A P3/P4/P5 action without a valid typed token surfaces the
+canonical `DENY_P3_TOKEN_REQUIRED` (TOK-INV-001).
+
+W2 repair WO-SWOF-W2-R004 (R4 D1/D2): there is now ONE canonical gate predicate,
+`human_gate_required(request)`. Risk/permission classification is authoritative; the operation
+name may TIGHTEN or identify the route but may never WEAKEN it. RUIN / UNKNOWN_RUIN precedence is
+evaluated FIRST, before any approval consideration, and a valid token can never satisfy it.
 """
 from __future__ import annotations
 
@@ -37,6 +42,8 @@ HIGH_RISK_ACTIONS = frozenset({
 })
 
 HUMAN_GATE_ROUTE = "ARTIFACT:HUMAN_GATE"
+RUIN_HARD_VETO_ROUTE = "ARTIFACT:RUIN_HARD_VETO"
+RUIN_SAFE_STOP_ROUTE = "ARTIFACT:RUIN_SAFE_STOP"
 NONE_ROUTE = "NONE"
 
 # The effect-risk / permission tiers that require a typed approval token (TOK-INV-001).
@@ -158,13 +165,52 @@ def check_rights(scope, entitlement, *, now=None, subject=None) -> RightsDecisio
     return RightsDecision(True, "ENTITLED", gate)
 
 
+def human_gate_required(request) -> HumanGateRoute:
+    """ONE canonical gate predicate. Risk/permission classification is authoritative; the
+    operation name may TIGHTEN the route (identify its authority edge) but may NEVER weaken it.
+
+    Order (normative):
+      1. ruin precedence FIRST, before any approval consideration:
+           ruin_class == "RUIN"          -> RUIN_HARD_VETO_ROUTE / "RUIN:HARD_VETO"
+           ruin_class == "UNKNOWN_RUIN"  -> RUIN_SAFE_STOP_ROUTE / "RUIN:SAFE_STOP"
+         a token can never satisfy these; the verifier rejects them before checking approval.
+      2. token required if the effect_risk_tier OR the permission_class is P3/P4/P5, or the
+         operation maps to an explicit high-risk authority edge.
+      3. otherwise ungated.
+    """
+    ruin_class = getattr(request, "ruin_class", "NONE")
+    if ruin_class == "RUIN":
+        return HumanGateRoute(True, RUIN_HARD_VETO_ROUTE, "RUIN:HARD_VETO")
+    if ruin_class == "UNKNOWN_RUIN":
+        return HumanGateRoute(True, RUIN_SAFE_STOP_ROUTE, "RUIN:SAFE_STOP")
+
+    risk_tier = getattr(request, "effect_risk_tier", "")
+    permission_class = getattr(request, "permission_class", "")
+    operation = getattr(request, "operation", "")
+    if risk_tier in _APPROVAL_REQUIRED_TIERS or permission_class in _APPROVAL_REQUIRED_TIERS:
+        return HumanGateRoute(True, HUMAN_GATE_ROUTE, _risk_edge(operation))
+    if isinstance(operation, str) and operation in HIGH_RISK_ACTIONS:
+        return HumanGateRoute(True, HUMAN_GATE_ROUTE, _AUTHORITY_EDGE[operation])
+    return HumanGateRoute(False, NONE_ROUTE, "NONE")
+
+
+def _risk_edge(operation) -> str:
+    """The authority edge for a risk-tier gated action; a high-risk op identifies its own edge."""
+    if isinstance(operation, str) and operation in HIGH_RISK_ACTIONS:
+        return _AUTHORITY_EDGE[operation]
+    return "HUMAN_GATE:risk_tier"
+
+
 def human_gate_route(action, *, risk="LOW") -> HumanGateRoute:
-    """Every high-risk action is gated on a human artifact; unknown actions are gated too."""
+    """Action-name shim over the ONE canonical predicate (no second authority path).
+
+    A non-string or empty action is an unknown action and is gated without an authority edge; any
+    other action is classified by `human_gate_required` via a synthetic request, so the operation
+    name can identify or tighten the route but can never weaken the risk/permission law.
+    """
     if not isinstance(action, str) or not action:
         return HumanGateRoute(True, HUMAN_GATE_ROUTE, "HUMAN_GATE:unknown_action")
-    if action in HIGH_RISK_ACTIONS:
-        return HumanGateRoute(True, HUMAN_GATE_ROUTE, _AUTHORITY_EDGE[action])
-    return HumanGateRoute(False, NONE_ROUTE, "NONE")
+    return human_gate_required(ApprovalRequest(operation=action))
 
 
 def assert_credential_scope(scope, use, *, subject=None, now=None) -> None:
@@ -190,35 +236,61 @@ def assert_credential_scope(scope, use, *, subject=None, now=None) -> None:
         raise RightsDenied("CREDENTIAL_USE_OUT_OF_SCOPE: %s" % use)
 
 
+def _requires_typed_token(request) -> bool:
+    """True when the request risk tier or permission class demands a typed approval token."""
+    tier = getattr(request, "effect_risk_tier", "")
+    permission = getattr(request, "permission_class", "")
+    return tier in _APPROVAL_REQUIRED_TIERS or permission in _APPROVAL_REQUIRED_TIERS
+
+
+def _route_is_ruin(route) -> bool:
+    return route.route in (RUIN_HARD_VETO_ROUTE, RUIN_SAFE_STOP_ROUTE)
+
+
 def assert_human_gate_satisfied(route, approval, *, requesting_actor=None,
                                 request=None, ctx=None) -> None:
     """Refuse a missing, self-issued or non-exact-bound approval for a gated route.
 
-    The route is re-derived, never trusted. A `required=False` route is only honoured when an
-    `ApprovalRequest` is supplied and `human_gate_route(request.operation)` agrees the action is
-    ungated; otherwise the route understates the action (`ROUTE_UNDERSTATES_ACTION`) or cannot be
-    re-derived (`ROUTE_NOT_REDERIVABLE_FAIL_CLOSED`). A gated route requires a typed, exact-bound
-    `ApprovalToken` plus the `ApprovalRequest` it is bound to and a `VerificationContext` carrying
-    trusted currentness. Any bare string, mapping or absent object is refused: a syntactic string
-    is not an approval. For a P3/P4/P5 action the refusal of a non-token is the canonical
-    `DENY_P3_TOKEN_REQUIRED`.
+    The route is re-derived from the REQUEST via the ONE canonical predicate, never trusted. A
+    `required=False` route is only honoured when an `ApprovalRequest` is supplied and the
+    predicate agrees the action is ungated; otherwise the route understates the action
+    (`ROUTE_UNDERSTATES_ACTION`) or cannot be re-derived (`ROUTE_NOT_REDERIVABLE_FAIL_CLOSED`).
+
+    RUIN / UNKNOWN_RUIN precedence is evaluated FIRST and raises `HARD_VETO_RUIN` /
+    `SAFE_STOP_UNKNOWN_RUIN` REGARDLESS of the token, before any token check.
+
+    A gated route requires a typed, exact-bound `ApprovalToken` plus the `ApprovalRequest` it is
+    bound to and a `VerificationContext` carrying trusted currentness. Any bare string, mapping or
+    absent object is refused: a syntactic string is not an approval. For a P3/P4/P5 action the
+    refusal of a non-token is the canonical `DENY_P3_TOKEN_REQUIRED`.
     """
     if not isinstance(route, HumanGateRoute):
         raise HumanGateBypassAttempt("UNKNOWN_ROUTE_FAIL_CLOSED")
+
+    # D2: ruin precedence FIRST, before any approval consideration; a token can never satisfy it.
     if request is not None:
-        derived = human_gate_route(getattr(request, "operation", None))
-        if derived.required and not route.required:
-            raise HumanGateBypassAttempt("ROUTE_UNDERSTATES_ACTION")
+        ruin = _ruin_veto_code(request)
+        if ruin is not None:
+            raise HumanGateBypassAttempt(ruin)
+    if _route_is_ruin(route):
+        raise HumanGateBypassAttempt(
+            "HARD_VETO_RUIN" if route.route == RUIN_HARD_VETO_ROUTE else "SAFE_STOP_UNKNOWN_RUIN")
+
+    if request is not None:
+        derived = human_gate_required(request)
         if derived.required != route.required:
             raise HumanGateBypassAttempt("ROUTE_UNDERSTATES_ACTION")
+
     if not route.required:
         if request is None:
             raise HumanGateBypassAttempt("ROUTE_NOT_REDERIVABLE_FAIL_CLOSED")
         return
+
     if not isinstance(approval, ApprovalToken) or request is None or ctx is None:
         if request is not None and _requires_typed_token(request):
             raise HumanGateBypassAttempt("DENY_P3_TOKEN_REQUIRED")
         raise HumanGateBypassAttempt("NOT_A_CANONICAL_APPROVAL_TOKEN")
+
     decision = verify_approval_token(approval, request, ctx)
     if not decision.ok:
         raise HumanGateBypassAttempt(decision.code)
@@ -228,17 +300,21 @@ def assert_human_gate_satisfied(route, approval, *, requesting_actor=None,
     return None
 
 
-def _requires_typed_token(request) -> bool:
-    """True when the request risk tier or permission class demands a typed approval token."""
-    tier = getattr(request, "effect_risk_tier", "")
-    permission = getattr(request, "permission_class", "")
-    return tier in _APPROVAL_REQUIRED_TIERS or permission in _APPROVAL_REQUIRED_TIERS
+def _ruin_veto_code(request):
+    """The HARD_VETO/SAFE_STOP code for a request's ruin class, or None when it is NONE."""
+    ruin_class = getattr(request, "ruin_class", "NONE")
+    if ruin_class == "RUIN":
+        return "HARD_VETO_RUIN"
+    if ruin_class == "UNKNOWN_RUIN":
+        return "SAFE_STOP_UNKNOWN_RUIN"
+    return None
 
 
 __all__ = [
-    "HIGH_RISK_ACTIONS", "HUMAN_GATE_ROUTE", "NONE_ROUTE", "ApprovalDecision",
-    "ApprovalRequest", "ApprovalToken", "HumanGateBypassAttempt", "HumanGateRoute",
-    "NonceLedger", "RightsDecision", "RightsDenied", "RightsScope", "VerificationContext",
-    "assert_credential_scope", "assert_human_gate_satisfied", "check_rights",
-    "currentness_required", "human_gate_route", "verify_approval_token",
+    "HIGH_RISK_ACTIONS", "HUMAN_GATE_ROUTE", "NONE_ROUTE", "RUIN_HARD_VETO_ROUTE",
+    "RUIN_SAFE_STOP_ROUTE", "ApprovalDecision", "ApprovalRequest", "ApprovalToken",
+    "HumanGateBypassAttempt", "HumanGateRoute", "NonceLedger", "RightsDecision", "RightsDenied",
+    "RightsScope", "VerificationContext", "assert_credential_scope", "assert_human_gate_satisfied",
+    "check_rights", "currentness_required", "human_gate_required", "human_gate_route",
+    "verify_approval_token",
 ]
