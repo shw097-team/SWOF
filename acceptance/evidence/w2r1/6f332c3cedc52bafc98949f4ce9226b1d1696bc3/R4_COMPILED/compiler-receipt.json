@@ -1,10 +1,10 @@
 {
   "compiler_sha256": "2c282ad6539a465c3b1d751868cab98437a8f35e9728be686117e364a70857d9",
-  "contract_sha256": "a42d763e77bcdc202f0a64ed5ecac541046423b1c8810fb15c617317913d1790",
-  "generated_at": "2026-10-04T09:42:11.885757+00:00",
+  "contract_sha256": "78a1daa23d2e74facd4f18b5f5a18fa5adb84f36416d2a974191431ca3557e48",
+  "generated_at": "2026-10-04T10:50:23.719997+00:00",
   "independent_claim": "NOT_EVALUATED",
   "production_claim": "NOT_CLAIMED",
-  "prompt_sha256": "08fdf68414adacbf95245121074b0966e90095251b7ff21446cdcca51007c89c",
+  "prompt_sha256": "c297a66bb18bfb1115b842f6a8ba68e8bf6c454b28a07297dc4f8e47d6d3de68",
   "runtime_claim": "NOT_EVALUATED",
   "schema": "CAPC-COMPILER-RECEIPT/1",
   "task_id": "SWOF-W2-CLOSURE-R4",

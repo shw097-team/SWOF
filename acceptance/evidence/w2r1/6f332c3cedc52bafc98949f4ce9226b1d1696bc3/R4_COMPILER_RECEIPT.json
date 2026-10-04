@@ -45,7 +45,7 @@
     "  \"error_count\": 0,",
     "  \"errors\": [],",
     "  \"task_id\": \"SWOF-W2-CLOSURE-R4\",",
-    "  \"contract_sha256\": \"a42d763e77bcdc202f0a64ed5ecac541046423b1c8810fb15c617317913d1790\",",
+    "  \"contract_sha256\": \"78a1daa23d2e74facd4f18b5f5a18fa5adb84f36416d2a974191431ca3557e48\",",
     "  \"claim_ceiling\": \"LOCAL\"",
     "}"
    ],
@@ -60,7 +60,7 @@
     "  \"results\": [",
     "    {",
     "      \"source\": \"C:\\\\Projects\\\\Agent_Workspace\\\\知識庫\\\\實作相關DOC\\\\Fabric vNext\\\\Semantic World OS Fabric\\\\SWOF-F_SWOF-GENIE_All-IW_Pre-Dev_Multi-Packages\\\\SWOF_HGK_ACA_RBWI\\\\SWOF_HGK_ACA_RBWI.md\",",
-    "      \"ratio\": 0.007308",
+    "      \"ratio\": 0.007335",
     "    }",
     "  ]",
     "}"
@@ -72,11 +72,11 @@
  "compiler_selftest": {
   "exit_code": 0,
   "tail": [
-   "Ran 22 tests in 0.398s",
+   "Ran 22 tests in 0.386s",
    "",
    "OK"
   ]
  },
  "verdict": "PROMPT_COMPILE_PASS",
- "generated_at_utc": "2026-10-04T09:42:12Z"
+ "generated_at_utc": "2026-10-04T10:50:24Z"
 }

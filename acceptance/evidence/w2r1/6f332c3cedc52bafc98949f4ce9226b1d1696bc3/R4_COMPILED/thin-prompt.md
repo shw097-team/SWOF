@@ -6,7 +6,7 @@ contract_schema: CAPC-PROMPT-CONTRACT/1
 compiler_state: PROMPT_COMPILE_PASS
 
 ## 1. Mission / ChangeSet
-Mission: Execute ONE bounded W2 closure repair (R2) against exact baseline 0b8ecb0888fbd53b5698f603c90b580ac83dd69d: unify the HumanGate trigger onto the canonical risk/permission classification, add RUIN/UNKNOWN_RUIN precedence, make the ApprovalToken basis/lineage/integrity canonical, bind the final HGK checkpoint to the exact new source, make the denominator non-vacuous, regenerate the evidence/readset, and republish for external re-challenge.
+Mission: Execute ONE bounded W2 closure repair (R4) against exact baseline 0b8ecb0888fbd53b5698f603c90b580ac83dd69d: enforce the policy-bound request required_authn_assurance floor against the resolved current HumanGateDecision and the ApprovalToken so a CRITICAL/AAC3 requirement cannot be satisfied by weaker assurance, then publish one coherent exact evidence handoff for the new source subject.
 Expected outcome: A new exact source candidate plus a separate sanitized evidence commit, locally closed and independently verified, packaged for read-only external re-challenge.
 ChangeSet: NARROW_REPAIR
 Affected domains: security, HumanGate, rights, evidence-transport, normative-closure
