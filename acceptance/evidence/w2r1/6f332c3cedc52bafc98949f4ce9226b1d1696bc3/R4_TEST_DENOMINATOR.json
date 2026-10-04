@@ -1,8 +1,8 @@
 {
- "schema": "SWOF-W2-R1-TEST-DENOMINATOR/1",
+ "schema": "SWOF-W2-R4-TEST-DENOMINATOR/1",
  "candidate": "6f332c3cedc52bafc98949f4ce9226b1d1696bc3",
  "branch": "wo/swof-w2-closure-r1",
- "repair_id": "SWOF-W2-CLOSURE-R1",
+ "repair_id": "SWOF-W2-CLOSURE-R4",
  "worktree_clean_at_test_time": true,
  "interpreter": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\.venv\\Scripts\\python.exe",
  "python_version": "3.12.14",
@@ -114,5 +114,6 @@
  "grand_total": 883,
  "zero_denominator_roots": [],
  "aggregate_pass": true,
- "generated_at_utc": "2026-10-04T10:12:49Z"
+ "generated_at_utc": "2026-10-04T10:12:49Z",
+ "generated_for_subject": "6f332c3cedc52bafc98949f4ce9226b1d1696bc3"
 }

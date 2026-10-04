@@ -7,7 +7,7 @@ final_source_candidate_sha: 6f332c3cedc52bafc98949f4ce9226b1d1696bc3
 repair_base_sha: 0b8ecb0888fbd53b5698f603c90b580ac83dd69d
 gate_set_passed: True
 independent_wave_verdict: PASS
-local_closure_receipt_sha256: 1fb58c68671365627e96ed70d814658a0e22f32ff83733c3004b3192d3c55d1a
+local_closure_receipt_sha256: e883d74ff025a877fff380f87af05117f31b94cf9a6bf4a6c6c8d03a11131827
 ```
 
 ## 1. Report conflict adjudication
@@ -18,7 +18,8 @@ local_closure_receipt_sha256: 1fb58c68671365627e96ed70d814658a0e22f32ff83733c300
 
 ## 2. Product source change
 
-Changed, because the defects were real: `src/security/rights.py` (currentness fail-closed + credential expiry), new `src/security/humangate.py` (typed exact-bound ApprovalToken with TOK-INV-001..014 first-fail codes), `src/security/__init__.py`, two JSON schemas and the security tests. No other subsystem was touched.
+- Cumulative W2 surface (all repair rounds): `src/security/rights.py` (currentness fail-closed + credential expiry), `src/security/humangate.py` (typed exact-bound ApprovalToken with TOK-INV-001..014 first-fail codes), `src/security/__init__.py`, two JSON schemas and the security tests. No other subsystem was touched.
+- THIS round (R4) ChangeSet: `src/security/humangate.py`, `src/security/tests/test_humangate_currentness.py`, `src/security/tests/test_rights.py` only. The wider surface above is inherited from earlier rounds and is not re-attributed to R4.
 
 ## 3. Test denominator
 

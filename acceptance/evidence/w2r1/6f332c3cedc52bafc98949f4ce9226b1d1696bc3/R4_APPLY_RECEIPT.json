@@ -1,6 +1,6 @@
 {
  "workorder": "WO-SWOF-W2-R008",
- "repair_id": "SWOF-W2-CLOSURE-R2",
+ "repair_id": "SWOF-W2-CLOSURE-R4",
  "base": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
  "branch": "wo/swof-w2-closure-r1",
  "codex_exit": 0,
@@ -19,5 +19,6 @@
   "ran": 408,
   "exit_code": 0,
   "raw_log": "writer_logs/FOCUSED_WO-SWOF-W2-R008.log"
- }
+ },
+ "schema": "SWOF-W2-R4-APPLY-RECEIPT/1"
 }
