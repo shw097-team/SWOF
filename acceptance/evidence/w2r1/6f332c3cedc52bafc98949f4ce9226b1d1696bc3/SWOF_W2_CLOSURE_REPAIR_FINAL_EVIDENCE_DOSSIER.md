@@ -7,7 +7,7 @@ final_source_candidate_sha: 6f332c3cedc52bafc98949f4ce9226b1d1696bc3
 repair_base_sha: 0b8ecb0888fbd53b5698f603c90b580ac83dd69d
 gate_set_passed: True
 independent_wave_verdict: PASS
-local_closure_receipt_sha256: 4cb27f846ec0f14362674d467512834be26e9dcb74151467df746fbb4be00a03
+local_closure_receipt_sha256: d6281d96d5a53f75d1fd8ed349adaaa44f7629c4155abebd28b4b8006af20506
 ```
 
 ## 1. Report conflict adjudication
@@ -40,7 +40,7 @@ local_closure_receipt_sha256: 4cb27f846ec0f14362674d467512834be26e9dcb74151467df
 
 ## 6. Canonical HGK closure leg
 
-- Resolved: `True` (checkpoint `CK-W2-1D755E47`)
+- Resolved: `True` (checkpoint `CK-W2-9C04ECC1`)
 - The typed HGK API CAN move `acceptances.verdict` off `NOT_RUN`: `SharedSpine.resolve_acceptance(...)` is materialised, so the W2 denominator is closable through typed APIs with no direct SQL.
 - Raw binding evidence: `exact_source_binding` in the projection exposes the stored payload plus a recompute recipe so an external reviewer can recompute `source_digest`.
 

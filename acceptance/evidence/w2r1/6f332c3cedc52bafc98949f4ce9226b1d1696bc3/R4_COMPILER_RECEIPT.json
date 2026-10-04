@@ -72,11 +72,20 @@
  "compiler_selftest": {
   "exit_code": 0,
   "tail": [
-   "Ran 22 tests in 0.386s",
+   "Ran 22 tests in 0.403s",
    "",
    "OK"
   ]
  },
  "verdict": "PROMPT_COMPILE_PASS",
- "generated_at_utc": "2026-10-04T10:50:24Z"
+ "generated_at_utc": "2026-10-04T11:36:59Z",
+ "changeset_count": 1,
+ "changeset_kind": "NARROW_REPAIR",
+ "changesets": [
+  "NARROW_REPAIR"
+ ],
+ "unresolved_acceptance_orphans": [],
+ "acceptance_orphan_count": 0,
+ "second_rbwi_duplication": false,
+ "gate0_predicates_recorded": true
 }

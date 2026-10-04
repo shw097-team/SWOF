@@ -1,0 +1,168 @@
+{
+ "schema": "SWOF-W2-R4-BASELINE-AND-REPORT-RECONCILIATION/1",
+ "task_id": "SWOF-W2-CLOSURE-R4",
+ "repair_id": "SWOF-W2-CLOSURE-R4",
+ "task_time_baseline_readback": {
+  "repo": "shw097-team/SWOF",
+  "pr": 7,
+  "local_head_at_freeze": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+  "pr_head_at_freeze": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+  "baseline_source_sha_expected": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+  "baseline_source_sha_observed": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+  "baseline_evidence_sha_expected": "1033ef3eb1856f1e5b237bf7dc76c98a42ff5ee9",
+  "baseline_evidence_sha_observed": "1033ef3eb1856f1e5b237bf7dc76c98a42ff5ee9",
+  "baseline_drift": "NONE - order applied to its declared subject; no TEMP_CLOSED_BASELINE_DRIFT",
+  "w1_accepted_source_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+  "w1_accepted_evidence_sha": "84ea30c216ac319c4e55df1b07ee2ee3372bcc88",
+  "pr_state": "open/draft/unmerged"
+ },
+ "report_verdicts": {
+  "report_A": "FAIL_CHALLENGE",
+  "report_B": "FAIL_CHALLENGE",
+  "shared_blocking_finding": "F-W2R3-EXT-001 request-level authn floor hard-coded AAC2",
+  "report_B_only_blocking_finding": "F-W2R3-EXT-002 final evidence handoff internally contradictory",
+  "rank": "EQUAL",
+  "severity_difference": "Report A classifies the evidence issues as non-blocking cleanup; Report B proves deterministic handoff contradictions."
+ },
+ "r4_reconciliation_rule": {
+  "decision": "evidence coherence is MANDATORY closure work inside this same R4 ChangeSet, not a second product ChangeSet",
+  "reason": "any source mutation invalidates the current checker/checkpoint/evidence tuple, so a separate evidence-only cycle would be wasteful and would re-invalidate itself",
+  "product_mutation_blocker": "F-W2R3-EXT-001 only",
+  "scope_inflation": "NONE - non-blocking future/domain debts stay deferred"
+ },
+ "already_closed_prior_findings": [
+  {
+   "id": "F-W2R2-EXT-001",
+   "subject": "signed resource/scope set canonicalization",
+   "status": "CLOSED",
+   "carried_into_r4": true
+  },
+  {
+   "id": "PI06-15.5-basis-bytes",
+   "subject": "exact direct-concatenation approval_basis_hash",
+   "status": "CLOSED",
+   "carried_into_r4": true
+  },
+  {
+   "id": "P3-P4-P5-floor",
+   "subject": "benign operation without token",
+   "status": "CLOSED",
+   "carried_into_r4": true
+  },
+  {
+   "id": "RUIN-UNKNOWN_RUIN",
+   "subject": "hard veto / safe-stop precedence",
+   "status": "CLOSED",
+   "carried_into_r4": true
+  },
+  {
+   "id": "unknown-operation",
+   "subject": "fail-closed canonical safe-stop",
+   "status": "CLOSED",
+   "carried_into_r4": true
+  }
+ ],
+ "active_product_write_set": {
+  "admitted": [
+   "src/security/humangate.py",
+   "src/security/tests/test_humangate_currentness.py",
+   "src/security/tests/test_rights.py"
+  ],
+  "observed_changed_paths": [
+   "src/security/humangate.py",
+   "src/security/tests/test_humangate_currentness.py",
+   "src/security/tests/test_rights.py"
+  ],
+  "containment_ok": true,
+  "reverted": [],
+  "escaped_cone": false,
+  "note": "schemas/security/approval_token.schema.json was NOT churned in R4 (R3 signed-set annotations preserved untouched)."
+ },
+ "invalidated_tests_and_evidence_by_source_mutation": {
+  "principle": "any source mutation invalidates the prior exact subject",
+  "invalidated": [
+   "all R3-source-bound checker receipts and checkpoints",
+   "R3 evidence commit 1033ef3e (superseded by the R4 evidence commit)",
+   "R3 dossier / Return Pack / External Readset currentness claims"
+  ],
+  "regenerated_in_r4": [
+   "fresh independent checker + raw transcript",
+   "fresh HGK exact-subject checkpoint",
+   "LocalClosure, dossier, Return Pack, evidence commit",
+   "postpublication publication receipt, final verification, External Readset",
+   "independent postpublication evidence verifier receipt"
+  ],
+  "w1_baseline_invalidated": false
+ },
+ "deferred_tt_cr": [
+  {
+   "id": "TT-W3-COAPPROVALS",
+   "subject": "required_coapprovals not represented in the W2 execution seam",
+   "owner": "W3 affected-journey domain owner",
+   "block": "affected journey only",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-W3-ACTIONCLASS",
+   "subject": "canonical action_class vs local operation_class shim",
+   "owner": "W3 domain/security integration",
+   "block": "affected journey",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-W3-TOKEN-MIRROR",
+   "subject": "which token fields are exact mirrors of HumanGateDecision; equality semantics not defined by frozen source",
+   "owner": "W3 HumanGate consumer owner",
+   "block": "preflight edge",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-W3-AUTHN-CONTEXT-OWNER",
+   "subject": "approver_authn_context_ref currentness has no qualified owner interface in frozen source",
+   "owner": "W3 authn-context owner",
+   "block": "affected journey",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-RUNTIME-NONCE",
+   "subject": "persistent NonceLedger (restart-surviving replay protection)",
+   "owner": "first runtime profile requiring it",
+   "block": "runtime only",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-INTEROP-NONASCII",
+   "subject": "non-ASCII resource canonical ordering",
+   "owner": "first active canonical registry permitting such IDs",
+   "block": "interop only",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-HYGIENE-PRBODY",
+   "subject": "PR #7 body/title stale prose",
+   "owner": "evidence publisher",
+   "block": "none",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-W3-REMOTE-CI",
+   "subject": "remote CI absence",
+   "owner": "project",
+   "block": "none (N_A_WITH_REASON: repository defines no .github/workflows)",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-HYG-PRIVACY",
+   "subject": "public repository visibility",
+   "owner": "Human/operator privacy policy check",
+   "block": "none absent higher-policy conflict",
+   "blocks_W3_globally": false
+  }
+ ],
+ "claim_ceiling": "W2_R4_LOCAL_REPAIR_AND_INDEPENDENT_CLOSURE_PLUS_COHERENT_EVIDENCE_PUBLICATION_READY_FOR_EXTERNAL_RECHALLENGE_ONLY",
+ "regression_at_reconciliation": {
+  "grand_total": 883,
+  "w1_total": null,
+  "zero_denominator_roots": []
+ }
+}

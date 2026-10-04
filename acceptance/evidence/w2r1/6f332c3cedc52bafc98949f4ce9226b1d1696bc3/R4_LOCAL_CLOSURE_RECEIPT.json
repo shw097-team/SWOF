@@ -96,7 +96,7 @@
   "resolved": true,
   "disposition": "CANONICAL_HGK_CLOSURE_RESOLVED",
   "project": "HGK-P0-SWOF-W2",
-  "final_checkpoint_id": "CK-W2-1D755E47",
+  "final_checkpoint_id": "CK-W2-9C04ECC1",
   "exact_source_binding": {
    "canonical_binding_field": "checkpoints.source_digest",
    "why_not_repo_head": "the canonical checkpoint schema carries source_digest/state_digest and the typed ProjectLifecycleController.checkpoint() sets repo_head to \"\"; repo_head is NOT the binding surface for this schema and no field was invented. The binding is the recomputable digest of the stored payload.",
@@ -109,7 +109,7 @@
     "EVIDENCE_SHA:0569f713a280df35b4fc1816368d03f580348c36ffe838840dd3f8668c66c6da"
    ],
    "payload_names_exact_source_sha": true,
-   "lifecycle_last_checkpoint_id": "CK-W2-1D755E47",
+   "lifecycle_last_checkpoint_id": "CK-W2-9C04ECC1",
    "lifecycle_points_at_final": true,
    "resolves_to_exact_source_sha": true,
    "recompute_recipe": "sha256_text(canonical_json(payload)) where payload is the stored project_lifecycles.intent_json[\"_checkpoint\"] object below",
@@ -128,7 +128,7 @@
    },
    "raw_canonical_json_bytes_sha256": "a34808497e7bea8d96562eb321e3208ed3c76903c24a460e816bf3f9ebf04325",
    "raw_checkpoint_row": {
-    "checkpoint_id": "CK-W2-1D755E47",
+    "checkpoint_id": "CK-W2-9C04ECC1",
     "state_digest": "a34808497e7bea8d96562eb321e3208ed3c76903c24a460e816bf3f9ebf04325",
     "source_digest": "a34808497e7bea8d96562eb321e3208ed3c76903c24a460e816bf3f9ebf04325",
     "repo_head": ""
@@ -171,5 +171,5 @@
   "NO_PRODUCTION",
   "NO_WORLD_EFFECT_ACCEPTANCE"
  ],
- "generated_at_utc": "2026-10-04T11:24:21Z"
+ "generated_at_utc": "2026-10-04T11:36:59Z"
 }

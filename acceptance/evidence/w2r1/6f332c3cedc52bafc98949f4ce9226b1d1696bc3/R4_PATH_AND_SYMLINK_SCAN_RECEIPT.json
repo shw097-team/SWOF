@@ -1,0 +1,15 @@
+{
+ "schema": "SWOF-W2-R4-PATH-AND-SYMLINK-SCAN-RECEIPT/1",
+ "subject_candidate_sha": "6f332c3cedc52bafc98949f4ce9226b1d1696bc3",
+ "staged_evidence_root": "evidence/",
+ "files_scanned": 97,
+ "path_traversal_hits": [],
+ "symlink_hits": [],
+ "absolute_or_drive_path_hits": [],
+ "path_traversal_present": false,
+ "symlinks_present": false,
+ "policy": "every committed evidence path must be relative, posix-normalized, inside the subject root, and a regular file",
+ "detector_non_vacuous": true,
+ "non_vacuity_proof": "the traversal matcher is proven against a planted sample 'a/../../b' and the symlink check against os.path.islink on a planted link before scanning",
+ "result": "CLEAN"
+}

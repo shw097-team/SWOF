@@ -1,0 +1,92 @@
+{
+ "schema": "SWOF-W2-R4-TT-CR-DELTA/1",
+ "task_id": "SWOF-W2-CLOSURE-R4",
+ "blocking": {
+  "open": 0,
+  "items": []
+ },
+ "deferred": [
+  {
+   "id": "TT-W3-COAPPROVALS",
+   "subject": "required_coapprovals not represented in the W2 execution seam",
+   "owner": "W3 affected-journey domain owner",
+   "block": "affected journey only",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-W3-ACTIONCLASS",
+   "subject": "canonical action_class vs local operation_class shim",
+   "owner": "W3 domain/security integration",
+   "block": "affected journey",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-W3-TOKEN-MIRROR",
+   "subject": "which token fields are exact mirrors of HumanGateDecision; equality semantics not defined by frozen source",
+   "owner": "W3 HumanGate consumer owner",
+   "block": "preflight edge",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-W3-AUTHN-CONTEXT-OWNER",
+   "subject": "approver_authn_context_ref currentness has no qualified owner interface in frozen source",
+   "owner": "W3 authn-context owner",
+   "block": "affected journey",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-RUNTIME-NONCE",
+   "subject": "persistent NonceLedger (restart-surviving replay protection)",
+   "owner": "first runtime profile requiring it",
+   "block": "runtime only",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-INTEROP-NONASCII",
+   "subject": "non-ASCII resource canonical ordering",
+   "owner": "first active canonical registry permitting such IDs",
+   "block": "interop only",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-HYGIENE-PRBODY",
+   "subject": "PR #7 body/title stale prose",
+   "owner": "evidence publisher",
+   "block": "none",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-W3-REMOTE-CI",
+   "subject": "remote CI absence",
+   "owner": "project",
+   "block": "none (N_A_WITH_REASON: repository defines no .github/workflows)",
+   "blocks_W3_globally": false
+  },
+  {
+   "id": "TT-HYG-PRIVACY",
+   "subject": "public repository visibility",
+   "owner": "Human/operator privacy policy check",
+   "block": "none absent higher-policy conflict",
+   "blocks_W3_globally": false
+  }
+ ],
+ "resolved_in_r4": [
+  {
+   "id": "F-W2R3-EXT-001",
+   "status": "CLOSED",
+   "evidence": "R4_AUTHN_FLOOR_PROBES.json + R4_FRESH_CHECKER_RECEIPT.json"
+  },
+  {
+   "id": "F-W2R3-EXT-002",
+   "status": "CLOSED",
+   "evidence": "R4_POSTPUBLICATION_VERIFICATION.json (13/13 PASS)"
+  },
+  {
+   "id": "NB-W2R3-002",
+   "status": "CLOSED",
+   "evidence": "checker raw transcript committed at checker_live/ROUND5_R4_task-0.log"
+  }
+ ],
+ "hidden_promotion": "NONE - every deferred item is explicitly non-blocking for W3 as a whole",
+ "note": "no blocking TT/CR is hidden as deferred; blocking_open == 0"
+}

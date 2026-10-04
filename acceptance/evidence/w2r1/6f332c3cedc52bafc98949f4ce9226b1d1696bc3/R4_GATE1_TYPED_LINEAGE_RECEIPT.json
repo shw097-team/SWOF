@@ -1,0 +1,140 @@
+{
+ "schema": "SWOF-W2-R4-GATE1-TYPED-LINEAGE-RECEIPT/1",
+ "source": "read-only SELECT over the HGK project spine at task time",
+ "typed_api_only_closure": true,
+ "no_direct_sql_writes": true,
+ "lifecycle": [
+  [
+   "HGK-P0-SWOF-W2",
+   "VERIFYING",
+   null,
+   "CK-W2-1D755E47",
+   2
+  ]
+ ],
+ "requirements": [
+  [
+   "REQ-HGK-SWOF-W2-001",
+   "FROZEN"
+  ],
+  [
+   "REQ-HGK-SWOF-W2-002",
+   "FROZEN"
+  ],
+  [
+   "REQ-HGK-SWOF-W2-003",
+   "FROZEN"
+  ],
+  [
+   "REQ-HGK-SWOF-W2-004",
+   "FROZEN"
+  ],
+  [
+   "REQ-HGK-SWOF-W2R2-001",
+   "FROZEN"
+  ],
+  [
+   "REQ-HGK-SWOF-W2R2-002",
+   "FROZEN"
+  ],
+  [
+   "REQ-HGK-SWOF-W2R2-003",
+   "FROZEN"
+  ],
+  [
+   "REQ-HGK-SWOF-W2R2-004",
+   "FROZEN"
+  ],
+  [
+   "REQ-HGK-SWOF-W2R2-005",
+   "FROZEN"
+  ],
+  [
+   "REQ-HGK-SWOF-W2R3-001",
+   "FROZEN"
+  ],
+  [
+   "REQ-HGK-SWOF-W2R4-001",
+   "FROZEN"
+  ]
+ ],
+ "taskspecs": [
+  [
+   "TS-REQ-HGK-SWOF-W2R2-001"
+  ],
+  [
+   "TS-REQ-HGK-SWOF-W2R2-002"
+  ],
+  [
+   "TS-REQ-HGK-SWOF-W2R2-003"
+  ],
+  [
+   "TS-REQ-HGK-SWOF-W2R2-004"
+  ],
+  [
+   "TS-REQ-HGK-SWOF-W2R2-005"
+  ],
+  [
+   "TS-REQ-HGK-SWOF-W2R3-001"
+  ],
+  [
+   "TS-REQ-HGK-SWOF-W2R4-001"
+  ],
+  [
+   "TS-WO-SWOF-W2-001"
+  ],
+  [
+   "TS-WO-SWOF-W2-002"
+  ],
+  [
+   "TS-WO-SWOF-W2-003"
+  ],
+  [
+   "TS-WO-SWOF-W2-004"
+  ]
+ ],
+ "workorders": [
+  [
+   "WO-REQ-HGK-SWOF-W2R2-001"
+  ],
+  [
+   "WO-REQ-HGK-SWOF-W2R2-002"
+  ],
+  [
+   "WO-REQ-HGK-SWOF-W2R2-003"
+  ],
+  [
+   "WO-REQ-HGK-SWOF-W2R2-004"
+  ],
+  [
+   "WO-REQ-HGK-SWOF-W2R2-005"
+  ],
+  [
+   "WO-REQ-HGK-SWOF-W2R3-001"
+  ],
+  [
+   "WO-REQ-HGK-SWOF-W2R4-001"
+  ],
+  [
+   "WO-SWOF-W2-001"
+  ],
+  [
+   "WO-SWOF-W2-002"
+  ],
+  [
+   "WO-SWOF-W2-003"
+  ],
+  [
+   "WO-SWOF-W2-004"
+  ]
+ ],
+ "final_checkpoint": [
+  [
+   "CK-W2-1D755E47",
+   "lifecycle",
+   "a34808497e7bea8d96562eb321e3208ed3c76903c24a460e816bf3f9ebf04325"
+  ]
+ ],
+ "gate8_lifecycle_points_to_final_checkpoint": true,
+ "assertion": "lifecycle.last_checkpoint_id == the final source-bound checkpoint"
+}

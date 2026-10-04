@@ -1,0 +1,42 @@
+{
+ "schema": "SWOF-W2-R4-POSTPUBLICATION-VERIFICATION-RECEIPT/1",
+ "verifier_identity": "gate9d-6th-verifier-swof-w2r4-2026-10-04",
+ "verifier_role": "INDEPENDENT_POST_PUBLICATION_VERIFIER",
+ "verifier_is_not_publisher": true,
+ "verifier_read_only": true,
+ "is_reverification": true,
+ "subject": {
+  "source_candidate_sha": "6f332c3cedc52bafc98949f4ce9226b1d1696bc3",
+  "evidence_commit_sha": "6a8fc6392b1973ee79c6603a6e666cb19c6d7d59",
+  "pr": 7,
+  "evidence_root": "acceptance/evidence/w2r1/6f332c3cedc52bafc98949f4ce9226b1d1696bc3/"
+ },
+ "postpublication_verdict": "PASS",
+ "checks_all_hold": true,
+ "checks_total": 13,
+ "e10_status": "holds",
+ "round5_residuals": {
+  "b": "fixed",
+  "ii": "fixed",
+  "iii": "fixed",
+  "iv": "fixed"
+ },
+ "b295e8b3_still_referenced": false,
+ "unresolvable_binding_references": [],
+ "manifest_contradictions": [],
+ "empty_file_sha_present": false,
+ "source_ne_evidence": true,
+ "residual_content_digests_not_blob_bound": [
+  "checkpoint source_digest/state_digest a3480849... = sha256 of canonical JSON of the stored checkpoint payload (recomputable non-file input; verified equal)",
+  "retained_invariants.basis_golden_vector 2a868198...e6992 = PI06 DOC-03 s15.5 approval-basis golden vector (non-file input)",
+  "baseline_evidence 1033ef3e / W1 accepted 7e1f912d+84ea30c2 are COMMIT references, not blob bindings"
+ ],
+ "scope_note": "LOCAL/PROJECT independent post-publication verification (Gate 9D). This is NOT the external challenge verdict.",
+ "raw_transcript": {
+  "path_in_committed_tree": "R6_POSTPUB_VERIFIER_TRANSCRIPT.log",
+  "sha256": "7430d4650ee5eef1dc971ef3ec66c2c55c070d5463c55e5d2684d14cfe988545",
+  "bytes": 20329,
+  "retrievable_from_publication": false,
+  "note": "out-of-tree at this revision; hash-bound. Regenerated evidence would be required to bind it in-tree."
+ }
+}
