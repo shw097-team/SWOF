@@ -30,8 +30,13 @@
   "authn_session_generation",
   "credential_generation",
   "approval_basis_hash",
+  "if06b_version",
+  "payload_schema_version",
+  "min_reader_version",
+  "writer_version",
+  "compatibility_class",
+  "evidence_link",
   "independent_checker_required",
-  "independent_checker_evidence_ref",
   "issued_at",
   "expires_at",
   "nonce",
@@ -90,6 +95,33 @@
   "authn_session_generation": {"type": "integer"},
   "credential_generation": {"type": "integer"},
   "approval_basis_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+  "if06b_version": {
+   "type": "string",
+   "pattern": "^[0-9]+\\.[0-9]+$",
+   "description": "IF-06B ABI version. The runtime requires ABI major 1; any other major is refused with IF06B_VERSION_UNSUPPORTED."
+  },
+  "payload_schema_version": {
+   "const": "1.0.0",
+   "description": "Payload schema version emitted by the writer; the runtime reader accepts only 1.0.0 (DENY_TOKEN_SCHEMA otherwise)."
+  },
+  "min_reader_version": {
+   "type": "string",
+   "pattern": "^[0-9]+\\.[0-9]+$",
+   "description": "Oldest reader ABI allowed to read this token. The runtime reader is 1.0 and refuses a token whose min_reader_version is newer (DENY_TOKEN_SCHEMA)."
+  },
+  "writer_version": {
+   "enum": ["DOC03-r2"],
+   "description": "Recognised writer revision. An unrecognised writer is a hard failure (DENY_TOKEN_SCHEMA), never a silent downgrade."
+  },
+  "compatibility_class": {
+   "enum": ["STRICT_MAJOR_ADDITIVE_MINOR"],
+   "description": "Declared compatibility class. An unknown class is a hard failure (DENY_TOKEN_SCHEMA)."
+  },
+  "evidence_link": {
+   "type": "string",
+   "minLength": 1,
+   "description": "Non-empty evidence pointer bound to the approval basis; the runtime refuses an empty or non-string value (DENY_TOKEN_SCHEMA)."
+  },
   "independent_checker_required": {"type": "boolean"},
   "independent_checker_evidence_ref": {"type": "string"},
   "issued_at": {

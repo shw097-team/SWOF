@@ -12,6 +12,13 @@ to have verified a signature. It FAILS CLOSED when the registry is absent, refus
 This is a refusal mechanism, not a second authority system. It grants nothing, produces no
 Product/Semantic truth, and never reads the wall clock: `commit_time` and every generation are
 explicit trusted inputs supplied by the caller.
+
+W2 repair WO-SWOF-W2-R003 (schema fidelity): the runtime type must be STRICTER OR EQUAL to the
+canonical registry, never broader. The token therefore carries the IF-06B ABI/envelope fields
+(`if06b_version`, `payload_schema_version`, `min_reader_version`, `writer_version`,
+`compatibility_class`, `evidence_link`) that the canonical ApprovalToken 1.0.0 schema requires, and
+the verifier refuses an unsupported ABI major (`IF06B_VERSION_UNSUPPORTED`) or an unreadable
+envelope (`DENY_TOKEN_SCHEMA`) before any authority check runs.
 """
 from __future__ import annotations
 
@@ -26,6 +33,15 @@ INTEGRITY_PROFILE_ID = "SWOF-HG-INTEGRITY-001"
 
 TOKEN_STATES = ("ACTIVE", "CONSUMED", "REVOKED", "EXPIRED")
 AUTHN_ASSURANCE_CLASSES = ("AAC1", "AAC2", "AAC3")
+
+# IF-06B ABI/envelope constants (canonical ApprovalToken 1.0.0). The reader ABI is 1.0; a token
+# written for a newer major cannot be read, and an unrecognised writer/compatibility class is a
+# hard failure rather than a silent downgrade.
+IF06B_ABI_MAJOR = "1"
+READER_ABI = "1.0"
+PAYLOAD_SCHEMA_VERSION = "1.0.0"
+KNOWN_WRITER_VERSIONS = ("DOC03-r2",)
+KNOWN_COMPATIBILITY_CLASSES = ("STRICT_MAJOR_ADDITIVE_MINOR",)
 
 _DIGEST_RE = re.compile(r"^[0-9a-f]{64}$")
 _SIGNATURE_RE = re.compile(r"^[A-Za-z0-9_-]{86}$")
@@ -104,6 +120,12 @@ class ApprovalToken:
     authn_session_generation: int | None = None
     credential_generation: int | None = None
     approval_basis_hash: str = ""
+    if06b_version: str = IF06B_ABI_MAJOR + ".0"
+    payload_schema_version: str = PAYLOAD_SCHEMA_VERSION
+    min_reader_version: str = READER_ABI
+    writer_version: str = KNOWN_WRITER_VERSIONS[0]
+    compatibility_class: str = KNOWN_COMPATIBILITY_CLASSES[0]
+    evidence_link: str = ""
     independent_checker_required: bool = False
     independent_checker_evidence_ref: str = ""
     issued_at: str = ""
@@ -250,6 +272,43 @@ def _is_human_ref(ref) -> bool:
     return lowered.startswith(_HUMAN_REF_PREFIX)
 
 
+def _version_tuple(value):
+    """A dotted-numeric version as an int tuple, or None when it is not well formed."""
+    if not isinstance(value, str) or not value:
+        return None
+    parts = value.split(".")
+    if not all(part.isdigit() for part in parts):
+        return None
+    return tuple(int(part) for part in parts)
+
+
+def _envelope_error(token):
+    """The IF-06B ABI/envelope gate (canonical ApprovalToken 1.0.0), fail closed.
+
+    Rule 1 owns its canonical code IF06B_VERSION_UNSUPPORTED; rules 2-6 reuse the
+    DENY_TOKEN_SCHEMA family so no downstream consumer needs a new code. Every unknown or
+    unreadable envelope value is refused, never defaulted.
+    """
+    abi = getattr(token, "if06b_version", None)
+    if not isinstance(abi, str) or not abi:
+        return "IF06B_VERSION_UNSUPPORTED"
+    if abi.split(".")[0] != IF06B_ABI_MAJOR:
+        return "IF06B_VERSION_UNSUPPORTED"
+    if token.payload_schema_version != PAYLOAD_SCHEMA_VERSION:
+        return "DENY_TOKEN_SCHEMA"
+    reader = _version_tuple(READER_ABI)
+    required_reader = _version_tuple(token.min_reader_version)
+    if required_reader is None or required_reader > reader:
+        return "DENY_TOKEN_SCHEMA"
+    if token.writer_version not in KNOWN_WRITER_VERSIONS:
+        return "DENY_TOKEN_SCHEMA"
+    if token.compatibility_class not in KNOWN_COMPATIBILITY_CLASSES:
+        return "DENY_TOKEN_SCHEMA"
+    if not _is_nonempty_str(token.evidence_link):
+        return "DENY_TOKEN_SCHEMA"
+    return None
+
+
 def _schema_errors(token):
     """Every way the token fails the canonical shape, in deterministic field order."""
     errors = []
@@ -318,6 +377,10 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
     errors = _schema_errors(token)
     if errors:
         return _deny("DENY_TOKEN_SCHEMA", ";".join(errors))
+
+    envelope = _envelope_error(token)
+    if envelope is not None:
+        return _deny(envelope, "IF-06B envelope refused")
 
     if token.token_state != "ACTIVE":
         return _deny("DENY_TOKEN_STATE", "token_state=%s" % token.token_state)

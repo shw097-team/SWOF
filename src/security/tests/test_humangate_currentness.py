@@ -70,6 +70,9 @@ def _valid_token(**overrides):
         authority_class="HUMAN_OPERATOR", approver_authn_context_ref="authn:ctx-1",
         authn_assurance_class="AAC2", reauthenticated_at="2026-06-01T00:00:00Z",
         authn_session_generation=7, credential_generation=8, approval_basis_hash=DIGEST,
+        if06b_version="1.0", payload_schema_version="1.0.0", min_reader_version="1.0",
+        writer_version="DOC03-r2", compatibility_class="STRICT_MAJOR_ADDITIVE_MINOR",
+        evidence_link="evidence:approval-basis-1",
         independent_checker_required=False, independent_checker_evidence_ref="",
         issued_at="2026-06-01T00:00:00Z", expires_at="2026-06-01T01:00:00Z", nonce="nonce-1",
         rollback_ref="rollback:1", token_state="ACTIVE", consumer="swof",
@@ -472,6 +475,80 @@ class TestRouteReDerivationR2(unittest.TestCase):
         self.assertIsNone(assert_human_gate_satisfied(
             route, _valid_token(), requesting_actor="human:dave", request=request,
             ctx=_release_ctx()))
+
+
+# WO-SWOF-W2-R003: the canonical ApprovalToken 1.0.0 required-name set (PI-PKG-06::DOC-03
+# section 15). Embedded here as a literal so a future drift in the schema fails loudly. The
+# conditional `independent_checker_evidence_ref` is deliberately ABSENT: it is required only when
+# `independent_checker_required` is true (the schema encodes that in allOf/if-then, and the
+# verifier enforces it in the T3 stage).
+CANONICAL_REQUIRED_NAMES = frozenset({
+    "token_id", "request_id", "decision_id", "subject", "subject_hash", "semantic_version",
+    "actor", "operation", "target_system", "resource", "environment", "purpose_ref", "scope",
+    "data_class", "effect_digest", "consumer_audience_hash", "approver", "authority_class",
+    "approver_authn_context_ref", "authn_assurance_class", "reauthenticated_at",
+    "authn_session_generation", "credential_generation", "approval_basis_hash",
+    "if06b_version", "payload_schema_version", "min_reader_version", "writer_version",
+    "compatibility_class", "evidence_link", "independent_checker_required", "issued_at",
+    "expires_at", "nonce", "rollback_ref", "token_state", "consumer", "integrity_profile_id",
+    "issuer_id", "key_id", "key_generation", "signature",
+})
+
+
+class TestCanonicalEnvelopeR3(unittest.TestCase):
+    """WO-SWOF-W2-R003: the runtime type is STRICTER OR EQUAL to the canonical registry."""
+
+    def _schema(self):
+        path = Path(__file__).resolve().parents[3] / "schemas" / "security" / "approval_token.schema.json"
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    def test_r3_01_unsupported_abi_major_is_refused(self):
+        decision = _verify(token_over={"if06b_version": "2.0"})
+        self.assertEqual((decision.ok, decision.code), (False, "IF06B_VERSION_UNSUPPORTED"))
+
+    def test_r3_02_missing_or_non_string_if06b_version_is_refused(self):
+        for value in ("", None, 1):
+            with self.subTest(value=value):
+                decision = _verify(token_over={"if06b_version": value})
+                self.assertEqual((decision.ok, decision.code), (False, "IF06B_VERSION_UNSUPPORTED"))
+
+    def test_r3_03_wrong_payload_schema_version_is_refused(self):
+        decision = _verify(token_over={"payload_schema_version": "2.0.0"})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_SCHEMA"))
+
+    def test_r3_04_unknown_writer_version_is_refused(self):
+        decision = _verify(token_over={"writer_version": "SOMETHING-ELSE"})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_SCHEMA"))
+
+    def test_r3_05_unknown_compatibility_class_is_refused(self):
+        decision = _verify(token_over={"compatibility_class": "LAX_MINOR"})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_SCHEMA"))
+
+    def test_r3_06_empty_evidence_link_is_refused(self):
+        for value in ("", "   ", None):
+            with self.subTest(value=value):
+                decision = _verify(token_over={"evidence_link": value})
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_SCHEMA"))
+
+    def test_r3_07_min_reader_newer_than_reader_is_refused(self):
+        for value in ("2.0", "1.1", "9.9"):
+            with self.subTest(value=value):
+                decision = _verify(token_over={"min_reader_version": value})
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_SCHEMA"))
+
+    def test_r3_08_valid_token_with_all_envelope_fields_is_approved(self):
+        decision = _verify(token_over={
+            "if06b_version": "1.0", "payload_schema_version": "1.0.0", "min_reader_version": "1.0",
+            "writer_version": "DOC03-r2", "compatibility_class": "STRICT_MAJOR_ADDITIVE_MINOR",
+            "evidence_link": "evidence:approval-basis-1",
+        })
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+    def test_r3_09_schema_required_equals_canonical_42(self):
+        required = self._schema()["required"]
+        self.assertEqual(len(required), 42)
+        self.assertEqual(set(required), set(CANONICAL_REQUIRED_NAMES))
+        self.assertNotIn("independent_checker_evidence_ref", required)
 
 
 if __name__ == "__main__":
