@@ -2,12 +2,12 @@
 
 ```yaml
 repair_id: SWOF-W2-CLOSURE-R4
-order_id: SWOF-CONSTRUCTION-002-W2-REPAIR-001
+order_id: SWOF-CONSTRUCTION-002-W2-REPAIR-R4
 final_source_candidate_sha: 6f332c3cedc52bafc98949f4ce9226b1d1696bc3
 repair_base_sha: 0b8ecb0888fbd53b5698f603c90b580ac83dd69d
 gate_set_passed: True
 independent_wave_verdict: PASS
-local_closure_receipt_sha256: 694fc2ac187a8e0df4ace2c783d188d12be9cdb71b30f1f88e308371e82844cb
+local_closure_receipt_sha256: dd053e648cc9fb516661220c548d3c67d36f65d3b594a15212655d09fab41686
 ```
 
 ## 1. Report conflict adjudication

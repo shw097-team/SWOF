@@ -1,6 +1,6 @@
 {
  "schema": "SWOF-W2-R4-LOCAL-CLOSURE-RECEIPT/1",
- "order_id": "SWOF-CONSTRUCTION-002-W2-REPAIR-001",
+ "order_id": "SWOF-CONSTRUCTION-002-W2-REPAIR-R4",
  "repair_id": "SWOF-W2-CLOSURE-R4",
  "changeset": "NARROW_REPAIR",
  "subject": {
@@ -171,5 +171,5 @@
   "NO_PRODUCTION",
   "NO_WORLD_EFFECT_ACCEPTANCE"
  ],
- "generated_at_utc": "2026-10-04T11:44:26Z"
+ "generated_at_utc": "2026-10-04T12:43:59Z"
 }
