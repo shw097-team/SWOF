@@ -5,11 +5,25 @@ exactly like a normal approval in a log. This module makes expiry/revocation/unk
 a typed deny, binds every decision to the scope subject so a grant for one subject cannot be
 spent by another, routes high-risk actions through `ARTIFACT:HUMAN_GATE`, and refuses
 self-approval. The gate is a refusal mechanism, not an authority grant.
+
+W2 repair WO-SWOF-W2-R001 (F-W2-EXT-001): currentness is now a REQUIRED decision input. A scope
+that carries an `expires_at` cannot be evaluated without a trusted `now`; an omitted or malformed
+`now` is unknown currentness and fails closed (`CURRENTNESS_UNAVAILABLE_FAIL_CLOSED`). The library
+never reads the wall clock, and equality at the expiry instant counts as expired.
+
+W2 repair WO-SWOF-W2-R001 (F-W2-EXT-002): `assert_human_gate_satisfied` no longer accepts a
+syntactic string. A gated route requires a typed, exact-bound `ApprovalToken` verified by
+`src/security/humangate.py`; every bare string is refused with `NOT_A_CANONICAL_APPROVAL_TOKEN`.
 """
 from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
+
+from .humangate import (
+    ApprovalDecision, ApprovalRequest, ApprovalToken, NonceLedger, VerificationContext,
+    verify_approval_token,
+)
 
 HIGH_RISK_ACTIONS = frozenset({
     "live_world_effect", "credential_access", "release", "production_promotion",
@@ -86,20 +100,36 @@ def _scope_valid(scope):
 
 
 def _expired(scope, now):
+    """Fail closed on unknown expiry or unknown currentness.
+
+    expires is None -> False (nothing to evaluate). A malformed expiry, an omitted or malformed
+    `now`, or `now` at/after the expiry instant all read as expired. Reading the wall clock is
+    never permitted here: currentness is an explicit trusted input.
+    """
     expires = scope.expires_at
     if expires is None:
         return False
     if not isinstance(expires, str) or not _ISO_UTC_RE.match(expires):
         return True
     if now is None:
-        return False
+        return True
     if not isinstance(now, str) or not _ISO_UTC_RE.match(now):
         return True
     return now >= expires
 
 
+def currentness_required(scope) -> bool:
+    """True when the scope carries an expiry, i.e. a trusted `now` must be supplied."""
+    return scope.expires_at is not None
+
+
 def check_rights(scope, entitlement, *, now=None, subject=None) -> RightsDecision:
-    """Expired, revoked, unknown, mismatched or malformed entitlements all DENY."""
+    """Expired, revoked, unknown, mismatched or malformed entitlements all DENY.
+
+    A scope with an `expires_at` can only be evaluated against a trusted `now`; omitting it is
+    unknown currentness and fails closed. A scope with no expiry has nothing to evaluate and is
+    still ENTITLED - that positive control must not regress.
+    """
     invalid = _scope_valid(scope)
     if invalid is not None:
         return RightsDecision(False, invalid, False)
@@ -109,6 +139,8 @@ def check_rights(scope, entitlement, *, now=None, subject=None) -> RightsDecisio
         return RightsDecision(False, "ENTITLEMENT_INVALID_FAIL_CLOSED", False)
     if scope.revoked:
         return RightsDecision(False, "REVOKED", False)
+    if scope.expires_at is not None and now is None:
+        return RightsDecision(False, "CURRENTNESS_UNAVAILABLE_FAIL_CLOSED", False)
     if _expired(scope, now):
         return RightsDecision(False, "EXPIRED", False)
     if entitlement not in scope.entitlements:
@@ -126,25 +158,12 @@ def human_gate_route(action, *, risk="LOW") -> HumanGateRoute:
     return HumanGateRoute(False, NONE_ROUTE, "NONE")
 
 
-def assert_human_gate_satisfied(route, approval_ref, *, requesting_actor=None) -> None:
-    """Refuse a missing, self-issued or malformed approval for a gated route."""
-    if not isinstance(route, HumanGateRoute):
-        raise HumanGateBypassAttempt("UNKNOWN_ROUTE_FAIL_CLOSED")
-    if not route.required:
-        return
-    if not isinstance(approval_ref, str) or not approval_ref.strip():
-        raise HumanGateBypassAttempt(
-            "route %s requires an approval reference (%s)" % (route.route, route.authority_edge))
-    if requesting_actor is not None:
-        if not isinstance(requesting_actor, str) or not requesting_actor.strip():
-            raise HumanGateBypassAttempt("requesting_actor is ambiguous; refusing approval")
-        if approval_ref.strip() == requesting_actor.strip():
-            raise HumanGateBypassAttempt(
-                "approval reference equals the requesting actor: self-approval refused")
+def assert_credential_scope(scope, use, *, subject=None, now=None) -> None:
+    """An empty credential scope permits no credential use; unknown use is denied.
 
-
-def assert_credential_scope(scope, use, *, subject=None) -> None:
-    """An empty credential scope permits no credential use; unknown use is denied."""
+    Currentness is a required input for an expiring credential scope: an omitted `now` raises
+    CURRENTNESS_UNAVAILABLE_FAIL_CLOSED and an expired scope raises EXPIRED_CREDENTIAL_SCOPE.
+    """
     invalid = _scope_valid(scope)
     if invalid is not None:
         raise RightsDenied(invalid)
@@ -154,5 +173,41 @@ def assert_credential_scope(scope, use, *, subject=None) -> None:
         raise RightsDenied("CREDENTIAL_USE_INVALID_FAIL_CLOSED")
     if scope.revoked:
         raise RightsDenied("REVOKED")
+    if scope.expires_at is not None and now is None:
+        raise RightsDenied("CURRENTNESS_UNAVAILABLE_FAIL_CLOSED")
+    if _expired(scope, now):
+        raise RightsDenied("EXPIRED_CREDENTIAL_SCOPE")
     if use not in scope.credential_scope:
         raise RightsDenied("CREDENTIAL_USE_OUT_OF_SCOPE: %s" % use)
+
+
+def assert_human_gate_satisfied(route, approval, *, requesting_actor=None,
+                                request=None, ctx=None) -> None:
+    """Refuse a missing, self-issued or non-exact-bound approval for a gated route.
+
+    A gated route requires a typed, exact-bound `ApprovalToken` plus the `ApprovalRequest` it is
+    bound to and a `VerificationContext` carrying trusted currentness. Any bare string, mapping or
+    absent object is refused: a syntactic string is not an approval.
+    """
+    if not isinstance(route, HumanGateRoute):
+        raise HumanGateBypassAttempt("UNKNOWN_ROUTE_FAIL_CLOSED")
+    if not route.required:
+        return
+    if not isinstance(approval, ApprovalToken) or request is None or ctx is None:
+        raise HumanGateBypassAttempt("NOT_A_CANONICAL_APPROVAL_TOKEN")
+    decision = verify_approval_token(approval, request, ctx)
+    if not decision.ok:
+        raise HumanGateBypassAttempt(decision.code)
+    if isinstance(requesting_actor, str) and requesting_actor.strip():
+        if approval.approver.strip() == requesting_actor.strip():
+            raise HumanGateBypassAttempt("SELF_APPROVAL_REFUSED")
+    return None
+
+
+__all__ = [
+    "HIGH_RISK_ACTIONS", "HUMAN_GATE_ROUTE", "NONE_ROUTE", "ApprovalDecision",
+    "ApprovalRequest", "ApprovalToken", "HumanGateBypassAttempt", "HumanGateRoute",
+    "NonceLedger", "RightsDecision", "RightsDenied", "RightsScope", "VerificationContext",
+    "assert_credential_scope", "assert_human_gate_satisfied", "check_rights",
+    "currentness_required", "human_gate_route", "verify_approval_token",
+]
