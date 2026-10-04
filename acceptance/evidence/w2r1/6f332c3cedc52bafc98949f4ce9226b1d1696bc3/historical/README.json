@@ -1,0 +1,12 @@
+{
+ "notice": "SUPERSEDED PRIOR-ROUND ARTEFACTS - NOT CURRENT SUBJECT EVIDENCE",
+ "reason": "These artefacts were produced by an earlier bounded repair round. Their bytes are preserved unmodified for audit history, but their closure/leg assertions and any publication claims describe a SUPERSEDED source subject and MUST NOT be read as statements about the current final subject.",
+ "current_subject": "6f332c3cedc52bafc98949f4ce9226b1d1696bc3",
+ "superseded_subjects": [
+  "bffe540f...",
+  "7a0b4acb...",
+  "b8e62b96...",
+  "0b8ecb08..."
+ ],
+ "authority": "the current final dossier, the current LocalClosure receipt and the out-of-tree publication receipt are the only current statements."
+}
