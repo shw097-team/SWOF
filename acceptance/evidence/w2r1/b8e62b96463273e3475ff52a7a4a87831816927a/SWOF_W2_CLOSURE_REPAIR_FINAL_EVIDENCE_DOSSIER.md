@@ -7,7 +7,7 @@ final_source_candidate_sha: b8e62b96463273e3475ff52a7a4a87831816927a
 repair_base_sha: bffe540ffbab683127338a4bd94b2f7d4bb39cce
 gate_set_passed: True
 independent_wave_verdict: PASS
-local_closure_receipt_sha256: 6a50717d46978458edfde7338c176f9bcf0774201007813c926b86cf438dde2d
+local_closure_receipt_sha256: d05c3cfb32d39d4359d59ade8e187541267858b379eb0d0c0c9146dd01a91af4
 ```
 
 ## 1. Report conflict adjudication

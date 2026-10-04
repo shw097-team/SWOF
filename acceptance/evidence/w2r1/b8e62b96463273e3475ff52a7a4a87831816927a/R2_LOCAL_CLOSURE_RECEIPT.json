@@ -134,11 +134,12 @@
   "clean": true,
   "dirty": []
  },
- "publication_state": "NOT_PUBLISHED",
+ "publication_state": "RECORDED_OUT_OF_TREE",
  "publication_gated_tokens_withheld": [
   "NEW_EVIDENCE_COMMIT_PUBLISHED",
   "READY_FOR_W2_EXTERNAL_RECHALLENGE"
  ],
+ "publication_state_claims_holder": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-construction-002-w2-repair-001\\handoff\\W2_R2_FINAL_PUBLICATION_RECEIPT.json",
  "non_claims": [
   "NEW_EVIDENCE_COMMIT_PUBLISHED",
   "READY_FOR_W2_EXTERNAL_RECHALLENGE",
@@ -149,5 +150,5 @@
   "NO_PRODUCTION",
   "NO_WORLD_EFFECT_ACCEPTANCE"
  ],
- "generated_at_utc": "2026-10-04T06:46:50Z"
+ "generated_at_utc": "2026-10-04T06:49:17Z"
 }
