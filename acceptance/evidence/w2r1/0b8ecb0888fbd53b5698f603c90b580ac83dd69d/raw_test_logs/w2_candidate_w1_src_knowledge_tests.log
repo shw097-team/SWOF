@@ -1,0 +1,16 @@
+# command : C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe -m unittest discover -s src/knowledge/tests -t src/knowledge/tests
+# cwd     : C:\Projects\Agent_Workspace\SWOF
+# git HEAD: 0b8ecb0888fbd53b5698f603c90b580ac83dd69d
+# branch  : wo/swof-w2-closure-r1
+# python  : 3.12.14
+# phase   : w2_candidate_w1
+# started : 2026-10-04T07:53:29Z
+# duration: 0.095s
+# exit_code: 0
+------------------------------------------------------------------------------
+
+.........................
+----------------------------------------------------------------------
+Ran 25 tests in 0.001s
+
+OK

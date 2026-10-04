@@ -1,0 +1,96 @@
+{
+ "schema": "SWOF-W2-R2-CANONICAL-FLOOR-PROBE/1",
+ "satisfiability_proof": {
+  "method": "SHIPPED positive tests are executed by the real unittest runner (cwd = the tests directory, the same top-level the full suite uses). A valid token bound to the SAME request must be satisfiable, so the product is proven NOT to be over-blocking.",
+  "shipped_positive_tests": {
+   "TestRouteReDerivationR2.test_r2_12_p3_request_with_a_valid_typed_token_passes": {
+    "exit_code": 0,
+    "tail": [
+     "OK"
+    ]
+   },
+   "TestCanonicalGatePredicateD1.test_r4_d1_05_p3_benign_operation_with_valid_token_passes": {
+    "exit_code": 0,
+    "tail": [
+     "OK"
+    ]
+   }
+  },
+  "all_shipped_positive_tests_pass": true
+ },
+ "subject": "3ade7d0edec5d3304672be2cfa696e570aaab193",
+ "rows": [
+  {
+   "probe": "P3floor-LOW",
+   "case": "canonical effect_risk_tier=LOW + permission_class=P3 + benign + no token",
+   "expected": "DENY_P3_TOKEN_REQUIRED",
+   "observed": {
+    "raised": "HumanGateBypassAttempt"
+   },
+   "raised": "DENY_P3_TOKEN_REQUIRED",
+   "holds": true
+  },
+  {
+   "probe": "P3floor-MEDIUM",
+   "case": "canonical effect_risk_tier=MEDIUM + permission_class=P3 + benign + no token",
+   "expected": "DENY_P3_TOKEN_REQUIRED",
+   "observed": {
+    "raised": "HumanGateBypassAttempt"
+   },
+   "raised": "DENY_P3_TOKEN_REQUIRED",
+   "holds": true
+  },
+  {
+   "probe": "P3floor-HIGH",
+   "case": "canonical effect_risk_tier=HIGH + permission_class=P3 + benign + no token",
+   "expected": "DENY_P3_TOKEN_REQUIRED",
+   "observed": {
+    "raised": "HumanGateBypassAttempt"
+   },
+   "raised": "DENY_P3_TOKEN_REQUIRED",
+   "holds": true
+  },
+  {
+   "probe": "P3floor-CRITICAL",
+   "case": "canonical effect_risk_tier=CRITICAL + permission_class=P3 + benign + no token",
+   "expected": "DENY_P3_TOKEN_REQUIRED",
+   "observed": {
+    "raised": "HumanGateBypassAttempt"
+   },
+   "raised": "DENY_P3_TOKEN_REQUIRED",
+   "holds": true
+  },
+  {
+   "probe": "ruin-RUIN-lowperm",
+   "case": "canonical effect_risk_tier=RUIN even at P1 -> HARD_VETO_RUIN",
+   "expected": "HARD_VETO_RUIN",
+   "observed": {
+    "raised": "HumanGateBypassAttempt"
+   },
+   "raised": "HARD_VETO_RUIN",
+   "holds": true
+  },
+  {
+   "probe": "ruin-UNKNOWN_RUIN-lowperm",
+   "case": "canonical effect_risk_tier=UNKNOWN_RUIN even at P1 -> SAFE_STOP_UNKNOWN_RUIN",
+   "expected": "SAFE_STOP_UNKNOWN_RUIN",
+   "observed": {
+    "raised": "HumanGateBypassAttempt"
+   },
+   "raised": "SAFE_STOP_UNKNOWN_RUIN",
+   "holds": true
+  },
+  {
+   "probe": "T3-gate",
+   "case": "autonomy_tier=T3 + benign + no token -> token required",
+   "expected": "DENY_P3_TOKEN_REQUIRED",
+   "observed": {
+    "raised": "HumanGateBypassAttempt"
+   },
+   "raised": "DENY_P3_TOKEN_REQUIRED",
+   "holds": true
+  }
+ ],
+ "all_hold": true,
+ "failures": []
+}

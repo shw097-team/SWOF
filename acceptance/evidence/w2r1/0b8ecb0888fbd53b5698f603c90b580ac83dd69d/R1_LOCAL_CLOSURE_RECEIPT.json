@@ -1,0 +1,122 @@
+{
+ "schema": "SWOF-W2-R1-LOCAL-CLOSURE-RECEIPT/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W2-REPAIR-001",
+ "repair_id": "SWOF-W2-CLOSURE-R1",
+ "changeset": "NARROW_REPAIR",
+ "subject": {
+  "final_source_candidate_sha": "7a0b4acbe14daca2061ba9b927013adf8aaf48b5",
+  "branch": "wo/swof-w2-closure-r1",
+  "repair_base": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+  "w1_accepted_source_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+  "w1_accepted_evidence_sha": "84ea30c216ac319c4e55df1b07ee2ee3372bcc88"
+ },
+ "gates": {
+  "G-R1-1": "PASS",
+  "G-R1-2": "PASS",
+  "G-R1-3": "PASS",
+  "G-R1-4": "PASS",
+  "G-R1-5": "PASS",
+  "G-R1-6": "PASS",
+  "G-R1-7": "PASS",
+  "G-R1-8": "PASS"
+ },
+ "gate_evidence": {
+  "G-R1-1": {
+   "claim": "both reported defects reproduced on the frozen base",
+   "R-C1": "PRODUCT_DEFECT_CONFIRMED:F-W2-EXT-001",
+   "R-C2": "PRODUCT_DEFECT_CONFIRMED:F-W2-EXT-002"
+  },
+  "G-R1-2": {
+   "claim": "identical probe set no longer reproduces either defect",
+   "post_probes_holding": 14,
+   "post_probes_total": 14
+  },
+  "G-R1-3": {
+   "changed_paths": [
+    "schemas/security/approval_token.schema.json",
+    "src/security/humangate.py",
+    "src/security/tests/test_humangate_currentness.py",
+    "src/security/tests/test_rights.py"
+   ],
+   "reverted": []
+  },
+  "G-R1-4": {
+   "w1": 113,
+   "w2": 622,
+   "grand_total": 735,
+   "roots": {
+    "src/security/tests": 260,
+    "src/effect/tests": 116,
+    "src/assurance/tests": 144,
+    "src/observability/tests": 102
+   }
+  },
+  "G-R1-5": {
+   "fixtures": 9,
+   "holding": 9
+  },
+  "G-R1-6": {
+   "wave_verdict": "PASS",
+   "governance_verdict": "PASS",
+   "product_verdict": "PASS",
+   "checker": "hermes-subagent-fresh-context-swof-w2-r3-final-verify",
+   "checker_is_not_maker": true,
+   "checker_read_only": true,
+   "subject_matches": true
+  },
+  "G-R1-7": {
+   "derivation": "claim_for() is the only emitter of the claim string"
+  },
+  "G-R1-8": {
+   "claim": "the canonical-closure leg is a proven shared-core gap, disclosed not skipped",
+   "leg_verdict": "TYPED_API_CANNOT_RESOLVE_ACCEPTANCE_VERDICT"
+  }
+ },
+ "gate_set_passed": true,
+ "independent_checker": {
+  "receipt": "evidence\\W2_R1_INDEPENDENT_CHECKER_RECEIPT.json",
+  "sha256": "32ea60bf70472d533b26f5965dcc1621ee8762550fc615585c47405b5334b22a",
+  "checker_identity": "hermes-subagent-fresh-context-swof-w2-r3-final-verify",
+  "product_verdict": "PASS",
+  "governance_verdict": "PASS",
+  "wave_verdict": "PASS",
+  "checker_is_not_maker": true,
+  "checker_read_only": true
+ },
+ "claim_ceiling": "W2_REPAIR_LOCALLY_CLOSED / W2_INDEPENDENT_CHECK_PASS / W1_ACCEPTED_BASELINE_PRESERVED / CANONICAL_HGK_FINAL_CHECKPOINT_BOUND / NEW_EVIDENCE_COMMIT_PUBLISHED / READY_FOR_W2_EXTERNAL_RECHALLENGE / W3_NOT_STARTED / NOT_MERGED / NOT_RELEASED / NOT_PRODUCTION / NO_WORLD_EFFECT_ACCEPTANCE",
+ "hgk_normative_closure": {
+  "leg": "TYPED_API_CANNOT_RESOLVE_ACCEPTANCE_VERDICT",
+  "disposition": "TEMP_CLOSED_STATE",
+  "close_condition": {
+   "kind": "SEPARATE_ENGINEERING_BASE_CHANGESET",
+   "target": "HG-KSEOS shared core (src/hg_kseos/spine.py)",
+   "proposed_api": "SharedSpine.resolve_acceptance(acceptance_id, verdict, evidence_ref, actor, token, expected_version, idempotency_key) -> dict",
+   "why_it_is_core": "the capability is a general shared-spine contract, not a SWOF/W2 harness concern; the repair order forbids patching shared core under this order",
+   "hitl_required": true,
+   "hitl_reason": "mutating shared HG-KSEOS core is an explicit HITL authority edge"
+  },
+  "raw_evidence": "evidence/R1_HGK_CLOSURE_LEG.json"
+ },
+ "test_denominator": {
+  "w1": 113,
+  "w2": 622,
+  "grand_total": 735,
+  "w1_accepted_baseline": 113,
+  "w1_preserved": true
+ },
+ "workspace": {
+  "head": "7a0b4acbe14daca2061ba9b927013adf8aaf48b5",
+  "clean": true,
+  "dirty": []
+ },
+ "non_claims": [
+  "NOT_EXTERNALLY_ACCEPTED",
+  "W3_NOT_STARTED",
+  "NO_MERGE",
+  "NO_RELEASE",
+  "NO_PRODUCTION",
+  "NO_WORLD_EFFECT_ACCEPTANCE",
+  "CANONICAL_HGK_FINAL_CHECKPOINT_NOT_BOUND (shared-core typed-API gap)"
+ ],
+ "generated_at_utc": "2026-10-04T03:22:26Z"
+}

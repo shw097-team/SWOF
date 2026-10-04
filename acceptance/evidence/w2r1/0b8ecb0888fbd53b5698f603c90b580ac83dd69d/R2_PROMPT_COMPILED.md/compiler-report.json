@@ -1,0 +1,1419 @@
+{
+  "claim_ceiling": null,
+  "contract_sha256": "c0671258f7dd4295d950d18983926d36af32a6425192d922b44ba932ff1c7522",
+  "error_count": 282,
+  "errors": [
+    {
+      "code": "PL-002",
+      "message": "intent field must be a list: authorized_mutations",
+      "path": "/intent/authorized_mutations"
+    },
+    {
+      "code": "PL-002",
+      "message": "missing intent field: claim_ceiling",
+      "path": "/intent/claim_ceiling"
+    },
+    {
+      "code": "PL-002",
+      "message": "intent field must be a list: forbidden_mutations",
+      "path": "/intent/forbidden_mutations"
+    },
+    {
+      "code": "PL-002",
+      "message": "intent field must be a list: non_goals",
+      "path": "/intent/non_goals"
+    },
+    {
+      "code": "PL-003",
+      "message": "capability  lacks source locator",
+      "path": "/execution_scope/0/source_locators"
+    },
+    {
+      "code": "PL-003",
+      "message": "capability  lacks source locator",
+      "path": "/execution_scope/1/source_locators"
+    },
+    {
+      "code": "PL-003",
+      "message": "capability  lacks source locator",
+      "path": "/execution_scope/2/source_locators"
+    },
+    {
+      "code": "PL-003",
+      "message": "capability  lacks source locator",
+      "path": "/execution_scope/3/source_locators"
+    },
+    {
+      "code": "PL-003",
+      "message": "source scan incomplete: required=['current_user_instruction', 'execution_controls', 'memory_knowledge_runtime', 'product_authority'] reviewed=['current_user_instruction', 'execution_controls', 'memory_knowledge_runtime', 'product_authority'] missing=[] duplicate=True",
+      "path": "/source_scan"
+    },
+    {
+      "code": "PL-005",
+      "message": "invalid ChangeSet class: None",
+      "path": "/changeset/class"
+    },
+    {
+      "code": "PL-006",
+      "message": "unknown execution disposition for ",
+      "path": "/execution_scope/0/current_execution_disposition"
+    },
+    {
+      "code": "PL-006",
+      "message": "unknown execution disposition for ",
+      "path": "/execution_scope/1/current_execution_disposition"
+    },
+    {
+      "code": "PL-006",
+      "message": "unknown execution disposition for ",
+      "path": "/execution_scope/2/current_execution_disposition"
+    },
+    {
+      "code": "PL-006",
+      "message": "unknown execution disposition for ",
+      "path": "/execution_scope/3/current_execution_disposition"
+    },
+    {
+      "code": "PL-009",
+      "message": "journey J-P3-GATE lacks acceptance edge",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-009",
+      "message": "journey J-P3-GATE lacks source expectation mapping",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-009",
+      "message": "journey J-RUIN lacks acceptance edge",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-009",
+      "message": "journey J-RUIN lacks source expectation mapping",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-014",
+      "message": "invalid claim ceiling: None",
+      "path": "/intent/claim_ceiling"
+    },
+    {
+      "code": "PL-016",
+      "message": "checkpoint contract is incomplete",
+      "path": "/termination/checkpoint_fields"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'independent_checker_required' is a required property",
+      "path": "/acceptance/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'negative_fixture' is a required property",
+      "path": "/acceptance/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'positive_fixture' is a required property",
+      "path": "/acceptance/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'raw_evidence_required' is a required property",
+      "path": "/acceptance/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'recovery_fixture' is a required property",
+      "path": "/acceptance/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'required_depth' is a required property",
+      "path": "/acceptance/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_required' is a required property",
+      "path": "/acceptance/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_locators' is a required property",
+      "path": "/acceptance/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'subject_id' is a required property",
+      "path": "/acceptance/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'subject_type' is a required property",
+      "path": "/acceptance/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'terminal_states' is a required property",
+      "path": "/acceptance/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('blocking', 'oracle', 'predicate', 'strictness' were unexpected)",
+      "path": "/acceptance/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'independent_checker_required' is a required property",
+      "path": "/acceptance/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'negative_fixture' is a required property",
+      "path": "/acceptance/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'positive_fixture' is a required property",
+      "path": "/acceptance/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'raw_evidence_required' is a required property",
+      "path": "/acceptance/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'recovery_fixture' is a required property",
+      "path": "/acceptance/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'required_depth' is a required property",
+      "path": "/acceptance/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_required' is a required property",
+      "path": "/acceptance/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_locators' is a required property",
+      "path": "/acceptance/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'subject_id' is a required property",
+      "path": "/acceptance/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'subject_type' is a required property",
+      "path": "/acceptance/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'terminal_states' is a required property",
+      "path": "/acceptance/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('blocking', 'oracle', 'predicate', 'strictness' were unexpected)",
+      "path": "/acceptance/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'independent_checker_required' is a required property",
+      "path": "/acceptance/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'negative_fixture' is a required property",
+      "path": "/acceptance/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'positive_fixture' is a required property",
+      "path": "/acceptance/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'raw_evidence_required' is a required property",
+      "path": "/acceptance/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'recovery_fixture' is a required property",
+      "path": "/acceptance/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'required_depth' is a required property",
+      "path": "/acceptance/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_required' is a required property",
+      "path": "/acceptance/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_locators' is a required property",
+      "path": "/acceptance/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'subject_id' is a required property",
+      "path": "/acceptance/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'subject_type' is a required property",
+      "path": "/acceptance/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'terminal_states' is a required property",
+      "path": "/acceptance/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('blocking', 'oracle', 'predicate', 'strictness' were unexpected)",
+      "path": "/acceptance/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'independent_checker_required' is a required property",
+      "path": "/acceptance/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'negative_fixture' is a required property",
+      "path": "/acceptance/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'positive_fixture' is a required property",
+      "path": "/acceptance/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'raw_evidence_required' is a required property",
+      "path": "/acceptance/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'recovery_fixture' is a required property",
+      "path": "/acceptance/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'required_depth' is a required property",
+      "path": "/acceptance/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_required' is a required property",
+      "path": "/acceptance/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_locators' is a required property",
+      "path": "/acceptance/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'subject_id' is a required property",
+      "path": "/acceptance/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'subject_type' is a required property",
+      "path": "/acceptance/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'terminal_states' is a required property",
+      "path": "/acceptance/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('blocking', 'oracle', 'predicate', 'strictness' were unexpected)",
+      "path": "/acceptance/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'independent_checker_required' is a required property",
+      "path": "/acceptance/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'negative_fixture' is a required property",
+      "path": "/acceptance/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'positive_fixture' is a required property",
+      "path": "/acceptance/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'raw_evidence_required' is a required property",
+      "path": "/acceptance/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'recovery_fixture' is a required property",
+      "path": "/acceptance/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'required_depth' is a required property",
+      "path": "/acceptance/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_required' is a required property",
+      "path": "/acceptance/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_locators' is a required property",
+      "path": "/acceptance/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'subject_id' is a required property",
+      "path": "/acceptance/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'subject_type' is a required property",
+      "path": "/acceptance/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'terminal_states' is a required property",
+      "path": "/acceptance/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('blocking', 'oracle', 'predicate', 'strictness' were unexpected)",
+      "path": "/acceptance/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'conflicts' is a required property",
+      "path": "/authority"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'current_control_plane_id' is a required property",
+      "path": "/authority"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'missing_sources' is a required property",
+      "path": "/authority"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'native_control_plane_ids' is a required property",
+      "path": "/authority"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'sources' is a required property",
+      "path": "/authority"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('authority_order', 'checker_may_not', 'control_plane', 'independent_checker', 'runtime_orchestrator', 'tracked_writer' were unexpected)",
+      "path": "/authority"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'affected_domains' is a required property",
+      "path": "/changeset"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'affected_files' is a required property",
+      "path": "/changeset"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'baseline_required' is a required property",
+      "path": "/changeset"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'baseline_verified' is a required property",
+      "path": "/changeset"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'class' is a required property",
+      "path": "/changeset"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'must_not_reopen' is a required property",
+      "path": "/changeset"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'product_mutation_allowed' is a required property",
+      "path": "/changeset"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'reuse_prior_pass' is a required property",
+      "path": "/changeset"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'scope_expansion_requires_hitl' is a required property",
+      "path": "/changeset"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'tracked_mutation' is a required property",
+      "path": "/changeset"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('baseline_evidence_sha', 'baseline_source_sha', 'claim_ceiling', 'expected_source_mutation', 'kind', 'new_evidence_sha_required', 'new_source_sha_required', 'non_goals', 'repair_id' were unexpected)",
+      "path": "/changeset"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'candidate_binding' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'claim_level' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'command_or_probe' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'expected' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'gate_id' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'independent_checker' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'invalidation' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'predicate' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'raw_receipt_required' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'rerun_rule' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_pass_allowed' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'terminal_verdict' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'tracked_subject' is a required property",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('evidence_id', 'independent', 'kind', 'locator' were unexpected)",
+      "path": "/evidence/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'candidate_binding' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'claim_level' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'command_or_probe' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'expected' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'gate_id' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'independent_checker' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'invalidation' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'predicate' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'raw_receipt_required' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'rerun_rule' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_pass_allowed' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'terminal_verdict' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'tracked_subject' is a required property",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('evidence_id', 'independent', 'kind', 'locator' were unexpected)",
+      "path": "/evidence/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'candidate_binding' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'claim_level' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'command_or_probe' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'expected' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'gate_id' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'independent_checker' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'invalidation' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'predicate' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'raw_receipt_required' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'rerun_rule' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_pass_allowed' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'terminal_verdict' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'tracked_subject' is a required property",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('evidence_id', 'independent', 'kind', 'locator' were unexpected)",
+      "path": "/evidence/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'candidate_binding' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'claim_level' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'command_or_probe' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'expected' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'gate_id' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'independent_checker' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'invalidation' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'predicate' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'raw_receipt_required' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'rerun_rule' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_pass_allowed' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'terminal_verdict' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'tracked_subject' is a required property",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('evidence_id', 'independent', 'kind', 'locator' were unexpected)",
+      "path": "/evidence/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'candidate_binding' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'claim_level' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'command_or_probe' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'expected' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'gate_id' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'independent_checker' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'invalidation' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'predicate' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'raw_receipt_required' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'rerun_rule' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_pass_allowed' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'terminal_verdict' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'tracked_subject' is a required property",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('evidence_id', 'independent', 'kind', 'locator' were unexpected)",
+      "path": "/evidence/4"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'action' is a required property",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'automatic_route_target' is a required property",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'canonical_flow_referenced' is a required property",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'capability' is a required property",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'control_authority' is a required property",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'current_execution_disposition' is a required property",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'current_profile_selected' is a required property",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'external_method' is a required property",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_required_now' is a required property",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_disposition' is a required property",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_locators' is a required property",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'user_experience_required' is a required property",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('mode', 'paths', 'root' were unexpected)",
+      "path": "/execution_scope/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'action' is a required property",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'automatic_route_target' is a required property",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'canonical_flow_referenced' is a required property",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'capability' is a required property",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'control_authority' is a required property",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'current_execution_disposition' is a required property",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'current_profile_selected' is a required property",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'external_method' is a required property",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_required_now' is a required property",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_disposition' is a required property",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_locators' is a required property",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'user_experience_required' is a required property",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('mode', 'paths', 'root' were unexpected)",
+      "path": "/execution_scope/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'action' is a required property",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'automatic_route_target' is a required property",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'canonical_flow_referenced' is a required property",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'capability' is a required property",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'control_authority' is a required property",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'current_execution_disposition' is a required property",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'current_profile_selected' is a required property",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'external_method' is a required property",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_required_now' is a required property",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_disposition' is a required property",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_locators' is a required property",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'user_experience_required' is a required property",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('mode', 'root' were unexpected)",
+      "path": "/execution_scope/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'action' is a required property",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'automatic_route_target' is a required property",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'canonical_flow_referenced' is a required property",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'capability' is a required property",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'control_authority' is a required property",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'current_execution_disposition' is a required property",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'current_profile_selected' is a required property",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'external_method' is a required property",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'runtime_required_now' is a required property",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_disposition' is a required property",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_locators' is a required property",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'user_experience_required' is a required property",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('mode', 'root' were unexpected)",
+      "path": "/execution_scope/3"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'active_requirement_ids' is a required property",
+      "path": "/intent"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'allowed_hitl' is a required property",
+      "path": "/intent"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'authorized_mutations' is a required property",
+      "path": "/intent"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'claim_ceiling' is a required property",
+      "path": "/intent"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'expected_autonomy' is a required property",
+      "path": "/intent"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'forbidden_mutations' is a required property",
+      "path": "/intent"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'non_goals' is a required property",
+      "path": "/intent"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'requested_delivery' is a required property",
+      "path": "/intent"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'allowed_hitl' is a required property",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'expected_automatic_behavior' is a required property",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'expected_manual_behavior' is a required property",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'expected_visible_result' is a required property",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'failure_recovery' is a required property",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'negative_behavior' is a required property",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'required' is a required property",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'required_capabilities' is a required property",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_expectation_ids' is a required property",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_locators' is a required property",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'user_goal' is a required property",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('actor', 'expected', 'must_not', 'steps' were unexpected)",
+      "path": "/journeys/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'allowed_hitl' is a required property",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'expected_automatic_behavior' is a required property",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'expected_manual_behavior' is a required property",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'expected_visible_result' is a required property",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'failure_recovery' is a required property",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'negative_behavior' is a required property",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'required' is a required property",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'required_capabilities' is a required property",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_expectation_ids' is a required property",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'source_locators' is a required property",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'user_goal' is a required property",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('actor', 'expected', 'must_not', 'steps' were unexpected)",
+      "path": "/journeys/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'control_corpus_restatement' is a required property",
+      "path": "/render_policy"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'embedded_control_bodies' is a required property",
+      "path": "/render_policy"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'max_prompt_chars' is a required property",
+      "path": "/render_policy"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'output_language' is a required property",
+      "path": "/render_policy"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('claim_rule', 'language', 'no_handwriting_around_compiler', 'render_only' were unexpected)",
+      "path": "/render_policy"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'acceptance_ids' is a required property",
+      "path": "/runtime_readiness/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'current_verdict' is a required property",
+      "path": "/runtime_readiness/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'lifecycle' is a required property",
+      "path": "/runtime_readiness/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'required_now' is a required property",
+      "path": "/runtime_readiness/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'work_required' is a required property",
+      "path": "/runtime_readiness/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('note', 'provider', 'state' were unexpected)",
+      "path": "/runtime_readiness/0"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'acceptance_ids' is a required property",
+      "path": "/runtime_readiness/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'current_verdict' is a required property",
+      "path": "/runtime_readiness/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'lifecycle' is a required property",
+      "path": "/runtime_readiness/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'required_now' is a required property",
+      "path": "/runtime_readiness/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'work_required' is a required property",
+      "path": "/runtime_readiness/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('note', 'provider', 'state' were unexpected)",
+      "path": "/runtime_readiness/1"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'acceptance_ids' is a required property",
+      "path": "/runtime_readiness/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'current_verdict' is a required property",
+      "path": "/runtime_readiness/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'lifecycle' is a required property",
+      "path": "/runtime_readiness/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'required_now' is a required property",
+      "path": "/runtime_readiness/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'work_required' is a required property",
+      "path": "/runtime_readiness/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('provider', 'state' were unexpected)",
+      "path": "/runtime_readiness/2"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'EVIDENCE' is not one of ['NORMATIVE', 'STATE_EVIDENCE', 'SUPPORT']",
+      "path": "/source_scan/reviewed/5/role"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'checkpoint_fields' is a required property",
+      "path": "/termination"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'checkpoint_required' is a required property",
+      "path": "/termination"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'non_terminal_pause' is a required property",
+      "path": "/termination"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'retry_budget' is a required property",
+      "path": "/termination"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'rollback_pointer_required' is a required property",
+      "path": "/termination"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "'terminal_states' is a required property",
+      "path": "/termination"
+    },
+    {
+      "code": "PL-SCHEMA",
+      "message": "Additional properties are not allowed ('final_output_blocks', 'merge_release_production_live_effects', 'on', 'states', 'stop_at', 'w3_dispatch' were unexpected)",
+      "path": "/termination"
+    }
+  ],
+  "task_id": "SWOF-W2-CLOSURE-R2",
+  "verdict": "PROMPT_COMPILE_BLOCKED"
+}

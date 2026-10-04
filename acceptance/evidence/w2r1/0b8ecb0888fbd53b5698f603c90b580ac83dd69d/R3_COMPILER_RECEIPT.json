@@ -1,0 +1,82 @@
+{
+ "schema": "SWOF-CAPC-RECEIPT/1",
+ "task_id": "SWOF-W2-CLOSURE-R3",
+ "compiler_root": "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\HG-KSEOS\\construction-acceptance-prompt-compiler\\construction-acceptance-prompt-compiler",
+ "contract_path": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-construction-002-w2-repair-001\\specs\\R3_PROMPT_CONTRACT.json",
+ "runs": {
+  "lint": {
+   "exit_code": 0,
+   "stdout_tail": [
+    "{",
+    "  \"verdict\": \"PROMPT_COMPILE_PASS\",",
+    "  \"error_count\": 0,",
+    "  \"errors\": []",
+    "}"
+   ],
+   "stderr_tail": []
+  },
+  "activation": {
+   "exit_code": 0,
+   "stdout_tail": [
+    "{",
+    "  \"verdict\": \"PROMPT_COMPILE_PASS\",",
+    "  \"error_count\": 0,",
+    "  \"errors\": []",
+    "}"
+   ],
+   "stderr_tail": []
+  },
+  "acceptance": {
+   "exit_code": 0,
+   "stdout_tail": [
+    "{",
+    "  \"verdict\": \"PROMPT_COMPILE_PASS\",",
+    "  \"error_count\": 0,",
+    "  \"errors\": []",
+    "}"
+   ],
+   "stderr_tail": []
+  },
+  "compile": {
+   "exit_code": 0,
+   "stdout_tail": [
+    "{",
+    "  \"verdict\": \"PROMPT_COMPILE_PASS\",",
+    "  \"error_count\": 0,",
+    "  \"errors\": [],",
+    "  \"task_id\": \"SWOF-W2-CLOSURE-R3\",",
+    "  \"contract_sha256\": \"c76c5d3e1b4ada3ed4f4b9f004919d763a548cfdc5f05bad3d5f27e38d9e2f22\",",
+    "  \"claim_ceiling\": \"LOCAL\"",
+    "}"
+   ],
+   "stderr_tail": []
+  },
+  "duplication": {
+   "exit_code": 0,
+   "prompt": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-construction-002-w2-repair-001\\evidence\\R3_COMPILED\\thin-prompt.md",
+   "source_corpus": "C:\\Projects\\Agent_Workspace\\知識庫\\實作相關DOC\\Fabric vNext\\Semantic World OS Fabric\\SWOF-F_SWOF-GENIE_All-IW_Pre-Dev_Multi-Packages\\SWOF_HGK_ACA_RBWI\\SWOF_HGK_ACA_RBWI.md",
+   "stdout_tail": [
+    "  \"threshold\": 0.25,",
+    "  \"results\": [",
+    "    {",
+    "      \"source\": \"C:\\\\Projects\\\\Agent_Workspace\\\\知識庫\\\\實作相關DOC\\\\Fabric vNext\\\\Semantic World OS Fabric\\\\SWOF-F_SWOF-GENIE_All-IW_Pre-Dev_Multi-Packages\\\\SWOF_HGK_ACA_RBWI\\\\SWOF_HGK_ACA_RBWI.md\",",
+    "      \"ratio\": 0.007143",
+    "    }",
+    "  ]",
+    "}"
+   ],
+   "stderr_tail": []
+  }
+ },
+ "rendered_prompt": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-construction-002-w2-repair-001\\evidence\\R3_COMPILED\\thin-prompt.md",
+ "compiler_selftest": {
+  "exit_code": 0,
+  "tail": [
+   "Ran 22 tests in 0.445s",
+   "",
+   "OK"
+  ]
+ },
+ "verdict": "PROMPT_COMPILE_PASS",
+ "generated_at_utc": "2026-10-04T07:38:55Z"
+}

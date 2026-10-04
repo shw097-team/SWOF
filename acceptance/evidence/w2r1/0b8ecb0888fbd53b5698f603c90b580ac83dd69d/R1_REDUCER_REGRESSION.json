@@ -1,0 +1,146 @@
+{
+ "schema": "SWOF-W2-R1-REDUCER-REGRESSION/1",
+ "reducer": "var/swof-construction-002-w2/w2_09_closure.py::reduce_gate_w2_6",
+ "required_by": "SWOF-CONSTRUCTION-002-W2-REPAIR-001 section 6.2 (B1)",
+ "subject": "bffe540ffbab683127338a4bd94b2f7d4bb39cce",
+ "fixtures": [
+  {
+   "fixture": "F1 product PASS + checker PARTIAL",
+   "expected_G_W2_6": "FAIL",
+   "observed_G_W2_6": "FAIL",
+   "fixture_holds": true,
+   "reducer_inputs": {
+    "wave_verdict": "PARTIAL",
+    "governance_verdict": "PASS",
+    "product_verdict": "PASS",
+    "checker": "fresh-context-VERIFY-ONLY",
+    "checker_is_not_maker": true,
+    "checker_read_only": true,
+    "subject_matches": true
+   }
+  },
+  {
+   "fixture": "F2 product PASS + governance PARTIAL + checker != maker",
+   "expected_G_W2_6": "FAIL",
+   "observed_G_W2_6": "FAIL",
+   "fixture_holds": true,
+   "reducer_inputs": {
+    "wave_verdict": "PARTIAL",
+    "governance_verdict": "PARTIAL",
+    "product_verdict": "PASS",
+    "checker": "fresh-context-VERIFY-ONLY",
+    "checker_is_not_maker": true,
+    "checker_read_only": true,
+    "subject_matches": true
+   }
+  },
+  {
+   "fixture": "F3 product PASS + governance PASS + checker PASS + checker == maker",
+   "expected_G_W2_6": "FAIL",
+   "observed_G_W2_6": "FAIL",
+   "fixture_holds": true,
+   "reducer_inputs": {
+    "wave_verdict": "PASS",
+    "governance_verdict": "PASS",
+    "product_verdict": "PASS",
+    "checker": "fresh-context-VERIFY-ONLY",
+    "checker_is_not_maker": false,
+    "checker_read_only": true,
+    "subject_matches": true
+   }
+  },
+  {
+   "fixture": "F4 product PASS + governance PASS + checker PASS + checker != maker",
+   "expected_G_W2_6": "PASS",
+   "observed_G_W2_6": "PASS",
+   "fixture_holds": true,
+   "reducer_inputs": {
+    "wave_verdict": "PASS",
+    "governance_verdict": "PASS",
+    "product_verdict": "PASS",
+    "checker": "fresh-context-VERIFY-ONLY",
+    "checker_is_not_maker": true,
+    "checker_read_only": true,
+    "subject_matches": true
+   }
+  },
+  {
+   "fixture": "F5 all PASS but the checker was NOT read-only",
+   "expected_G_W2_6": "FAIL",
+   "observed_G_W2_6": "FAIL",
+   "fixture_holds": true,
+   "reducer_inputs": {
+    "wave_verdict": "PASS",
+    "governance_verdict": "PASS",
+    "product_verdict": "PASS",
+    "checker": "fresh-context-VERIFY-ONLY",
+    "checker_is_not_maker": true,
+    "checker_read_only": false,
+    "subject_matches": true
+   }
+  },
+  {
+   "fixture": "F6 all PASS but the checker's subject differs from the candidate under closure",
+   "expected_G_W2_6": "FAIL",
+   "observed_G_W2_6": "FAIL",
+   "fixture_holds": true,
+   "reducer_inputs": {
+    "wave_verdict": "PASS",
+    "governance_verdict": "PASS",
+    "product_verdict": "PASS",
+    "checker": "fresh-context-VERIFY-ONLY",
+    "checker_is_not_maker": true,
+    "checker_read_only": true,
+    "subject_matches": false
+   }
+  },
+  {
+   "fixture": "F8 all-PASS fields but wave_verdict ABSENT (the GOV-BLK-1 fallback leak)",
+   "expected_G_W2_6": "FAIL",
+   "observed_G_W2_6": "FAIL",
+   "fixture_holds": true,
+   "reducer_inputs": {
+    "wave_verdict": "",
+    "governance_verdict": "PASS",
+    "product_verdict": "PASS",
+    "checker": "fresh-context-VERIFY-ONLY",
+    "checker_is_not_maker": true,
+    "checker_read_only": true,
+    "subject_matches": true
+   }
+  },
+  {
+   "fixture": "F9 wave_verdict present but empty string",
+   "expected_G_W2_6": "FAIL",
+   "observed_G_W2_6": "FAIL",
+   "fixture_holds": true,
+   "reducer_inputs": {
+    "wave_verdict": "",
+    "governance_verdict": "PASS",
+    "product_verdict": "PASS",
+    "checker": "fresh-context-VERIFY-ONLY",
+    "checker_is_not_maker": true,
+    "checker_read_only": true,
+    "subject_matches": true
+   }
+  },
+  {
+   "fixture": "F7 the historical receipt shape (product PASS, no wave field, governance on-substance)",
+   "expected_G_W2_6": "FAIL",
+   "observed_G_W2_6": "FAIL",
+   "fixture_holds": true,
+   "reducer_inputs": {
+    "wave_verdict": "",
+    "governance_verdict": "PASS_ON_SUBSTANCE_WITH_ONE_ACCEPTED_LIMITATION",
+    "product_verdict": "PASS",
+    "checker": "fresh-context-VERIFY-ONLY",
+    "checker_is_not_maker": true,
+    "checker_read_only": true,
+    "subject_matches": true
+   }
+  }
+ ],
+ "fixtures_total": 9,
+ "fixtures_holding": 9,
+ "all_hold": true
+}

@@ -1,0 +1,62 @@
+{
+ "schema": "SWOF-W2-R2-UNKNOWN-OPERATION-PROBE/1",
+ "subject": "3ade7d0edec5d3304672be2cfa696e570aaab193",
+ "canonical_law": "DOC-03 L867 operation unknown -> UNKNOWN_RUIN/safe-stop; L874 action_class unknown -> safe-stop",
+ "rows": [
+  {
+   "probe": "op('definitely-not-a-known-operation')",
+   "case": "operation='definitely-not-a-known-operation', classifications absent -> canonical requires UNKNOWN_RUIN/safe-stop for an UNKNOWN operation",
+   "expected": "SAFE_STOP/gated for unknown; ungated only for a KNOWN benign action",
+   "observed": {
+    "required": true,
+    "route": "ARTIFACT:RUIN_SAFE_STOP",
+    "seam": "REFUSED:SAFE_STOP_UNKNOWN_RUIN"
+   },
+   "holds": true
+  },
+  {
+   "probe": "op('ACT-READ-LOCAL')",
+   "case": "operation='ACT-READ-LOCAL', classifications absent -> canonical requires UNKNOWN_RUIN/safe-stop for an UNKNOWN operation",
+   "expected": "SAFE_STOP/gated for unknown; ungated only for a KNOWN benign action",
+   "observed": {
+    "required": false,
+    "route": "NONE",
+    "seam": "ALLOWED"
+   },
+   "holds": true
+  },
+  {
+   "probe": "op('read')",
+   "case": "operation='read', classifications absent -> canonical requires UNKNOWN_RUIN/safe-stop for an UNKNOWN operation",
+   "expected": "SAFE_STOP/gated for unknown; ungated only for a KNOWN benign action",
+   "observed": {
+    "required": false,
+    "route": "NONE",
+    "seam": "ALLOWED"
+   },
+   "holds": true
+  },
+  {
+   "probe": "op('')",
+   "case": "operation='', classifications absent -> canonical requires UNKNOWN_RUIN/safe-stop for an UNKNOWN operation",
+   "expected": "SAFE_STOP/gated for unknown; ungated only for a KNOWN benign action",
+   "observed": {
+    "required": true,
+    "route": "ARTIFACT:RUIN_SAFE_STOP",
+    "seam": "REFUSED:SAFE_STOP_UNKNOWN_RUIN"
+   },
+   "holds": true
+  },
+  {
+   "probe": "op('unknown_action')",
+   "case": "operation='unknown_action', classifications absent -> canonical requires UNKNOWN_RUIN/safe-stop for an UNKNOWN operation",
+   "expected": "SAFE_STOP/gated for unknown; ungated only for a KNOWN benign action",
+   "observed": {
+    "required": true,
+    "route": "ARTIFACT:RUIN_SAFE_STOP",
+    "seam": "REFUSED:SAFE_STOP_UNKNOWN_RUIN"
+   },
+   "holds": true
+  }
+ ]
+}

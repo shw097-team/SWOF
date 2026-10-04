@@ -1,0 +1,135 @@
+{
+ "schema": "SWOF-W2-R2-CANONICAL-RUIN-PROBE/1",
+ "subject": "edb53142dda94e1b0e4926bebc008b06f42cbcfb",
+ "canonical_ruin_field": "effect_risk_tier (enum LOW|MEDIUM|HIGH|CRITICAL|RUIN|UNKNOWN_RUIN)",
+ "ruin_class_in_canonical_source": false,
+ "rows": [
+  {
+   "probe": "C1-RUIN",
+   "case": "canonical effect_risk_tier=RUIN + BENIGN op + NO token -> must HARD_VETO_RUIN",
+   "expected": "HARD_VETO_RUIN",
+   "observed": {
+    "raised": "HumanGateBypassAttempt"
+   },
+   "raised": "HARD_VETO_RUIN",
+   "holds": true
+  },
+  {
+   "probe": "C2-RUIN",
+   "case": "canonical effect_risk_tier=RUIN + VALID token -> token cannot override",
+   "expected": "HARD_VETO_RUIN",
+   "observed": {
+    "raised": "HumanGateBypassAttempt"
+   },
+   "raised": "HARD_VETO_RUIN",
+   "holds": true
+  },
+  {
+   "probe": "C1-UNKNOWN_RUIN",
+   "case": "canonical effect_risk_tier=UNKNOWN_RUIN + BENIGN op + NO token -> must SAFE_STOP_UNKNOWN_RUIN",
+   "expected": "SAFE_STOP_UNKNOWN_RUIN",
+   "observed": {
+    "raised": "HumanGateBypassAttempt"
+   },
+   "raised": "SAFE_STOP_UNKNOWN_RUIN",
+   "holds": true
+  },
+  {
+   "probe": "C2-UNKNOWN_RUIN",
+   "case": "canonical effect_risk_tier=UNKNOWN_RUIN + VALID token -> token cannot override",
+   "expected": "SAFE_STOP_UNKNOWN_RUIN",
+   "observed": {
+    "raised": "HumanGateBypassAttempt"
+   },
+   "raised": "SAFE_STOP_UNKNOWN_RUIN",
+   "holds": true
+  },
+  {
+   "probe": "C3-CRITICAL",
+   "case": "effect_risk_tier=CRITICAL + P2 benign + no token",
+   "expected": "OBSERVE",
+   "observed": {
+    "gated": true,
+    "detail": "HumanGateBypassAttempt:DENY_P3_TOKEN_REQUIRED"
+   },
+   "holds": true
+  },
+  {
+   "probe": "C3-HIGH",
+   "case": "effect_risk_tier=HIGH + P2 benign + no token",
+   "expected": "OBSERVE",
+   "observed": {
+    "gated": true,
+    "detail": "HumanGateBypassAttempt:DENY_P3_TOKEN_REQUIRED"
+   },
+   "holds": true
+  },
+  {
+   "probe": "C3-MEDIUM",
+   "case": "effect_risk_tier=MEDIUM + P2 benign + no token",
+   "expected": "OBSERVE",
+   "observed": {
+    "gated": false,
+    "detail": "ungated"
+   },
+   "holds": true
+  },
+  {
+   "probe": "C3-LOW",
+   "case": "effect_risk_tier=LOW + P2 benign + no token",
+   "expected": "OBSERVE",
+   "observed": {
+    "gated": false,
+    "detail": "ungated"
+   },
+   "holds": true
+  },
+  {
+   "probe": "C4-perm('p3')",
+   "case": "permission_class='p3' (malformed) -> must fail CLOSED, not open",
+   "expected": true,
+   "observed": {
+    "blocked": true
+   },
+   "holds": true
+  },
+  {
+   "probe": "C4-perm('P3 ')",
+   "case": "permission_class='P3 ' (malformed) -> must fail CLOSED, not open",
+   "expected": true,
+   "observed": {
+    "blocked": true
+   },
+   "holds": true
+  },
+  {
+   "probe": "C4-perm(' P3')",
+   "case": "permission_class=' P3' (malformed) -> must fail CLOSED, not open",
+   "expected": true,
+   "observed": {
+    "blocked": true
+   },
+   "holds": true
+  },
+  {
+   "probe": "C4-perm('')",
+   "case": "permission_class='' (malformed) -> must fail CLOSED, not open",
+   "expected": true,
+   "observed": {
+    "blocked": true
+   },
+   "holds": true
+  },
+  {
+   "probe": "C4-perm('P9')",
+   "case": "permission_class='P9' (malformed) -> must fail CLOSED, not open",
+   "expected": true,
+   "observed": {
+    "blocked": true
+   },
+   "holds": true
+  }
+ ],
+ "all_hold": true,
+ "failures": []
+}

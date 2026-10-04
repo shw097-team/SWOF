@@ -1,0 +1,175 @@
+{
+ "schema": "SWOF-W2-R3-LOCAL-CLOSURE-RECEIPT/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W2-REPAIR-001",
+ "repair_id": "SWOF-W2-CLOSURE-R3",
+ "changeset": "NARROW_REPAIR",
+ "subject": {
+  "final_source_candidate_sha": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+  "branch": "wo/swof-w2-closure-r1",
+  "repair_base": "b8e62b96463273e3475ff52a7a4a87831816927a",
+  "w1_accepted_source_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+  "w1_accepted_evidence_sha": "84ea30c216ac319c4e55df1b07ee2ee3372bcc88"
+ },
+ "gates": {
+  "G-R3-1": "PASS",
+  "G-R3-2": "PASS",
+  "G-R3-3": "PASS",
+  "G-R3-4": "PASS",
+  "G-R3-5": "PASS",
+  "G-R3-6": "PASS",
+  "G-R3-7": "PASS",
+  "G-R3-8": "PASS"
+ },
+ "gate_evidence": {
+  "G-R3-1": {
+   "claim": "the R3 blocking defects were reproduced on the frozen base",
+   "base_rows": 9,
+   "A_recipes_differ": true
+  },
+  "G-R3-2": {
+   "claim": "the identical probe set no longer reproduces A, B or C",
+   "probes_holding": 17,
+   "probes_total": 17,
+   "findings": {
+    "A_exact_basis_bytes": "CLOSED",
+    "B_authority_lineage": "CLOSED",
+    "C_canonical_sets": "CLOSED",
+    "prior_invariants": "RETAINED"
+   }
+  },
+  "G-R3-3": {
+   "changed_paths": [
+    "schemas/security/approval_token.schema.json",
+    "src/security/humangate.py",
+    "src/security/tests/test_humangate_currentness.py",
+    "src/security/tests/test_rights.py"
+   ],
+   "reverted": []
+  },
+  "G-R3-4": {
+   "w1": 113,
+   "w2": 744,
+   "grand_total": 857
+  },
+  "G-R3-5": {
+   "fixtures": 9,
+   "holding": 9
+  },
+  "G-R3-6": {
+   "wave_verdict": "PASS",
+   "governance_verdict": "PASS",
+   "product_verdict": "PASS",
+   "checker": "fresh-verify-w2r3-check4-0b8ecb0",
+   "checker_is_not_maker": true,
+   "checker_read_only": true,
+   "subject_matches": true
+  },
+  "G-R3-7": {
+   "derivation": "claim_for() is the only emitter of the claim string"
+  },
+  "G-R3-8": {
+   "claim": "the canonical final checkpoint resolves to the exact source SHA by recomputation, with the raw stored payload exposed for external recompute, and the denominator is non-vacuous",
+   "recompute_matches": true,
+   "raw_payload_exposed": true,
+   "denominator_after": {
+    "requirements_total": 6,
+    "workorders_total": 6,
+    "acceptances_total": 6,
+    "workorders_open_count": 0,
+    "acceptances_open_count": 0
+   }
+  }
+ },
+ "gate_set_passed": true,
+ "independent_checker": {
+  "receipt": "evidence\\R3_FRESH_CHECKER_RECEIPT.json",
+  "sha256": "470d212a74aa2c6d5c39012a8d70b337d24d35f556ea891d6c2d28551b32881d",
+  "checker_identity": "fresh-verify-w2r3-check4-0b8ecb0",
+  "product_verdict": "PASS",
+  "governance_verdict": "PASS",
+  "wave_verdict": "PASS",
+  "checker_is_not_maker": true,
+  "checker_read_only": true
+ },
+ "claim_ceiling": "W2_REPAIR_LOCALLY_CLOSED / W2_INDEPENDENT_CHECK_PASS / W1_ACCEPTED_BASELINE_PRESERVED / CANONICAL_HGK_FINAL_CHECKPOINT_BOUND / W3_NOT_STARTED / NOT_MERGED / NOT_RELEASED / NOT_PRODUCTION / NO_WORLD_EFFECT_ACCEPTANCE",
+ "hgk_normative_closure": {
+  "resolved": true,
+  "disposition": "CANONICAL_HGK_CLOSURE_RESOLVED",
+  "project": "HGK-P0-SWOF-W2",
+  "final_checkpoint_id": "CK-W2-ADA77206",
+  "exact_source_binding": {
+   "canonical_binding_field": "checkpoints.source_digest",
+   "why_not_repo_head": "the canonical checkpoint schema carries source_digest/state_digest and the typed ProjectLifecycleController.checkpoint() sets repo_head to \"\"; repo_head is NOT the binding surface for this schema and no field was invented. The binding is the recomputable digest of the stored payload.",
+   "source_digest_recorded": "334f5654c80f33cc79d87ebf08ff80274cd8943fa6a7a1b8d97cdfb7547fe263",
+   "recomputed_from_stored_payload": "334f5654c80f33cc79d87ebf08ff80274cd8943fa6a7a1b8d97cdfb7547fe263",
+   "recompute_matches": true,
+   "payload_evidence_refs": [
+    "EVD-W2R2-CHECKER",
+    "SRC:0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+    "EVIDENCE_SHA:470d212a74aa2c6d5c39012a8d70b337d24d35f556ea891d6c2d28551b32881d"
+   ],
+   "payload_names_exact_source_sha": true,
+   "lifecycle_last_checkpoint_id": "CK-W2-ADA77206",
+   "lifecycle_points_at_final": true,
+   "resolves_to_exact_source_sha": true,
+   "recompute_recipe": "sha256_text(canonical_json(payload)) where payload is the stored project_lifecycles.intent_json[\"_checkpoint\"] object below",
+   "raw_stored_payload": {
+    "project_id": "HGK-P0-SWOF-W2",
+    "run_id": "RUN-SWOF-W2-001",
+    "state": "VERIFYING",
+    "current_workorder": null,
+    "attempt_budget": 3,
+    "attempts_used": 2,
+    "evidence_refs": [
+     "EVD-W2R2-CHECKER",
+     "SRC:0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+     "EVIDENCE_SHA:470d212a74aa2c6d5c39012a8d70b337d24d35f556ea891d6c2d28551b32881d"
+    ]
+   },
+   "raw_canonical_json_bytes_sha256": "334f5654c80f33cc79d87ebf08ff80274cd8943fa6a7a1b8d97cdfb7547fe263",
+   "raw_checkpoint_row": {
+    "checkpoint_id": "CK-W2-ADA77206",
+    "state_digest": "334f5654c80f33cc79d87ebf08ff80274cd8943fa6a7a1b8d97cdfb7547fe263",
+    "source_digest": "334f5654c80f33cc79d87ebf08ff80274cd8943fa6a7a1b8d97cdfb7547fe263",
+    "repo_head": ""
+   }
+  },
+  "denominator_after": {
+   "requirements_total": 6,
+   "workorders_total": 6,
+   "acceptances_total": 6,
+   "workorders_open_count": 0,
+   "acceptances_open_count": 0
+  },
+  "raw_evidence": "evidence/R3_W2_NORMATIVE_CLOSURE_PROJECTION.json"
+ },
+ "test_denominator": {
+  "w1": 113,
+  "w2": 744,
+  "grand_total": 857,
+  "w1_accepted_baseline": 113,
+  "w1_preserved": true
+ },
+ "workspace": {
+  "head": "0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+  "clean": true,
+  "dirty": []
+ },
+ "publication_state": "RECORDED_OUT_OF_TREE",
+ "publication_gated_tokens_withheld": [
+  "NEW_EVIDENCE_COMMIT_PUBLISHED",
+  "READY_FOR_W2_EXTERNAL_RECHALLENGE"
+ ],
+ "publication_state_claims_holder": "C:\\Projects\\Agent_Workspace\\HG-KSEOS\\var\\swof-construction-002-w2-repair-001\\handoff\\W2_R3_FINAL_PUBLICATION_RECEIPT.json",
+ "non_claims": [
+  "NEW_EVIDENCE_COMMIT_PUBLISHED",
+  "READY_FOR_W2_EXTERNAL_RECHALLENGE",
+  "NOT_EXTERNALLY_ACCEPTED",
+  "W3_NOT_STARTED",
+  "NO_MERGE",
+  "NO_RELEASE",
+  "NO_PRODUCTION",
+  "NO_WORLD_EFFECT_ACCEPTANCE"
+ ],
+ "generated_at_utc": "2026-10-04T08:05:46Z"
+}

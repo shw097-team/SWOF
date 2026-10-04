@@ -1,0 +1,163 @@
+{
+ "schema": "SWOF-W2-R1-HGK-CLOSURE-LEG/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W2-REPAIR-001",
+ "project": "HGK-P0-SWOF-W2",
+ "read_only": true,
+ "raw_before_state": {
+  "project_lifecycle": [
+   {
+    "project_id": "HGK-P0-SWOF-W2",
+    "run_id": "RUN-SWOF-W2-001",
+    "state": "VERIFYING",
+    "goal_hash": "dc9654f7782511c5a5a778a10f1d7ff4b276e7d9738f42e34b5231362cfdee3a",
+    "source_count": 0,
+    "authority_order_json": "[]",
+    "conflicts_json": "[]",
+    "blocking_missing_json": "[]",
+    "non_blocking_missing_json": "[]",
+    "intent_json": "{}",
+    "non_goals_json": "[\"W3-W5\", \"provider activation\", \"live effect\"]",
+    "current_workorder": null,
+    "last_checkpoint_id": null,
+    "attempt_budget": 3,
+    "attempts_used": 2,
+    "repair_count": 2,
+    "created_at": "2026-10-03T15:03:34.099591Z",
+    "updated_at": "2026-10-03T17:36:52.773331Z"
+   }
+  ],
+  "workorders": [
+   {
+    "workorder_id": "WO-SWOF-W2-001",
+    "state": "CREATED",
+    "result_json": null,
+    "base_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-002",
+    "state": "CREATED",
+    "result_json": null,
+    "base_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-003",
+    "state": "CREATED",
+    "result_json": null,
+    "base_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-004",
+    "state": "CREATED",
+    "result_json": null,
+    "base_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   }
+  ],
+  "acceptances": [
+   {
+    "acceptance_id": "ACC-SWOF-W2-001",
+    "requirement_id": "REQ-HGK-SWOF-W2-001",
+    "verdict": "NOT_RUN",
+    "evidence_ref": null
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-002",
+    "requirement_id": "REQ-HGK-SWOF-W2-002",
+    "verdict": "NOT_RUN",
+    "evidence_ref": null
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-003",
+    "requirement_id": "REQ-HGK-SWOF-W2-003",
+    "verdict": "NOT_RUN",
+    "evidence_ref": null
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-004",
+    "requirement_id": "REQ-HGK-SWOF-W2-004",
+    "verdict": "NOT_RUN",
+    "evidence_ref": null
+   }
+  ],
+  "evidence_refs_count": 0,
+  "tt_records": [],
+  "checkpoints": [
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-001",
+    "wave": "W2",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "created_at": "2026-10-03T15:03:33Z"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-002",
+    "wave": "W2",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "created_at": "2026-10-03T15:03:33Z"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-003",
+    "wave": "W2",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "created_at": "2026-10-03T15:03:33Z"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-004",
+    "wave": "W2",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "created_at": "2026-10-03T15:03:33Z"
+   }
+  ],
+  "project_transitions_count": 17,
+  "canonical_events_count": 21
+ },
+ "open_denominator_edges": {
+  "workorders_open": [
+   "WO-SWOF-W2-001",
+   "WO-SWOF-W2-002",
+   "WO-SWOF-W2-003",
+   "WO-SWOF-W2-004"
+  ],
+  "acceptances_open": [
+   "ACC-SWOF-W2-001",
+   "ACC-SWOF-W2-002",
+   "ACC-SWOF-W2-003",
+   "ACC-SWOF-W2-004"
+  ]
+ },
+ "typed_api_surface_proof": {
+  "acceptance_creators": [
+   {
+    "file": "spine.py",
+    "statement": "INSERT INTO acceptances (unclassified)"
+   }
+  ],
+  "acceptance_verdict_resolvers": [],
+  "acceptance_readers": [
+   {
+    "file": "lifecycle.py",
+    "statement": "SELECT ... FROM acceptances"
+   }
+  ],
+  "methods_named_for_acceptance": [],
+  "verdict": "TYPED_API_CANNOT_RESOLVE_ACCEPTANCE_VERDICT"
+ },
+ "leg_verdict": "TYPED_API_CANNOT_RESOLVE_ACCEPTANCE_VERDICT",
+ "why": "register_requirement() INSERTs acceptances with verdict NOT_RUN and no typed method anywhere in src/hg_kseos updates acceptances.verdict; denominator() counts verdict != 'PASS' as an open edge, so the W2 denominator can never close through the typed API. Forcing it would require a direct SQL UPDATE, which this order forbids.",
+ "required_close_condition": {
+  "kind": "SEPARATE_ENGINEERING_BASE_CHANGESET",
+  "target": "HG-KSEOS shared core (src/hg_kseos/spine.py)",
+  "proposed_api": "SharedSpine.resolve_acceptance(acceptance_id, verdict, evidence_ref, actor, token, expected_version, idempotency_key) -> dict",
+  "why_it_is_core": "the capability is a general shared-spine contract, not a SWOF/W2 harness concern; the repair order forbids patching shared core under this order",
+  "hitl_required": true,
+  "hitl_reason": "mutating shared HG-KSEOS core is an explicit HITL authority edge"
+ },
+ "everything_else_still_valid": [
+  "the product repair, reducer fix, focused/full regression, fresh checker and new evidence commit are independent of this leg and remain deliverable"
+ ],
+ "non_claims": [
+  "W2_EXTERNAL_PASS",
+  "GO_W3",
+  "NO_MERGE",
+  "NO_RELEASE",
+  "NO_PRODUCTION"
+ ]
+}
