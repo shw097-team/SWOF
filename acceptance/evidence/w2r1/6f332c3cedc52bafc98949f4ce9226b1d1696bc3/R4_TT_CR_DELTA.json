@@ -79,8 +79,7 @@
   {
    "id": "F-W2R3-EXT-002",
    "status": "CLOSED",
-   "evidence": "R4_FINAL_POSTPUBLICATION_VERIFICATION.json (out-of-tree, produced after publication by the independent postpublication verifier; 13/13 checks)",
-   "superseded_round6_receipt": "R4_POSTPUBLICATION_VERIFICATION_6a8fc639 (verified a superseded evidence tuple; retained out-of-tree as audit material, not published)"
+   "evidence": "independent postpublication evidence verification of the final handoff (out-of-tree, produced by a read-only verifier after this evidence commit exists; see the repair handoff directory). Earlier revisions of this delta wrongly named a superseded evidence subject and cited a receipt that did not yet exist."
   },
   {
    "id": "NB-W2R3-002",
