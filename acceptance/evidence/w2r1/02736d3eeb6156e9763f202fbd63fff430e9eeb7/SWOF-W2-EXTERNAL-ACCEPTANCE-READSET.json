@@ -15,8 +15,7 @@
     "accepted_w1_source_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
     "accepted_w1_evidence_sha": "84ea30c216ac319c4e55df1b07ee2ee3372bcc88",
     "parent_r4_source_sha": "6f332c3cedc52bafc98949f4ce9226b1d1696bc3",
-    "parent_r4_evidence_sha": "d3e311c2c26b48f4cc0b4b60d02390628f1365b6",
-    "evidence_target_branch_tip": "048a062999eb3db9b3c06dd9ac189d30fba59b58"
+    "parent_r4_evidence_sha": "d3e311c2c26b48f4cc0b4b60d02390628f1365b6"
   },
   "forbidden": [
     "create_or_update_file",
@@ -104,5 +103,6 @@
     "no_live_world_effect": true,
     "w1_exact_subject_preserved": true,
     "no_global_aac3_force": true
-  }
+  },
+  "evidence_chain_note": "evidence branch evidence/swof-w2r5-closure-repair carries RETURN_PACK commit a6ee9b5 plus later pointer commits (R5_COMPILER_RECEIPT, READSET updates); acceptance subject is ONLY the exact RETURN_PACK commit a6ee9b5 per SWOF-RUN-R022. Latest evidence branch tip at publish time: 0b25a1ef0880db67bb09e4ed75be12a0f8508d10 (non-subject pointer)."
 }
