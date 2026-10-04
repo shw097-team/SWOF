@@ -1,0 +1,11 @@
+{
+ "schema": "SWOF-W2-EVIDENCE-READBACK/1",
+ "verified_against": "COMMITTED_BLOB",
+ "method": "git cat-file blob <rev>:<path> after the commit (never the working file)",
+ "items": 99,
+ "bytes_total": 5306610,
+ "sha256_mismatch_count": 0,
+ "byte_count_mismatches": 0,
+ "empty_or_failed_blob_reads": 0,
+ "transport_disagreements": 0
+}
