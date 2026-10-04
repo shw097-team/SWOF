@@ -9,7 +9,7 @@
     "source_branch": "wo/swof-w2-closure-r1",
     "source_candidate_sha": "02736d3eeb6156e9763f202fbd63fff430e9eeb7",
     "evidence_branch": "evidence/swof-w2r5-closure-repair",
-    "evidence_commit_sha": "1d7fc5f89f5205029fe767c500e38fc2a6c11059",
+    "evidence_commit_sha": "3bcad1a09f27363142cef589d37f96dfc6e5688f",
     "source_ne_evidence": true,
     "checkpoint": "CK-W2-AE96CED0",
     "accepted_w1_source_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
@@ -25,7 +25,7 @@
   ],
   "claim_ceiling": "READY_FOR_W2_EXTERNAL_RECHALLENGE_ON_EXACT_R5_DUAL_SHA_SUBJECT_ONLY",
   "canonical_compiler_disposition": "R5 task-time compile PERFORMED: prompt_contract_compiler.py lint/activation/acceptance/compile/duplication all PROMPT_COMPILE_PASS (contract sha 53d505a80a450ce2..., dup ratio vs R4 0.1659 < 0.25). Receipt: R5_COMPILER_RECEIPT.json.",
-  "github_disposition": "TEMP_CLOSED_GITHUB: no origin remote / gh / credential wired in this environment; source and evidence committed locally and read back from local object store. Publication to GitHub pending external PAT wiring.",
+  "github_disposition": "PUBLISHED to shw097-team/SWOF (ACCEPTANCE_MIRROR_ONLY; public). source_candidate commit 02736d3eeb6156e9763f202fbd63fff430e9eeb7 pushed to branch wo/swof-w2-closure-r1; evidence commit 3bcad1a09f27363142cef589d37f96dfc6e5688f pushed to branch evidence/swof-w2r5-closure-repair. PR #7 (head.sha==source_candidate_sha 02736d3e, base main) open. Remote main SHA acdbfaa unchanged; repository NOT created by publication; visibility unmodified (was public).",
   "independent_checker": {
     "identity": "fresh-context-VERIFY-ONLY",
     "product_verdict": "PASS",
@@ -86,6 +86,12 @@
       "id": "EVD-W2R5-COMPILER",
       "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/R5_COMPILER_RECEIPT.json",
       "sha256": "efe28476ebaa8cce237b3e89af376f87b7110880085fcf8f23c021d909227ab9"
+    },
+    {
+      "id": "EVD-W2R5-GITHUB-PUBLISH",
+      "path": "acceptance/evidence/w2r1/02736d3eeb6156e9763f202fbd63fff430e9eeb7/SWOF-W2-EXTERNAL-ACCEPTANCE-READSET.json",
+      "sha256": "b9e84bb9323d75c6fbea46d05bee9cf84326ad5e530b7fe470821214d1ce47c2",
+      "note": "GitHub publish disposition recorded in this readset github_disposition field; PR #7 head.sha=02736d3e."
     }
   ],
   "non_claims": {
