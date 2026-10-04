@@ -38,5 +38,9 @@
   "bytes": 20329,
   "retrievable_from_publication": false,
   "note": "out-of-tree at this revision; hash-bound. Regenerated evidence would be required to bind it in-tree."
- }
+ },
+ "status": "SUPERSEDED",
+ "superseded_reason": "this receipt verified the SUPERSEDED tuple source 6f332c3c / evidence 6a8fc639; the current tuple is source 6f332c3c / evidence 0b70cdf6",
+ "verified_tuple_is_current": false,
+ "superseded_by": "R4_FINAL_POSTPUBLICATION_VERIFICATION.json (round-7 verification of the current tuple)"
 }

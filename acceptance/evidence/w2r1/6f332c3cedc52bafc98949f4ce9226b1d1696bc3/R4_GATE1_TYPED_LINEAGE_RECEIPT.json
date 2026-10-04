@@ -1,34 +1,31 @@
 {
  "schema": "SWOF-W2-R4-GATE1-TYPED-LINEAGE-RECEIPT/1",
- "source": "read-only SELECT over the HGK project spine at task time",
+ "source": "read-only SELECT over the HGK project spine, taken AFTER the projection",
  "typed_api_only_closure": true,
  "no_direct_sql_writes": true,
+ "generated_after": "R4_W2_NORMATIVE_CLOSURE_PROJECTION.json",
  "lifecycle": [
   [
    "HGK-P0-SWOF-W2",
    "VERIFYING",
    null,
-   "CK-W2-1D755E47",
+   "CK-W2-C72F516B",
    2
   ]
  ],
+ "final_checkpoint": [
+  [
+   "CK-W2-C72F516B",
+   "lifecycle",
+   "a34808497e7bea8d96562eb321e3208ed3c76903c24a460e816bf3f9ebf04325"
+  ]
+ ],
+ "projection_final_checkpoint_id": "CK-W2-C72F516B",
+ "spine_lifecycle_last_checkpoint_id": "CK-W2-C72F516B",
+ "gate8_lifecycle_points_to_final_checkpoint": true,
+ "assertion": "lifecycle.last_checkpoint_id == the final source-bound checkpoint",
+ "note": "the spine is the authority for this assertion; the receipt is generated after the projection so it cannot name a checkpoint the next projection replaces",
  "requirements": [
-  [
-   "REQ-HGK-SWOF-W2-001",
-   "FROZEN"
-  ],
-  [
-   "REQ-HGK-SWOF-W2-002",
-   "FROZEN"
-  ],
-  [
-   "REQ-HGK-SWOF-W2-003",
-   "FROZEN"
-  ],
-  [
-   "REQ-HGK-SWOF-W2-004",
-   "FROZEN"
-  ],
   [
    "REQ-HGK-SWOF-W2R2-001",
    "FROZEN"
@@ -128,13 +125,54 @@
    "WO-SWOF-W2-004"
   ]
  ],
- "final_checkpoint": [
+ "acceptances": [
   [
-   "CK-W2-1D755E47",
-   "lifecycle",
-   "a34808497e7bea8d96562eb321e3208ed3c76903c24a460e816bf3f9ebf04325"
+   "ACC-REQ-HGK-SWOF-W2R2-001",
+   "PASS"
+  ],
+  [
+   "ACC-REQ-HGK-SWOF-W2R2-002",
+   "PASS"
+  ],
+  [
+   "ACC-REQ-HGK-SWOF-W2R2-003",
+   "PASS"
+  ],
+  [
+   "ACC-REQ-HGK-SWOF-W2R2-004",
+   "PASS"
+  ],
+  [
+   "ACC-REQ-HGK-SWOF-W2R2-005",
+   "PASS"
+  ],
+  [
+   "ACC-REQ-HGK-SWOF-W2R3-001",
+   "PASS"
+  ],
+  [
+   "ACC-REQ-HGK-SWOF-W2R4-001",
+   "PASS"
+  ],
+  [
+   "ACC-SWOF-W2-001",
+   "PASS"
+  ],
+  [
+   "ACC-SWOF-W2-002",
+   "PASS"
+  ],
+  [
+   "ACC-SWOF-W2-003",
+   "PASS"
+  ],
+  [
+   "ACC-SWOF-W2-004",
+   "PASS"
   ]
  ],
- "gate8_lifecycle_points_to_final_checkpoint": true,
- "assertion": "lifecycle.last_checkpoint_id == the final source-bound checkpoint"
+ "requirement_count": 7,
+ "taskspec_count": 11,
+ "workorder_count": 11,
+ "acceptance_count": 11
 }

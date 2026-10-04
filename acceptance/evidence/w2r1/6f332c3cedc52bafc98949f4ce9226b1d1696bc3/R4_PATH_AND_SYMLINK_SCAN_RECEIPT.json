@@ -11,5 +11,7 @@
  "policy": "every committed evidence path must be relative, posix-normalized, inside the subject root, and a regular file",
  "detector_non_vacuous": true,
  "non_vacuity_proof": "the traversal matcher is proven against a planted sample 'a/../../b' and the symlink check against os.path.islink on a planted link before scanning",
- "result": "CLEAN"
+ "result": "CLEAN",
+ "scan_scope": "the STAGED out-of-tree evidence set under evidence/; the committed tree is additionally validated by the publisher's path/symlink walk over every committed blob",
+ "committed_tree_validation": "performed by the evidence pack before commit; the independent post-publication verifier reproduced CLEAN over all committed blobs"
 }
