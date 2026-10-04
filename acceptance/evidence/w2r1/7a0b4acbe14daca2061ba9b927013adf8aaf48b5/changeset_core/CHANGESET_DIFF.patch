@@ -1,0 +1,163 @@
+diff --git a/src/hg_kseos/spine.py b/src/hg_kseos/spine.py
+index e36da4f..b2da5ed 100644
+--- a/src/hg_kseos/spine.py
++++ b/src/hg_kseos/spine.py
+@@ -35,6 +35,13 @@ TRANSITIONS: dict[str, dict[str | None, set[str]]] = {
+         "FAILED": set(),
+         "CANCELLED": set(),
+     },
++    "acceptance": {
++        # An acceptance is created NOT_RUN and may only move to a terminal verdict once.
++        None: {"NOT_RUN"},
++        "NOT_RUN": {"PASS", "FAIL"},
++        "PASS": set(),
++        "FAIL": set(),
++    },
+ }
+ 
+ 
+@@ -366,6 +373,144 @@ class SharedSpine:
+                 ),
+             )
+ 
++    def resolve_acceptance(
++        self,
++        acceptance_id: str,
++        *,
++        verdict: str,
++        evidence_ref: str,
++        actor: str,
++        token: str,
++        expected_version: int,
++        idempotency_key: str,
++        requirement_id: str | None = None,
++        payload: dict[str, Any] | None = None,
++    ) -> dict[str, Any]:
++        """Move an acceptance from NOT_RUN to a terminal verdict, bound to a registered evidence ref.
++
++        WHY this exists: `denominator()` treats any `verdict != 'PASS'` as an open edge, but nothing in
++        the typed API could ever move `verdict` off `NOT_RUN` - `register_requirement()` only inserts
++        the row. A project denominator was therefore structurally unclosable and the only way out was a
++        direct SQL UPDATE, which is exactly what consumers are forbidden to do.
++
++        This is the missing canonical transition, NOT a bypass. It enforces the same discipline as
++        `transition_requirement`:
++
++          * `verdict` must be one of the legal terminal states in `TRANSITIONS['acceptance']`
++          * `requirement_id` is MANDATORY: an acceptance may only be resolved through its own
++            requirement, so a resolution can never float free of a subject
++          * the evidence ref must already exist in `evidence_refs` (no orphan verdicts)
++          * the caller must hold the lease on the acceptance (actor + token)
++          * the acceptance must still be `NOT_RUN`; an already-resolved acceptance is refused, so a
++            stale or conflicting re-resolution cannot silently overwrite a verdict
++          * `expected_version` must equal the live version (0 while NOT_RUN)
++          * a replayed `idempotency_key` returns the original event, but ONLY when it names this same
++            acceptance; a key already spent on another subject fails closed instead of silently
++            returning that other subject's event
++          * the state change and its canonical event are written in ONE transaction
++          * history is never rewritten: the prior verdict is recorded as `from_state`
++
++        DISCLOSED LIMITATION (typed TT, not hidden): `evidence_refs` has no subject/requirement column,
++        so this method can prove an evidence ref EXISTS and is registered, but it cannot prove that the
++        evidence belongs to this subject. True foreign-evidence rejection requires a subject binding on
++        the evidence registry itself (a schema extension), which is out of this ChangeSet's minimal
++        scope. The claim is therefore "registered evidence binding", not "subject-bound evidence".
++
++        Consumers (project harnesses, wave controllers) MUST call this instead of issuing SQL.
++        """
++        if verdict not in TRANSITIONS["acceptance"]["NOT_RUN"]:
++            raise InvariantViolation(f"ERR_ACCEPTANCE_VERDICT:{verdict}")
++        if not all((acceptance_id, evidence_ref, actor, token, idempotency_key)):
++            raise InvariantViolation("ERR_ACCEPTANCE_CRITICAL_FIELD_MISSING")
++        if not isinstance(requirement_id, str) or not requirement_id.strip():
++            raise InvariantViolation("ERR_ACCEPTANCE_SUBJECT_BINDING_REQUIRED")
++        with self.transaction() as connection:
++            # Subject binding FIRST, so a replay can never bypass the requirement check either.
++            row = connection.execute(
++                """SELECT requirement_id, verdict, evidence_ref FROM acceptances
++                   WHERE acceptance_id=?""",
++                (acceptance_id,),
++            ).fetchone()
++            if not row:
++                raise InvariantViolation(f"ERR_ACCEPTANCE_UNKNOWN:{acceptance_id}")
++            if row["requirement_id"] != requirement_id:
++                raise InvariantViolation(
++                    f"ERR_ACCEPTANCE_WRONG_SUBJECT:{acceptance_id}:{row['requirement_id']}"
++                )
++            spent = connection.execute(
++                "SELECT event_id,entity_type,entity_id,resulting_version,to_state,evidence_ref "
++                "FROM canonical_events WHERE idempotency_key=?", (idempotency_key,),
++            ).fetchone()
++            # The replay path is held to the SAME discipline as the first-write path: a caller must still
++            # hold the lease and still name registered evidence. A weaker replay path would let an
++            # unleased caller obtain an approval-shaped result (round-3 finding, low severity, fixed here).
++            evidence = connection.execute(
++                "SELECT evidence_id FROM evidence_refs WHERE evidence_id=?", (evidence_ref,)
++            ).fetchone()
++            if not evidence:
++                raise InvariantViolation(f"ERR_ACCEPTANCE_EVIDENCE_UNKNOWN:{evidence_ref}")
++            self._assert_lease(connection, acceptance_id, actor, token)
++            if spent:
++                # `canonical_events.idempotency_key` is globally UNIQUE across EVERY entity type, so
++                # entity_id alone is not a subject key: a requirement/taskspec/workorder event can carry
++                # an entity_id that happens to equal this acceptance_id. A replay is only this
++                # acceptance's replay when BOTH the type and the id match.
++                if spent["entity_type"] != "acceptance" or spent["entity_id"] != acceptance_id:
++                    raise InvariantViolation(
++                        f"ERR_IDEMPOTENCY_KEY_REUSED_FOR_OTHER_SUBJECT:{idempotency_key}"
++                        f":{spent['entity_type']}:{spent['entity_id']}"
++                    )
++                return {"event_id": spent["event_id"], "resulting_version": spent["resulting_version"],
++                        "to_state": spent["to_state"], "from_state": "NOT_RUN",
++                        "evidence_ref": spent["evidence_ref"], "idempotent_replay": True}
++            from_state = row["verdict"]
++            if from_state not in TRANSITIONS["acceptance"] or verdict not in \
++                    TRANSITIONS["acceptance"].get(from_state, set()):
++                raise InvariantViolation(f"ERR_ACCEPTANCE_ILLEGAL_TRANSITION:{from_state}->{verdict}")
++            live_version = 0 if from_state == "NOT_RUN" else 1
++            if live_version != expected_version:
++                raise StaleState(
++                    f"ERR_ACCEPTANCE_STALE_VERSION:{acceptance_id}:expected={expected_version}"
++                    f":actual={live_version}"
++                )
++            now = utc_now()
++            updated = connection.execute(
++                """UPDATE acceptances SET verdict=?, evidence_ref=?, updated_at=?
++                   WHERE acceptance_id=? AND verdict='NOT_RUN'""",
++                (verdict, evidence_ref, now, acceptance_id),
++            )
++            if updated.rowcount != 1:
++                raise StaleState(f"ERR_ACCEPTANCE_CONCURRENT_UPDATE:{acceptance_id}")
++            rollback_pointer = connection.execute(
++                "SELECT rollback_pointer FROM requirements WHERE requirement_id=?",
++                (row["requirement_id"],),
++            ).fetchone()
++            event_id = new_id("EVT")
++            connection.execute(
++                """INSERT INTO canonical_events
++                   (event_id,idempotency_key,entity_type,entity_id,from_state,to_state,actor,
++                    expected_version,resulting_version,payload_json,evidence_ref,rollback_pointer,created_at)
++                   VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)""",
++                (
++                    event_id,
++                    idempotency_key,
++                    "acceptance",
++                    acceptance_id,
++                    from_state,
++                    verdict,
++                    actor,
++                    expected_version,
++                    live_version + 1,
++                    canonical_json(payload or {}),
++                    evidence_ref,
++                    (rollback_pointer["rollback_pointer"] if rollback_pointer else f"RB-{acceptance_id}"),
++                    now,
++                ),
++            )
++            return {"event_id": event_id, "resulting_version": live_version + 1,
++                    "to_state": verdict, "from_state": from_state,
++                    "evidence_ref": evidence_ref, "idempotent_replay": False}
++
+     def register_evidence(
+         self, evidence_id: str, kind: str, locator: str, sha256: str, producer: str, checker: str | None = None
+     ) -> None:

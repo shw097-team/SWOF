@@ -1,0 +1,432 @@
+{
+ "schema": "SWOF-W2-NORMATIVE-CLOSURE-PROJECTION/1",
+ "project": "HGK-P0-SWOF-W2",
+ "final_source_candidate_sha": "7a0b4acbe14daca2061ba9b927013adf8aaf48b5",
+ "typed_api_only": true,
+ "no_direct_sql_writes_by_consumer": true,
+ "sql_used": "SELECT-only, for before/after readback snapshots; every write went through a typed SharedSpine / ProjectLifecycleController API",
+ "actions": [
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R1-ADJUDICATION",
+   "sha256": "6c2dbfb5934898d4e9f0230bfbf9a1b7f7063bf34d2d16d9ad0a1203bc82a978"
+  },
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R1-POSTPROBES",
+   "sha256": "16babbfb0fa30f689bf54da6554cac646975d5a1a99c1d2bf43ce34ead164f0a"
+  },
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R1-REDUCER",
+   "sha256": "cb4675be68e38b04beec1105ce0a0484047748cf475a252e53e8df089bbbe795"
+  },
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R1-REGRESSION",
+   "sha256": "3cf481bd5076ff3c6c86a973ca1e05cbcaf937a17e938d5392d444b002d5b7dd"
+  },
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R1-HGKEBC",
+   "sha256": "c9e5212a11bb816f70f8fea2e5a14e7a2b360bbdef081d5d7146d38b1af3d089"
+  },
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R1-TRANSPORT",
+   "sha256": "50e30bc163af303f061007961ffbcf0449c2c0fad9a79ee14b093ffac4d8fa88"
+  },
+  {
+   "step": "register_evidence",
+   "evidence_id": "EVD-W2R1-CHECKER",
+   "sha256": "32ea60bf70472d533b26f5965dcc1621ee8762550fc615585c47405b5334b22a"
+  },
+  {
+   "step": "record_workorder_result",
+   "workorder": "WO-SWOF-W2-001",
+   "verdict": "PASS"
+  },
+  {
+   "step": "record_workorder_result",
+   "workorder": "WO-SWOF-W2-002",
+   "verdict": "PASS"
+  },
+  {
+   "step": "record_workorder_result",
+   "workorder": "WO-SWOF-W2-003",
+   "verdict": "PASS"
+  },
+  {
+   "step": "record_workorder_result",
+   "workorder": "WO-SWOF-W2-004",
+   "verdict": "PASS"
+  },
+  {
+   "step": "resolve_acceptance",
+   "acceptance": "ACC-SWOF-W2-001",
+   "event_id": "EVT-baeb59b2c6d27050",
+   "resulting_version": 1,
+   "to_state": "PASS",
+   "from_state": "NOT_RUN",
+   "evidence_ref": "EVD-W2R1-CHECKER",
+   "idempotent_replay": false
+  },
+  {
+   "step": "resolve_acceptance",
+   "acceptance": "ACC-SWOF-W2-002",
+   "event_id": "EVT-9d3fa0d3a1109d8d",
+   "resulting_version": 1,
+   "to_state": "PASS",
+   "from_state": "NOT_RUN",
+   "evidence_ref": "EVD-W2R1-CHECKER",
+   "idempotent_replay": false
+  },
+  {
+   "step": "resolve_acceptance",
+   "acceptance": "ACC-SWOF-W2-003",
+   "event_id": "EVT-6b91ed6ce8ff8223",
+   "resulting_version": 1,
+   "to_state": "PASS",
+   "from_state": "NOT_RUN",
+   "evidence_ref": "EVD-W2R1-CHECKER",
+   "idempotent_replay": false
+  },
+  {
+   "step": "resolve_acceptance",
+   "acceptance": "ACC-SWOF-W2-004",
+   "event_id": "EVT-c42906c7d05e2a91",
+   "resulting_version": 1,
+   "to_state": "PASS",
+   "from_state": "NOT_RUN",
+   "evidence_ref": "EVD-W2R1-CHECKER",
+   "idempotent_replay": false
+  },
+  {
+   "step": "open_tt",
+   "tt_id": "TT-W2-001"
+  },
+  {
+   "step": "open_tt",
+   "tt_id": "TT-W2-002"
+  },
+  {
+   "step": "per_workorder_checkpoint",
+   "workorder": "WO-SWOF-W2-001",
+   "checkpoint_id": "CK-W2-739F2765"
+  },
+  {
+   "step": "per_workorder_checkpoint",
+   "workorder": "WO-SWOF-W2-002",
+   "checkpoint_id": "CK-W2-AA474940"
+  },
+  {
+   "step": "per_workorder_checkpoint",
+   "workorder": "WO-SWOF-W2-003",
+   "checkpoint_id": "CK-W2-3CD873EA"
+  },
+  {
+   "step": "per_workorder_checkpoint",
+   "workorder": "WO-SWOF-W2-004",
+   "checkpoint_id": "CK-W2-28289CA2"
+  },
+  {
+   "step": "final_normative_checkpoint",
+   "checkpoint_id": "CK-W2-D085E4F9"
+  }
+ ],
+ "before": {
+  "workorders": [
+   {
+    "workorder_id": "WO-SWOF-W2-001",
+    "state": "CREATED",
+    "result_json": null
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-002",
+    "state": "CREATED",
+    "result_json": null
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-003",
+    "state": "CREATED",
+    "result_json": null
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-004",
+    "state": "CREATED",
+    "result_json": null
+   }
+  ],
+  "acceptances": [
+   {
+    "acceptance_id": "ACC-SWOF-W2-001",
+    "verdict": "NOT_RUN",
+    "evidence_ref": null
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-002",
+    "verdict": "NOT_RUN",
+    "evidence_ref": null
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-003",
+    "verdict": "NOT_RUN",
+    "evidence_ref": null
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-004",
+    "verdict": "NOT_RUN",
+    "evidence_ref": null
+   }
+  ],
+  "evidence_refs": [],
+  "tt_records": [
+   {
+    "tt_id": "HGK-EBC-TT-001",
+    "status": "OPEN",
+    "blocking": 0
+   },
+   {
+    "tt_id": "HGK-EBC-TT-002",
+    "status": "OPEN",
+    "blocking": 0
+   }
+  ],
+  "checkpoints": [
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-001",
+    "wave": "W2",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-002",
+    "wave": "W2",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-003",
+    "wave": "W2",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-004",
+    "wave": "W2",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   }
+  ],
+  "lifecycle": [
+   {
+    "project_id": "HGK-P0-SWOF-W2",
+    "state": "VERIFYING",
+    "last_checkpoint_id": null
+   }
+  ],
+  "canonical_events": 21
+ },
+ "after": {
+  "workorders": [
+   {
+    "workorder_id": "WO-SWOF-W2-001",
+    "state": "VERIFIED",
+    "result_json": "{\"checker\":\"fresh-context-VERIFY-ONLY\",\"evidence_refs\":[\"EVD-W2R1-CHECKER\",\"EVD-W2R1-REGRESSION\"],\"verdict\":\"PASS\"}"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-002",
+    "state": "VERIFIED",
+    "result_json": "{\"checker\":\"fresh-context-VERIFY-ONLY\",\"evidence_refs\":[\"EVD-W2R1-CHECKER\",\"EVD-W2R1-REGRESSION\"],\"verdict\":\"PASS\"}"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-003",
+    "state": "VERIFIED",
+    "result_json": "{\"checker\":\"fresh-context-VERIFY-ONLY\",\"evidence_refs\":[\"EVD-W2R1-CHECKER\",\"EVD-W2R1-REGRESSION\"],\"verdict\":\"PASS\"}"
+   },
+   {
+    "workorder_id": "WO-SWOF-W2-004",
+    "state": "VERIFIED",
+    "result_json": "{\"checker\":\"fresh-context-VERIFY-ONLY\",\"evidence_refs\":[\"EVD-W2R1-CHECKER\",\"EVD-W2R1-REGRESSION\"],\"verdict\":\"PASS\"}"
+   }
+  ],
+  "acceptances": [
+   {
+    "acceptance_id": "ACC-SWOF-W2-001",
+    "verdict": "PASS",
+    "evidence_ref": "EVD-W2R1-CHECKER"
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-002",
+    "verdict": "PASS",
+    "evidence_ref": "EVD-W2R1-CHECKER"
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-003",
+    "verdict": "PASS",
+    "evidence_ref": "EVD-W2R1-CHECKER"
+   },
+   {
+    "acceptance_id": "ACC-SWOF-W2-004",
+    "verdict": "PASS",
+    "evidence_ref": "EVD-W2R1-CHECKER"
+   }
+  ],
+  "evidence_refs": [
+   {
+    "evidence_id": "EVD-W2R1-ADJUDICATION"
+   },
+   {
+    "evidence_id": "EVD-W2R1-CHECKER"
+   },
+   {
+    "evidence_id": "EVD-W2R1-HGKEBC"
+   },
+   {
+    "evidence_id": "EVD-W2R1-POSTPROBES"
+   },
+   {
+    "evidence_id": "EVD-W2R1-REDUCER"
+   },
+   {
+    "evidence_id": "EVD-W2R1-REGRESSION"
+   },
+   {
+    "evidence_id": "EVD-W2R1-TRANSPORT"
+   }
+  ],
+  "tt_records": [
+   {
+    "tt_id": "HGK-EBC-TT-001",
+    "status": "OPEN",
+    "blocking": 0
+   },
+   {
+    "tt_id": "HGK-EBC-TT-002",
+    "status": "OPEN",
+    "blocking": 0
+   },
+   {
+    "tt_id": "TT-W2-001",
+    "status": "OPEN",
+    "blocking": 0
+   },
+   {
+    "tt_id": "TT-W2-002",
+    "status": "OPEN",
+    "blocking": 0
+   }
+  ],
+  "checkpoints": [
+   {
+    "checkpoint_id": "CK-W2-28289CA2",
+    "wave": "lifecycle",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-3CD873EA",
+    "wave": "lifecycle",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-739F2765",
+    "wave": "lifecycle",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-AA474940",
+    "wave": "lifecycle",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CK-W2-D085E4F9",
+    "wave": "lifecycle",
+    "repo_head": ""
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-001",
+    "wave": "W2",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-002",
+    "wave": "W2",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-003",
+    "wave": "W2",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   },
+   {
+    "checkpoint_id": "CKPT-WO-SWOF-W2-004",
+    "wave": "W2",
+    "repo_head": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc"
+   }
+  ],
+  "lifecycle": [
+   {
+    "project_id": "HGK-P0-SWOF-W2",
+    "state": "VERIFYING",
+    "last_checkpoint_id": "CK-W2-D085E4F9"
+   }
+  ],
+  "canonical_events": 25
+ },
+ "per_workorder_checkpoints": [
+  {
+   "workorder": "WO-SWOF-W2-001",
+   "checkpoint_id": "CK-W2-739F2765",
+   "state": "VERIFYING"
+  },
+  {
+   "workorder": "WO-SWOF-W2-002",
+   "checkpoint_id": "CK-W2-AA474940",
+   "state": "VERIFYING"
+  },
+  {
+   "workorder": "WO-SWOF-W2-003",
+   "checkpoint_id": "CK-W2-3CD873EA",
+   "state": "VERIFYING"
+  },
+  {
+   "workorder": "WO-SWOF-W2-004",
+   "checkpoint_id": "CK-W2-28289CA2",
+   "state": "VERIFYING"
+  }
+ ],
+ "final_normative_checkpoint": "CK-W2-D085E4F9",
+ "final_normative_checkpoint_row": {
+  "checkpoint_id": "CK-W2-D085E4F9",
+  "wave": "lifecycle",
+  "repo_head": "",
+  "created_at": "2026-10-04T03:22:18.571823Z"
+ },
+ "denominator_after": {
+  "project_id": "HGK-P0-SWOF-W2",
+  "state": "VERIFYING",
+  "requirements_total": 0,
+  "requirements_frozen": 0,
+  "taskspecs_total": 0,
+  "workorders_total": 0,
+  "workorders_open": [],
+  "workorders_open_count": 0,
+  "acceptances_total": 0,
+  "acceptances_open": [],
+  "acceptances_open_count": 0,
+  "required_active_capabilities": [
+   "openspec",
+   "gstack.plan-eng-review",
+   "gstack.review",
+   "gstack.qa",
+   "gstack.cso",
+   "gstack.ship",
+   "gstack.office-hours",
+   "gstack.retro"
+  ],
+  "required_active_capabilities_total": 8,
+  "required_active_capabilities_open": [],
+  "required_active_capabilities_open_count": 0,
+  "required_local_scope_open": 0,
+  "guard_required_workorders_terminal": true,
+  "denominator_available": true
+ },
+ "acceptances_open_after": [],
+ "generated_at_utc": "2026-10-04T03:22:18Z"
+}

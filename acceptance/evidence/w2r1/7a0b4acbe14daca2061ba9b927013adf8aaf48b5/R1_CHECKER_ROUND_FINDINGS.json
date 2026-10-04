@@ -1,0 +1,46 @@
+{
+ "schema": "SWOF-W2-R1-CHECKER-FINDINGS/1",
+ "order_id": "SWOF-CONSTRUCTION-002-W2-REPAIR-001",
+ "repair_id": "SWOF-W2-CLOSURE-R1",
+ "round": "R1",
+ "checked_subject": "9e1a67baa187ac953d4b3b0cc92046203937ad71",
+ "checker_lanes": 2,
+ "checker_identities": [
+  "fresh-context verify-only checker (w2-product-lane, isolated session, no maker context)",
+  "fresh-context-VERIFY-ONLY/governance-lane/SWOF-W2-CLOSURE-R1 (no maker or orchestration role; read-only)"
+ ],
+ "checker_is_not_maker": true,
+ "checker_read_only": true,
+ "lane_verdicts": {
+  "product_lane": {"product_verdict": "PARTIAL", "governance_verdict": "PASS", "wave_verdict": "PARTIAL"},
+  "governance_lane": {"product_verdict": "PASS", "governance_verdict": "PARTIAL", "wave_verdict": "PARTIAL"}
+ },
+ "consolidated_wave_verdict": "PARTIAL",
+ "what_the_checkers_CONFIRMED": [
+  "F-W2-EXT-001 is truly closed: omitted/malformed currentness on an expiring scope denies with CURRENTNESS_UNAVAILABLE_FAIL_CLOSED; the now==expires_at boundary denies; malformed expiry denies; assert_credential_scope now enforces expires_at; the no-expiry positive control still returns ENTITLED.",
+  "F-W2-EXT-002 is truly closed: assert_human_gate_satisfied accepts only a typed ApprovalToken; every bare string / whitespace / empty / None / dict is refused with NOT_A_CANONICAL_APPROVAL_TOKEN; a first-fail exact-bound verifier denies binding/time/state/generation/false-authority/replay/audience/rollback/key-trust/T3/schema violations.",
+  "Regression is real and independently re-run: W1 = 113 preserved, W2 = 599 (from 553), grand total 712, no zero-denominator roots.",
+  "The reducer and claim_for exist and the fixtures run against the SHIPPED module (7/7 at R1 time).",
+  "The HGK closure-leg diagnosis is honest: independent source grep plus read-only DB readback both confirm no typed path can resolve an acceptance verdict; TEMP_CLOSED_STATE is justified, not skipped."
+ ],
+ "blocking_findings": [
+  {"id": "R1-BLK-1", "lane": "product", "what": "TOK-INV-010 only partially implemented: token.signature is regex-shape-checked and never cryptographically verified; trusted_key_registry received only (issuer_id, key_id, key_generation) so it could assert KEY TRUST but never verify a signature. A forged shape-valid signature was APPROVED whenever the key triple was trusted. The R1 spec's delegation claim was therefore inaccurate.", "disposition": "REPAIRED_IN_R2 (registry is now a real verifier over canonical_payload_bytes + signature, strict bool, fail-closed on any other outcome)"},
+  {"id": "R1-BLK-2", "lane": "product", "what": "A token with approver == actor passed when the caller omitted requesting_actor; the verifier never compared approver to actor.", "disposition": "REPAIRED_IN_R2 (verifier now denies approver==actor with DENY_FALSE_AUTHORITY)"},
+  {"id": "R1-BLK-3", "lane": "product", "what": "assert_human_gate_satisfied trusted the HumanGateRoute it was handed; a directly constructed HumanGateRoute(required=False) skipped the gate for a high-risk action.", "disposition": "REPAIRED_IN_R2 (route is re-derived from request.operation; ROUTE_UNDERSTATES_ACTION / ROUTE_NOT_REDERIVABLE_FAIL_CLOSED)"},
+  {"id": "R1-GOV-1", "lane": "governance", "what": "reduce_gate_w2_6 fell back to the product-lane `verdict` when wave_verdict was absent, so the historical proxy shape still passed (execution-confirmed).", "disposition": "REPAIRED (no fallback; a missing wave_verdict now yields an empty wave and G-W2-6 FAIL; fixtures F8/F9 added)"},
+  {"id": "R1-GOV-2", "lane": "governance", "what": "r1_07_pack.py hardcoded an independent-check PASS claim and never called claim_for/reduce_gate_w2_6, so the emitting path still over-claimed.", "disposition": "REPAIRED (the pack now reads claim_ceiling from the closure receipt; no claim literal remains in the emitter)"},
+  {"id": "R1-GOV-3", "lane": "governance", "what": "the R1 closure/pack runners had not been executed yet, so no fresh checker receipt for the repaired subject existed at check time.", "disposition": "CLOSED_BY_ROUND_2 (a fresh checker runs on the R2 subject; its receipt becomes the final independent receipt)"}
+ ],
+ "non_blocking_findings": [
+  {"id": "R1-NB-1", "what": "claim_for's reduced branch contained the literal substring W2_INDEPENDENT_CHECK_PASS inside a NOT_CLAIMED token, so a naive substring matcher could still fire.", "disposition": "REPAIRED (reduced branch renamed: for non-PASS waves the substring is absent, verified)"},
+  {"id": "R1-NB-2", "what": "the non-claim wording conflated 'no checkpoint can be bound' with 'the acceptance verdict cannot be resolved'; lifecycle.checkpoint() and record_workorder_result() DO work, only acceptances.verdict is unclosable.", "disposition": "ACCEPTED_AND_NARROWED_IN_DOSSIER (wording corrected; disposition unchanged because denominator() still requires acceptances_open==0)"},
+  {"id": "R1-NB-3", "what": "w2_09_closure.py recorded \"checker_is_not_maker\": True as a literal in the emitted receipt instead of reading it from the checker.", "disposition": "REPAIRED (now read from the checker dict)"},
+  {"id": "R1-NB-4", "what": "canonical schema-fidelity deviation: the Python value object omits if06b_version/payload_schema_version/min_reader_version/writer_version/compatibility_class/evidence_link; the runtime type is therefore broader, not stricter, than the registry.", "disposition": "CARRIED_AS_TT (non-blocking; the ABI envelope fields belong with a versioned IF-06B reader, not the current local seam)"},
+  {"id": "R1-NB-5", "what": "DENY_P3_TOKEN_REQUIRED (TOK-INV-001) was never emitted; a P3 action without a token surfaced as NOT_A_CANONICAL_APPROVAL_TOKEN.", "disposition": "REPAIRED_IN_R2 (wrapper emits DENY_P3_TOKEN_REQUIRED for P3+ requests without a valid typed token)"},
+  {"id": "R1-NB-6", "what": "key_generation staleness was skipped when ctx.key_generation was None.", "disposition": "REPAIRED_IN_R2 (covered by the R2 registry contract and generation rules)"},
+  {"id": "R1-NB-7", "what": "harness note: `unittest discover -s <root> -t .` yields W1=102 because src/fabric/tests/test_binding.py cannot import test_capability_contract under a '.' top-level; the per-root `-t <root>` convention documented in README yields W1=113. Pre-existing, untouched by this repair.", "disposition": "DISCLOSED (the recorded denominator used the documented per-root convention and reports W1=113)"}
+ ],
+ "no_reconstruction_of_history": "The historical round-5 governance transcript is NOT reconstructed. The R2 fresh checker receipt becomes the new final independent checker evidence for the repaired subject.",
+ "non_claims": ["NOT_EXTERNALLY_ACCEPTED", "W3_NOT_STARTED", "NO_MERGE", "NO_RELEASE", "NO_PRODUCTION",
+                "NO_WORLD_EFFECT_ACCEPTANCE"]
+}

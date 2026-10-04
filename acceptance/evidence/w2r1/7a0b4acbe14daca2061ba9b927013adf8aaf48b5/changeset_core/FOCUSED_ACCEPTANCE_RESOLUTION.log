@@ -1,0 +1,33 @@
+test_legal_fail_resolution_is_recorded_too (tests.test_acceptance_resolution.Class1LegalResolution.test_legal_fail_resolution_is_recorded_too) ... ok
+test_legal_pass_resolution (tests.test_acceptance_resolution.Class1LegalResolution.test_legal_pass_resolution) ... ok
+test_fail_is_not_pass (tests.test_acceptance_resolution.Class2NonPassSemantics.test_fail_is_not_pass) ... ok
+test_transition_table_has_no_verdict_alias (tests.test_acceptance_resolution.Class2NonPassSemantics.test_transition_table_has_no_verdict_alias) ... ok
+test_illegal_verdict_refused (tests.test_acceptance_resolution.Class3EvidenceBindingFailClosed.test_illegal_verdict_refused) ... ok
+test_missing_evidence_ref_refused (tests.test_acceptance_resolution.Class3EvidenceBindingFailClosed.test_missing_evidence_ref_refused) ... ok
+test_missing_requirement_id_refused (tests.test_acceptance_resolution.Class3EvidenceBindingFailClosed.test_missing_requirement_id_refused) ... ok
+test_unknown_acceptance_refused (tests.test_acceptance_resolution.Class3EvidenceBindingFailClosed.test_unknown_acceptance_refused) ... ok
+test_unregistered_evidence_refused (tests.test_acceptance_resolution.Class3EvidenceBindingFailClosed.test_unregistered_evidence_refused) ... ok
+test_wrong_subject_requirement_refused (tests.test_acceptance_resolution.Class3EvidenceBindingFailClosed.test_wrong_subject_requirement_refused) ... ok
+test_replay_returns_original_event (tests.test_acceptance_resolution.Class4ReplayIdempotent.test_replay_returns_original_event) ... ok
+test_key_reused_for_another_acceptance_fails_closed (tests.test_acceptance_resolution.Class4bIdempotencyNamespace.test_key_reused_for_another_acceptance_fails_closed) ... ok
+test_key_spent_on_a_requirement_event_is_not_inherited (tests.test_acceptance_resolution.Class4cIdempotencyEntityTypeCollision.test_key_spent_on_a_requirement_event_is_not_inherited)
+A GENUINE entity_id collision: a requirement literally named like our acceptance_id emits a ... ok
+test_replay_cannot_bypass_the_requirement_check (tests.test_acceptance_resolution.Class4cIdempotencyEntityTypeCollision.test_replay_cannot_bypass_the_requirement_check) ... ok
+test_replay_still_requires_registered_evidence (tests.test_acceptance_resolution.Class4cIdempotencyEntityTypeCollision.test_replay_still_requires_registered_evidence) ... ok
+test_replay_still_works_for_its_own_acceptance (tests.test_acceptance_resolution.Class4cIdempotencyEntityTypeCollision.test_replay_still_works_for_its_own_acceptance) ... ok
+test_unleased_replay_is_refused (tests.test_acceptance_resolution.Class4cIdempotencyEntityTypeCollision.test_unleased_replay_is_refused)
+The replay path is held to the same discipline as the first write: no lease, no replay. ... ok
+test_conflicting_re_resolution_rejected (tests.test_acceptance_resolution.Class5StaleConflictingRejected.test_conflicting_re_resolution_rejected) ... ok
+test_lease_is_required (tests.test_acceptance_resolution.Class5StaleConflictingRejected.test_lease_is_required) ... ok
+test_stale_expected_version_rejected (tests.test_acceptance_resolution.Class5StaleConflictingRejected.test_stale_expected_version_rejected) ... ok
+test_atomicity_under_illegal_transition (tests.test_acceptance_resolution.Class6TransactionAtomicity.test_atomicity_under_illegal_transition) ... ok
+test_failure_AFTER_the_update_rolls_the_row_back (tests.test_acceptance_resolution.Class6TransactionAtomicity.test_failure_AFTER_the_update_rolls_the_row_back)
+The real atomicity test: make the canonical-event INSERT fail AFTER the UPDATE has run, ... ok
+test_foreign_idempotency_key_is_refused_not_inherited (tests.test_acceptance_resolution.Class6TransactionAtomicity.test_foreign_idempotency_key_is_refused_not_inherited)
+Historical defect: a key spent on ANOTHER subject silently returned that subject's event and ... ok
+test_full_typed_closure_chain (tests.test_acceptance_resolution.Class7ScratchProjectTypedClosure.test_full_typed_closure_chain) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 8.245s
+
+OK
