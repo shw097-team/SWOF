@@ -1,0 +1,21 @@
+{
+ "schema": "SWOF-W2-R4-RAW-LOG-HEADER-CORRECTIONS/1",
+ "notice": "A raw run log in this round carries a STALE EMBEDDED HEADER emitted by harness boilerplate.",
+ "corrections": [
+  {
+   "file": "writer_logs/CODEX_WO-SWOF-W2-R008.jsonl",
+   "stale_header_lines": [
+    "# command : codex exec --cd C:\\Projects\\Agent_Workspace\\SWOF --sandbox danger-full-access -c approval_policy=never --json",
+    "# workorder: WO-SWOF-W2-R001",
+    "# base: 0b8ecb0888fbd53b5698f603c90b580ac83dd69d",
+    "# exit_code: 0"
+   ],
+   "actual_workorder": "WO-SWOF-W2-R008",
+   "actual_round": "SWOF-W2-CLOSURE-R4",
+   "why": "the writer harness printed a hard-coded '# workorder:' line from an earlier round; the harness has since been corrected. The log's duration (1134.3s) and '# base:' line match the current R4_APPLY_RECEIPT, the authoritative record of this run.",
+   "authoritative_record": "R4_APPLY_RECEIPT.json",
+   "sha256_of_log": "98e8d4362bc46fa43a164a7da0e2c96530e452f639161073496187d8c78a8933"
+  }
+ ],
+ "note": "Log bytes are preserved unmodified (raw transcript); this record is the correction of record."
+}
