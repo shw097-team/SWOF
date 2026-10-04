@@ -4,8 +4,13 @@ Every case below is one of the forty-four probes named in the repair spec. The f
 FAIL CLOSED with an exact code; the positive controls must PASS. Nothing here reads a wall clock:
 currentness is always an explicit trusted `now`/`commit_time`.
 """
+import base64
+import hashlib
+import hmac
+import json
 import sys
 import unittest
+from dataclasses import replace
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -13,11 +18,12 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from security.humangate import (  # noqa: E402
     ApprovalDecision, ApprovalRequest, ApprovalToken, NonceLedger, VerificationContext,
-    verify_approval_token,
+    canonical_payload_bytes, verify_approval_token,
 )
 from security.rights import (  # noqa: E402
-    HumanGateBypassAttempt, RightsDenied, RightsScope, assert_credential_scope,
-    assert_human_gate_satisfied, check_rights, currentness_required, human_gate_route,
+    HumanGateBypassAttempt, HumanGateRoute, RightsDenied, RightsScope,
+    assert_credential_scope, assert_human_gate_satisfied, check_rights, currentness_required,
+    human_gate_route,
 )
 
 NOW = "2026-06-01T00:00:00Z"
@@ -27,6 +33,31 @@ COMMIT = "2026-06-01T00:30:00Z"
 
 DIGEST = "a" * 64
 SIGNATURE = "A" * 86
+
+DIGEST = "a" * 64
+SIGNATURE = "A" * 86
+
+# WO-SWOF-W2-R002: the injected registry is a real VERIFIER over canonical_payload_bytes. These
+# test helpers build an honest HMAC verifier so a matching token verifies and a tampered one does
+# not. _TEST_KEY never leaves this test module; the library itself performs no cryptography.
+_TEST_KEY = b"swof-w2-r002-hmac-test-key"
+
+
+def _sign_payload(payload: bytes) -> str:
+    """HMAC-SHA512 over the canonical bytes, rendered as the 86-char base64url token shape.
+
+    SHA512 yields a 64-byte digest whose base64url encoding is exactly 86 characters - the shape
+    the ApprovalToken schema requires. This is a TEST verifier; the library does no crypto.
+    """
+    digest = hmac.new(_TEST_KEY, payload, hashlib.sha512).digest()
+    return base64.urlsafe_b64encode(digest).decode("ascii").rstrip("=")
+
+
+def _honest_registry(payload, signature, issuer_id, key_id, key_generation):
+    """A contract-correct verifier: recompute over payload_bytes and return a strict bool."""
+    if (issuer_id, key_id, key_generation) != ("issuer-1", "key-1", 3):
+        return False
+    return hmac.compare_digest(_sign_payload(payload), signature)
 
 
 def _valid_token(**overrides):
@@ -46,7 +77,10 @@ def _valid_token(**overrides):
         key_generation=3, signature=SIGNATURE,
     )
     fields.update(overrides)
-    return ApprovalToken(**fields)
+    token = ApprovalToken(**fields)
+    if "signature" in overrides:
+        return token
+    return replace(token, signature=_sign_payload(canonical_payload_bytes(token)))
 
 
 def _release_request(**overrides):
@@ -65,7 +99,7 @@ def _release_request(**overrides):
 def _release_ctx(**overrides):
     fields = dict(
         commit_time=COMMIT,
-        trusted_key_registry=lambda issuer_id, key_id, key_generation: True,
+        trusted_key_registry=_honest_registry,
         nonce_ledger=NonceLedger(), max_reauth_age_seconds=3600,
     )
     fields.update(overrides)
@@ -331,6 +365,113 @@ class TestHumanGatePositiveControls(unittest.TestCase):
         self.assertFalse(ledger.reserve(12345))
         self.assertTrue(ledger.reserve("nonce-x"))
         self.assertFalse(ledger.reserve("nonce-x"))
+
+
+
+
+class TestSignatureDelegationR2(unittest.TestCase):
+    """BLK-1: the injected registry is a real VERIFIER over canonical_payload_bytes."""
+
+    def test_r2_01_forged_signature_passes_only_with_a_contract_violating_stub(self):
+        # DOCUMENTATION TEST (BLK-1 failure mode). The signature below is 86-char shape-valid but
+        # does NOT correspond to the token payload. A registry that returns True WITHOUT consulting
+        # payload_bytes is NOT a valid verifier: the library defers to it and accepts the forgery.
+        # That is the integrator's contract violation, encoded here so it can never pass silently.
+        forged = _valid_token(signature=SIGNATURE)
+        self.assertEqual(len(forged.signature), 86)
+        stub = lambda payload, signature, issuer_id, key_id, key_generation: True
+        with_stub = verify_approval_token(
+            forged, _release_request(), _release_ctx(trusted_key_registry=stub))
+        self.assertEqual((with_stub.ok, with_stub.code), (True, "APPROVE_BASIS_SATISFIED"))
+        # Proof the library never verified anything itself: the honest registry refuses it.
+        honest = verify_approval_token(forged, _release_request(), _release_ctx())
+        self.assertEqual((honest.ok, honest.code), (False, "DENY_TOKEN_INTEGRITY"))
+
+    def test_r2_02_honest_registry_verifies_a_matching_token(self):
+        decision = _verify()
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+    def test_r2_03_honest_registry_rejects_a_tampered_payload(self):
+        signed = _valid_token()
+        # The signature was computed over subject_hash="a"*64; change it after signing. The exact
+        # binding still holds (token == request), so only integrity can catch this.
+        tampered = replace(signed, subject_hash="b" * 64)
+        request = _release_request(subject_hash="b" * 64)
+        decision = verify_approval_token(tampered, request, _release_ctx())
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_INTEGRITY"))
+
+    def test_r2_04_honest_registry_rejects_wrong_key_generation(self):
+        decision = _verify(token_over={"key_generation": 99})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_INTEGRITY"))
+
+    def test_r2_05_non_true_or_failing_registry_is_denied(self):
+        def _raiser(*args):
+            raise RuntimeError("registry unavailable")
+
+        cases = {
+            "none": lambda *args: None,
+            "false": lambda *args: False,
+            "one_is_not_true": lambda *args: 1,
+            "raises": _raiser,
+            "wrong_arity": lambda payload, signature: True,
+        }
+        for name, registry in cases.items():
+            with self.subTest(registry=name):
+                decision = _verify(ctx_over={"trusted_key_registry": registry})
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_INTEGRITY"))
+
+    def test_r2_06_absent_registry_is_denied(self):
+        decision = _verify(ctx_over={"trusted_key_registry": None})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_TOKEN_INTEGRITY"))
+
+    def test_r2_07_approver_equal_to_actor_is_false_authority(self):
+        decision = _verify(token_over={"approver": "human:alice"})
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_FALSE_AUTHORITY"))
+
+    def test_r2_13_canonical_payload_is_deterministic_and_field_sensitive(self):
+        first = canonical_payload_bytes(_valid_token())
+        second = canonical_payload_bytes(_valid_token())
+        self.assertEqual(first, second)
+        self.assertNotEqual(first, canonical_payload_bytes(_valid_token(nonce="nonce-2")))
+        body = json.loads(first.decode("utf-8"))
+        self.assertNotIn("signature", body)
+        self.assertEqual(canonical_payload_bytes(_valid_token(signature="A" * 86)),
+                         canonical_payload_bytes(_valid_token(signature="B" * 86)))
+
+
+class TestRouteReDerivationR2(unittest.TestCase):
+    """BLK-3 / NB-1: the route is re-derived, never trusted, and P3 surfaces TOK-INV-001."""
+
+    def test_r2_08_understated_route_for_a_high_risk_action_is_refused(self):
+        route = HumanGateRoute(False, "NONE", "NONE")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            assert_human_gate_satisfied(route, "", request=_release_request(), ctx=_release_ctx())
+        self.assertEqual(str(caught.exception), "ROUTE_UNDERSTATES_ACTION")
+
+    def test_r2_09_underivable_route_without_a_request_fails_closed(self):
+        route = HumanGateRoute(False, "NONE", "NONE")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            assert_human_gate_satisfied(route, "", requesting_actor="human:alice")
+        self.assertEqual(str(caught.exception), "ROUTE_NOT_REDERIVABLE_FAIL_CLOSED")
+
+    def test_r2_10_agreed_low_risk_route_returns_none(self):
+        route = human_gate_route("read")
+        request = _release_request(operation="read")
+        self.assertIsNone(assert_human_gate_satisfied(route, "", request=request))
+
+    def test_r2_11_p3_request_with_bare_string_approval_needs_a_typed_token(self):
+        route = human_gate_route("release")
+        request = _release_request(effect_risk_tier="P3", permission_class="P3")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            assert_human_gate_satisfied(route, "HG-2026-0007", request=request, ctx=_release_ctx())
+        self.assertEqual(str(caught.exception), "DENY_P3_TOKEN_REQUIRED")
+
+    def test_r2_12_p3_request_with_a_valid_typed_token_passes(self):
+        route = human_gate_route("release")
+        request = _release_request(effect_risk_tier="P3", permission_class="P3")
+        self.assertIsNone(assert_human_gate_satisfied(
+            route, _valid_token(), requesting_actor="human:dave", request=request,
+            ctx=_release_ctx()))
 
 
 if __name__ == "__main__":

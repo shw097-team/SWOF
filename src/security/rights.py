@@ -14,6 +14,12 @@ never reads the wall clock, and equality at the expiry instant counts as expired
 W2 repair WO-SWOF-W2-R001 (F-W2-EXT-002): `assert_human_gate_satisfied` no longer accepts a
 syntactic string. A gated route requires a typed, exact-bound `ApprovalToken` verified by
 `src/security/humangate.py`; every bare string is refused with `NOT_A_CANONICAL_APPROVAL_TOKEN`.
+
+W2 repair WO-SWOF-W2-R002 (BLK-3): the route is re-derived, never trusted. A `required=False`
+route is only honoured when an `ApprovalRequest` is supplied and `human_gate_route` agrees; a
+route that understates (or overstates) the action raises `ROUTE_UNDERSTATES_ACTION`, and an
+underivable route raises `ROUTE_NOT_REDERIVABLE_FAIL_CLOSED`. A P3/P4/P5 action without a valid
+typed token surfaces the canonical `DENY_P3_TOKEN_REQUIRED` (TOK-INV-001).
 """
 from __future__ import annotations
 
@@ -32,6 +38,9 @@ HIGH_RISK_ACTIONS = frozenset({
 
 HUMAN_GATE_ROUTE = "ARTIFACT:HUMAN_GATE"
 NONE_ROUTE = "NONE"
+
+# The effect-risk / permission tiers that require a typed approval token (TOK-INV-001).
+_APPROVAL_REQUIRED_TIERS = frozenset({"P3", "P4", "P5"})
 
 _AUTHORITY_EDGE = {
     "live_world_effect": "HUMAN_GATE:live_world_effect",
@@ -185,15 +194,30 @@ def assert_human_gate_satisfied(route, approval, *, requesting_actor=None,
                                 request=None, ctx=None) -> None:
     """Refuse a missing, self-issued or non-exact-bound approval for a gated route.
 
-    A gated route requires a typed, exact-bound `ApprovalToken` plus the `ApprovalRequest` it is
-    bound to and a `VerificationContext` carrying trusted currentness. Any bare string, mapping or
-    absent object is refused: a syntactic string is not an approval.
+    The route is re-derived, never trusted. A `required=False` route is only honoured when an
+    `ApprovalRequest` is supplied and `human_gate_route(request.operation)` agrees the action is
+    ungated; otherwise the route understates the action (`ROUTE_UNDERSTATES_ACTION`) or cannot be
+    re-derived (`ROUTE_NOT_REDERIVABLE_FAIL_CLOSED`). A gated route requires a typed, exact-bound
+    `ApprovalToken` plus the `ApprovalRequest` it is bound to and a `VerificationContext` carrying
+    trusted currentness. Any bare string, mapping or absent object is refused: a syntactic string
+    is not an approval. For a P3/P4/P5 action the refusal of a non-token is the canonical
+    `DENY_P3_TOKEN_REQUIRED`.
     """
     if not isinstance(route, HumanGateRoute):
         raise HumanGateBypassAttempt("UNKNOWN_ROUTE_FAIL_CLOSED")
+    if request is not None:
+        derived = human_gate_route(getattr(request, "operation", None))
+        if derived.required and not route.required:
+            raise HumanGateBypassAttempt("ROUTE_UNDERSTATES_ACTION")
+        if derived.required != route.required:
+            raise HumanGateBypassAttempt("ROUTE_UNDERSTATES_ACTION")
     if not route.required:
+        if request is None:
+            raise HumanGateBypassAttempt("ROUTE_NOT_REDERIVABLE_FAIL_CLOSED")
         return
     if not isinstance(approval, ApprovalToken) or request is None or ctx is None:
+        if request is not None and _requires_typed_token(request):
+            raise HumanGateBypassAttempt("DENY_P3_TOKEN_REQUIRED")
         raise HumanGateBypassAttempt("NOT_A_CANONICAL_APPROVAL_TOKEN")
     decision = verify_approval_token(approval, request, ctx)
     if not decision.ok:
@@ -202,6 +226,13 @@ def assert_human_gate_satisfied(route, approval, *, requesting_actor=None,
         if approval.approver.strip() == requesting_actor.strip():
             raise HumanGateBypassAttempt("SELF_APPROVAL_REFUSED")
     return None
+
+
+def _requires_typed_token(request) -> bool:
+    """True when the request risk tier or permission class demands a typed approval token."""
+    tier = getattr(request, "effect_risk_tier", "")
+    permission = getattr(request, "permission_class", "")
+    return tier in _APPROVAL_REQUIRED_TIERS or permission in _APPROVAL_REQUIRED_TIERS
 
 
 __all__ = [

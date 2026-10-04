@@ -4,8 +4,10 @@ WHY: a HumanGate that accepts any non-empty string is a syntactic gate, not an a
 "approved" typed by the actor who wants the action is indistinguishable from a real approval, so
 the gate refuses nothing. This module makes the approval a typed value object bound exactly to the
 request it approves and to the currentness inputs at commit time, and makes the verifier the only
-authority. It adds no cryptography of its own: signature verification is delegated to an injected
-trusted key registry and FAILS CLOSED when the registry or the key is unavailable.
+authority. It adds no cryptography of its own: it DEFINES the canonical bytes a real verifier
+signs, and it delegates the actual signature check to an injected trusted key registry
+(VERIFIER). The registry is the only place a signature may be judged; this library never claims
+to have verified a signature. It FAILS CLOSED when the registry is absent, refuses, or raises.
 
 This is a refusal mechanism, not a second authority system. It grants nothing, produces no
 Product/Semantic truth, and never reads the wall clock: `commit_time` and every generation are
@@ -14,9 +16,10 @@ explicit trusted inputs supplied by the caller.
 from __future__ import annotations
 
 import base64
+import json
 import re
 import threading
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 
 INTEGRITY_PROFILE_ID = "SWOF-HG-INTEGRITY-001"
@@ -143,7 +146,20 @@ class ApprovalRequest:
 
 @dataclass(frozen=True)
 class VerificationContext:
-    """The trusted current-at-commit inputs. Nothing here is read from the wall clock."""
+    """The trusted current-at-commit inputs. Nothing here is read from the wall clock.
+
+    `trusted_key_registry` is a CALLABLE VERIFIER, not a key-existence lookup. The verifier is the
+    ONLY place a signature may be judged: it is called as
+    `registry(payload_bytes, signature, issuer_id, key_id, key_generation)` where `payload_bytes`
+    is `canonical_payload_bytes(token)`, and it MUST recompute a signature over those bytes with
+    the named key (or verify the signature against a trust store) and return EXACTLY `True` to
+    accept. Anything that is not exactly `True` - `None`, `False`, `0`, a truthy object - is
+    refused, and a verifier that raises or has an incompatible arity is refused. A registry that
+    only checks key existence and returns `True` without consulting `payload_bytes` is NOT a valid
+    verifier: it accepts forgeries. That is a contract violation by the integrator; the library
+    defers to the registry by design and therefore inherits exactly the strength of the verifier
+    it is given.
+    """
 
     commit_time: str = ""
     rights_generation: int | None = None
@@ -177,6 +193,17 @@ class NonceLedger:
                 return False
             self._seen.add(nonce)
             return True
+
+
+def canonical_payload_bytes(token) -> bytes:
+    """The bytes a real verifier signs: UTF-8 JSON of the token EXCLUDING `signature`, with keys
+    sorted and separators (',', ':') - a deterministic canonical form.
+
+    The library performs NO cryptography; it only defines the bytes so a real verifier can
+    recompute them. Tuples serialise as JSON arrays, which is fine as long as it is deterministic.
+    """
+    body = {key: value for key, value in asdict(token).items() if key != "signature"}
+    return json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
 
 def _deny(code, detail=""):
@@ -279,7 +306,8 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
     """First-fail, deterministic verification of an exact-bound human approval token.
 
     Order: non-canonical token -> shape -> token_state -> exact binding -> audience -> time ->
-    false authority -> authn -> generations -> rollback -> integrity -> replay -> T3.
+    false authority (incl. approver != actor) -> authn -> generations -> rollback -> integrity
+    (the injected registry VERIFIER recomputes over canonical_payload_bytes) -> replay -> T3.
     A merely-invalid token never raises; a non-canonical input object type does.
     """
     if not isinstance(token, ApprovalToken):
@@ -316,6 +344,8 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
         return _deny("DENY_FALSE_AUTHORITY", "approver=%r is not a human principal ref" % token.approver)
     if not _is_human_ref(token.actor):
         return _deny("DENY_FALSE_AUTHORITY", "actor=%r is not a human principal ref" % token.actor)
+    if token.approver.strip() == token.actor.strip():
+        return _deny("DENY_FALSE_AUTHORITY", "approver must not be the actor")
 
     if token.authn_assurance_class not in AUTHN_ASSURANCE_CLASSES:
         return _deny("DENY_AUTHN", "authn_assurance_class=%r" % token.authn_assurance_class)
@@ -350,12 +380,16 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
         return _deny("DENY_TOKEN_INTEGRITY", "no trusted key registry")
     if ctx.key_generation is not None and token.key_generation != ctx.key_generation:
         return _deny("DENY_TOKEN_INTEGRITY", "key_generation mismatch")
+    payload = canonical_payload_bytes(token)
     try:
-        trusted = ctx.trusted_key_registry(token.issuer_id, token.key_id, token.key_generation)
+        verified = ctx.trusted_key_registry(payload, token.signature, token.issuer_id,
+                                            token.key_id, token.key_generation)
+    except TypeError:  # an incompatible arity cannot answer -> fail closed
+        return _deny("DENY_TOKEN_INTEGRITY", "registry has incompatible arity")
     except Exception as exc:  # a registry that cannot answer is unavailable -> fail closed
         return _deny("DENY_TOKEN_INTEGRITY", "registry raised %s" % type(exc).__name__)
-    if trusted is not True:
-        return _deny("DENY_TOKEN_INTEGRITY", "key not registered")
+    if verified is not True:
+        return _deny("DENY_TOKEN_INTEGRITY", "signature not verified")
 
     if ctx.nonce_ledger is None:
         return _deny("DENY_REPLAY", "no nonce ledger")
