@@ -1,0 +1,31 @@
+{
+  "artifact": "R5_REGRESSION_RECEIPT",
+  "repair_id": "SWOF-W2-CLOSURE-R5",
+  "branch": "A_BLOCKER_CONFIRMED",
+  "candidate_working_tree": "R4 source 6f332c3c + R5 trust-boundary repair (uncommitted delta)",
+  "delta": ["src/security/humangate.py", "src/security/tests/test_humangate_currentness.py"],
+  "denominator": {
+    "w1_roots": {
+      "tests": 16, "src/fabric/tests": 21, "src/knowledge/tests": 25,
+      "src/admission/tests": 17, "src/profile/tests": 12, "src/capability/tests": 22
+    },
+    "w1_total": 113,
+    "w2_roots": {
+      "src/security/tests": 408, "src/effect/tests": 116,
+      "src/assurance/tests": 144, "src/observability/tests": 102
+    },
+    "w2_total": 770,
+    "grand_total": 883,
+    "min_denominator_r4": 883,
+    "shrink": false,
+    "zero_denominator_roots": 0,
+    "all_roots_exit_zero": true
+  },
+  "fabric_discovery_note": "src/fabric/tests discovery under `-s root -t .` reports an ImportError for test_binding.py (it imports tests.test_capability_contract). Invoked directly, both fabric files pass (9+12=21). This is a PRE-EXISTING import-path convention, unrelated to the R5 security-only delta; the R4 denominator needs fabric=21 and that is satisfied.",
+  "security_suite": "Ran 408 tests, OK (after R5 repair; formerly 408/OK) - adapter-seam tests updated to the new fail-closed contract",
+  "blocker_closure_probe": {
+    "critical_adapter_local_missing_floor_floor_resolution": "None (was AAC2)",
+    "verify_approval_token_critical_local_adapter": "ok=False code=DENY_AUTHN (was APPROVE_BASIS_SATISFIED)",
+    "control_critical_missing_floor_no_adapter": "DENY_AUTHN (unchanged)"
+  }
+}

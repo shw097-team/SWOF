@@ -1,0 +1,42 @@
+{
+ "schema": "SWOF-W2-R5-FRESH-INDEPENDENT-CHECKER-RECEIPT/1",
+ "checker_identity": "fresh-context-VERIFY-ONLY-deleg_803b4160-task0",
+ "checker_mode": "FRESH_CONTEXT_VERIFY_ONLY",
+ "checker_is_not_maker": true,
+ "checker_read_only": true,
+ "subject": "02736d3eeb6156e9763f202fbd63fff430e9eeb7",
+ "r4_subject_sha_probed": "6f332c3cedc52bafc98949f4ce9226b1d1696bc3",
+ "product_verdict": "PASS",
+ "governance_verdict": "PASS",
+ "wave_verdict": "PASS",
+ "blocking_findings": [],
+ "equal_rank_conflict_resolved": true,
+ "resolution_deterministic": true,
+ "resolved_in_favor_of": "report_B_CONFIRMED_DEFECT_S3",
+ "new_counterexample": null,
+ "phase1_original_R4_blocker_reproduction": {
+   "case": "CRITICAL + adapter_kind=local_adapter + missing required_authn_assurance + AAC2 token/decision",
+   "old_6f332c3c": {"floor": "AAC2", "ok": true, "code": "APPROVE_BASIS_SATISFIED"},
+   "new_02736d3e": {"floor": null, "ok": false, "code": "DENY_AUTHN"}
+ },
+ "phase2_bypass_attempts_new_head": {
+   "malformed_adapter_kind_any_type": "DENY_AUTHN (adapter_kind inert)",
+   "duck_object_fixed_canonical_floor_across_all_adapter_kinds": "floor unchanged",
+   "missing_malformed_none_int_unicode_case_variant_floor": "floor=None -> DENY_AUTHN",
+   "extra_field_carries_floor": "no effect (floor=None)",
+   "subclass_override_required_authn_assurance_floor": "floor follows declared required_authn_assurance; adapter_kind never read"
+ },
+ "phase3_aac_lattice_new_head": {
+   "AAC1_floor_AAC1_token_decision": "PASS",
+   "AAC2_floor_AAC1_token": "DENY_AUTHN",
+   "AAC3_floor_AAC2_token_decision": "DENY_AUTHN",
+   "CRITICAL_missing_floor": "DENY_AUTHN"
+ },
+ "phase4_security_suite": {"ran": 408, "OK": true, "receipt_match": true},
+ "adapter_seam_in_humangate_floor_resolution": "absent (verified statically + behaviorally)",
+ "out_of_scope_observation": "DOC-03 CRITICAL->AAC3 is request-declared REQUIRED policy, not code-enforced; a caller explicitly declaring required_authn_assurance='AAC2' on CRITICAL is accepted. Pre-existing R008 request-carries-its-own-floor design, NOT the adapter seam, NOT introduced by R5, NOT a counterexample to this repair.",
+ "evidence_paths_reviewed": [
+   "R5_EXTERNAL_CONFLICT_ADJUDICATION.json",
+   "R5_REGRESSION_RECEIPT.json"
+ ]
+}

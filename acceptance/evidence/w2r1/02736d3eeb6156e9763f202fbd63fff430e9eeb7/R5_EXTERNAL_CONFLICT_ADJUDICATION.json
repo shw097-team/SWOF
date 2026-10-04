@@ -1,0 +1,58 @@
+{
+  "artifact": "R5_EXTERNAL_CONFLICT_ADJUDICATION",
+  "order_id": "SWOF-CONSTRUCTION-002-W2-REPAIR-R5",
+  "subject": {
+    "repo": "shw097-team/SWOF",
+    "r4_source_sha": "6f332c3cedc52bafc98949f4ce9226b1d1696bc3",
+    "r4_evidence_sha": "d3e311c2c26b48f4cc0b4b60d02390628f1365b6",
+    "w1_source_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "w1_evidence_sha": "84ea30c216ac319c4e55df1b07ee2ee3372bcc88"
+  },
+  "equal_rank_conflict": {
+    "report_A": "PASS_CHALLENGE / local_adapter NON_BLOCKING / W3 GO",
+    "report_B": "FAIL_CHALLENGE / local_adapter CONFIRMED_DEFECT S3 blocker / smallest repair",
+    "resolution": "BLOCKER_CONFIRMED (in favor of Report B on the trust-boundary axis)"
+  },
+  "gate_2A_frozen_authority": {
+    "cannot_be_assurance": null,
+    "locator": "knowledge/PI-PKG-06_DOC/DOC-03_2026-09-10_r2_FULL_REPAIR.md",
+    "critical_requires_aac3": {
+      "L526": "CRITICAL -> HA1 + required HA3 + AAC3",
+      "L689": "AAC3 required for P4, P5 protected actions, CRITICAL effects"
+    },
+    "required_authn_assurance_required": "L885: required[Y], 'meets floor', 'stale/weak deny'",
+    "adapter_kind_in_canonical_required": false,
+    "canonical_approval_requirement_required_contains_adapter_kind": false
+  },
+  "gate_2B_reachability_inventory": {
+    "public_export_exposes_selector": true,
+    "export_path": "src/security/__init__.py::ApprovalRequest (dataclass field adapter_kind, default 'canonical', caller-settable)",
+    "production_caller_of_verifier": "src/security/rights.py:431 assert_human_gate_satisfied -> verify_approval_token(approval, request, ctx)",
+    "provenance_gate_stripping_adapter_kind": "NONE (request passed straight through; _required_authn_floor reads adapter_kind directly at humangate.py:933)",
+    "adapter_kind_not_canonical_so_selector_is_request_controlled": true,
+    "no_current_inrepo_production_route_constructs_ApprovalRequest": true,
+    "accepted_public_contract_exposes_downgrade_selector": "TRUE per 2B rule: absence of in-repo consumer does NOT prove safety when the accepted public/API contract exposes caller-controlled compatibility downgrade semantics"
+  },
+  "gate_2C_full_route_counterexample": {
+    "semantic_request": {"effect_risk_tier": "CRITICAL", "canonical_policy_required_authn_assurance": "AAC3"},
+    "candidate_request_object": {"required_authn_assurance": "missing", "adapter_kind": "local_adapter"},
+    "floor_resolution": "AAC2 (humangate.py:933-934 -> LOCAL_ADAPTER_AUTHN_FLOOR)",
+    "token_authn_assurance_class": "AAC2",
+    "decision_authn_assurance_class": "AAC2",
+    "verify_result": {"ok": true, "code": "APPROVE_BASIS_SATISFIED"},
+    "contrast_control": {"request_without_adapter_same_critical_missing_floor": "DENY_AUTHN"},
+    "conclusion": "CRITICAL/AAC3 semantics under-enforced at the authn gate via caller-controlled adapter_kind"
+  },
+  "gate_2D_branch_rule": {
+    "current_scope_or_accepted_public_surface_exposes_selector": true,
+    "caller_can_control_or_preserve_selector_without_trusted_provenance": true,
+    "missing_canonical_floor_can_reach_verifier": true,
+    "compatibility_path_substitutes_AAC2": true,
+    "CRITICAL_AAC3_semantics_can_be_under_enforced_at_authn_gate": true,
+    "higher_authority_does_not_authorize_this_downgrade": true,
+    "branch": "A_BLOCKER_CONFIRMED"
+  },
+  "branch_decision": "BLOCKER_CONFIRMED -> smallest HumanGate trust-boundary repair (remove request-controlled compatibility floor selection from canonical verifier)",
+  "raw_probe": "C:/Users/user/AppData/Local/Temp/r5_probe.py (read-only; no repo write)",
+  "reports_disposition": "Report A (PASS, non-blocking) superseded on trust axis; Report B (FAIL, S3 blocker) confirmed"
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "SWOF-W2-R5-EVIDENCE-RETURN-PACK/1",
+  "repair_order": "SWOF-CONSTRUCTION-002-W2-REPAIR-R5",
+  "repair_id": "SWOF-W2-CLOSURE-R5",
+  "branch": "A_BLOCKER_CONFIRMED",
+  "subject": {
+    "repo": "shw097-team/SWOF",
+    "branch": "wo/swof-w2-closure-r1",
+    "source_candidate_sha": "02736d3eeb6156e9763f202fbd63fff430e9eeb7",
+    "parent_r4_source_sha": "6f332c3cedc52bafc98949f4ce9226b1d1696bc3",
+    "parent_r4_evidence_sha": "d3e311c2c26b48f4cc0b4b60d02390628f1365b6",
+    "accepted_w1_source_sha": "7e1f912d863b8c155eb9ae5ae9682b0e185450fc",
+    "accepted_w1_evidence_sha": "84ea30c216ac319c4e55df1b07ee2ee3372bcc88",
+    "checkpoint": "CK-W2-AE96CED0",
+    "source_ne_evidence": true
+  },
+  "decision": {
+    "equal_rank_conflict": "RESOLVED_DETERMINISTICALLY_IN_FAVOR_OF_REPORT_B",
+    "blocker": "CONFIRMED",
+    "repair_applied": true
+  },
+  "producer": "hermes-orchestrator",
+  "checker": "fresh-context-VERIFY-ONLY (deleg_803b4160 task0; post-projection deleg_8105b6a1)",
+  "checker_ne_maker": true,
+  "checker_read_only": true,
+  "evidence_producer_is_not_product_writer": "product writer = tracked changeset; evidence writer = hermes-orchestrator",
+  "items": [
+    {"id": "EVD-W2R5-ADJUDICATION", "kind": "ADJUDICATION", "path": "evidence/R5_EXTERNAL_CONFLICT_ADJUDICATION.json", "sha256": "73d9ef0269408887ea7e1789c3868de7ee049823bfa8378e917350d137f74052"},
+    {"id": "EVD-W2R5-REGRESSION", "kind": "TEST_LOG", "path": "evidence/R5_REGRESSION_RECEIPT.json", "sha256": "df0ea90da1236ff9ff7d1460c5e3f17a9086b630b5ef30443664ef3c89037110"},
+    {"id": "EVD-W2R5-CHECKER", "kind": "INDEPENDENT_RECEIPT", "path": "evidence/R5_FRESH_CHECKER_RECEIPT.json", "sha256": "b0b78bfb485a07ff7fc124602872cfeb3cad7f067d1554293f6de8bfdd9aa55a"},
+    {"id": "EVD-W2R5-CLOSURE", "kind": "CLOSURE_PROJECTION", "path": "evidence/R5_W2_NORMATIVE_CLOSURE_PROJECTION.json", "sha256": "a777d6babfef6e2e1dd17b7f6eae59f5d936cbc8e9fe2c1c7ab4f2f125b85c57"},
+    {"id": "PORTABLE-DOSSIER", "kind": "DOSSIER", "path": "evidence/SWOF_W2_R5_FINAL_EVIDENCE_DOSSIER.md", "sha256": "<set-by-packer>"}
+  ],
+  "stale_duplicate_disclosure": "R5_APPLY_RECEIPT.json (128147db...) names WO-SWOF-W2-R005 but carries repair_id SWOF-W2-CLOSURE-R2 and candidate 3ade7d0e; R5_BASE.json (4594d370...) is a base snapshot. Both are EARLIER-ROUND leftovers and are NOT part of this R5 return pack. The authoritative R5 product delta is the single commit 02736d3e = [src/security/humangate.py, src/security/tests/test_humangate_currentness.py]. Exclusion is disclosed, not hidden.",
+  "non_claims": {
+    "external_w2_acceptance": "NOT_ISSUED_PENDING_FRESH_EXTERNAL_RECHALLENGE",
+    "w3_started": "NO",
+    "merge": "NOT_AUTHORIZED",
+    "release": "NOT_AUTHORIZED",
+    "production": "NOT_AUTHORIZED",
+    "world_effect_acceptance": "NOT_AUTHORIZED",
+    "global_command": "no global AAC3 hard-code; only request-controlled compatibility floor selection removed"
+  }
+}
