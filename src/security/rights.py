@@ -25,6 +25,14 @@ W2 repair WO-SWOF-W2-R004 (R4 D1/D2): there is now ONE canonical gate predicate,
 `human_gate_required(request)`. Risk/permission classification is authoritative; the operation
 name may TIGHTEN or identify the route but may never WEAKEN it. RUIN / UNKNOWN_RUIN precedence is
 evaluated FIRST, before any approval consideration, and a valid token can never satisfy it.
+
+W2 repair WO-SWOF-W2-R005 (R5): RUIN / UNKNOWN_RUIN are carried INSIDE the ONE canonical
+EffectRiskTier enum (`effect_risk_tier` = LOW | MEDIUM | HIGH | CRITICAL | RUIN | UNKNOWN_RUIN);
+`ruin_class` does NOT exist in the canonical source and is accepted ONLY as a NON-CANONICAL legacy
+alias when `effect_risk_tier` is absent, and it may never weaken a present canonical value. A
+present-but-malformed `effect_risk_tier` / `permission_class` / `autonomy_tier` fails closed instead
+of being treated as ungated (DOC-03 15.6). `human_gate_route` and `human_gate_required` share the ONE
+predicate, and `verify_approval_token` returns a typed decision for a malformed nonce ledger.
 """
 from __future__ import annotations
 
@@ -32,8 +40,10 @@ import re
 from dataclasses import dataclass, field
 
 from .humangate import (
-    ApprovalDecision, ApprovalRequest, ApprovalToken, NonceLedger, VerificationContext,
-    verify_approval_token,
+    EFFECT_RISK_TIERS, ApprovalDecision, ApprovalRequest, ApprovalToken, NonceLedger,
+    VerificationContext, _CLASS_ABSENT, _CLASS_MALFORMED, _CLASS_VALID, classify_autonomy_tier,
+    classify_effect_risk_tier, classify_legacy_ruin_class, classify_permission_class,
+    ruin_precedence_code, verify_approval_token,
 )
 
 HIGH_RISK_ACTIONS = frozenset({
@@ -46,8 +56,12 @@ RUIN_HARD_VETO_ROUTE = "ARTIFACT:RUIN_HARD_VETO"
 RUIN_SAFE_STOP_ROUTE = "ARTIFACT:RUIN_SAFE_STOP"
 NONE_ROUTE = "NONE"
 
-# The effect-risk / permission tiers that require a typed approval token (TOK-INV-001).
-_APPROVAL_REQUIRED_TIERS = frozenset({"P3", "P4", "P5"})
+# WO-SWOF-W2-R005 (R5): the token requirement is keyed to the CANONICAL classification domains.
+# A token is required by RISK when `effect_risk_tier` is HIGH/CRITICAL/RUIN/UNKNOWN_RUIN (LOW/MEDIUM
+# do not by themselves), by PERMISSION floor when `permission_class` is P3/P4/P5 (TOK-INV-001), by
+# AUTONOMY when `autonomy_tier` is T3, or when the operation maps to an explicit high-risk edge.
+_TOKEN_REQUIRED_RISK_TIERS = frozenset({"HIGH", "CRITICAL", "RUIN", "UNKNOWN_RUIN"})
+_TOKEN_REQUIRED_PERMISSION_CLASSES = frozenset({"P3", "P4", "P5"})
 
 _AUTHORITY_EDGE = {
     "live_world_effect": "HUMAN_GATE:live_world_effect",
@@ -166,36 +180,64 @@ def check_rights(scope, entitlement, *, now=None, subject=None) -> RightsDecisio
 
 
 def human_gate_required(request) -> HumanGateRoute:
-    """ONE canonical gate predicate. Risk/permission classification is authoritative; the
-    operation name may TIGHTEN the route (identify its authority edge) but may NEVER weaken it.
+    """ONE canonical gate predicate. Risk/permission/autonomy classification is authoritative; the
+    operation name may TIGHTEN or identify the route but may NEVER weaken it.
 
-    Order (normative):
-      1. ruin precedence FIRST, before any approval consideration:
-           ruin_class == "RUIN"          -> RUIN_HARD_VETO_ROUTE / "RUIN:HARD_VETO"
-           ruin_class == "UNKNOWN_RUIN"  -> RUIN_SAFE_STOP_ROUTE / "RUIN:SAFE_STOP"
-         a token can never satisfy these; the verifier rejects them before checking approval.
-      2. token required if the effect_risk_tier OR the permission_class is P3/P4/P5, or the
-         operation maps to an explicit high-risk authority edge.
-      3. otherwise ungated.
+    Order (normative), all fail closed (DOC-03 15.6):
+
+      1. RUIN precedence FIRST, before any approval consideration, DERIVED FROM THE CANONICAL
+         `effect_risk_tier` (`ruin_precedence_code`):
+           "RUIN"          -> RUIN_HARD_VETO_ROUTE / "RUIN:HARD_VETO"
+           "UNKNOWN_RUIN"  -> RUIN_SAFE_STOP_ROUTE / "RUIN:SAFE_STOP"
+           a malformed risk tier and a malformed NON-CANONICAL `ruin_class` alias -> SAFE_STOP.
+         A token can never satisfy these; the verifier rejects them before checking approval.
+      2. a malformed `effect_risk_tier`, `permission_class` or `autonomy_tier` is unclassifiable and
+         fails closed (gated, no authority edge); it is NEVER treated as ungated.
+      3. token required if ANY of:
+           effect_risk_tier in {"HIGH","CRITICAL","RUIN","UNKNOWN_RUIN"}
+           permission_class in {"P3","P4","P5"}
+           autonomy_tier == "T3"
+           the operation maps to an explicit high-risk authority edge
+      4. otherwise an ABSENT classification on a NAMED benign operation is the shim's NONE route;
+         an EMPTY / non-string operation name is unknown and is gated (`HUMAN_GATE:unknown_action`),
+         so the route shim and the predicate agree on the unknown-operation rule.
     """
-    ruin_class = getattr(request, "ruin_class", "NONE")
-    if ruin_class == "RUIN":
+    ruin = ruin_precedence_code(request)
+    if ruin == "HARD_VETO_RUIN":
         return HumanGateRoute(True, RUIN_HARD_VETO_ROUTE, "RUIN:HARD_VETO")
-    if ruin_class == "UNKNOWN_RUIN":
+    if ruin == "SAFE_STOP_UNKNOWN_RUIN":
         return HumanGateRoute(True, RUIN_SAFE_STOP_ROUTE, "RUIN:SAFE_STOP")
 
-    risk_tier = getattr(request, "effect_risk_tier", "")
-    permission_class = getattr(request, "permission_class", "")
-    operation = getattr(request, "operation", "")
-    if risk_tier in _APPROVAL_REQUIRED_TIERS or permission_class in _APPROVAL_REQUIRED_TIERS:
-        return HumanGateRoute(True, HUMAN_GATE_ROUTE, _risk_edge(operation))
+    risk_state, risk = classify_effect_risk_tier(request)
+    permission_state, permission = classify_permission_class(request)
+    autonomy_state, autonomy = classify_autonomy_tier(request)
+    legacy_state, _ = classify_legacy_ruin_class(request)
+    operation = getattr(request, "operation", None)
+
+    # The operation name may TIGHTEN or IDENTIFY the route: a high-risk operation always gates and
+    # names its own authority edge, whatever the classification (this can never weaken the law).
     if isinstance(operation, str) and operation in HIGH_RISK_ACTIONS:
         return HumanGateRoute(True, HUMAN_GATE_ROUTE, _AUTHORITY_EDGE[operation])
-    return HumanGateRoute(False, NONE_ROUTE, "NONE")
+    # A malformed classification is unclassifiable; it fails closed and is never treated as ungated.
+    if _CLASS_MALFORMED in (risk_state, permission_state, autonomy_state, legacy_state):
+        return HumanGateRoute(True, HUMAN_GATE_ROUTE, "HUMAN_GATE:unclassified")
+    if _CLASS_VALID in (risk_state, permission_state, autonomy_state):
+        if risk in _TOKEN_REQUIRED_RISK_TIERS or autonomy == "T3" \
+                or permission in _TOKEN_REQUIRED_PERMISSION_CLASSES:
+            return HumanGateRoute(True, HUMAN_GATE_ROUTE, _risk_edge(operation))
+        # a fully-classified, non-T3, canonical LOW/MEDIUM/P0..P2 action is benign.
+        return HumanGateRoute(False, NONE_ROUTE, "NONE")
+    # every classification is ABSENT. An EMPTY or non-string operation name is unknown -> gated by
+    # the ONE predicate (so human_gate_route("") and human_gate_required(operation="") AGREE).
+    # A named, untightened benign action is the shim's NONE route; a classification-carrying caller
+    # always reaches the VALID branch above, so this can never weaken a supplied classification.
+    if isinstance(operation, str) and operation:
+        return HumanGateRoute(False, NONE_ROUTE, "NONE")
+    return HumanGateRoute(True, HUMAN_GATE_ROUTE, "HUMAN_GATE:unknown_action")
 
 
 def _risk_edge(operation) -> str:
-    """The authority edge for a risk-tier gated action; a high-risk op identifies its own edge."""
+    """The authority edge for a classification-gated action; a high-risk op identifies its edge."""
     if isinstance(operation, str) and operation in HIGH_RISK_ACTIONS:
         return _AUTHORITY_EDGE[operation]
     return "HUMAN_GATE:risk_tier"
@@ -204,12 +246,14 @@ def _risk_edge(operation) -> str:
 def human_gate_route(action, *, risk="LOW") -> HumanGateRoute:
     """Action-name shim over the ONE canonical predicate (no second authority path).
 
-    A non-string or empty action is an unknown action and is gated without an authority edge; any
-    other action is classified by `human_gate_required` via a synthetic request, so the operation
-    name can identify or tighten the route but can never weaken the risk/permission law.
+    A non-string or empty action is an unknown action and is gated without an authority edge. Any
+    other action is classified by `human_gate_required` via a synthetic request whose classification
+    is ABSENT, so the operation name can identify or tighten the route but can never weaken the
+    risk/permission law. In particular `human_gate_route("")` and `human_gate_required` on a request
+    with an empty operation AGREE: an unknown operation is gated by the ONE canonical predicate.
     """
     if not isinstance(action, str) or not action:
-        return HumanGateRoute(True, HUMAN_GATE_ROUTE, "HUMAN_GATE:unknown_action")
+        return human_gate_required(ApprovalRequest(operation=""))
     return human_gate_required(ApprovalRequest(operation=action))
 
 
@@ -237,10 +281,18 @@ def assert_credential_scope(scope, use, *, subject=None, now=None) -> None:
 
 
 def _requires_typed_token(request) -> bool:
-    """True when the request risk tier or permission class demands a typed approval token."""
-    tier = getattr(request, "effect_risk_tier", "")
-    permission = getattr(request, "permission_class", "")
-    return tier in _APPROVAL_REQUIRED_TIERS or permission in _APPROVAL_REQUIRED_TIERS
+    """True when a request demands a typed approval token; a malformed/absent classification does.
+
+    A present-but-malformed enum fails closed (True), never a permissive default.
+    """
+    tier_state, tier = classify_effect_risk_tier(request)
+    permission_state, permission = classify_permission_class(request)
+    autonomy_state, autonomy = classify_autonomy_tier(request)
+    if _CLASS_MALFORMED in (tier_state, permission_state, autonomy_state):
+        return True
+    return (tier in _TOKEN_REQUIRED_RISK_TIERS
+            or permission in _TOKEN_REQUIRED_PERMISSION_CLASSES
+            or autonomy == "T3")
 
 
 def _route_is_ruin(route) -> bool:
@@ -301,20 +353,15 @@ def assert_human_gate_satisfied(route, approval, *, requesting_actor=None,
 
 
 def _ruin_veto_code(request):
-    """The HARD_VETO/SAFE_STOP code for a request's ruin class, or None when it is NONE."""
-    ruin_class = getattr(request, "ruin_class", "NONE")
-    if ruin_class == "RUIN":
-        return "HARD_VETO_RUIN"
-    if ruin_class == "UNKNOWN_RUIN":
-        return "SAFE_STOP_UNKNOWN_RUIN"
-    return None
+    """The HARD_VETO/SAFE_STOP code for a request, or None; derived from the canonical field."""
+    return ruin_precedence_code(request)
 
 
 __all__ = [
-    "HIGH_RISK_ACTIONS", "HUMAN_GATE_ROUTE", "NONE_ROUTE", "RUIN_HARD_VETO_ROUTE",
-    "RUIN_SAFE_STOP_ROUTE", "ApprovalDecision", "ApprovalRequest", "ApprovalToken",
-    "HumanGateBypassAttempt", "HumanGateRoute", "NonceLedger", "RightsDecision", "RightsDenied",
-    "RightsScope", "VerificationContext", "assert_credential_scope", "assert_human_gate_satisfied",
-    "check_rights", "currentness_required", "human_gate_required", "human_gate_route",
-    "verify_approval_token",
+    "EFFECT_RISK_TIERS", "HIGH_RISK_ACTIONS", "HUMAN_GATE_ROUTE", "NONE_ROUTE",
+    "RUIN_HARD_VETO_ROUTE", "RUIN_SAFE_STOP_ROUTE", "ApprovalDecision", "ApprovalRequest",
+    "ApprovalToken", "HumanGateBypassAttempt", "HumanGateRoute", "NonceLedger", "RightsDecision",
+    "RightsDenied", "RightsScope", "VerificationContext", "assert_credential_scope",
+    "assert_human_gate_satisfied", "check_rights", "currentness_required", "human_gate_required",
+    "human_gate_route", "verify_approval_token",
 ]

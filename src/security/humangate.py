@@ -105,9 +105,25 @@ _NON_HUMAN_REF_PREFIXES = (
     "model:", "tool:", "provider:", "agent:", "mcp:", "a2a:", "automation:", "svc:", "service:",
 )
 
+# WO-SWOF-W2-R005 (R5): the ONE canonical classification domains (PI-PKG-06 DOC-03).
+# `effect_risk_tier` carries RUIN / UNKNOWN_RUIN INSIDE its enum; `ruin_class` does NOT exist in the
+# canonical source. `permission_class` is P0..P5 and `autonomy_tier` is T0..T3 (DOC-03 line 778,
+# line 876, line 1069 and the HumanGatePolicy block).
+EFFECT_RISK_TIERS = ("LOW", "MEDIUM", "HIGH", "CRITICAL", "RUIN", "UNKNOWN_RUIN")
+PERMISSION_CLASSES = ("P0", "P1", "P2", "P3", "P4", "P5")
+AUTONOMY_TIERS = ("T0", "T1", "T2", "T3")
+
+# EffectRiskTier tiers that demand an exact-bound Human token by RISK alone (LOW/MEDIUM do not).
+_TOKEN_REQUIRED_RISK_TIERS = frozenset({"HIGH", "CRITICAL", "RUIN", "UNKNOWN_RUIN"})
+# Permission-class floor that demands a token (TOK-INV-001).
+_TOKEN_REQUIRED_PERMISSION_CLASSES = frozenset({"P3", "P4", "P5"})
+# P3+ permission floor that also requires a rollback ref.
 _ROLLBACK_TRIGGER_TIERS = ("P3", "P4", "P5")
 
-_RUIN_CLASSES = ("NONE", "RUIN", "UNKNOWN_RUIN")
+# The NON-CANONICAL legacy alias vocabulary. `ruin_class` does not exist in the canonical source; it
+# is accepted ONLY when the canonical `effect_risk_tier` is absent, and it may never weaken a
+# present canonical value. Its baseline value is "NONE" (no ruin).
+_LEGACY_RUIN_CLASSES = ("NONE", "RUIN", "UNKNOWN_RUIN")
 
 # The documented refusal-code set for ApprovalToken verification (first-fail order). R4 adds
 # DENY_APPROVAL_BASIS (recomputed basis), DENY_AUDIENCE_MISMATCH (mandatory audience),
@@ -331,9 +347,11 @@ class ApprovalRequest:
     data_class: str = ""
     effect_digest: str = ""
     consumer_audience_hash: str = ""
-    effect_risk_tier: str = ""
-    permission_class: str = ""
-    autonomy_tier: str = ""
+    # R5: absent (None) is DISTINCT from present-but-invalid; a present value outside the canonical
+    # domain fails closed in the gate, and an absent classification is never a permissive default.
+    effect_risk_tier: str | None = None
+    permission_class: str | None = None
+    autonomy_tier: str | None = None
     required_authority: str = ""
     rollback_ref: str = ""
     independent_checker_required: bool = False
@@ -423,6 +441,82 @@ def _is_str_tuple(value) -> bool:
 
 def _is_int_or_none(value) -> bool:
     return value is None or (isinstance(value, int) and not isinstance(value, bool))
+
+
+# A canonical-enum classification is one of these three states. ABSENT (None) is DISTINCT from
+# MALFORMED (present but not a member of the canonical set); a malformed value fails closed and is
+# never silently coerced to a permissive default (DOC-03 15.6).
+_CLASS_ABSENT = "ABSENT"
+_CLASS_VALID = "VALID"
+_CLASS_MALFORMED = "MALFORMED"
+
+
+def _classify_domain(value, domain):
+    """(state, value) for a canonical enum: ABSENT (None), VALID (a member), else MALFORMED."""
+    if value is None:
+        return (_CLASS_ABSENT, None)
+    if isinstance(value, str) and value in domain:
+        return (_CLASS_VALID, value)
+    return (_CLASS_MALFORMED, value)
+
+
+def classify_effect_risk_tier(request):
+    """The canonical EffectRiskTier classification of a request as a (state, value) pair."""
+    return _classify_domain(getattr(request, "effect_risk_tier", None), EFFECT_RISK_TIERS)
+
+
+def classify_permission_class(request):
+    """The canonical PermissionClass classification of a request as a (state, value) pair."""
+    return _classify_domain(getattr(request, "permission_class", None), PERMISSION_CLASSES)
+
+
+def classify_autonomy_tier(request):
+    """The canonical AutonomyTier classification of a request as a (state, value) pair."""
+    return _classify_domain(getattr(request, "autonomy_tier", None), AUTONOMY_TIERS)
+
+
+def classify_legacy_ruin_class(request):
+    """The NON-CANONICAL legacy `ruin_class` alias as a (state, value) pair.
+
+    `ruin_class` does not exist in the canonical source. Its baseline value is "NONE", so a value is
+    either a recognised legacy value (VALID) or an unverifiable value (MALFORMED, fail closed).
+    """
+    value = getattr(request, "ruin_class", "NONE")
+    if isinstance(value, str) and value in _LEGACY_RUIN_CLASSES:
+        return (_CLASS_VALID, value)
+    return (_CLASS_MALFORMED, value)
+
+
+def ruin_precedence_code(request):
+    """The HARD_VETO_RUIN / SAFE_STOP_UNKNOWN_RUIN code for a request, or None when non-ruin.
+
+    RUIN / UNKNOWN_RUIN are carried INSIDE the canonical EffectRiskTier enum (`effect_risk_tier`);
+    there is no canonical `ruin_class` field. Resolution order, fail closed throughout:
+
+      1. a present-but-malformed `effect_risk_tier` is unclassifiable risk -> SAFE_STOP;
+      2. a present-but-unrecognised legacy `ruin_class` alias is an unknown signal -> SAFE_STOP;
+      3. canonical `effect_risk_tier` == "RUIN" -> HARD_VETO_RUIN;
+         canonical `effect_risk_tier` == "UNKNOWN_RUIN" -> SAFE_STOP_UNKNOWN_RUIN;
+      4. ONLY when the canonical field is ABSENT may the legacy alias raise the same codes; the
+         alias can never weaken a present canonical value (DOC-03 line 476: a proposed
+         consequential effect classified RUIN -> HARD_VETO regardless of Human token).
+    """
+    tier_state, tier = classify_effect_risk_tier(request)
+    if tier_state == _CLASS_MALFORMED:
+        return "SAFE_STOP_UNKNOWN_RUIN"
+    legacy_state, legacy = classify_legacy_ruin_class(request)
+    if legacy_state == _CLASS_MALFORMED:
+        return "SAFE_STOP_UNKNOWN_RUIN"
+    if tier == "RUIN":
+        return "HARD_VETO_RUIN"
+    if tier == "UNKNOWN_RUIN":
+        return "SAFE_STOP_UNKNOWN_RUIN"
+    if tier_state == _CLASS_ABSENT:
+        if legacy == "RUIN":
+            return "HARD_VETO_RUIN"
+        if legacy == "UNKNOWN_RUIN":
+            return "SAFE_STOP_UNKNOWN_RUIN"
+    return None
 
 
 def _epoch(rfc3339):
@@ -546,14 +640,11 @@ def _binding_errors(token, request):
 
 
 def _ruin_route_error(request):
-    """RUIN/UNKNOWN_RUIN precedence: a valid token can NEVER authorize a ruin class (R4 D2)."""
-    ruin_class = getattr(request, "ruin_class", "NONE")
-    if ruin_class == "RUIN":
-        return "HARD_VETO_RUIN"
-    if ruin_class == "UNKNOWN_RUIN":
-        return "SAFE_STOP_UNKNOWN_RUIN"
-    return None
+    """RUIN/UNKNOWN_RUIN precedence for the token verifier (see `ruin_precedence_code`).
 
+    Derived from the canonical `effect_risk_tier`; a valid token can NEVER authorize a ruin class.
+    """
+    return ruin_precedence_code(request)
 
 def _declaration_errors(request, ctx):
     """The declared-generation rule (R4 3.5), fail closed.
@@ -657,12 +748,9 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
     if not isinstance(request, ApprovalRequest) or not isinstance(ctx, VerificationContext):
         return _deny("NOT_A_CANONICAL_APPROVAL_TOKEN",
                      "request/ctx must be canonical objects")
-    # R4 D2: a malformed ruin class is unknown ruin -> SAFE STOP, never a silent pass.
-    if getattr(request, "ruin_class", "NONE") not in _RUIN_CLASSES:
-        return _deny("SAFE_STOP_UNKNOWN_RUIN", "ruin_class is not canonical")
-
-    # R4 D2: RUIN/UNKNOWN_RUIN is a HARD VETO / SAFE STOP, evaluated FIRST: no token can
-    # satisfy it and no other approval consideration may mask it.
+    # R5: RUIN/UNKNOWN_RUIN precedence is DERIVED FROM THE CANONICAL `effect_risk_tier` field and
+    # evaluated FIRST: no token can satisfy it and no other approval consideration may mask it. A
+    # malformed risk tier or a malformed legacy `ruin_class` alias is unknown ruin -> SAFE STOP.
     ruin = _ruin_route_error(request)
     if ruin is not None:
         return _deny(ruin, "ruin precedence refuses any token")
@@ -756,9 +844,18 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
         return _deny("DENY_TOKEN_INTEGRITY",
                      "Ed25519 signature not verified over RFC8785-framed bytes")
 
-    if ctx.nonce_ledger is None:
+    ledger = ctx.nonce_ledger
+    if ledger is None:
         return _deny("DENY_REPLAY", "no nonce ledger")
-    if ctx.nonce_ledger.reserve(token.nonce) is not True:
+    reserve = getattr(ledger, "reserve", None)
+    if not callable(reserve):
+        # R5 D5: a malformed ledger yields a typed decision, never an AttributeError.
+        return _deny("DENY_REPLAY", "nonce ledger has no reserve()")
+    try:
+        reserved = reserve(token.nonce)
+    except Exception:
+        return _deny("DENY_REPLAY", "nonce ledger reserve() raised")
+    if reserved is not True:
         return _deny("DENY_REPLAY", "nonce already used")
 
     # R4 3.5: whenever the token requires an independent checker, a non-empty context ref must be

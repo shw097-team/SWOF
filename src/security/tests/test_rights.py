@@ -21,9 +21,10 @@ from security.humangate import (  # noqa: E402
     canonical_payload_bytes,
 )
 from security.rights import (  # noqa: E402
-    HIGH_RISK_ACTIONS, HumanGateBypassAttempt, HumanGateRoute, RUIN_HARD_VETO_ROUTE,
-    RUIN_SAFE_STOP_ROUTE, RightsDenied, RightsScope, assert_credential_scope,
-    assert_human_gate_satisfied, check_rights, human_gate_required, human_gate_route,
+    EFFECT_RISK_TIERS, HIGH_RISK_ACTIONS, HumanGateBypassAttempt, HumanGateRoute,
+    RUIN_HARD_VETO_ROUTE, RUIN_SAFE_STOP_ROUTE, RightsDenied, RightsScope,
+    assert_credential_scope, assert_human_gate_satisfied, check_rights, human_gate_required,
+    human_gate_route,
 )
 
 NOW = "2026-06-01T00:00:00Z"
@@ -85,7 +86,7 @@ def _release_request(**overrides):
         subject="svc-a", subject_hash=DIGEST, semantic_version="1.0.0", actor="human:alice",
         operation="release", target_system="swof", resource=("artifact:app",), environment="prod",
         purpose_ref="purpose:release", scope=("release",), data_class="INTERNAL",
-        effect_digest=DIGEST, consumer_audience_hash=DIGEST, effect_risk_tier="P2",
+        effect_digest=DIGEST, consumer_audience_hash=DIGEST, effect_risk_tier="LOW",
         permission_class="P2", autonomy_tier="T2", required_authority="HUMAN_GATE:release",
         rollback_ref="rollback:1", independent_checker_required=False, ruin_class="NONE",
         request_id="req-1", decision_id="dec-1", decision_basis_hash=DIGEST,
@@ -265,7 +266,7 @@ class TestCredentialScope(unittest.TestCase):
 class TestCanonicalGatePredicateR4(unittest.TestCase):
 
     def test_p3_benign_operation_requires_a_token(self):
-        request = _release_request(operation="read", effect_risk_tier="P3", permission_class="P3")
+        request = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P3")
         route = human_gate_required(request)
         self.assertTrue(route.required)
         self.assertEqual(route.route, "ARTIFACT:HUMAN_GATE")
@@ -275,11 +276,11 @@ class TestCanonicalGatePredicateR4(unittest.TestCase):
         self.assertEqual(str(caught.exception), "DENY_P3_TOKEN_REQUIRED")
 
     def test_permission_class_alone_gates_a_benign_operation(self):
-        request = _release_request(operation="read", effect_risk_tier="P2", permission_class="P5")
+        request = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P5")
         self.assertTrue(human_gate_required(request).required)
 
     def test_p2_benign_operation_is_ungated(self):
-        request = _release_request(operation="read", effect_risk_tier="P2", permission_class="P2")
+        request = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2")
         self.assertEqual(human_gate_required(request).route, "NONE")
 
     def test_high_risk_operation_identifies_its_authority_edge(self):
@@ -289,7 +290,7 @@ class TestCanonicalGatePredicateR4(unittest.TestCase):
         self.assertEqual(route.authority_edge, "HUMAN_GATE:production_promotion")
 
     def test_gated_route_with_valid_token_passes(self):
-        request = _release_request(effect_risk_tier="P3", permission_class="P3")
+        request = _release_request(effect_risk_tier="LOW", permission_class="P3")
         route = human_gate_required(request)
         self.assertIsNone(assert_human_gate_satisfied(
             route, _valid_token(), requesting_actor="human:alice", request=request,
@@ -299,7 +300,7 @@ class TestCanonicalGatePredicateR4(unittest.TestCase):
 class TestRuinPrecedenceR4(unittest.TestCase):
 
     def test_ruin_route_and_veto(self):
-        request = _release_request(ruin_class="RUIN")
+        request = _release_request(effect_risk_tier="RUIN")
         route = human_gate_required(request)
         self.assertEqual((route.required, route.route), (True, RUIN_HARD_VETO_ROUTE))
         self.assertEqual(route.authority_edge, "RUIN:HARD_VETO")
@@ -308,7 +309,7 @@ class TestRuinPrecedenceR4(unittest.TestCase):
         self.assertEqual(str(caught.exception), "HARD_VETO_RUIN")
 
     def test_valid_token_cannot_override_ruin(self):
-        request = _release_request(ruin_class="RUIN")
+        request = _release_request(effect_risk_tier="RUIN")
         route = human_gate_required(request)
         with self.assertRaises(HumanGateBypassAttempt) as caught:
             assert_human_gate_satisfied(
@@ -317,7 +318,7 @@ class TestRuinPrecedenceR4(unittest.TestCase):
         self.assertEqual(str(caught.exception), "HARD_VETO_RUIN")
 
     def test_unknown_ruin_route_and_safe_stop(self):
-        request = _release_request(ruin_class="UNKNOWN_RUIN")
+        request = _release_request(effect_risk_tier="UNKNOWN_RUIN")
         route = human_gate_required(request)
         self.assertEqual((route.required, route.route), (True, RUIN_SAFE_STOP_ROUTE))
         with self.assertRaises(HumanGateBypassAttempt) as caught:
@@ -341,6 +342,113 @@ class TestRealEd25519SeamR4(unittest.TestCase):
         self.assertIsNone(assert_human_gate_satisfied(
             human_gate_route("release"), _valid_token(), requesting_actor="human:alice",
             request=_release_request(), ctx=_release_ctx()))
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R005 (R5): canonical EffectRiskTier domain, ruin precedence from the canonical field,
+# fail-closed enums, and the ONE canonical predicate. The CANONICAL enum is the authority here; no
+# test may redefine it.
+# ---------------------------------------------------------------------------------------------
+class TestCanonicalRuinAndRiskTierR5(unittest.TestCase):
+
+    def _seam(self, request, approval="", **kwargs):
+        return assert_human_gate_satisfied(
+            human_gate_required(request), approval, request=request, **kwargs)
+
+    def test_canonical_effect_risk_tier_domain_is_exact(self):
+        self.assertEqual(EFFECT_RISK_TIERS,
+                         ("LOW", "MEDIUM", "HIGH", "CRITICAL", "RUIN", "UNKNOWN_RUIN"))
+
+    def test_ruin_and_unknown_ruin_are_carried_by_effect_risk_tier(self):
+        self.assertEqual(human_gate_required(_release_request(effect_risk_tier="RUIN")).route,
+                         RUIN_HARD_VETO_ROUTE)
+        self.assertEqual(
+            human_gate_required(_release_request(effect_risk_tier="UNKNOWN_RUIN")).route,
+            RUIN_SAFE_STOP_ROUTE)
+
+    def test_ruin_with_valid_token_is_hard_veto(self):
+        request = _release_request(effect_risk_tier="RUIN")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(request, _valid_token(), requesting_actor="human:dave",
+                       ctx=_release_ctx())
+        self.assertEqual(str(caught.exception), "HARD_VETO_RUIN")
+
+    def test_ruin_without_token_is_hard_veto_not_token_required(self):
+        request = _release_request(effect_risk_tier="RUIN")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(request)
+        self.assertEqual(str(caught.exception), "HARD_VETO_RUIN")
+
+    def test_unknown_ruin_with_valid_token_is_safe_stop(self):
+        request = _release_request(effect_risk_tier="UNKNOWN_RUIN")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(request, _valid_token(), requesting_actor="human:dave",
+                       ctx=_release_ctx())
+        self.assertEqual(str(caught.exception), "SAFE_STOP_UNKNOWN_RUIN")
+
+    def test_critical_and_high_are_risk_gated_canonically(self):
+        for tier in ("CRITICAL", "HIGH"):
+            with self.subTest(tier=tier):
+                request = _release_request(operation="read", effect_risk_tier=tier,
+                                           permission_class="P2")
+                route = human_gate_required(request)
+                self.assertTrue(route.required)
+                self.assertEqual(route.route, "ARTIFACT:HUMAN_GATE")
+                with self.assertRaises(HumanGateBypassAttempt) as caught:
+                    self._seam(request)
+                self.assertEqual(str(caught.exception), "DENY_P3_TOKEN_REQUIRED")
+
+    def test_low_and_medium_are_the_low_risk_positive_control(self):
+        for tier in ("LOW", "MEDIUM"):
+            with self.subTest(tier=tier):
+                request = _release_request(operation="read", effect_risk_tier=tier,
+                                           permission_class="P2")
+                self.assertFalse(human_gate_required(request).required)
+                self.assertIsNone(self._seam(request))
+
+    def test_malformed_permission_class_fails_closed_not_ungated(self):
+        for bad in ("p3", "P3 ", " P3", "", "P9"):
+            with self.subTest(permission_class=bad):
+                request = _release_request(operation="read", effect_risk_tier="LOW",
+                                           permission_class=bad)
+                self.assertTrue(human_gate_required(request).required)
+                with self.assertRaises(HumanGateBypassAttempt):
+                    self._seam(request)
+
+    def test_malformed_effect_risk_tier_fails_closed_not_ungated(self):
+        for bad in ("p3", "ruin", ""):
+            with self.subTest(effect_risk_tier=bad):
+                request = _release_request(operation="read", effect_risk_tier=bad,
+                                           permission_class="P2")
+                self.assertTrue(human_gate_required(request).required)
+                with self.assertRaises(HumanGateBypassAttempt):
+                    self._seam(request)
+
+    def test_t3_benign_operation_requires_a_token(self):
+        request = _release_request(operation="read", effect_risk_tier="LOW",
+                                   permission_class="P2", autonomy_tier="T3")
+        self.assertTrue(human_gate_required(request).required)
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            self._seam(request)
+        self.assertEqual(str(caught.exception), "DENY_P3_TOKEN_REQUIRED")
+
+    def test_unknown_operation_agrees_between_route_and_predicate(self):
+        self.assertTrue(human_gate_route("").required)
+        predicate = human_gate_required(ApprovalRequest(operation=""))
+        self.assertTrue(predicate.required)
+        self.assertEqual(human_gate_route("").route, predicate.route)
+        self.assertEqual(human_gate_route("").route, "ARTIFACT:HUMAN_GATE")
+
+    def test_legacy_ruin_class_alias_is_accepted_only_when_canonical_absent(self):
+        # NON-CANONICAL alias: without a canonical tier it still vetoes ...
+        legacy_only = ApprovalRequest(operation="read", ruin_class="RUIN")
+        self.assertEqual(human_gate_required(legacy_only).route, RUIN_HARD_VETO_ROUTE)
+        # ... but a present canonical LOW/MEDIUM may NOT be weakened by the alias.
+        canonical_wins = ApprovalRequest(operation="read", effect_risk_tier="LOW",
+                                         permission_class="P2", ruin_class="RUIN")
+        self.assertFalse(human_gate_required(canonical_wins).required)
+
+
 
 
 if __name__ == "__main__":
