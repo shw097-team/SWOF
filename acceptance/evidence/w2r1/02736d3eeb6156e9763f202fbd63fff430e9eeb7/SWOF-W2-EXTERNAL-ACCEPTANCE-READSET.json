@@ -104,5 +104,5 @@
     "w1_exact_subject_preserved": true,
     "no_global_aac3_force": true
   },
-  "evidence_chain_note": "evidence branch evidence/swof-w2r5-closure-repair carries RETURN_PACK commit a6ee9b5 plus later pointer commits (R5_COMPILER_RECEIPT, READSET updates); acceptance subject is ONLY the exact RETURN_PACK commit a6ee9b5 per SWOF-RUN-R022. Latest evidence branch tip at publish time: 0b25a1ef0880db67bb09e4ed75be12a0f8508d10 (non-subject pointer)."
+  "evidence_chain_note": "evidence branch evidence/swof-w2r5-closure-repair carries the exact RETURN_PACK commit a6ee9b5 followed by pointer commits (R5_COMPILER_RECEIPT, READSET updates). Acceptance subject is ONLY the exact evidence_commit_sha a6ee9b5 per SWOF-RUN-R022; the branch tip is a non-subject pointer and is recorded in the PR description, not in this frozen requisable readset."
 }
