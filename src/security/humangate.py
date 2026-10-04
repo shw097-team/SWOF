@@ -519,9 +519,9 @@ class ApprovalRequest:
     # a gated canonical request: ABSENT ("") is DISTINCT from malformed and BOTH fail closed - the
     # field is NEVER defaulted. The floor is preserved exactly (AAC1 stays AAC1, ...).
     required_authn_assurance: str = ""
-    # R008: the EXPLICIT, NAMED non-canonical adapter seam. A canonical request is "canonical" and
-    # MUST carry its own floor; only an explicitly-labelled "local_adapter" request may fall back to
-    # the named local floor, and never to a silent AAC2. An unrecognised kind fails closed.
+    # R5 (SWOF-W2-CLOSURE-R5): `adapter_kind` no longer affects the authn floor. It is retained
+    # only as an inert marker for any pre-existing fixture; the verifier never consults it and a
+    # canonical request MUST carry its own explicit `required_authn_assurance` or fail closed.
     adapter_kind: str = "canonical"
     rollback_ref: str = ""
     independent_checker_required: bool = False
@@ -902,36 +902,32 @@ def _authority_satisfied(ctx, decision, required_authority):
     return (True, "")
 
 
-# R008: the canonical request-level authn-floor adapter kinds. "canonical" is the only kind a
-# canonical `ApprovalRequest` may use; "local_adapter" is the single explicit, named legacy/internal
-# seam whose ONLY effect is to supply a floor a non-canonical request omitted. It can never let a
-# canonical request pass silently, and it is never weaker than the canonical minimum class.
-ADAPTER_KINDS = ("canonical", "local_adapter")
-LOCAL_ADAPTER_AUTHN_FLOOR = "AAC2"
+# R5 (SWOF-W2-CLOSURE-R5): request-controlled compatibility is REMOVED from the canonical
+# verifier. A canonical ApprovalRequest must carry its own explicit validated
+# `required_authn_assurance` (DOC-03 14.R / 15.2, REQUIRED, 'meets floor / stale-weak deny').
+# There is no caller-controllable adapter kind that can substitute an implicit AAC floor;
+# CRITICAL (AAC3) and P4/P5 (AAC3) semantics cannot be under-enforced at the authn gate.
 
 
 def _required_authn_floor(request):
-    """The EXACT validated authn assurance (AAC) floor this request declares, or None.
+    """The EXACT validated authn assurance (AAC) floor this canonical request declares, or None.
 
     DOC-03 14.R / 15.2 make `required_authn_assurance` a REQUIRED `HumanGatePolicy` field with the
     domain `AAC1 | AAC2 | AAC3`; the request therefore carries its own floor. This returns the
     request's own value ONLY when it is a canonical member of that domain. An ABSENT ("", None) or
-    MALFORMED ("AAC9", 2, ...) floor returns None so the caller FAILS CLOSED: the removed
-    `_DEFAULT_REQUIRED_AUTHN_ASSURANCE = "AAC2"` silently satisfied a CRITICAL/AAC3 request with an
-    AAC2 decision, which is exactly the defect R008 removes. Request-specific floors are returned
-    EXACTLY (AAC1 stays AAC1, AAC2 stays AAC2, AAC3 stays AAC3) - never globally forced to AAC3 and
-    never replaced by a renamed default.
+    MALFORMED ("AAC9", 2, ...) floor returns None so the caller FAILS CLOSED (DENY_AUTHN). Request
+    floors are returned EXACTLY (AAC1 stays AAC1, AAC2 stays AAC2, AAC3 stays AAC3) - never globally
+    forced to AAC3 and never replaced by a renamed default.
 
-    The single NON-CANONICAL exception is a request that EXPLICITLY declares
-    `adapter_kind == "local_adapter"`: an internal/legacy adapter may omit the field and receive the
-    named `LOCAL_ADAPTER_AUTHN_FLOOR`. That seam cannot be reached by a canonical request (default
-    `adapter_kind == "canonical"`), and an unrecognised adapter kind still returns None (fail closed).
+    R5: the previously-exposed `adapter_kind == "local_adapter"` compatibility fallback that mapped
+    to `LOCAL_ADAPTER_AUTHN_FLOOR` ("AAC2") is REMOVED because it was a request-controlled selector
+    that let a CRITICAL/AAC3-required request reach verification with an AAC2 floor. There is no
+    caller-controllable floor substitution in the canonical verifier; only the explicit canonical
+    request floor is honored, and its absence or error fails closed.
     """
     value = getattr(request, "required_authn_assurance", None)
     if isinstance(value, str) and value in AUTHN_ASSURANCE_CLASSES:
         return value
-    if getattr(request, "adapter_kind", "canonical") == "local_adapter":
-        return LOCAL_ADAPTER_AUTHN_FLOOR
     return None
 
 

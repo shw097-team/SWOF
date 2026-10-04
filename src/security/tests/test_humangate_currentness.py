@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey  # noqa: E402
 
 from security.humangate import (  # noqa: E402
-    ADAPTER_KINDS, APPROVAL_BASIS_FRAME, APPROVAL_DECISION_BASIS_FIELDS, AUTHN_ASSURANCE_CLASSES,
+    APPROVAL_BASIS_FRAME, APPROVAL_DECISION_BASIS_FIELDS, AUTHN_ASSURANCE_CLASSES,
     AUTHN_ASSURANCE_ORDER, DECISION_EXECUTABLE_STATES, DOMAIN_FRAME, JCS_PROFILE, _CLASS_ABSENT,
     _CLASS_MALFORMED, _CLASS_VALID, _classify_domain, _required_authn_floor, ApprovalDecision,
     ApprovalRequest, ApprovalToken, HumanGateDecision, JCSError, NonceLedger, VerificationContext,
@@ -1286,7 +1286,6 @@ class TestRequiredAuthnFloorResolutionR008(unittest.TestCase):
     def test_r008_floor_domain_is_the_canonical_aac_triple(self):
         self.assertEqual(AUTHN_ASSURANCE_CLASSES, ("AAC1", "AAC2", "AAC3"))
         self.assertEqual(AUTHN_ASSURANCE_ORDER, {"AAC1": 1, "AAC2": 2, "AAC3": 3})
-        self.assertEqual(ADAPTER_KINDS, ("canonical", "local_adapter"))
 
     def test_r008_floor_returns_each_canonical_request_value_exactly(self):
         for floor in ("AAC1", "AAC2", "AAC3"):
@@ -1314,15 +1313,18 @@ class TestRequiredAuthnFloorResolutionR008(unittest.TestCase):
         self.assertEqual(_classify_domain("AAC9", AUTHN_ASSURANCE_CLASSES),
                          (_CLASS_MALFORMED, "AAC9"))
 
-    def test_r008_explicit_local_adapter_seam_is_named_and_canonical_requests_cannot_reach_it(self):
-        # A canonical request (the default) NEVER falls back; only the explicit, named adapter does.
-        self.assertIsNone(_required_authn_floor(_release_request(
-            required_authn_assurance="", adapter_kind="canonical")))
-        self.assertIsNone(_required_authn_floor(_release_request(
-            required_authn_assurance="", adapter_kind="something-else")))
+    def test_r008_no_request_controlled_adapter_can_substitute_a_floor(self):
+        # R5 (SWOF-W2-CLOSURE-R5): the `adapter_kind` compatibility selector is REMOVED from the
+        # canonical verifier. A missing/malformed canonical floor fails closed (None) regardless
+        # of any request-controlled adapter kind; CRITICAL/AAC3 can never be under-enforced to AAC2.
+        for kind in ("canonical", "local_adapter", "something-else"):
+            with self.subTest(kind=kind):
+                self.assertIsNone(_required_authn_floor(_release_request(
+                    required_authn_assurance="", adapter_kind=kind)))
+        # A present canonical floor is returned EXACTLY and is the ONLY floor source.
         self.assertEqual(
             _required_authn_floor(_release_request(
-                required_authn_assurance="", adapter_kind="local_adapter")), "AAC2")
+                required_authn_assurance="AAC3", adapter_kind="local_adapter")), "AAC3")
 
 
 class TestPolicyBoundAuthnFloorR008(unittest.TestCase):
