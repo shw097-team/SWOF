@@ -1,0 +1,33 @@
+{
+  "schema": "SWOF-W2-R7-FRESH-CHECKER-FINDINGS/1",
+  "checker_identity": "fresh-context-VERIFY_ONLY-readonly deleg_55d6f3fb sa-0-519bc4b7",
+  "checker_ne_maker": true,
+  "checker_read_only": true,
+  "subject_source_sha": "335c231659f42badd15085e379fe252def988584",
+  "product_verdict": "PASS",
+  "governance_verdict": "PASS",
+  "wave_verdict": "PASS",
+  "confirmed_defects": [],
+  "evidence_gaps": [],
+  "independent_evidence": {
+    "old_vs_new": "R6 94e4c15 -> RETURN None (bypass); R7 335c2316 -> DENY DENY_REQUEST_POLICY_MISMATCH",
+    "sweep": "gated trusted x benign caller x 3 routes = 72 combos: R6 72/72 leak, R7 0/72",
+    "attacks": "benign w/o resolver/ctx -> DENY_REQUEST_UNRESOLVED; foreign resolver -> DENY_REQUEST_UNRESOLVED; mismatched request_id (identical policy fields) -> DENY_REQUEST_UNRESOLVED (parity load-bearing); authority_edge mismatch -> ROUTE_UNDERSTATES_ACTION; positive control -> None",
+    "r6_retained": "humangate.py byte-identical R6->R7; TestR6TrustedRequestBoundary 13 OK",
+    "regression": "security 433 OK; R7 class 12 OK; W1=113 W2=795 grand=908 all exit 0",
+    "byte_binding": "R7_FULL_REGRESSION_INDEX.json roots[] 0 mismatches vs literal on-disk bytes; headers name 335c2316"
+  },
+  "non_blocking_observations": [
+    {
+      "id": "NB-R7-001",
+      "note": "index_sha256 recipe now documented + reproducible (fixed in this lane)",
+      "blocking": false
+    },
+    {
+      "id": "NB-R7-002",
+      "note": "benign NONE route now requires ctx + working request_resolver; no non-test production caller exists",
+      "blocking": false
+    }
+  ],
+  "generated_at": "2026-10-05T01:49:21Z"
+}

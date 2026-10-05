@@ -1,0 +1,14 @@
+# command : cross-tree pre-verifier route-suppression counterexample (F-W2R6-EXT-001)
+# phase   : w2_candidate_w2r7_adjudication
+# started : 2026-10-05T01:45:36Z
+------------------------------------------------------------------------------
+[OBSERVED] R6 source 94e4c15e1040a159d0eb6ac3ef4089b421e60bf9:
+  trusted=release/CRITICAL/P5/T3/AAC3 ; caller=read/LOW/P2/T2/AAC1 ; route=human_gate_route('read')
+  RESULT: ACCEPT (None returned)  <-- pre-verifier route suppression SUCCEEDED => F-W2R6-EXT-001 CONFIRMED
+
+[OBSERVED] R7 source 335c231659f42badd15085e379fe252def988584:
+  same probe
+  RESULT: DENY msg=DENY_REQUEST_POLICY_MISMATCH => F-W2R6-EXT-001 CLOSED
+
+[EVIDENCE] TestR7TrustedRouteAdmission A1-A9 + P1-P3: 12/12 OK.
+FINAL: route-level trusted-request boundary closes the bypass; benign positive control preserved.

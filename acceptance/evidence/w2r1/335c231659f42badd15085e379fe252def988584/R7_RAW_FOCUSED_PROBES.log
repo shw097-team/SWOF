@@ -1,0 +1,24 @@
+# command : python -m unittest src.security.tests.test_rights.TestR7TrustedRouteAdmission -v
+# cwd     : C:/Projects/Agent_Workspace/SWOF/.w2r7-worktree
+# git HEAD: 335c231659f42badd15085e379fe252def988584
+# phase   : w2_candidate_w2r7_focused
+# started : 2026-10-05T01:45:36Z
+# exit_code: 0
+------------------------------------------------------------------------------
+test_a1_trusted_critical_p4_t3_vs_caller_low_p2_t2_is_policy_mismatch (src.security.tests.test_rights.TestR7TrustedRouteAdmission.test_a1_trusted_critical_p4_t3_vs_caller_low_p2_t2_is_policy_mismatch) ... ok
+test_a2_operation_only_suppression_is_policy_mismatch (src.security.tests.test_rights.TestR7TrustedRouteAdmission.test_a2_operation_only_suppression_is_policy_mismatch) ... ok
+test_a3_risk_only_suppression_is_policy_mismatch (src.security.tests.test_rights.TestR7TrustedRouteAdmission.test_a3_risk_only_suppression_is_policy_mismatch) ... ok
+test_a4_permission_only_suppression_is_policy_mismatch (src.security.tests.test_rights.TestR7TrustedRouteAdmission.test_a4_permission_only_suppression_is_policy_mismatch) ... ok
+test_a5_autonomy_only_suppression_is_policy_mismatch (src.security.tests.test_rights.TestR7TrustedRouteAdmission.test_a5_autonomy_only_suppression_is_policy_mismatch) ... ok
+test_a6_combined_suppression_is_policy_mismatch (src.security.tests.test_rights.TestR7TrustedRouteAdmission.test_a6_combined_suppression_is_policy_mismatch) ... ok
+test_a7_fake_none_route_with_benign_clone_and_gated_trusted_is_denied (src.security.tests.test_rights.TestR7TrustedRouteAdmission.test_a7_fake_none_route_with_benign_clone_and_gated_trusted_is_denied) ... ok
+test_a8_benign_caller_without_a_resolver_fails_closed (src.security.tests.test_rights.TestR7TrustedRouteAdmission.test_a8_benign_caller_without_a_resolver_fails_closed) ... ok
+test_a9_stale_or_foreign_trusted_request_is_deny_request_unresolved (src.security.tests.test_rights.TestR7TrustedRouteAdmission.test_a9_stale_or_foreign_trusted_request_is_deny_request_unresolved) ... ok
+test_p1_exact_benign_request_passes_without_a_token (src.security.tests.test_rights.TestR7TrustedRouteAdmission.test_p1_exact_benign_request_passes_without_a_token) ... ok
+test_p2_exact_gated_request_with_valid_token_passes (src.security.tests.test_rights.TestR7TrustedRouteAdmission.test_p2_exact_gated_request_with_valid_token_passes) ... ok
+test_p3_supplied_route_authority_edge_mismatch_is_denied (src.security.tests.test_rights.TestR7TrustedRouteAdmission.test_p3_supplied_route_authority_edge_mismatch_is_denied) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.006s
+
+OK
