@@ -75,7 +75,13 @@ _ACTION_BY_OPERATION = {
 # domain coapproval (HA3 financial / HA3_Physical / a data-class-derived export clause) from any
 # caller field, so an unresolved one is DEFERRED (TEMP_CLOSED_POLICY_RESOLUTION), never benign and
 # never collapsed onto another class. The canonical action IDENTITY is still preserved.
-_OWNER_BOUNDARY_DEFERRED = frozenset({ACT_FINANCIAL, ACT_PHYSICAL, ACT_DATA_EXPORT})
+_OWNER_BOUNDARY_DEFERRED = frozenset({
+    ACT_FINANCIAL,
+    ACT_PHYSICAL,
+    ACT_DATA_EXPORT,
+    ACT_IDENTITY_RIGHTS,
+    ACT_DELETE_IRREV,
+})
 
 # Reason prefixes. A caller maps these to the canonical deny codes.
 TEMP_CLOSED_POLICY_RESOLUTION = "TEMP_CLOSED_POLICY_RESOLUTION"
