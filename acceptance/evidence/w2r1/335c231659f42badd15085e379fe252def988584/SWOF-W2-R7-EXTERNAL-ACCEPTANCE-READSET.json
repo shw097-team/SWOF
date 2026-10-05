@@ -1,0 +1,59 @@
+{
+  "schema": "SWOF-W2-R7-EXTERNAL-ACCEPTANCE-READSET/1",
+  "repair_id": "SWOF-W2-CLOSURE-R7",
+  "generated_at": "2026-10-05",
+  "publication_model": "non-circular: in-tree immutable evidence commit + out-of-tree readset (support commit)",
+  "repo": "shw097-team/SWOF",
+  "pr": 7,
+  "identity": {
+    "source_candidate_sha": "335c231659f42badd15085e379fe252def988584",
+    "parent_source_sha": "94e4c15e1040a159d0eb6ac3ef4089b421e60bf9",
+    "parent_evidence_sha": "6c58c21eee69391ba146e21e27b6d3b7f8f2211c",
+    "evidence_commit_sha": "36cc241bc5823ff0f489e4e4a7518a3d96653e97",
+    "source_ne_evidence": true,
+    "main_sha_unchanged": "acdbfaadd19d12927eb5bd542b09ed230bbc481e"
+  },
+  "refs": {
+    "source_branch": {
+      "name": "wo/swof-w2-closure-r1",
+      "sha": "335c231659f42badd15085e379fe252def988584",
+      "readback": "git ls-remote 2026-10-05 -> 335c231659f42badd15085e379fe252def988584"
+    },
+    "evidence_branch": {
+      "name": "evidence/swof-w2r7-closure-repair",
+      "sha": "36cc241bc5823ff0f489e4e4a7518a3d96653e97",
+      "readback": "git ls-remote 2026-10-05 -> 36cc241bc5823ff0f489e4e4a7518a3d96653e97"
+    },
+    "pr_head": {
+      "sha": "335c231659f42badd15085e379fe252def988584",
+      "state": "open",
+      "merged": false
+    }
+  },
+  "artifact_identity": {
+    "rule": "artifact_commit_sha_or_git_blob_identity + independently computed file hash/bytes; no self-referential self-hash as authority edge",
+    "evidence_tree_root": "acceptance/evidence/w2r1/335c231659f42badd15085e379fe252def988584",
+    "evidence_commit_sha": "36cc241bc5823ff0f489e4e4a7518a3d96653e97",
+    "manifest_sha256": "054c96b823e22fa41560d580b86408c6d51cf15170806f847186cce055130674",
+    "return_pack_sha256": "2beea3c5a8e41774b459c0b52e3391dc2c4d576a74e3be5de7b3307a0a260e7d"
+  },
+  "checkpoint": {
+    "project": "HGK-P0-SWOF-W2",
+    "final_checkpoint_id": "CK-W2-R7-FINAL",
+    "binding_field": "checkpoints.source_digest",
+    "resolves_to_exact_source_sha": "335c231659f42badd15085e379fe252def988584"
+  },
+  "compiler": {
+    "contract_sha256": "f16e209fdc42eacb201a44e62e40e56d5467aa788ebfc17d028ad6916ba68045",
+    "thin_prompt_path": "R7_COMPILED_THIN_PROMPT.md"
+  },
+  "later_support_pointer_policy": "any later evidence-branch commits are NON_SUBJECT_POINTER_ONLY and never alter acceptance-subject semantics",
+  "non_claims": [
+    "NOT_EXTERNALLY_ACCEPTED",
+    "W3_NOT_STARTED",
+    "NOT_MERGED",
+    "NOT_RELEASED",
+    "NOT_PRODUCTION",
+    "NO_WORLD_EFFECT"
+  ]
+}
