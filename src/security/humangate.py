@@ -75,6 +75,8 @@ import threading
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
+from . import policy_projection
+
 INTEGRITY_PROFILE_ID = "SWOF-HG-INTEGRITY-001"
 
 TOKEN_STATES = ("ACTIVE", "CONSUMED", "REVOKED", "EXPIRED")
@@ -201,6 +203,11 @@ APPROVAL_DENY_CODES = (
     # or whose caller-supplied policy fields diverge from it, FAILS CLOSED before the authn floor
     # is consulted.
     "DENY_REQUEST_UNRESOLVED", "DENY_REQUEST_POLICY_MISMATCH",
+    # R8 (F-W2R7-EXT-001): the PI06 MINIMUM-POLICY CONFORMANCE seam. A TRUSTED request that is
+    # weaker than the frozen PI06 minimum floor is refused; a required coapproval that is missing /
+    # stale / foreign / revoked / insufficient is refused; and an unresolvable action / absent
+    # coapproval seam is TEMP-CLOSED rather than guessed.
+    "DENY_POLICY_FLOOR", "DENY_COAPPROVAL", "TEMP_CLOSED_POLICY_RESOLUTION",
 )
 
 # ---------------------------------------------------------------------------------------------
@@ -533,6 +540,11 @@ class ApprovalRequest:
     # a gated canonical request: ABSENT ("") is DISTINCT from malformed and BOTH fail closed - the
     # field is NEVER defaulted. The floor is preserved exactly (AAC1 stays AAC1, ...).
     required_authn_assurance: str = ""
+    # R8 (F-W2R7-EXT-001): the canonical PI06 15.2 authority-ref coapproval set. A tuple in unique
+    # canonical lexical order with non-empty string atoms; a malformed set FAILS CLOSED. It is a
+    # policy-owned field (pinned to the trusted request) and each ref must resolve to a CURRENT
+    # canonical HumanGateDecision, or the gate refuses (DENY_COAPPROVAL). It grants nothing.
+    required_coapprovals: tuple[str, ...] = ()
     # R5 (SWOF-W2-CLOSURE-R5): `adapter_kind` no longer affects the authn floor. It is retained
     # only as an inert marker for any pre-existing fixture; the verifier never consults it and a
     # canonical request MUST carry its own explicit `required_authn_assurance` or fail closed.
@@ -594,6 +606,15 @@ class VerificationContext:
     decision_resolver: object = None
     authority_policy: object = None
     request_resolver: object = None
+    # R8 (F-W2R7-EXT-001): the FOURTH OWNER-INJECTED seam. `coapproval_resolver(request_id,
+    # required_authority_ref)` resolves one PI06 15.2 authority-ref to the CURRENT canonical
+    # HumanGateDecision (or None for a missing/stale/foreign/revoked decision). It is a
+    # current-decision resolver, NOT an authority grant, and it is never self-asserted by the
+    # caller. An absent resolver on a request that requires a coapproval FAILS CLOSED
+    # (TEMP_CLOSED_AUTHORITY_RESOLUTION); a None/foreign/revoked/insufficient/weaker decision is
+    # DENY_COAPPROVAL. This seam defines no HA ordering; the owner-injected `authority_policy` is
+    # still the only sufficiency decision.
+    coapproval_resolver: object = None
     commit_time: str = ""
     rights_generation: int | None = None
     consent_generation: int | None = None
@@ -906,7 +927,7 @@ def _resolve_current_decision(ctx, decision_id):
 # fields (request_id/decision_id/subject/binding) are already exact-bound by `_binding_errors`.
 _REQUEST_POLICY_FIELDS = (
     "operation", "operation_class", "effect_risk_tier", "permission_class", "autonomy_tier",
-    "required_authority", "required_authn_assurance", "rollback_ref",
+    "required_authority", "required_authn_assurance", "required_coapprovals", "rollback_ref",
     "independent_checker_required",
 )
 
@@ -963,6 +984,116 @@ def _authority_satisfied(ctx, decision, required_authority):
     if holds is not True:
         return (False, "DENY_INSUFFICIENT_AUTHORITY")
     return (True, "")
+
+
+def _policy_floor_errors(trusted_request):
+    """R8: the PI06 minimum-policy floor reasons for a TRUSTED request.
+
+    ONE projection, no second engine: `policy_projection.policy_floor_errors` is the only floor
+    computation, and it is consumed identically by the verifier and by the rights gate. A
+    projection failure is TEMP-CLOSED (fail closed), never a silent pass.
+    """
+    try:
+        return policy_projection.policy_floor_errors(trusted_request)
+    except Exception:
+        return ("%s:projection_error" % policy_projection.TEMP_CLOSED_POLICY_RESOLUTION,)
+
+
+def _resolve_coapproval(ctx, request_id, ref):
+    """Resolve one coapproval ref to the CURRENT canonical HumanGateDecision, else None.
+
+    The OWNER-INJECTED resolver may be a callable `resolver(request_id, required_authority_ref)` or
+    an object exposing `.resolve(request_id, required_authority_ref)`. `None`, a non-callable, a
+    callable that raises or has an incompatible arity, and any object that is not a
+    `HumanGateDecision` all resolve to None (fail closed). This is a current-decision resolver, not
+    an authority grant.
+    """
+    resolver = getattr(ctx, "coapproval_resolver", None)
+    if resolver is None:
+        return None
+    try:
+        if callable(resolver):
+            resolved = resolver(request_id, ref)
+        else:
+            resolve = getattr(resolver, "resolve", None)
+            if not callable(resolve):
+                return None
+            resolved = resolve(request_id, ref)
+    except Exception:
+        return None
+    return resolved if isinstance(resolved, HumanGateDecision) else None
+
+
+def _coapproval_decision_errors(ctx, trusted_request):
+    """R8: reasons the trusted request's required coapprovals are unsatisfied; empty = OK.
+
+    For each required authority ref a CURRENT canonical HumanGateDecision must be resolved and must
+    satisfy: is a HumanGateDecision; same request_id; executable APPROVE; not revoked/superseded;
+    trusted decided_at; canonical authority_class; `authority_policy` returns True for the ref;
+    authn assurance >= the trusted floor; and the decision basis recomputes. Missing/stale/foreign/
+    revoked/insufficient FAILS CLOSED with DENY_COAPPROVAL. An absent resolver when a coapproval is
+    required is TEMP_CLOSED_AUTHORITY_RESOLUTION (never "skip").
+    """
+    refs = getattr(trusted_request, "required_coapprovals", ())
+    if not policy_projection.coapproval_refs_valid(refs):
+        return ("COAPPROVAL_MALFORMED:not_canonical_authority_ref_set",)
+    if not refs:
+        return ()
+    if getattr(ctx, "coapproval_resolver", None) is None:
+        return ("TEMP_CLOSED:no_coapproval_resolver",)
+    floor_assurance = AUTHN_ASSURANCE_ORDER.get(_required_authn_floor(trusted_request))
+    errors = []
+    for ref in refs:
+        decision = _resolve_coapproval(ctx, trusted_request.request_id, ref)
+        if decision is None:
+            errors.append("COAPPROVAL_UNRESOLVED:%s" % ref)
+            continue
+        if decision.request_id != trusted_request.request_id:
+            errors.append("COAPPROVAL_REQUEST_MISMATCH:%s" % ref)
+            continue
+        if decision.revoked is not False or decision.superseded is not False \
+                or decision.decision not in DECISION_EXECUTABLE_STATES \
+                or _epoch(decision.decided_at) is None:
+            errors.append("COAPPROVAL_NOT_EXECUTABLE:%s" % ref)
+            continue
+        authority_ok, _code = _authority_satisfied(ctx, decision, ref)
+        if not authority_ok:
+            errors.append("COAPPROVAL_AUTHORITY:%s" % ref)
+            continue
+        if floor_assurance is None \
+                or AUTHN_ASSURANCE_ORDER.get(decision.authn_assurance_class, 0) < floor_assurance:
+            errors.append("COAPPROVAL_AUTHN:%s" % ref)
+            continue
+        try:
+            basis = approval_decision_basis_hash(decision)
+        except Exception:
+            errors.append("COAPPROVAL_BASIS_UNRECOMPUTABLE:%s" % ref)
+            continue
+        if decision.decision_basis_hash != basis:
+            errors.append("COAPPROVAL_BASIS:%s" % ref)
+    return tuple(errors)
+
+
+def _coapproval_deny_code(errors):
+    """The canonical deny code for `_coapproval_decision_errors` reasons."""
+    if any(err.startswith("TEMP_CLOSED") for err in errors):
+        return "TEMP_CLOSED_AUTHORITY_RESOLUTION"
+    return "DENY_COAPPROVAL"
+
+
+def _policy_conformance_deny(trusted_request, ctx):
+    """R8: (code, detail) when a TRUSTED request fails PI06 minimum policy, else None.
+
+    The ONE conformance computation consumed by BOTH `verify_approval_token` and the rights gate.
+    It runs on the TRUSTED request only, so a caller can never satisfy it by declaration.
+    """
+    floor_errors = _policy_floor_errors(trusted_request)
+    if floor_errors:
+        return (policy_projection.policy_deny_code(floor_errors), ";".join(floor_errors))
+    coapproval_errors = _coapproval_decision_errors(ctx, trusted_request)
+    if coapproval_errors:
+        return (_coapproval_deny_code(coapproval_errors), ";".join(coapproval_errors))
+    return None
 
 
 # R5 (SWOF-W2-CLOSURE-R5): request-controlled compatibility is REMOVED from the canonical
@@ -1178,6 +1309,16 @@ def verify_approval_token(token, request, ctx) -> ApprovalDecision:
             return _deny("DENY_REQUEST_POLICY_MISMATCH", ",".join(mismatches))
     if trusted_request is None:
         trusted_request = request
+
+    # ----------------------------------------------------------------------------------------
+    # R8 (F-W2R7-EXT-001): PI06 MINIMUM-POLICY CONFORMANCE, on the TRUSTED request. R6/R7 pin the
+    # caller to the trusted request; this proves the trusted request ITSELF meets the frozen PI06
+    # minimum floor (e.g. a trusted `release` declaring P2/LOW/T2/AAC2/checker=false is refused),
+    # and that every required coapproval resolves to a CURRENT canonical decision.
+    # ----------------------------------------------------------------------------------------
+    conformance = _policy_conformance_deny(trusted_request, ctx)
+    if conformance is not None:
+        return _deny(conformance[0], conformance[1])
 
     # ----------------------------------------------------------------------------------------
     # R007: request -> HumanGateDecision -> ApprovalToken authority/decision lineage, FIRST-FAIL.

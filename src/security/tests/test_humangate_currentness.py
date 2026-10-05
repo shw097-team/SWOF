@@ -54,7 +54,7 @@ R007_OLD_BASIS = "b7965468fb4b11f51c44342d8aefe92c2120a8eb5ed648678f3c09d85eb910
 # WO-SWOF-W2-R007: the LITERAL frozen ApprovalDecisionBasisV1 JCS digest. Independent source
 # constant for the decision fixture below; it does NOT call the helper under test.
 R007_APPROVAL_DECISION_BASIS = (
-    "85d40a3e42a96bebd63c1cf323d7d359825c43ed6447a57c38ba5897525ab4f7"
+    "9adf0095a78dd6244d3a9190b022ac611b0f73a7730b760fb352678da0c7b3c1"
 )
 
 # WO-SWOF-W2-R004: the signature is a REAL Ed25519 signature. The TEST key never leaves this
@@ -67,7 +67,7 @@ BASIS = approval_basis_hash(DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0")
 # WO-SWOF-W2-R007: the LITERAL frozen 15.5 approval basis for the fixture request, whose
 # `decision_basis_hash` is R007_APPROVAL_DECISION_BASIS. Source-derived, not helper-derived.
 R007_FIXTURE_APPROVAL_BASIS = (
-    "519bb5449ba2548c613d41292cdcee499608ea651fa2b06f5198f98752c6d937"
+    "3c8dfb2d5ac6c678053550795acf87223d8b8df15816c4b5357aa990278b2c80"
 )
 
 
@@ -96,7 +96,7 @@ def _current_decision(**overrides):
     """The canonical CURRENT HumanGateDecision fixture the owner resolver would return."""
     fields = dict(
         decision_id="dec-1", request_id="req-1", decision="APPROVE", approver="human:carol",
-        authority_class="HA3", authn_assurance_class="AAC2", reason_codes=("HG-RULE-001",),
+        authority_class="HA1", authn_assurance_class="AAC2", reason_codes=("HG-RULE-001",),
         decided_at="2026-06-01T00:15:00Z", evidence_ref="evidence:decision-1",
         integrity_ref="integrity:decision-1", revoked=False, superseded=False,
     )
@@ -125,7 +125,8 @@ def _request_resolver(trusted):
 def _valid_token(**overrides):
     fields = dict(
         token_id="tok-1", request_id="req-1", decision_id="dec-1", subject="svc-a",
-        subject_hash=DIGEST, semantic_version="1.0.0", actor="human:alice", operation="release",
+        subject_hash=DIGEST, semantic_version="1.0.0", actor="human:alice",
+        operation="ACT-EXTERNAL-WRITE-REV",
         target_system="swof", resource=("artifact:app",), environment="prod",
         purpose_ref="purpose:release", scope=("release",), data_class="INTERNAL",
         effect_digest=DIGEST, consumer_audience_hash=DIGEST, approver="human:carol",
@@ -150,12 +151,18 @@ def _valid_token(**overrides):
 
 
 def _release_request(**overrides):
+    """R8: the canonical-valid GENERIC mechanics request (ACT-EXTERNAL-WRITE-REV / MEDIUM / P3 / HA1).
+
+    It MEETS the frozen PI06 minimum policy (P3 / MEDIUM / clause {HA1} / AAC1), so the JCS /
+    Ed25519 / time / nonce / generation / basis / lineage cases exercise the mechanics rather than
+    being shadowed by the new floor. RELEASE-specific cases use `_canonical_release_request`.
+    """
     fields = dict(
         subject="svc-a", subject_hash=DIGEST, semantic_version="1.0.0", actor="human:alice",
-        operation="release", target_system="swof", resource=("artifact:app",), environment="prod",
-        purpose_ref="purpose:release", scope=("release",), data_class="INTERNAL",
-        effect_digest=DIGEST, consumer_audience_hash=DIGEST, effect_risk_tier="LOW",
-        permission_class="P2", autonomy_tier="T2", required_authority="HA3",
+        operation="ACT-EXTERNAL-WRITE-REV", target_system="swof", resource=("artifact:app",),
+        environment="prod", purpose_ref="purpose:release", scope=("release",), data_class="INTERNAL",
+        effect_digest=DIGEST, consumer_audience_hash=DIGEST, effect_risk_tier="MEDIUM",
+        permission_class="P3", autonomy_tier="T2", required_authority="HA1",
         required_authn_assurance="AAC2", adapter_kind="canonical",
         rollback_ref="rollback:1", independent_checker_required=False, ruin_class="NONE",
         request_id="req-1", decision_id="dec-1", decision_basis_hash=R007_APPROVAL_DECISION_BASIS,
@@ -163,6 +170,28 @@ def _release_request(**overrides):
     )
     fields.update(overrides)
     return ApprovalRequest(**fields)
+
+
+def _canonical_release_request(**overrides):
+    """R8: the canonical-valid RELEASE request (P5 / CRITICAL / T3 / HA1 + coapproval HA5 / AAC3)."""
+    fields = dict(
+        operation="release", effect_risk_tier="CRITICAL", permission_class="P5", autonomy_tier="T3",
+        required_authority="HA1", required_coapprovals=("HA5",), required_authn_assurance="AAC3",
+        independent_checker_required=True, effect_digest=DIGEST, consumer_audience_hash=DIGEST,
+        generation_bundle_digest=DIGEST, rollback_digest=DIGEST,
+    )
+    fields.update(overrides)
+    return _release_request(**fields)
+
+
+def _release_token(**overrides):
+    """R8: a canonical-valid RELEASE token binding `_canonical_release_request`."""
+    fields = dict(
+        operation="release", authn_assurance_class="AAC3", independent_checker_required=True,
+        independent_checker_evidence_ref="evidence:checker-1", rollback_ref="rollback:1",
+    )
+    fields.update(overrides)
+    return _valid_token(**fields)
 
 
 def _release_ctx(**overrides):
@@ -507,7 +536,7 @@ class TestRouteReDerivationR2(unittest.TestCase):
 
     def test_r2_10_agreed_low_risk_route_returns_none(self):
         route = human_gate_route("read")
-        request = _release_request(operation="read")
+        request = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2")
         # R7: a benign NONE route now needs the TRUSTED current request to resolve.
         self.assertIsNone(assert_human_gate_satisfied(
             route, "", request=request,
@@ -522,7 +551,7 @@ class TestRouteReDerivationR2(unittest.TestCase):
 
     def test_r2_12_p3_request_with_a_valid_typed_token_passes(self):
         route = human_gate_route("release")
-        request = _release_request(effect_risk_tier="LOW", permission_class="P3")
+        request = _release_request(effect_risk_tier="HIGH", permission_class="P3")
         self.assertIsNone(assert_human_gate_satisfied(
             route, _valid_token(), requesting_actor="human:dave", request=request,
             ctx=_release_ctx(request_resolver=_request_resolver(request))))
@@ -1013,9 +1042,10 @@ class TestCanonicalRuinAndFailClosedEnumsR5(unittest.TestCase):
         request = _release_request(operation="read", effect_risk_tier="LOW",
                                    permission_class="P2", ruin_class="RUIN")
         self.assertFalse(human_gate_required(request).required)
-        self.assertEqual(_verify(request_over={"effect_risk_tier": "LOW",
+        self.assertEqual(_verify(request_over={"operation": "read", "effect_risk_tier": "LOW",
                                                "permission_class": "P2",
-                                               "ruin_class": "RUIN"}).code,
+                                               "ruin_class": "RUIN"},
+                                  token_over={"operation": "read"}).code,
                          "APPROVE_BASIS_SATISFIED")
 
     def test_r5_11_legacy_ruin_alias_still_vetoes_without_a_canonical_tier(self):
@@ -1166,7 +1196,7 @@ class TestAuthorityDecisionLineageR007(unittest.TestCase):
         return _decision_registry({"dec-1": _current_decision(**decision_overrides)})
 
     def test_r007_b1_insufficient_authority_is_denied(self):
-        decision = _verify(ctx_over={"decision_resolver": self._resolved(authority_class="HA1")})
+        decision = _verify(ctx_over={"decision_resolver": self._resolved(authority_class="HA2")})
         self.assertEqual((decision.ok, decision.code), (False, "DENY_INSUFFICIENT_AUTHORITY"))
 
     def test_r007_b2_unknown_authority_class_is_denied(self):
@@ -1218,8 +1248,9 @@ class TestAuthorityDecisionLineageR007(unittest.TestCase):
         self.assertEqual((decision.ok, decision.code), (False, "TEMP_CLOSED_AUTHORITY_RESOLUTION"))
 
     def test_r007_b10_request_without_required_authority_is_denied(self):
+        # R8: dropping the declaration no longer covers a PI06 clause, so the floor refuses first.
         decision = _verify(request_over={"required_authority": ""})
-        self.assertEqual((decision.ok, decision.code), (False, "DENY_INSUFFICIENT_AUTHORITY"))
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_POLICY_FLOOR"))
 
     def test_r007_b11_decision_authn_downgrade_is_denied(self):
         decision = _verify(
@@ -1405,7 +1436,7 @@ class TestPolicyBoundAuthnFloorR008(unittest.TestCase):
                                    token_over={"authn_assurance_class": "AAC2"},
                                    ctx_over={"decision_resolver": self._resolved(
                                        authn_assurance_class="AAC2")})
-                self.assertEqual((decision.ok, decision.code), (False, "DENY_AUTHN"))
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_POLICY_FLOOR"))
 
     def test_r008_a7_malformed_or_unknown_floor_is_denied(self):
         for malformed in ("AAC9", "aac2", "AAC0", 2):
@@ -1413,31 +1444,33 @@ class TestPolicyBoundAuthnFloorR008(unittest.TestCase):
                 decision = _verify(request_over={"required_authn_assurance": malformed},
                                    ctx_over={"decision_resolver": self._resolved(
                                        authn_assurance_class="AAC3")})
-                self.assertEqual((decision.ok, decision.code), (False, "DENY_AUTHN"))
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_POLICY_FLOOR"))
 
     def test_r008_a8_critical_request_aac3_decision_and_token_aac2_is_denied(self):
-        request = _verify(request_over={"effect_risk_tier": "CRITICAL",
+        # A KNOWN benign operation carries no PI06 clause, so this isolates the AUTHN axis: the
+        # AAC3 floor + a decision/token AAC2 still deny. (A sufficient HA1 decision is present.)
+        request = _verify(request_over={"operation": "read", "effect_risk_tier": "CRITICAL",
                                         "required_authn_assurance": "AAC3"},
-                          token_over={"authn_assurance_class": "AAC2"},
+                          token_over={"operation": "read", "authn_assurance_class": "AAC2"},
                           ctx_over={"decision_resolver": self._resolved(
-                              authn_assurance_class="AAC2")})
+                              authority_class="HA1", authn_assurance_class="AAC2")})
         self.assertEqual((request.ok, request.code), (False, "DENY_AUTHN"))
 
     def test_r008_a9_critical_request_aac3_decision_and_token_aac3_proceeds(self):
-        decision = _verify(request_over={"effect_risk_tier": "CRITICAL",
+        decision = _verify(request_over={"operation": "read", "effect_risk_tier": "CRITICAL",
                                          "required_authn_assurance": "AAC3"},
-                           token_over={"authn_assurance_class": "AAC3"},
+                           token_over={"operation": "read", "authn_assurance_class": "AAC3"},
                            ctx_over={"decision_resolver": self._resolved(
-                               authn_assurance_class="AAC3")})
+                               authority_class="HA1", authn_assurance_class="AAC3")})
         self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
 
     def test_r008_a10_sufficient_authority_does_not_compensate_for_weak_authn(self):
         # A top-of-domain HA5 decision still cannot rescue an AAC downgrade: the axes are independent.
-        decision = _verify(request_over={"required_authority": "HA5",
+        decision = _verify(request_over={"required_authority": "HA1",
                                          "required_authn_assurance": "AAC3"},
                            token_over={"authn_assurance_class": "AAC2"},
                            ctx_over={"decision_resolver": self._resolved(
-                               authority_class="HA5", authn_assurance_class="AAC2")})
+                               authority_class="HA1", authn_assurance_class="AAC2")})
         self.assertEqual((decision.ok, decision.code), (False, "DENY_AUTHN"))
 
 
@@ -1479,7 +1512,7 @@ class TestTokenAndDecisionAuthnFloorR008(unittest.TestCase):
 
     def test_r008_b6_valid_signature_with_insufficient_authority_is_denied(self):
         # The token IS genuinely signed over the framed canonical bytes; authority still refuses it.
-        decision = _verify(ctx_over={"decision_resolver": self._resolved(authority_class="HA1")})
+        decision = _verify(ctx_over={"decision_resolver": self._resolved(authority_class="HA2")})
         self.assertEqual((decision.ok, decision.code), (False, "DENY_INSUFFICIENT_AUTHORITY"))
 
     def test_r008_b7_decision_bound_to_another_request_is_denied(self):
@@ -1593,8 +1626,9 @@ class TestR6TrustedRequestBoundary(unittest.TestCase):
     # A11: local_adapter with a missing floor is still DENY_AUTHN - no regression, and the removed
     # adapter selector can not substitute a floor.
     def test_a11_local_adapter_missing_floor_remains_deny_authn(self):
+        # R8: an absent canonical floor is now a PI06 minimum-policy deny, not an implicit AAC2.
         self._denied(
-            "DENY_AUTHN",
+            "DENY_POLICY_FLOOR",
             request_over={"adapter_kind": "local_adapter", "required_authn_assurance": ""})
 
     # A12: a resolver that returns the SAME request keeps the valid path sane.
@@ -1609,9 +1643,10 @@ class TestR6TrustedRequestBoundary(unittest.TestCase):
         for floor in ("AAC1", "AAC2", "AAC3"):
             with self.subTest(floor=floor):
                 decision = _verify(
-                    request_over={"effect_risk_tier": "LOW", "permission_class": "P1",
+                    request_over={"operation": "read", "effect_risk_tier": "LOW",
+                                  "permission_class": "P1",
                                   "required_authn_assurance": floor},
-                    token_over={"authn_assurance_class": floor},
+                    token_over={"operation": "read", "authn_assurance_class": floor},
                     ctx_over={"decision_resolver": self._resolved(
                         authn_assurance_class=floor)})
                 self.assertEqual((decision.ok, decision.code),

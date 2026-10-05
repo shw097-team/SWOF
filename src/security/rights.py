@@ -60,9 +60,9 @@ from dataclasses import dataclass, field
 from .humangate import (
     EFFECT_RISK_TIERS, ApprovalDecision, ApprovalRequest, ApprovalToken, NonceLedger,
     VerificationContext, _CLASS_ABSENT, _CLASS_MALFORMED, _CLASS_VALID, _REQUEST_POLICY_FIELDS,
-    _resolve_current_request, classify_autonomy_tier, classify_effect_risk_tier,
-    classify_legacy_ruin_class, classify_permission_class, ruin_precedence_code,
-    verify_approval_token,
+    _policy_conformance_deny, _resolve_current_request, classify_autonomy_tier,
+    classify_effect_risk_tier, classify_legacy_ruin_class, classify_permission_class,
+    ruin_precedence_code, verify_approval_token,
 )
 
 HIGH_RISK_ACTIONS = frozenset({
@@ -486,6 +486,14 @@ def assert_human_gate_satisfied(route, approval, *, requesting_actor=None,
         if (trusted_route.required, trusted_route.route, trusted_route.authority_edge) != (
                 route.required, route.route, route.authority_edge):
             raise HumanGateBypassAttempt("ROUTE_UNDERSTATES_ACTION")
+
+        # R8 (F-W2R7-EXT-001): PI06 MINIMUM-POLICY CONFORMANCE on the TRUSTED request, consumed
+        # BEFORE the benign NONE return. R7 already pinned the caller request to the trusted one;
+        # this proves the TRUSTED request itself meets the frozen PI06 floor, using the SAME
+        # projection the verifier uses (no second policy engine).
+        conformance = _policy_conformance_deny(trusted, ctx)
+        if conformance is not None:
+            raise HumanGateBypassAttempt(conformance[0])
         return
 
     if not isinstance(approval, ApprovalToken) or request is None or ctx is None:
@@ -498,6 +506,14 @@ def assert_human_gate_satisfied(route, approval, *, requesting_actor=None,
     decision = verify_approval_token(approval, request, ctx)
     if not decision.ok:
         raise HumanGateBypassAttempt(decision.code)
+
+    # R8 (F-W2R7-EXT-001): consume the SAME PI06 conformance as the verifier, on the TRUSTED
+    # current request, as defense-in-depth on the gate path (the verifier already ran it).
+    trusted = _resolve_current_request(ctx, getattr(request, "request_id", None))
+    if trusted is not None:
+        conformance = _policy_conformance_deny(trusted, ctx)
+        if conformance is not None:
+            raise HumanGateBypassAttempt(conformance[0])
     if isinstance(requesting_actor, str) and requesting_actor.strip():
         if approval.approver.strip() == requesting_actor.strip():
             raise HumanGateBypassAttempt("SELF_APPROVAL_REFUSED")

@@ -16,6 +16,10 @@ from .rights import (  # noqa: F401
     RightsDecision, RightsDenied, RightsScope, assert_credential_scope,
     assert_human_gate_satisfied, check_rights, currentness_required, human_gate_route,
 )
+# R8 (F-W2R7-EXT-001): the PI06 minimum-policy conformance projection (one read-only table).
+from .policy_projection import (  # noqa: F401
+    MinimumPolicy, minimum_policy, policy_floor_errors,
+)
 
 __all__ = [
     "AUTHN_ASSURANCE_CLASSES", "HIGH_RISK_ACTIONS", "HUMAN_GATE_ROUTE", "INTEGRITY_PROFILE_ID",
@@ -23,5 +27,5 @@ __all__ = [
     "HumanGateBypassAttempt", "HumanGateRoute", "NonceLedger", "RightsDecision", "RightsDenied",
     "RightsScope", "VerificationContext", "assert_credential_scope",
     "assert_human_gate_satisfied", "check_rights", "currentness_required", "human_gate_route",
-    "verify_approval_token",
+    "verify_approval_token", "MinimumPolicy", "minimum_policy", "policy_floor_errors",
 ]

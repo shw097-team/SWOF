@@ -18,7 +18,8 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from security.humangate import (  # noqa: E402
     ApprovalRequest, ApprovalToken, HumanGateDecision, NonceLedger, VerificationContext,
-    approval_basis_hash, canonical_payload_bytes,
+    approval_basis_hash, approval_decision_basis_hash, canonical_payload_bytes,
+    verify_approval_token,
 )
 from security.rights import (  # noqa: E402
     EFFECT_RISK_TIERS, HIGH_RISK_ACTIONS, HumanGateBypassAttempt, HumanGateRoute, NONE_ROUTE,
@@ -38,12 +39,13 @@ BASIS = approval_basis_hash(DIGEST, DIGEST, DIGEST, DIGEST, DIGEST, "1.0")
 # WO-SWOF-W2-R007: the LITERAL frozen 15.5 approval basis for the fixture request, whose
 # `decision_basis_hash` is R007_DECISION_BASIS. Source-derived, not helper-derived.
 R007_FIXTURE_APPROVAL_BASIS = (
-    "519bb5449ba2548c613d41292cdcee499608ea651fa2b06f5198f98752c6d937"
+    "3c8dfb2d5ac6c678053550795acf87223d8b8df15816c4b5357aa990278b2c80"
 )
 
-# WO-SWOF-W2-R007: the LITERAL frozen ApprovalDecisionBasisV1 JCS digest (same fixture as the
-# currentness suite); it is an independent source constant, not a call to the helper under test.
-R007_DECISION_BASIS = "85d40a3e42a96bebd63c1cf323d7d359825c43ed6447a57c38ba5897525ab4f7"
+# WO-SWOF-W2-R007 / R8: the LITERAL frozen ApprovalDecisionBasisV1 JCS digest (same fixture as the
+# currentness suite) for the R8 generic gated request, whose resolved decision authority_class is
+# HA1 (the PI06 clause anchor). An independent source constant, not a call to the helper under test.
+R007_DECISION_BASIS = "9adf0095a78dd6244d3a9190b022ac611b0f73a7730b760fb352678da0c7b3c1"
 
 
 def _authority_policy(decision_authority_class, required_authority):
@@ -54,7 +56,7 @@ def _authority_policy(decision_authority_class, required_authority):
 def _current_decision(**overrides):
     fields = dict(
         decision_id="dec-1", request_id="req-1", decision="APPROVE", approver="human:carol",
-        authority_class="HA3", authn_assurance_class="AAC2", reason_codes=("HG-RULE-001",),
+        authority_class="HA1", authn_assurance_class="AAC2", reason_codes=("HG-RULE-001",),
         decided_at="2026-06-01T00:15:00Z", evidence_ref="evidence:decision-1",
         integrity_ref="integrity:decision-1", revoked=False, superseded=False,
     )
@@ -96,7 +98,8 @@ def _honest_registry(issuer_id, key_id, key_generation):
 def _valid_token(**overrides):
     fields = dict(
         token_id="tok-1", request_id="req-1", decision_id="dec-1", subject="svc-a",
-        subject_hash=DIGEST, semantic_version="1.0.0", actor="human:alice", operation="release",
+        subject_hash=DIGEST, semantic_version="1.0.0", actor="human:alice",
+        operation="ACT-EXTERNAL-WRITE-REV",
         target_system="swof", resource=("artifact:app",), environment="prod",
         purpose_ref="purpose:release", scope=("release",), data_class="INTERNAL",
         effect_digest=DIGEST, consumer_audience_hash=DIGEST, approver="human:carol",
@@ -121,12 +124,19 @@ def _valid_token(**overrides):
 
 
 def _release_request(**overrides):
+    """R8: the canonical-valid GENERIC mechanics request (ACT-EXTERNAL-WRITE-REV / MEDIUM / P3 / HA1).
+
+    It is a real gated request that MEETS the frozen PI06 minimum policy (P3 / MEDIUM / clause {HA1}
+    / AAC1), so JCS / Ed25519 / time / nonce / generation / basis / lineage cases exercise the
+    mechanics without being shadowed by the floor. The name is retained for history; RELEASE-specific
+    cases use `_canonical_release_request` below.
+    """
     fields = dict(
         subject="svc-a", subject_hash=DIGEST, semantic_version="1.0.0", actor="human:alice",
-        operation="release", target_system="swof", resource=("artifact:app",), environment="prod",
-        purpose_ref="purpose:release", scope=("release",), data_class="INTERNAL",
-        effect_digest=DIGEST, consumer_audience_hash=DIGEST, effect_risk_tier="LOW",
-        permission_class="P2", autonomy_tier="T2", required_authority="HA3",
+        operation="ACT-EXTERNAL-WRITE-REV", target_system="swof", resource=("artifact:app",),
+        environment="prod", purpose_ref="purpose:release", scope=("release",), data_class="INTERNAL",
+        effect_digest=DIGEST, consumer_audience_hash=DIGEST, effect_risk_tier="MEDIUM",
+        permission_class="P3", autonomy_tier="T2", required_authority="HA1",
         required_authn_assurance="AAC2", adapter_kind="canonical",
         rollback_ref="rollback:1", independent_checker_required=False, ruin_class="NONE",
         request_id="req-1", decision_id="dec-1", decision_basis_hash=R007_DECISION_BASIS,
@@ -134,6 +144,28 @@ def _release_request(**overrides):
     )
     fields.update(overrides)
     return ApprovalRequest(**fields)
+
+
+def _canonical_release_request(**overrides):
+    """R8: the canonical-valid RELEASE request (P5 / CRITICAL / T3 / HA1 + coapproval HA5 / AAC3)."""
+    fields = dict(
+        operation="release", effect_risk_tier="CRITICAL", permission_class="P5", autonomy_tier="T3",
+        required_authority="HA1", required_coapprovals=("HA5",), required_authn_assurance="AAC3",
+        independent_checker_required=True, effect_digest=DIGEST, consumer_audience_hash=DIGEST,
+        generation_bundle_digest=DIGEST, rollback_digest=DIGEST,
+    )
+    fields.update(overrides)
+    return _release_request(**fields)
+
+
+def _release_token(**overrides):
+    """R8: a canonical-valid RELEASE token binding the canonical release request."""
+    fields = dict(
+        operation="release", authn_assurance_class="AAC3", independent_checker_required=True,
+        independent_checker_evidence_ref="evidence:checker-1", rollback_ref="rollback:1",
+    )
+    fields.update(overrides)
+    return _valid_token(**fields)
 
 
 def _release_ctx(**overrides):
@@ -251,7 +283,7 @@ class TestHumanGateSatisfaction(unittest.TestCase):
             request=request, ctx=_release_ctx(request_resolver=_request_resolver(request))))
 
     def test_ungated_route_is_honoured_only_when_rederivation_agrees(self):
-        request = _release_request(operation="read")
+        request = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2")
         # R7: a benign NONE route now needs the TRUSTED current request to resolve.
         self.assertIsNone(assert_human_gate_satisfied(
             human_gate_route("read"), "", request=request,
@@ -334,7 +366,7 @@ class TestCanonicalGatePredicateR4(unittest.TestCase):
         self.assertEqual(route.authority_edge, "HUMAN_GATE:production_promotion")
 
     def test_gated_route_with_valid_token_passes(self):
-        request = _release_request(effect_risk_tier="LOW", permission_class="P3")
+        request = _release_request(effect_risk_tier="HIGH", permission_class="P3")
         route = human_gate_required(request)
         self.assertIsNone(assert_human_gate_satisfied(
             route, _valid_token(), requesting_actor="human:alice", request=request,
@@ -348,7 +380,7 @@ class TestCanonicalGatePredicateR4(unittest.TestCase):
 class TestGatedAuthorityLineageR007(unittest.TestCase):
 
     def _seam(self, ctx):
-        request = _release_request(effect_risk_tier="LOW", permission_class="P3")
+        request = _release_request(effect_risk_tier="HIGH", permission_class="P3")
         route = human_gate_required(request)
         # R6: inject the matching trusted current request so these lineage cases still exercise the
         # decision/authority seam rather than the (separately covered) trusted-request boundary.
@@ -362,7 +394,7 @@ class TestGatedAuthorityLineageR007(unittest.TestCase):
         self.assertEqual(str(caught.exception), "DENY_DECISION_UNRESOLVED")
 
     def test_gated_route_with_insufficient_authority_fails_closed(self):
-        resolver = _decision_registry({"dec-1": _current_decision(authority_class="HA1")})
+        resolver = _decision_registry({"dec-1": _current_decision(authority_class="HA2")})
         with self.assertRaises(HumanGateBypassAttempt) as caught:
             self._seam(_release_ctx(decision_resolver=resolver))
         self.assertEqual(str(caught.exception), "DENY_INSUFFICIENT_AUTHORITY")
@@ -627,7 +659,8 @@ class TestCanonicalOperationAxisR6(unittest.TestCase):
             with self.subTest(operation=operation):
                 # Every canonical name RESOLVES: the effect decides whether it tightens, so a
                 # canonical name is never SAFE_STOPPED merely for being unrecognised.
-                route = human_gate_required(_release_request(operation=operation))
+                route = human_gate_required(_release_request(
+                    operation=operation, effect_risk_tier="LOW", permission_class="P2"))
                 self.assertNotEqual(route.route, RUIN_SAFE_STOP_ROUTE)
                 if operation in self.NON_TIGHTENING_MATRIX:
                     self.assertFalse(route.required)
@@ -693,13 +726,13 @@ class TestPolicyBoundAuthnFloorAtSeamR008(unittest.TestCase):
             ctx=ctx)
 
     def test_r008_exact_floor_aac2_request_passes(self):
-        request = _release_request(effect_risk_tier="LOW", permission_class="P3",
+        request = _release_request(effect_risk_tier="HIGH", permission_class="P3",
                                    required_authn_assurance="AAC2")
         self.assertIsNone(self._seam(request))
 
     def test_r008_missing_request_floor_fails_closed_at_the_seam(self):
-        # Every other axis is satisfiable (LOW/P2, HA3 decision, AAC2 token); only the floor is absent.
-        request = _release_request(effect_risk_tier="LOW", permission_class="P2",
+        # R8: a gated request that DROPS its canonical floor is now a PI06 minimum-policy deny.
+        request = _release_request(effect_risk_tier="HIGH", permission_class="P3",
                                    required_authn_assurance="")
         original = _valid_token(approval_basis_hash=approval_basis_hash(
             R007_DECISION_BASIS, DIGEST, DIGEST, DIGEST, DIGEST, "1.0"))
@@ -707,10 +740,10 @@ class TestPolicyBoundAuthnFloorAtSeamR008(unittest.TestCase):
             assert_human_gate_satisfied(human_gate_required(request), original,
                                         requesting_actor="human:dave", request=request,
                                         ctx=_release_ctx(request_resolver=_request_resolver(request)))
-        self.assertEqual(str(caught.exception), "DENY_AUTHN")
+        self.assertEqual(str(caught.exception), "DENY_POLICY_FLOOR")
 
     def test_r008_canonical_floor_field_is_required_on_gated_requests(self):
-        request = _release_request(effect_risk_tier="LOW", permission_class="P3",
+        request = _release_request(effect_risk_tier="HIGH", permission_class="P3",
                                    required_authn_assurance="AAC3")
         ctx = _release_ctx(request_resolver=_request_resolver(request))
         with self.assertRaises(HumanGateBypassAttempt) as caught:
@@ -755,14 +788,14 @@ class TestR7TrustedRouteAdmission(unittest.TestCase):
     # A2: operation-only suppression - a trusted release vs a caller read.
     def test_a2_operation_only_suppression_is_policy_mismatch(self):
         trusted = _release_request(operation="release")
-        caller = _release_request(operation="read")
+        caller = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2")
         self.assertFalse(human_gate_required(caller).required)
         self._deny("DENY_REQUEST_POLICY_MISMATCH", caller, trusted)
 
     # A3: risk-only suppression - a trusted CRITICAL vs a caller LOW.
     def test_a3_risk_only_suppression_is_policy_mismatch(self):
         trusted = _release_request(operation="read", effect_risk_tier="CRITICAL")
-        caller = _release_request(operation="read", effect_risk_tier="LOW")
+        caller = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2")
         self._deny("DENY_REQUEST_POLICY_MISMATCH", caller, trusted)
 
     # A4: permission-only suppression - a trusted P4 vs a caller P2.
@@ -774,7 +807,8 @@ class TestR7TrustedRouteAdmission(unittest.TestCase):
     # A5: autonomy-only suppression - a trusted T3 vs a caller T2.
     def test_a5_autonomy_only_suppression_is_policy_mismatch(self):
         trusted = _release_request(operation="read", autonomy_tier="T3")
-        caller = _release_request(operation="read", autonomy_tier="T2")
+        caller = _release_request(operation="read", effect_risk_tier="LOW", autonomy_tier="T2",
+                                  permission_class="P2")
         self._deny("DENY_REQUEST_POLICY_MISMATCH", caller, trusted)
 
     # A6: combined suppression of every route-driving axis.
@@ -790,13 +824,13 @@ class TestR7TrustedRouteAdmission(unittest.TestCase):
     # A7: a fake benign NONE route plus a benign caller clone cannot hide a gated trusted request.
     def test_a7_fake_none_route_with_benign_clone_and_gated_trusted_is_denied(self):
         trusted = _release_request(operation="release")
-        caller = _release_request(operation="read")
+        caller = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2")
         fake_none = HumanGateRoute(False, NONE_ROUTE, "NONE")
         self._deny("DENY_REQUEST_POLICY_MISMATCH", caller, trusted, route=fake_none)
 
     # A8: an apparent benign caller with NO trusted resolver fails closed.
     def test_a8_benign_caller_without_a_resolver_fails_closed(self):
-        caller = _release_request(operation="read")
+        caller = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2")
         route = human_gate_required(caller)
         self.assertFalse(route.required)
         with self.assertRaises(HumanGateBypassAttempt) as caught:
@@ -809,8 +843,9 @@ class TestR7TrustedRouteAdmission(unittest.TestCase):
 
     # A9: a stale/foreign trusted request (resolver returns None for the caller request_id).
     def test_a9_stale_or_foreign_trusted_request_is_deny_request_unresolved(self):
-        caller = _release_request(operation="read")
-        foreign = _release_request(operation="read", request_id="req-foreign")
+        caller = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2")
+        foreign = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2",
+                                   request_id="req-foreign")
         self._deny("DENY_REQUEST_UNRESOLVED", caller, foreign)
 
     # P1: an exact trusted == caller read/LOW/P2/T2 request is the permitted NONE positive control
@@ -836,7 +871,7 @@ class TestR7TrustedRouteAdmission(unittest.TestCase):
     # P3: a supplied route whose authority_edge disagrees with the trusted-derived route is an
     # understated route, even when required/route agree.
     def test_p3_supplied_route_authority_edge_mismatch_is_denied(self):
-        request = _release_request(operation="read")
+        request = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2")
         trusted_route = human_gate_required(request)
         self.assertEqual(
             (trusted_route.required, trusted_route.route, trusted_route.authority_edge),
@@ -847,6 +882,221 @@ class TestR7TrustedRouteAdmission(unittest.TestCase):
                                         ctx=self._trusted_ctx(request))
         self.assertEqual(str(caught.exception), "ROUTE_UNDERSTATES_ACTION")
 
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R008 (R8, F-W2R7-EXT-001): PI06 MINIMUM-POLICY CONFORMANCE. R6/R7 pin the caller to
+# the TRUSTED request; this class proves the TRUSTED request must ITSELF meet the frozen PI06
+# minimum floor, and that `required_coapprovals` must resolve to CURRENT canonical decisions.
+# ---------------------------------------------------------------------------------------------
+def _r8_release_decision(**overrides):
+    fields = dict(
+        decision_id="dec-1", request_id="req-1", decision="APPROVE", approver="human:carol",
+        authority_class="HA1", authn_assurance_class="AAC3", reason_codes=("HG-RULE-001",),
+        decided_at="2026-06-01T00:15:00Z", evidence_ref="evidence:decision-1",
+        integrity_ref="integrity:decision-1",
+    )
+    fields.update(overrides)
+    decision = HumanGateDecision(**fields)
+    return replace(decision, decision_basis_hash=approval_decision_basis_hash(decision))
+
+
+def _r8_release_request(**overrides):
+    """The canonical-valid PI06 release request with a self-consistent decision basis."""
+    return _canonical_release_request(
+        decision_basis_hash=_r8_release_decision().decision_basis_hash, **overrides)
+
+
+def _r8_release_token(request, **overrides):
+    """A canonical-valid RELEASE token whose RECOMPUTABLE approval basis binds `request`."""
+    fields = dict(
+        operation=request.operation, authn_assurance_class="AAC3",
+        independent_checker_required=True, independent_checker_evidence_ref="evidence:checker-1",
+        rollback_ref=request.rollback_ref,
+    )
+    fields.update(overrides)
+    fields["approval_basis_hash"] = approval_basis_hash(
+        request.decision_basis_hash, request.effect_digest, request.generation_bundle_digest,
+        request.rollback_digest, request.consumer_audience_hash, "1.0")
+    return _valid_token(**fields)
+
+
+def _r8_coapproval_decision(**overrides):
+    fields = dict(
+        decision_id="dec-ha5", request_id="req-1", decision="APPROVE", approver="human:dana",
+        authority_class="HA5", authn_assurance_class="AAC3", reason_codes=("HG-RULE-COAPPROVE",),
+        decided_at="2026-06-01T00:20:00Z", evidence_ref="evidence:decision-ha5",
+        integrity_ref="integrity:decision-ha5",
+    )
+    fields.update(overrides)
+    decision = HumanGateDecision(**fields)
+    return replace(decision, decision_basis_hash=approval_decision_basis_hash(decision))
+
+
+def _r8_coapproval_resolver(mapping=None):
+    table = dict(mapping) if mapping is not None else {("req-1", "HA5"): _r8_coapproval_decision()}
+    return lambda request_id, ref: table.get((request_id, ref))
+
+
+def _r8_ctx(request, **overrides):
+    fields = dict(
+        commit_time="2026-06-01T00:30:00Z", expected_consumer_audience_hash=DIGEST,
+        trusted_key_registry=_honest_registry, nonce_ledger=NonceLedger(), max_reauth_age_seconds=3600,
+        decision_resolver=_decision_registry({"dec-1": _r8_release_decision()}),
+        authority_policy=_authority_policy, request_resolver=_request_resolver(request),
+        coapproval_resolver=_r8_coapproval_resolver(),
+        independent_checker_evidence_ref="evidence:checker-1",
+    )
+    fields.update(overrides)
+    return VerificationContext(**fields)
+
+
+def _r8_verify(request, token=None, **ctx_overrides):
+    token = _r8_release_token(request) if token is None else token
+    return verify_approval_token(token, request, _r8_ctx(request, **ctx_overrides))
+
+
+class TestR8PolicyConformance(unittest.TestCase):
+    """A01-A14: a TRUSTED request weaker than the frozen PI06 minimum is refused; P01-P04 pass."""
+
+    # A01: a release request claiming P2 is below the P5 minimum.
+    def test_r8_a01_release_p2_is_denied(self):
+        decision = _r8_verify(_r8_release_request(permission_class="P2"))
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_POLICY_FLOOR"))
+
+    # A02: a release request claiming LOW risk is below CRITICAL.
+    def test_r8_a02_release_low_risk_is_denied(self):
+        decision = _r8_verify(_r8_release_request(effect_risk_tier="LOW"))
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_POLICY_FLOOR"))
+
+    # A03: a release request at T2 is below the T3 law.
+    def test_r8_a03_release_t2_is_denied(self):
+        decision = _r8_verify(_r8_release_request(autonomy_tier="T2"))
+        self.assertFalse(decision.ok)
+        self.assertIn(decision.code, ("DENY_POLICY_FLOOR", "DENY_T3_CHECKER"))
+
+    # A04: a release request at AAC2 is below the AAC3 floor.
+    def test_r8_a04_release_aac2_is_denied(self):
+        decision = _r8_verify(_r8_release_request(required_authn_assurance="AAC2"))
+        self.assertFalse(decision.ok)
+        self.assertIn(decision.code, ("DENY_POLICY_FLOOR", "DENY_AUTHN"))
+
+    # A05: an explicitly T3 release with independent_checker_required=False is refused.
+    def test_r8_a05_release_t3_without_checker_is_denied(self):
+        decision = _r8_verify(_r8_release_request(independent_checker_required=False))
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_T3_CHECKER"))
+
+    # A06: a required coapproval that does not resolve is DENY_COAPPROVAL - in the verifier AND gate.
+    def test_r8_a06_missing_coapproval_is_denied(self):
+        request = _r8_release_request()
+        resolver = _r8_coapproval_resolver({})
+        decision = _r8_verify(request, coapproval_resolver=resolver)
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_COAPPROVAL"))
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            assert_human_gate_satisfied(
+                human_gate_required(request), _r8_release_token(request),
+                requesting_actor="human:alice", request=request,
+                ctx=_r8_ctx(request, coapproval_resolver=resolver))
+        self.assertEqual(str(caught.exception), "DENY_COAPPROVAL")
+
+    # A07: a coapproval decision with a malformed (untrusted) decided_at is DENY_COAPPROVAL.
+    def test_r8_a07_stale_coapproval_is_denied(self):
+        resolver = _r8_coapproval_resolver(
+            {("req-1", "HA5"): _r8_coapproval_decision(decided_at="not-a-time")})
+        decision = _r8_verify(_r8_release_request(), coapproval_resolver=resolver)
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_COAPPROVAL"))
+
+    # A08: a coapproval decision bound to ANOTHER request is DENY_COAPPROVAL.
+    def test_r8_a08_foreign_request_coapproval_is_denied(self):
+        resolver = _r8_coapproval_resolver(
+            {("req-1", "HA5"): _r8_coapproval_decision(request_id="req-other")})
+        decision = _r8_verify(_r8_release_request(), coapproval_resolver=resolver)
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_COAPPROVAL"))
+
+    # A09: a revoked/superseded coapproval decision is DENY_COAPPROVAL.
+    def test_r8_a09_revoked_or_superseded_coapproval_is_denied(self):
+        for over in ({"revoked": True}, {"superseded": True}, {"decision": "DENY"}):
+            with self.subTest(over=over):
+                resolver = _r8_coapproval_resolver(
+                    {("req-1", "HA5"): _r8_coapproval_decision(**over)})
+                decision = _r8_verify(_r8_release_request(), coapproval_resolver=resolver)
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_COAPPROVAL"))
+
+    # A10: a caller that DROPS a trusted required_coapproval is DENY_REQUEST_POLICY_MISMATCH.
+    def test_r8_a10_caller_removes_trusted_coapproval_is_policy_mismatch(self):
+        trusted = _r8_release_request()
+        caller = _r8_release_request(required_coapprovals=())
+        decision = _r8_verify(
+            caller, token=_r8_release_token(caller),
+            request_resolver=_request_resolver(trusted))
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_REQUEST_POLICY_MISMATCH"))
+
+    # A11: a P4 secret resolve lacking the {HA1,HA3} clause is a PI06 authority-floor deny.
+    def test_r8_a11_secret_missing_clause_is_denied(self):
+        request = _release_request(
+            operation="ACT-SECRET-RESOLVE", effect_risk_tier="CRITICAL", permission_class="P4",
+            required_authority="HA1", required_coapprovals=(), required_authn_assurance="AAC3")
+        decision = _r8_verify(request, token=_valid_token(operation="ACT-SECRET-RESOLVE"))
+        self.assertFalse(decision.ok)
+        self.assertIn(decision.code, ("DENY_POLICY_FLOOR", "DENY_AUTHORITY"))
+
+    # A12: a P3 reversible external write presented as P2 is below the permission floor.
+    def test_r8_a12_external_write_as_p2_is_denied(self):
+        request = _release_request(
+            operation="ACT-EXTERNAL-WRITE-REV", effect_risk_tier="MEDIUM",
+            permission_class="P2", required_authority="HA1")
+        decision = _r8_verify(request, token=_valid_token())
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_POLICY_FLOOR"))
+
+    # A13: a duplicate / malformed coapproval ref is a deterministic DENY_COAPPROVAL.
+    def test_r8_a13_malformed_coapproval_ref_is_denied(self):
+        for refs in (("HA5", "HA5"), ("HA5", "  "), ("HA5", 17), ["HA5"]):
+            with self.subTest(refs=refs):
+                decision = _r8_verify(_r8_release_request(required_coapprovals=refs))
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_COAPPROVAL"))
+
+    # A14: a required coapproval with NO owner resolver is TEMP_CLOSED (never "skip").
+    def test_r8_a14_coapproval_without_resolver_is_temp_closed(self):
+        decision = _r8_verify(_r8_release_request(), coapproval_resolver=None)
+        self.assertEqual((decision.ok, decision.code), (False, "TEMP_CLOSED_AUTHORITY_RESOLUTION"))
+
+    # P01: a valid benign read keeps the low-friction NONE return (no floor, no token).
+    def test_r8_p01_benign_read_unchanged(self):
+        request = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2")
+        route = human_gate_required(request)
+        self.assertFalse(route.required)
+        self.assertIsNone(assert_human_gate_satisfied(
+            route, "", request=request, ctx=_release_ctx(request_resolver=_request_resolver(request))))
+
+    # P02: a valid P3 reversible external write passes the floor.
+    def test_r8_p02_valid_external_write_passes(self):
+        request = _release_request(effect_risk_tier="HIGH", permission_class="P3",
+                                   required_authority="HA1")
+        ctx = _release_ctx(request_resolver=_request_resolver(request))
+        decision = verify_approval_token(_valid_token(), request, ctx)
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+        self.assertIsNone(assert_human_gate_satisfied(
+            human_gate_required(request), _valid_token(), requesting_actor="human:alice",
+            request=request, ctx=_release_ctx(request_resolver=_request_resolver(request))))
+
+    # P03: a FULL canonical P5 release baseline (P5/CRITICAL/T3/HA1+HA5/AAC3/checker) passes.
+    def test_r8_p03_full_release_baseline_passes(self):
+        request = _r8_release_request()
+        decision = _r8_verify(request)
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+        self.assertIsNone(assert_human_gate_satisfied(
+            human_gate_required(request), _r8_release_token(request),
+            requesting_actor="human:alice", request=request, ctx=_r8_ctx(request)))
+
+    # P04: a DOMAIN-TIGHTER release (an extra required coapproval) is preserved, not rejected.
+    def test_r8_p04_domain_tighter_policy_is_preserved(self):
+        request = _r8_release_request(required_coapprovals=("HA3", "HA5"))
+        resolver = _r8_coapproval_resolver({
+            ("req-1", "HA3"): _r8_coapproval_decision(decision_id="dec-ha3", authority_class="HA3"),
+            ("req-1", "HA5"): _r8_coapproval_decision(),
+        })
+        decision = _r8_verify(request, coapproval_resolver=resolver)
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
 
 
 if __name__ == "__main__":
