@@ -64,6 +64,7 @@ from .humangate import (
     classify_effect_risk_tier, classify_legacy_ruin_class, classify_permission_class,
     ruin_precedence_code, verify_approval_token,
 )
+from . import policy_projection as _policy_projection
 
 HIGH_RISK_ACTIONS = frozenset({
     "live_world_effect", "credential_access", "release", "production_promotion",
@@ -93,10 +94,14 @@ _OPERATION_BENIGN = frozenset({"read"})
 # EFFECT, "not on how harmless the prompt text appears", so a request that names one of these classes
 # TIGHTENS to a gated route with a class-derived authority edge, however benign its asserted tier is.
 # The local read/design classes and the external READ class carry no tightening of their own.
+# R9: the tightened set is the canonical action-class vocabulary from the ONE projection, so the
+# identity of each consequential class cannot drift between the route seam and the policy seam.
 _OPERATION_TIGHTENED = frozenset({
-    "ACT-EXTERNAL-WRITE-REV", "ACT-EXTERNAL-WRITE-STATEFUL", "ACT-DATA-EXPORT",
-    "ACT-SECRET-RESOLVE", "ACT-IDENTITY-RIGHTS", "ACT-MERGE", "ACT-DEPLOY-RELEASE",
-    "ACT-FINANCIAL", "ACT-PHYSICAL", "ACT-DELETE-IRREV",
+    _policy_projection.ACT_EXTERNAL_WRITE_REV, _policy_projection.ACT_EXTERNAL_WRITE_STATEFUL,
+    _policy_projection.ACT_DATA_EXPORT, _policy_projection.ACT_SECRET_RESOLVE,
+    _policy_projection.ACT_IDENTITY_RIGHTS, _policy_projection.ACT_MERGE,
+    _policy_projection.ACT_DEPLOY_RELEASE, _policy_projection.ACT_FINANCIAL,
+    _policy_projection.ACT_PHYSICAL, _policy_projection.ACT_DELETE_IRREV,
 })
 _OPERATION_KNOWN = frozenset(_OPERATION_CLASS_MATRIX | _OPERATION_BENIGN | HIGH_RISK_ACTIONS)
 

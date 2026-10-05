@@ -27,6 +27,7 @@ from security.rights import (  # noqa: E402
     assert_credential_scope, assert_human_gate_satisfied, check_rights, human_gate_required,
     human_gate_route,
 )
+from security import policy_projection  # noqa: E402
 
 NOW = "2026-06-01T00:00:00Z"
 FUTURE = "2027-01-01T00:00:00Z"
@@ -1096,6 +1097,202 @@ class TestR8PolicyConformance(unittest.TestCase):
             ("req-1", "HA5"): _r8_coapproval_decision(),
         })
         decision = _r8_verify(request, coapproval_resolver=resolver)
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R009 (R9, F-W2R8-EXT-001): PI06 POLICY PROJECTION DOMAIN-BOUNDARY CORRECTION. R8
+# collapsed the canonical action identities (generic ACT-T3-HUMAN), aliased the stateful/data
+# export actions onto the reversible write, and dropped the ACT-MERGE domain coapproval. R9 keeps
+# every canonical action class distinct, splits the floors, and DEFERS the domain-owned floors
+# (TEMP_CLOSED) instead of inventing an HA or lowering them onto a generic row.
+# ---------------------------------------------------------------------------------------------
+class TestR9PolicyProjectionBoundary(unittest.TestCase):
+    """R9-A01..A13: canonical identity, split floors, owner-boundary deferrals; positives pass."""
+
+    def _stateful_request(self, effect_risk_tier, permission_class, required_authn_assurance,
+                          decision, **overrides):
+        """A stateful-write request bound to `decision` on the stateful HIGH floor."""
+        return _canonical_release_request(
+            operation="ACT-EXTERNAL-WRITE-STATEFUL", effect_risk_tier=effect_risk_tier,
+            permission_class=permission_class, autonomy_tier="T2", required_authority="HA1",
+            required_coapprovals=(), required_authn_assurance=required_authn_assurance,
+            independent_checker_required=False,
+            decision_basis_hash=decision.decision_basis_hash, **overrides)
+
+    def _stateful_token(self, request, required_authn_assurance, **overrides):
+        fields = dict(operation="ACT-EXTERNAL-WRITE-STATEFUL",
+                      authn_assurance_class=required_authn_assurance,
+                      independent_checker_required=False, independent_checker_evidence_ref="")
+        fields.update(overrides)
+        return _r8_release_token(request, **fields)
+
+    # A01: an ACT-MERGE at P5/CRITICAL/T3/AAC3/checker with HA1-ONLY (no mapped HA3 coapproval) is
+    # below the PI06 risk/domain coapproval floor -> DENY via AUTHORITY_FLOOR.
+    def test_r9_a01_merge_ha1_only_is_denied(self):
+        request = _canonical_release_request(
+            operation="remote_merge", required_authority="HA1", required_coapprovals=())
+        decision = _r8_verify(request, token=_r8_release_token(request))
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_POLICY_FLOOR"))
+        self.assertIn("AUTHORITY_FLOOR", decision.detail)
+
+    # A02: the SAME merge WITH the mapped HA3 risk/domain coapproval PASSES.
+    def test_r9_a02_merge_with_mapped_ha3_coapproval_passes(self):
+        request = _canonical_release_request(
+            operation="remote_merge", required_authority="HA1", required_coapprovals=("HA3",))
+        resolver = _r8_coapproval_resolver(
+            {("req-1", "HA3"): _r8_coapproval_decision(decision_id="dec-ha3", authority_class="HA3")})
+        decision = _r8_verify(request, token=_r8_release_token(request), coapproval_resolver=resolver)
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+        self.assertIsNone(assert_human_gate_satisfied(
+            human_gate_required(request), _r8_release_token(request), requesting_actor="human:alice",
+            request=request, ctx=_r8_ctx(request, coapproval_resolver=resolver)))
+
+    # A03: a caller that DROPS the trusted mapped-HA3 coapproval is a policy mismatch, not a pass.
+    def test_r9_a03_caller_drops_mapped_coapproval_is_policy_mismatch(self):
+        trusted = _canonical_release_request(
+            operation="remote_merge", required_authority="HA1", required_coapprovals=("HA3",))
+        caller = _canonical_release_request(
+            operation="remote_merge", required_authority="HA1", required_coapprovals=())
+        decision = _r8_verify(caller, token=_r8_release_token(caller),
+                              request_resolver=_request_resolver(trusted))
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_REQUEST_POLICY_MISMATCH"))
+
+    # A04: a mapped-HA3 coapproval that is stale / foreign / revoked is DENY_COAPPROVAL.
+    def test_r9_a04_mapped_coapproval_stale_foreign_or_revoked_is_denied(self):
+        request = _canonical_release_request(
+            operation="remote_merge", required_authority="HA1", required_coapprovals=("HA3",))
+        for over in ({"decided_at": "not-a-time"}, {"request_id": "req-other"}, {"revoked": True},
+                     {"superseded": True}, {"decision": "DENY"}):
+            with self.subTest(over=over):
+                resolver = _r8_coapproval_resolver(
+                    {("req-1", "HA3"): _r8_coapproval_decision(
+                        decision_id="dec-ha3", authority_class="HA3", **over)})
+                decision = _r8_verify(request, token=_r8_release_token(request),
+                                      coapproval_resolver=resolver)
+                self.assertEqual((decision.ok, decision.code), (False, "DENY_COAPPROVAL"))
+
+    # A05: a stateful external write at MEDIUM is below its own HIGH floor -> DENY_POLICY_FLOOR.
+    def test_r9_a05_stateful_write_medium_is_denied(self):
+        request = _r8_release_request(
+            operation="ACT-EXTERNAL-WRITE-STATEFUL", effect_risk_tier="MEDIUM",
+            permission_class="P3", required_authority="HA1", required_coapprovals=())
+        decision = _r8_verify(request)
+        self.assertEqual((decision.ok, decision.code), (False, "DENY_POLICY_FLOOR"))
+        self.assertIn("RISK_FLOOR", decision.detail)
+
+    # A06: a stateful external write at HIGH with a valid HA1 composition PASSES its own floor.
+    def test_r9_a06_stateful_write_high_passes(self):
+        dec = _r8_release_decision(authn_assurance_class="AAC2")
+        request = self._stateful_request("HIGH", "P3", "AAC2", dec)
+        token = self._stateful_token(request, "AAC2")
+        decision = _r8_verify(request, token=token,
+                              decision_resolver=_decision_registry({"dec-1": dec}))
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+        self.assertIsNone(assert_human_gate_satisfied(
+            human_gate_required(request), token, requesting_actor="human:alice", request=request,
+            ctx=_r8_ctx(request, decision_resolver=_decision_registry({"dec-1": dec}))))
+
+    # A07: a stateful external write at CRITICAL without its mapped HA3 is owner-boundary DEFERRED.
+    def test_r9_a07_stateful_write_critical_without_mapped_ha3_is_temp_closed(self):
+        dec = _r8_release_decision()
+        request = self._stateful_request("CRITICAL", "P5", "AAC3", dec)
+        decision = _r8_verify(request, token=self._stateful_token(request, "AAC3"))
+        self.assertEqual((decision.ok, decision.code), (False, "TEMP_CLOSED_POLICY_RESOLUTION"))
+
+    # A08: an ACT-DATA-EXPORT without its owner-supplied domain context is TEMP_CLOSED (not bound to
+    # the reversible write, never benign).
+    def test_r9_a08_data_export_without_context_is_temp_closed(self):
+        request = _canonical_release_request(operation="ACT-DATA-EXPORT")
+        decision = _r8_verify(request, token=_r8_release_token(request))
+        self.assertEqual((decision.ok, decision.code), (False, "TEMP_CLOSED_POLICY_RESOLUTION"))
+
+    # A09: ACT-IDENTITY-RIGHTS at a HIGH asserted tier without the domain clause is DENY/TEMP_CLOSED.
+    def test_r9_a09_identity_rights_high_without_domain_is_denied(self):
+        request = _canonical_release_request(
+            operation="ACT-IDENTITY-RIGHTS", effect_risk_tier="HIGH", permission_class="P3",
+            required_authority="HA1", required_coapprovals=(), required_authn_assurance="AAC3")
+        decision = _r8_verify(request, token=_r8_release_token(request))
+        self.assertIn(decision.code, ("DENY_POLICY_FLOOR", "TEMP_CLOSED_POLICY_RESOLUTION"))
+        self.assertEqual(decision.ok, False)
+
+    # A10: ACT-FINANCIAL without its domain context is TEMP_CLOSED_POLICY_RESOLUTION.
+    def test_r9_a10_financial_without_domain_is_temp_closed(self):
+        request = _canonical_release_request(operation="ACT-FINANCIAL", effect_risk_tier="HIGH",
+                                             permission_class="P4")
+        decision = _r8_verify(request, token=_r8_release_token(request))
+        self.assertEqual((decision.ok, decision.code), (False, "TEMP_CLOSED_POLICY_RESOLUTION"))
+
+    # A10: ACT-PHYSICAL without its domain context is TEMP_CLOSED (no HA5 substitution).
+    def test_r9_a10b_physical_without_domain_is_temp_closed(self):
+        request = _canonical_release_request(operation="ACT-PHYSICAL")
+        decision = _r8_verify(request, token=_r8_release_token(request))
+        self.assertEqual((decision.ok, decision.code), (False, "TEMP_CLOSED_POLICY_RESOLUTION"))
+
+    # A11: ACT-DELETE-IRREV at HIGH (or RUIN-free) without its RUIN-grade floor is DENY/TEMP_CLOSED.
+    def test_r9_a11_delete_irrev_high_is_denied(self):
+        dec = _r8_release_decision(authn_assurance_class="AAC2")
+        request = _canonical_release_request(
+            operation="ACT-DELETE-IRREV", effect_risk_tier="HIGH", permission_class="P3",
+            required_authority="HA1", required_coapprovals=(), required_authn_assurance="AAC2",
+            autonomy_tier="T2", independent_checker_required=False,
+            decision_basis_hash=dec.decision_basis_hash)
+        token = _r8_release_token(request, operation="ACT-DELETE-IRREV",
+                                  authn_assurance_class="AAC2", independent_checker_required=False,
+                                  independent_checker_evidence_ref="")
+        decision = _r8_verify(request, token=token,
+                              decision_resolver=_decision_registry({"dec-1": dec}))
+        self.assertIn(decision.code, ("DENY_POLICY_FLOOR", "TEMP_CLOSED_POLICY_RESOLUTION"))
+        self.assertEqual(decision.ok, False)
+
+    # A12: every canonical action class keeps its OWN identity (no ACT-T3-HUMAN collapse, no alias).
+    def test_r9_a12_canonical_action_identity_is_preserved(self):
+        self.assertFalse(hasattr(policy_projection, "ACT_T3_HUMAN"))
+        expected = {
+            "release": "ACT-DEPLOY-RELEASE", "remote_merge": "ACT-MERGE",
+            "credential_access": "ACT-SECRET-RESOLVE", "ACT-EXTERNAL-WRITE-REV":
+                "ACT-EXTERNAL-WRITE-REV", "ACT-EXTERNAL-WRITE-STATEFUL": "ACT-EXTERNAL-WRITE-STATEFUL",
+            "ACT-IDENTITY-RIGHTS": "ACT-IDENTITY-RIGHTS", "ACT-DELETE-IRREV": "ACT-DELETE-IRREV",
+            "ACT-FINANCIAL": "ACT-FINANCIAL", "ACT-PHYSICAL": "ACT-PHYSICAL",
+            "ACT-DATA-EXPORT": "ACT-DATA-EXPORT",
+        }
+        for operation, action_class in expected.items():
+            with self.subTest(operation=operation):
+                self.assertEqual(policy_projection.classify_action(operation), action_class)
+                self.assertEqual(policy_projection.minimum_policy(operation).action_class, action_class)
+        # ACT-EXTERNAL-WRITE-REV and ACT-EXTERNAL-WRITE-STATEFUL are DISTINCT floors.
+        rev = policy_projection.minimum_policy("ACT-EXTERNAL-WRITE-REV")
+        stateful = policy_projection.minimum_policy("ACT-EXTERNAL-WRITE-STATEFUL")
+        self.assertNotEqual((rev.risk_floor, rev.authn_floor), (stateful.risk_floor, stateful.authn_floor))
+        self.assertNotEqual(rev.action_class, stateful.action_class)
+
+    # A13: an unknown action remains unresolved -> TEMP_CLOSED_POLICY_RESOLUTION.
+    def test_r9_a13_unknown_action_is_temp_closed(self):
+        request = _canonical_release_request(operation="definitely-not-a-known-operation")
+        decision = _r8_verify(request, token=_r8_release_token(request))
+        self.assertEqual((decision.ok, decision.code), (False, "TEMP_CLOSED_POLICY_RESOLUTION"))
+
+    # POSITIVE CONTROLS: the canonical release, secret and reversible-write fixtures still pass.
+    def test_r9_p01_canonical_release_still_passes(self):
+        request = _r8_release_request()
+        self.assertEqual(
+            (_r8_verify(request).ok, _r8_verify(request).code), (True, "APPROVE_BASIS_SATISFIED"))
+
+    def test_r9_p02_secret_resolve_with_ha1_ha3_still_passes(self):
+        request = _release_request(
+            operation="ACT-SECRET-RESOLVE", effect_risk_tier="CRITICAL", permission_class="P4",
+            required_authority="HA1", required_coapprovals=("HA3",), required_authn_assurance="AAC3",
+            autonomy_tier="T2", independent_checker_required=False)
+        resolver = _r8_coapproval_resolver(
+            {("req-1", "HA3"): _r8_coapproval_decision(decision_id="dec-ha3", authority_class="HA3")})
+        decision = _r8_verify(request, token=_r8_release_token(request), coapproval_resolver=resolver)
+        self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
+
+    def test_r9_p03_reversible_write_still_passes_with_exact_floor(self):
+        request = _r8_release_request(
+            operation="ACT-EXTERNAL-WRITE-REV", effect_risk_tier="MEDIUM", permission_class="P3",
+            required_authority="HA1", required_coapprovals=())
+        decision = _r8_verify(request, token=_r8_release_token(request))
         self.assertEqual((decision.ok, decision.code), (True, "APPROVE_BASIS_SATISFIED"))
 
 
