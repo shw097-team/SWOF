@@ -465,6 +465,10 @@ def assert_human_gate_satisfied(route, approval, *, requesting_actor=None,
         trusted = _resolve_current_request(ctx, getattr(request, "request_id", None))
         if trusted is None:
             raise HumanGateBypassAttempt("DENY_REQUEST_UNRESOLVED")
+        # R7 parity with the R6 verifier path: the resolved request must be the SAME canonical
+        # request_id; a resolver returning a foreign request is refused (defense-in-depth).
+        if getattr(trusted, "request_id", None) != getattr(request, "request_id", None):
+            raise HumanGateBypassAttempt("DENY_REQUEST_UNRESOLVED")
         mismatched = [
             name for name in _REQUEST_POLICY_FIELDS
             if getattr(request, name, None) != getattr(trusted, name, None)
