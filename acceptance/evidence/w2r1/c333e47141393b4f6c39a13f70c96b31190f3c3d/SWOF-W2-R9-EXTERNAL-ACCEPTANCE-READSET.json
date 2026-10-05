@@ -1,0 +1,25 @@
+{
+  "schema": "SWOF-W2-R9-EXTERNAL-ACCEPTANCE-READSET/1",
+  "github_disposition": "PUBLISHED",
+  "repo": "shw097-team/SWOF",
+  "source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "evidence_commit_sha": "49ceff1c5a80559fc09572cefc23f9216434c46e",
+  "source_ne_evidence": true,
+  "evidence_branch": "evidence/swof-w2-r9-policy-boundary",
+  "manifest_sha256": "454e9eeb6d308f1c7f238cb2703ee6e63f346b190174d6ad0b5dd47200988e87",
+  "manifest_bytes": 5651,
+  "return_pack_sha256": "eb061e5aff4f059e4e78564011b8ca78e74859976d778b18e75a7743c16e68de",
+  "return_pack_bytes": 1642,
+  "source_ref": "https://github.com/shw097-team/SWOF/commit/c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "evidence_ref": "https://github.com/shw097-team/SWOF/commit/49ceff1c5a80559fc09572cefc23f9216434c46e",
+  "postpublication_readback": true,
+  "claim_ceiling": "READY_FOR_W2_R9_EXTERNAL_RECHALLENGE",
+  "nonclaims": [
+    "NOT_EXTERNALLY_ACCEPTED",
+    "W3_NOT_STARTED",
+    "NOT_MERGED",
+    "NOT_RELEASED",
+    "NOT_PRODUCTION",
+    "NO_WORLD_EFFECT"
+  ]
+}

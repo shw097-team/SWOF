@@ -1,0 +1,11 @@
+{
+  "schema": "SWOF-R9-FINAL-POSTPUBLICATION-VERIFICATION/1",
+  "source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "evidence_sha": "49ceff1c5a80559fc09572cefc23f9216434c46e",
+  "manifest_sha256": "454e9eeb6d308f1c7f238cb2703ee6e63f346b190174d6ad0b5dd47200988e87",
+  "return_pack_sha256": "eb061e5aff4f059e4e78564011b8ca78e74859976d778b18e75a7743c16e68de",
+  "source_ne_evidence": true,
+  "remote_source_ref": "wo/swof-w2-closure-r1",
+  "remote_evidence_ref": "evidence/swof-w2-r9-policy-boundary",
+  "verified_at": "2026-10-05T06:38:12.328642Z"
+}
