@@ -252,8 +252,10 @@ class TestHumanGateSatisfaction(unittest.TestCase):
 
     def test_ungated_route_is_honoured_only_when_rederivation_agrees(self):
         request = _release_request(operation="read")
+        # R7: a benign NONE route now needs the TRUSTED current request to resolve.
         self.assertIsNone(assert_human_gate_satisfied(
-            human_gate_route("read"), "", request=request))
+            human_gate_route("read"), "", request=request,
+            ctx=_release_ctx(request_resolver=_request_resolver(request))))
 
     def test_ungated_route_without_a_request_fails_closed(self):
         with self.assertRaises(HumanGateBypassAttempt) as caught:
@@ -483,7 +485,9 @@ class TestCanonicalRuinAndRiskTierR5(unittest.TestCase):
                 request = _release_request(operation="read", effect_risk_tier=tier,
                                            permission_class="P2")
                 self.assertFalse(human_gate_required(request).required)
-                self.assertIsNone(self._seam(request))
+                # R7: the benign return requires the matching TRUSTED current request.
+                self.assertIsNone(self._seam(
+                    request, ctx=_release_ctx(request_resolver=_request_resolver(request))))
 
     def test_malformed_permission_class_fails_closed_not_ungated(self):
         for bad in ("p3", "P3 ", " P3", "", "P9"):
@@ -599,7 +603,10 @@ class TestCanonicalOperationAxisR6(unittest.TestCase):
                         route = human_gate_required(request)
                         self.assertFalse(route.required)
                         self.assertEqual(route.route, NONE_ROUTE)
-                        self.assertIsNone(self._seam(request))
+                        # R7: the benign return requires the matching TRUSTED current request.
+                        self.assertIsNone(self._seam(
+                            request, ctx=_release_ctx(
+                                request_resolver=_request_resolver(request))))
 
     def test_r6_04_known_high_risk_operation_gates_and_names_its_edge(self):
         for operation in sorted(HIGH_RISK_ACTIONS):
@@ -711,6 +718,135 @@ class TestPolicyBoundAuthnFloorAtSeamR008(unittest.TestCase):
                 human_gate_required(request), _valid_token(), requesting_actor="human:dave",
                 request=request, ctx=ctx)
         self.assertEqual(str(caught.exception), "DENY_AUTHN")
+
+
+# ---------------------------------------------------------------------------------------------
+# WO-SWOF-W2-R007 (R7): the TRUSTED ROUTE-ADMISSION boundary (F-W2R6-EXT-001). A caller can no
+# longer lower every route-driving field (operation / effect_risk_tier / permission_class /
+# autonomy_tier) to a benign combination and skip the verifier through the `required=False` early
+# return. When a request is supplied, its CURRENT canonical counterpart is resolved through the
+# existing owner-injected `request_resolver` seam BEFORE the benign return, the caller request is
+# pinned to it on the policy-owned fields, and the SUPPLIED route must equal the trusted-derived
+# route on `required`, `route` and `authority_edge`.
+# ---------------------------------------------------------------------------------------------
+class TestR7TrustedRouteAdmission(unittest.TestCase):
+
+    def _trusted_ctx(self, trusted):
+        return _release_ctx(request_resolver=_request_resolver(trusted))
+
+    def _deny(self, code, caller, trusted, route=None):
+        route = route if route is not None else human_gate_required(caller)
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            assert_human_gate_satisfied(route, "", request=caller,
+                                        ctx=self._trusted_ctx(trusted))
+        self.assertEqual(str(caught.exception), code)
+
+    # A1: a trusted read/CRITICAL/P4/T3/AAC3 request vs a caller read/LOW/P2/T2/AAC1 clone.
+    def test_a1_trusted_critical_p4_t3_vs_caller_low_p2_t2_is_policy_mismatch(self):
+        trusted = _release_request(
+            operation="read", effect_risk_tier="CRITICAL", permission_class="P4",
+            autonomy_tier="T3", required_authn_assurance="AAC3")
+        caller = _release_request(
+            operation="read", effect_risk_tier="LOW", permission_class="P2",
+            autonomy_tier="T2", required_authn_assurance="AAC1")
+        self.assertFalse(human_gate_required(caller).required)
+        self._deny("DENY_REQUEST_POLICY_MISMATCH", caller, trusted)
+
+    # A2: operation-only suppression - a trusted release vs a caller read.
+    def test_a2_operation_only_suppression_is_policy_mismatch(self):
+        trusted = _release_request(operation="release")
+        caller = _release_request(operation="read")
+        self.assertFalse(human_gate_required(caller).required)
+        self._deny("DENY_REQUEST_POLICY_MISMATCH", caller, trusted)
+
+    # A3: risk-only suppression - a trusted CRITICAL vs a caller LOW.
+    def test_a3_risk_only_suppression_is_policy_mismatch(self):
+        trusted = _release_request(operation="read", effect_risk_tier="CRITICAL")
+        caller = _release_request(operation="read", effect_risk_tier="LOW")
+        self._deny("DENY_REQUEST_POLICY_MISMATCH", caller, trusted)
+
+    # A4: permission-only suppression - a trusted P4 vs a caller P2.
+    def test_a4_permission_only_suppression_is_policy_mismatch(self):
+        trusted = _release_request(operation="read", permission_class="P4")
+        caller = _release_request(operation="read", permission_class="P2")
+        self._deny("DENY_REQUEST_POLICY_MISMATCH", caller, trusted)
+
+    # A5: autonomy-only suppression - a trusted T3 vs a caller T2.
+    def test_a5_autonomy_only_suppression_is_policy_mismatch(self):
+        trusted = _release_request(operation="read", autonomy_tier="T3")
+        caller = _release_request(operation="read", autonomy_tier="T2")
+        self._deny("DENY_REQUEST_POLICY_MISMATCH", caller, trusted)
+
+    # A6: combined suppression of every route-driving axis.
+    def test_a6_combined_suppression_is_policy_mismatch(self):
+        trusted = _release_request(
+            operation="release", effect_risk_tier="CRITICAL", permission_class="P4",
+            autonomy_tier="T3", required_authn_assurance="AAC3")
+        caller = _release_request(
+            operation="read", effect_risk_tier="LOW", permission_class="P2",
+            autonomy_tier="T2", required_authn_assurance="AAC1")
+        self._deny("DENY_REQUEST_POLICY_MISMATCH", caller, trusted)
+
+    # A7: a fake benign NONE route plus a benign caller clone cannot hide a gated trusted request.
+    def test_a7_fake_none_route_with_benign_clone_and_gated_trusted_is_denied(self):
+        trusted = _release_request(operation="release")
+        caller = _release_request(operation="read")
+        fake_none = HumanGateRoute(False, NONE_ROUTE, "NONE")
+        self._deny("DENY_REQUEST_POLICY_MISMATCH", caller, trusted, route=fake_none)
+
+    # A8: an apparent benign caller with NO trusted resolver fails closed.
+    def test_a8_benign_caller_without_a_resolver_fails_closed(self):
+        caller = _release_request(operation="read")
+        route = human_gate_required(caller)
+        self.assertFalse(route.required)
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            assert_human_gate_satisfied(route, "", request=caller)
+        self.assertEqual(str(caught.exception), "DENY_REQUEST_UNRESOLVED")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            assert_human_gate_satisfied(route, "", request=caller,
+                                        ctx=_release_ctx(request_resolver=None))
+        self.assertEqual(str(caught.exception), "DENY_REQUEST_UNRESOLVED")
+
+    # A9: a stale/foreign trusted request (resolver returns None for the caller request_id).
+    def test_a9_stale_or_foreign_trusted_request_is_deny_request_unresolved(self):
+        caller = _release_request(operation="read")
+        foreign = _release_request(operation="read", request_id="req-foreign")
+        self._deny("DENY_REQUEST_UNRESOLVED", caller, foreign)
+
+    # P1: an exact trusted == caller read/LOW/P2/T2 request is the permitted NONE positive control
+    # and passes WITHOUT a token.
+    def test_p1_exact_benign_request_passes_without_a_token(self):
+        request = _release_request(
+            operation="read", effect_risk_tier="LOW", permission_class="P2", autonomy_tier="T2")
+        route = human_gate_required(request)
+        self.assertFalse(route.required)
+        self.assertEqual(route.route, NONE_ROUTE)
+        self.assertIsNone(assert_human_gate_satisfied(
+            route, "", request=request, ctx=self._trusted_ctx(request)))
+
+    # P2: an exact trusted gated request with a valid current token/decision passes.
+    def test_p2_exact_gated_request_with_valid_token_passes(self):
+        request = _release_request()
+        route = human_gate_required(request)
+        self.assertTrue(route.required)
+        self.assertIsNone(assert_human_gate_satisfied(
+            route, _valid_token(), requesting_actor="human:alice", request=request,
+            ctx=self._trusted_ctx(request)))
+
+    # P3: a supplied route whose authority_edge disagrees with the trusted-derived route is an
+    # understated route, even when required/route agree.
+    def test_p3_supplied_route_authority_edge_mismatch_is_denied(self):
+        request = _release_request(operation="read")
+        trusted_route = human_gate_required(request)
+        self.assertEqual(
+            (trusted_route.required, trusted_route.route, trusted_route.authority_edge),
+            (False, NONE_ROUTE, "NONE"))
+        tampered = HumanGateRoute(False, NONE_ROUTE, "HUMAN_GATE:risk_tier")
+        with self.assertRaises(HumanGateBypassAttempt) as caught:
+            assert_human_gate_satisfied(tampered, "", request=request,
+                                        ctx=self._trusted_ctx(request))
+        self.assertEqual(str(caught.exception), "ROUTE_UNDERSTATES_ACTION")
+
 
 
 if __name__ == "__main__":

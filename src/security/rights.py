@@ -41,6 +41,16 @@ therefore resolves the operation through ONE canonical classifier: a KNOWN benig
 the classification-driven route, a KNOWN operation that names an authority edge tightens it, and an
 UNCLASSIFIABLE operation (unknown name, empty, non-string, or an unestablished canonical value)
 returns the SAFE_STOP route. The operation name may tighten the route; it may NEVER weaken it.
+
+W2 repair WO-SWOF-W2-R007 (R7): the trusted route-admission boundary now runs BEFORE any
+benign NONE return. When a request is supplied, `assert_human_gate_satisfied` resolves its
+CURRENT canonical counterpart through the existing owner-injected `request_resolver` seam and
+pins the caller request to it on the policy-owned fields. An absent resolver, an
+unresolvable/stale/foreign request, or any caller-declared policy downgrade fails closed
+(`DENY_REQUEST_UNRESOLVED` / `DENY_REQUEST_POLICY_MISMATCH`), the RUIN precedence and the
+HumanGate route are derived from the TRUSTED request, and the SUPPLIED route must equal the
+trusted-derived route on `required`, `route` and `authority_edge`. A caller can therefore no
+longer lower every route-driving field to a benign combination and skip the verifier.
 """
 from __future__ import annotations
 
@@ -49,9 +59,10 @@ from dataclasses import dataclass, field
 
 from .humangate import (
     EFFECT_RISK_TIERS, ApprovalDecision, ApprovalRequest, ApprovalToken, NonceLedger,
-    VerificationContext, _CLASS_ABSENT, _CLASS_MALFORMED, _CLASS_VALID, classify_autonomy_tier,
-    classify_effect_risk_tier, classify_legacy_ruin_class, classify_permission_class,
-    ruin_precedence_code, verify_approval_token,
+    VerificationContext, _CLASS_ABSENT, _CLASS_MALFORMED, _CLASS_VALID, _REQUEST_POLICY_FIELDS,
+    _resolve_current_request, classify_autonomy_tier, classify_effect_risk_tier,
+    classify_legacy_ruin_class, classify_permission_class, ruin_precedence_code,
+    verify_approval_token,
 )
 
 HIGH_RISK_ACTIONS = frozenset({
@@ -388,10 +399,34 @@ def assert_human_gate_satisfied(route, approval, *, requesting_actor=None,
                                 request=None, ctx=None) -> None:
     """Refuse a missing, self-issued or non-exact-bound approval for a gated route.
 
-    The route is re-derived from the REQUEST via the ONE canonical predicate, never trusted. A
-    `required=False` route is only honoured when an `ApprovalRequest` is supplied and the
-    predicate agrees the action is ungated; otherwise the route understates the action
-    (`ROUTE_UNDERSTATES_ACTION`) or cannot be re-derived (`ROUTE_NOT_REDERIVABLE_FAIL_CLOSED`).
+    The route is re-derived from a TRUSTED request via the ONE canonical predicate, never trusted.
+    A `required=False` route is only honoured when an `ApprovalRequest` is supplied, its CURRENT
+    canonical counterpart resolves through the owner-injected `request_resolver` seam, and the
+    predicate agrees on `required`, `route` and `authority_edge`; otherwise the route understates
+    the action (`ROUTE_UNDERSTATES_ACTION`) or cannot be re-derived
+    (`ROUTE_NOT_REDERIVABLE_FAIL_CLOSED`).
+
+    R7 (F-W2R6-EXT-001): the TRUSTED ROUTE-ADMISSION BOUNDARY runs BEFORE the benign NONE return.
+    Without it a caller could lower every route-driving field (operation / effect_risk_tier /
+    permission_class / autonomy_tier) to a benign combination, reach `route.required == False`, and
+    the verifier would never run. So, when a request is supplied and the route is not required:
+
+      1. the CURRENT canonical request is resolved through the EXISTING owner-injected
+         `request_resolver` (reusing `_resolve_current_request`); an absent resolver (including a
+         missing `ctx`) or an unresolvable/stale/foreign request FAILS CLOSED with
+         `DENY_REQUEST_UNRESOLVED`;
+      2. the caller request is pinned to the trusted request on the policy-owned fields
+         (`_REQUEST_POLICY_FIELDS`); any divergence FAILS CLOSED with
+         `DENY_REQUEST_POLICY_MISMATCH`;
+      3. RUIN / UNKNOWN_RUIN precedence is evaluated from the TRUSTED request; and
+      4. the SUPPLIED route must equal the trusted-derived route on `required`, `route` and
+         `authority_edge`, or the route understates the action (`ROUTE_UNDERSTATES_ACTION`).
+
+    Only then is a trusted-derived `required=False` honoured as the benign NONE return. A supplied
+    `ApprovalRequest` is therefore never honoured as benign without a trusted resolver. The R6
+    verifier-level `request_resolver` pinning INSIDE `verify_approval_token` is kept as
+    defense-in-depth for the gated path, which continues to require a typed, exact-bound
+    `ApprovalToken`.
 
     RUIN / UNKNOWN_RUIN precedence is evaluated FIRST and raises `HARD_VETO_RUIN` /
     `SAFE_STOP_UNKNOWN_RUIN` REGARDLESS of the token, before any token check.
@@ -421,6 +456,32 @@ def assert_human_gate_satisfied(route, approval, *, requesting_actor=None,
     if not route.required:
         if request is None:
             raise HumanGateBypassAttempt("ROUTE_NOT_REDERIVABLE_FAIL_CLOSED")
+
+        # R7 (F-W2R6-EXT-001): TRUSTED ROUTE ADMISSION. Resolve the CURRENT canonical request
+        # BEFORE honouring the benign NONE return, so a caller-declared policy downgrade can never
+        # reach the early return without the owner-injected trusted resolver agreeing.
+        if ctx is None:
+            raise HumanGateBypassAttempt("DENY_REQUEST_UNRESOLVED")
+        trusted = _resolve_current_request(ctx, getattr(request, "request_id", None))
+        if trusted is None:
+            raise HumanGateBypassAttempt("DENY_REQUEST_UNRESOLVED")
+        mismatched = [
+            name for name in _REQUEST_POLICY_FIELDS
+            if getattr(request, name, None) != getattr(trusted, name, None)
+        ]
+        if mismatched:
+            raise HumanGateBypassAttempt("DENY_REQUEST_POLICY_MISMATCH")
+
+        # RUIN precedence is taken from the TRUSTED request before the benign return.
+        ruin = _ruin_veto_code(trusted)
+        if ruin is not None:
+            raise HumanGateBypassAttempt(ruin)
+
+        # The SUPPLIED route must equal the trusted-derived route on required+route+authority_edge.
+        trusted_route = human_gate_required(trusted)
+        if (trusted_route.required, trusted_route.route, trusted_route.authority_edge) != (
+                route.required, route.route, route.authority_edge):
+            raise HumanGateBypassAttempt("ROUTE_UNDERSTATES_ACTION")
         return
 
     if not isinstance(approval, ApprovalToken) or request is None or ctx is None:
@@ -428,6 +489,8 @@ def assert_human_gate_satisfied(route, approval, *, requesting_actor=None,
             raise HumanGateBypassAttempt("DENY_P3_TOKEN_REQUIRED")
         raise HumanGateBypassAttempt("NOT_A_CANONICAL_APPROVAL_TOKEN")
 
+    # Gated path: the R6 verifier-level trusted-request boundary pins the caller request to the
+    # resolved CURRENT request and takes the authn floor from the TRUSTED request (defense-in-depth).
     decision = verify_approval_token(approval, request, ctx)
     if not decision.ok:
         raise HumanGateBypassAttempt(decision.code)

@@ -508,7 +508,10 @@ class TestRouteReDerivationR2(unittest.TestCase):
     def test_r2_10_agreed_low_risk_route_returns_none(self):
         route = human_gate_route("read")
         request = _release_request(operation="read")
-        self.assertIsNone(assert_human_gate_satisfied(route, "", request=request))
+        # R7: a benign NONE route now needs the TRUSTED current request to resolve.
+        self.assertIsNone(assert_human_gate_satisfied(
+            route, "", request=request,
+            ctx=_release_ctx(request_resolver=_request_resolver(request))))
 
     def test_r2_11_p3_request_with_bare_string_approval_needs_a_typed_token(self):
         route = human_gate_route("release")
@@ -653,8 +656,10 @@ class TestCanonicalGatePredicateD1(unittest.TestCase):
         request = _release_request(operation="read", effect_risk_tier="LOW", permission_class="P2")
         self.assertEqual(human_gate_required(request).route, "NONE")
         self.assertFalse(human_gate_required(request).required)
+        # R7: the benign return needs the matching TRUSTED current request resolver.
         self.assertIsNone(assert_human_gate_satisfied(
-            human_gate_route("read"), "", request=request))
+            human_gate_route("read"), "", request=request,
+            ctx=_release_ctx(request_resolver=_request_resolver(request))))
 
     def test_r4_d1_07_explicit_high_risk_operation_with_p2_is_gated(self):
         request = _release_request(operation="release", effect_risk_tier="LOW", permission_class="P2")
@@ -1073,7 +1078,9 @@ class TestCanonicalOperationAxisR6(unittest.TestCase):
                                                    permission_class=permission)
                         self.assertFalse(human_gate_required(request).required)
                         self.assertEqual(human_gate_required(request).route, "NONE")
-                        self.assertIsNone(self._seam(request, ""))
+                        # R7: the benign return needs the matching TRUSTED current request.
+                        self.assertIsNone(self._seam(request, "", ctx=_release_ctx(
+                            request_resolver=_request_resolver(request))))
 
     def test_r6_05_known_high_risk_operation_still_gates_with_its_edge(self):
         for operation in sorted(HIGH_RISK_ACTIONS):
