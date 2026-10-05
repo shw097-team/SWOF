@@ -1,0 +1,6 @@
+{
+  "schema": "SWOF-R9E-IDENTITY/1",
+  "producer": "Hermes executor lane (EVIDENCE_ONLY)",
+  "checker": "fresh independent read-only evidence checker",
+  "producer_ne_checker": true
+}

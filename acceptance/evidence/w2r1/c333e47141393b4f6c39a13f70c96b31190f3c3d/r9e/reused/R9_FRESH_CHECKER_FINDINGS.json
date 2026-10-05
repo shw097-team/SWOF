@@ -1,0 +1,18 @@
+{
+  "subject_source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "maker_identity": "Codex/opencode-go",
+  "checker_identity": "fresh independent read-only checker",
+  "checker_ne_maker": true,
+  "read_only": true,
+  "source_derived_oracle": true,
+  "product_verdict": "PASS",
+  "governance_verdict": "PASS",
+  "wave_verdict": "READY_FOR_W2_R9_EXTERNAL_RECHALLENGE",
+  "confirmed_defects": [],
+  "evidence_gaps": [],
+  "oracle_disagreements": [],
+  "observations": [
+    "remote CI absent is N/A_WITH_REASON",
+    "prior checker harness cwd error was corrected before final verdict"
+  ]
+}

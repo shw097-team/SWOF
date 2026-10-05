@@ -1,0 +1,38 @@
+{
+  "schema": "SWOF-R9E-PD04-PACKET/1",
+  "repair_id": "SWOF-W2-R9E-EXACT-SUBJECT-EVIDENCE-RECLOSURE",
+  "changeset": "EVIDENCE_ONLY",
+  "repo_context": "R9E_REPOCONTEXT_RECEIPT.json",
+  "source_candidate_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "source_requirement_edges": [
+    "R9E-REQ-001",
+    "R9E-REQ-002",
+    "R9E-REQ-003",
+    "R9E-REQ-004",
+    "R9E-REQ-005",
+    "R9E-REQ-006",
+    "R9E-REQ-007",
+    "R9E-REQ-008",
+    "R9E-REQ-009",
+    "R9E-REQ-010"
+  ],
+  "acceptance_edges": [
+    "ACC-R9E-001",
+    "ACC-R9E-002",
+    "ACC-R9E-003",
+    "ACC-R9E-004",
+    "ACC-R9E-005",
+    "ACC-R9E-006",
+    "ACC-R9E-007",
+    "ACC-R9E-008",
+    "ACC-R9E-009",
+    "ACC-R9E-010"
+  ],
+  "evidence_edges": [
+    "R9E_POLICY_PROJECTION_RAW.log",
+    "R9E_PRIOR_RAW_EVIDENCE_READBACK.json",
+    "R9E_FRESH_EVIDENCE_CHECKER_RECEIPT.json",
+    "R9E_EVIDENCE_MANIFEST.json",
+    "SWOF_W2_R9E_EVIDENCE_RETURN_PACK.json"
+  ]
+}

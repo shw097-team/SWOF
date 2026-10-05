@@ -1,0 +1,20 @@
+{
+  "schema": "SWOF-R9E-LINEAGE-RECONCILIATION/1",
+  "final_source": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "historical_intermediate_ref": "R9E_SUPERSESSION_MAP.json#historical_intermediate",
+  "typed_historical_files": [
+    "R9E_SUPERSESSION_MAP.json"
+  ],
+  "historical_items_preserved": true,
+  "active_acceptance_uses_historical_stale_items": false,
+  "R9E_workorder_subject": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "R9E_checkpoint": "CK-W2-R9E-FINAL",
+  "active_current_claim_stale_SHA_count": 0,
+  "stale_SHA_only_in_typed_historical_fields": true,
+  "stale_SHA_permitted_files": {
+    "R9E_SUPERSESSION_MAP.json": "typed_historical_fields",
+    "R9E_FRESH_EVIDENCE_CHECKER_TRANSCRIPT.log": "raw_verification_record_quoting_reviewed_token",
+    "reused/R9_FRESH_CHECKER_TRANSCRIPT.log": "reused_raw_historical_checker_transcript"
+  },
+  "note": "The full intermediate token may appear only in raw/verification/historical records and typed historical fields; no ACTIVE R9E claim binds it."
+}

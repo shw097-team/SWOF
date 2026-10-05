@@ -1,0 +1,58 @@
+{
+  "schema": "SWOF-R9E-GATE-CALIBRATION/1",
+  "objective": "Preserve source c333 exactly; close exact-subject evidence gaps; maximize raw/sanitized completeness; minimize mutation cone; prevent false PASS; prevent over-strict endless W2 hardening",
+  "strictness": "S3_EVIDENCE",
+  "rows": [
+    {
+      "gate": "compiler",
+      "strictness": "S0_fail_closed",
+      "negative": "missing bundle/lint fail",
+      "anti_overfit": "exact bundle hashes + raw validator outputs",
+      "authority": "deterministic compiler"
+    },
+    {
+      "gate": "source_freeze",
+      "strictness": "S4",
+      "negative": "PR head drift; dirty source",
+      "authority": "no waiver"
+    },
+    {
+      "gate": "G7_lineage",
+      "strictness": "S3",
+      "negative": "stale intermediate SHA in current claim",
+      "anti_overfit": "whole active tree stale-SHA sweep",
+      "authority": "independent checker"
+    },
+    {
+      "gate": "policy_raw_probe",
+      "strictness": "S3",
+      "negative": "identity/delete resolve true; merge HA1-only passes",
+      "authority": "deterministic oracle"
+    },
+    {
+      "gate": "raw_evidence_reuse",
+      "strictness": "S3",
+      "negative": "hash mismatch; foreign source",
+      "authority": "independent checker"
+    },
+    {
+      "gate": "G13_sanitation",
+      "strictness": "S3",
+      "negative": "secret fixture; manifest/pack omitted; symlink escape",
+      "authority": "deterministic full inventory"
+    },
+    {
+      "gate": "G14_dual_identity",
+      "strictness": "S3",
+      "negative": "branch tip substitution; E2==S",
+      "authority": "external reviewer"
+    },
+    {
+      "gate": "G15_claim_boundary",
+      "strictness": "S4",
+      "negative": "self-declared PASS_CHALLENGE",
+      "authority": "external/release authority"
+    }
+  ],
+  "llm_judge_final_authority": false
+}

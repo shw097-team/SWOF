@@ -1,0 +1,15 @@
+{
+  "schema": "SWOF-R9E-ECP/1",
+  "ecp_id": "ECP-SWOF-W2-R9E-001",
+  "workorder_id": "WO-SWOF-W2-R9E-001",
+  "write_set": [
+    "acceptance/evidence/w2r1/c333e47141393b4f6c39a13f70c96b31190f3c3d/r9e/"
+  ],
+  "forbidden_write_set": [
+    "src/**",
+    "tests/** product",
+    "HGK core",
+    "Fabric core"
+  ],
+  "claim_ceiling": "READY_FOR_W2_R9E_EXTERNAL_RECHALLENGE"
+}

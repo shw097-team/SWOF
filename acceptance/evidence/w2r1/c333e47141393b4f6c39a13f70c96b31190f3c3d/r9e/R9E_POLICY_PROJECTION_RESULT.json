@@ -1,0 +1,100 @@
+{
+  "merge_HA1_only": {
+    "action_class": "ACT-MERGE",
+    "resolved": true,
+    "deferred": null,
+    "floor_errors": [
+      "AUTHORITY_FLOOR:no_pi06_clause_covered"
+    ],
+    "deny": "DENY_POLICY_FLOOR"
+  },
+  "merge_HA1_plus_HA3": {
+    "action_class": "ACT-MERGE",
+    "resolved": true,
+    "deferred": null,
+    "floor_errors": [],
+    "deny": null
+  },
+  "stateful_MEDIUM": {
+    "action_class": "ACT-EXTERNAL-WRITE-STATEFUL",
+    "resolved": true,
+    "deferred": null,
+    "floor_errors": [
+      "RISK_FLOOR:'MEDIUM'<HIGH"
+    ],
+    "deny": "DENY_POLICY_FLOOR"
+  },
+  "identity_rights_no_domain": {
+    "action_class": "ACT-IDENTITY-RIGHTS",
+    "resolved": false,
+    "deferred": "OWNER_BOUNDARY_DEFERRED",
+    "floor_errors": [
+      "TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED"
+    ],
+    "deny": "TEMP_CLOSED_POLICY_RESOLUTION"
+  },
+  "delete_irrev_no_domain": {
+    "action_class": "ACT-DELETE-IRREV",
+    "resolved": false,
+    "deferred": "OWNER_BOUNDARY_DEFERRED",
+    "floor_errors": [
+      "TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED"
+    ],
+    "deny": "TEMP_CLOSED_POLICY_RESOLUTION"
+  },
+  "data_export_no_domain": {
+    "action_class": "ACT-DATA-EXPORT",
+    "resolved": false,
+    "deferred": "OWNER_BOUNDARY_DEFERRED",
+    "floor_errors": [
+      "TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED"
+    ],
+    "deny": "TEMP_CLOSED_POLICY_RESOLUTION"
+  },
+  "financial_no_domain": {
+    "action_class": "ACT-FINANCIAL",
+    "resolved": false,
+    "deferred": "OWNER_BOUNDARY_DEFERRED",
+    "floor_errors": [
+      "TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED"
+    ],
+    "deny": "TEMP_CLOSED_POLICY_RESOLUTION"
+  },
+  "physical_no_domain": {
+    "action_class": "ACT-PHYSICAL",
+    "resolved": false,
+    "deferred": "OWNER_BOUNDARY_DEFERRED",
+    "floor_errors": [
+      "TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED"
+    ],
+    "deny": "TEMP_CLOSED_POLICY_RESOLUTION"
+  },
+  "benign_read": {
+    "action_class": "",
+    "resolved": true,
+    "deferred": null,
+    "floor_errors": [],
+    "deny": null
+  },
+  "release_positive": {
+    "action_class": "ACT-DEPLOY-RELEASE",
+    "resolved": true,
+    "deferred": null,
+    "floor_errors": [],
+    "deny": null
+  },
+  "secret_positive": {
+    "action_class": "ACT-SECRET-RESOLVE",
+    "resolved": true,
+    "deferred": null,
+    "floor_errors": [],
+    "deny": null
+  },
+  "reversible_write_positive": {
+    "action_class": "ACT-EXTERNAL-WRITE-REV",
+    "resolved": true,
+    "deferred": null,
+    "floor_errors": [],
+    "deny": null
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "subject_source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "checker_identity": "fresh independent read-only evidence checker (round 2)",
+  "producer_identity": "Hermes executor lane (EVIDENCE_ONLY)",
+  "checker_ne_producer": true,
+  "read_only": true,
+  "source_derived_oracle": true,
+  "r9e_workorder_id": "WO-SWOF-W2-R9E-001",
+  "r9e_checkpoint_id": "CK-W2-R9E-FINAL",
+  "checks_passed": 13,
+  "product_verdict": "PASS",
+  "governance_verdict": "PASS",
+  "wave_verdict": "PASS",
+  "confirmed_defects": [],
+  "evidence_gaps": [],
+  "prior_round_findings_resolved": {
+    "D1": "FIXED (stale confined to typed historical supersession map)",
+    "D2": "BY_DESIGN (checker artifacts produced post-verification)",
+    "D3": "FIXED (replacement refs resolve)"
+  },
+  "nonblocking_observations": [
+    {
+      "id": "N1",
+      "note": "short-form historical token in descriptive negative-test text and reused raw transcript",
+      "disposition": "non-binding"
+    },
+    {
+      "id": "N2",
+      "note": "prepack scan receipt scope historically listed compiled paths",
+      "disposition": "documentation staleness; final sanitation provides 100% active coverage"
+    }
+  ],
+  "attestation": "This receipt attests the frozen R9E bundle content verified in round 2 (prior to appending these checker artifacts).",
+  "external_acceptance": "NOT_CLAIMED"
+}

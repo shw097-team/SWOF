@@ -1,0 +1,4 @@
+{
+  "schema": "SWOF-R9-HGK-RECOMPUTE/1",
+  "recipe": "read R9_HGK_RAW_CHECKPOINT_READBACK.json; assert checkpoint_source_digest==source_sha; assert blocking_open_count==0; assert required_active_capabilities_open_count==0; assert denominator_nonvacuous"
+}

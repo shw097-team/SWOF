@@ -1,0 +1,25 @@
+{
+  "schema": "SWOF-R9E-REPOCONTEXT/1",
+  "repo": "shw097-team/SWOF",
+  "local_root": "C:/Projects/Agent_Workspace/SWOF/.w2r9-worktree",
+  "parent_source_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+  "current_source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "source_candidate_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "branch": "repair/swof-w2-r9-pi06-policy-projection-boundary",
+  "worktree_clean": true,
+  "git_status_porcelain": "",
+  "python": "3.11.15",
+  "write_set": [
+    "acceptance/evidence/w2r1/c333e47141393b4f6c39a13f70c96b31190f3c3d/r9e/"
+  ],
+  "forbidden": [
+    "src/**",
+    "tests/** product",
+    "HGK core",
+    "Fabric core",
+    "source branch commit",
+    "merge",
+    "release",
+    "production"
+  ]
+}

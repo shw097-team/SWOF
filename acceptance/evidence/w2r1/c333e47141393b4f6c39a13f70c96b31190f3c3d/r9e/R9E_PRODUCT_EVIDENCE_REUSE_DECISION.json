@@ -1,0 +1,28 @@
+{
+  "schema": "SWOF-R9E-REUSE-DECISION/1",
+  "decision": "REUSE_VALIDATED_BY_HASH",
+  "source_unchanged": true,
+  "reused_exact_final_count": 18,
+  "reused_paths": [
+    "R9_FRESH_CHECKER_FINDINGS.json",
+    "R9_FRESH_CHECKER_RECEIPT.json",
+    "R9_FRESH_CHECKER_TRANSCRIPT.log",
+    "R9_FULL_REGRESSION_INDEX.json",
+    "R9_GATE_CALIBRATION.json",
+    "R9_HGK_RAW_CHECKPOINT_READBACK.json",
+    "R9_HGK_RECOMPUTE_RECIPE.json",
+    "R9_REPOCONTEXT_RECEIPT.json",
+    "R9_ROOT_w1_admission.log",
+    "R9_ROOT_w1_capability.log",
+    "R9_ROOT_w1_fabric.log",
+    "R9_ROOT_w1_knowledge.log",
+    "R9_ROOT_w1_profile.log",
+    "R9_ROOT_w1_tests.log",
+    "R9_ROOT_w2_assurance.log",
+    "R9_ROOT_w2_effect.log",
+    "R9_ROOT_w2_observability.log",
+    "R9_ROOT_w2_security.log"
+  ],
+  "rerun_required": false,
+  "reason": "exact c333 source bytes and stored raw hashes match; no invalidation triggers"
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "SWOF-R9E-WORKORDER/1",
+  "workorder_id": "WO-SWOF-W2-R9E-001",
+  "taskspec": "R9E_TASKSPEC.json",
+  "source_candidate_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "evidence_only": true,
+  "one_ecp": true,
+  "status": "CLOSED_PENDING_EXTERNAL_RECHALLENGE",
+  "product_source_mutated": false
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "SWOF-W2-R9E-EVIDENCE-RETURN-PACK/1",
+  "repair_id": "SWOF-W2-R9E-EXACT-SUBJECT-EVIDENCE-RECLOSURE",
+  "candidate": {
+    "source_candidate_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+    "prior_evidence_commit_sha": "49ceff1c5a80559fc09572cefc23f9216434c46e",
+    "prior_support_sha": "528e37eb24fb703c3b2076802f9b4e5c93fa1108",
+    "new_evidence_commit_sha": null,
+    "evidence_commit_binding": "POSTPUBLICATION_READSET",
+    "source_ne_evidence": true
+  },
+  "construction": {
+    "repocontext_ref": "R9E_REPOCONTEXT_RECEIPT.json",
+    "pd04_packet_ref": "R9E_PD04_PACKET.json",
+    "taskspec_ref": "R9E_TASKSPEC.json",
+    "workorder_ref": "R9E_WORKORDER.json",
+    "ecp_ref": "R9E_ECP.json",
+    "checkpoint_id": "CK-W2-R9E-FINAL"
+  },
+  "closure": {
+    "EG-W2R9-EXT-001": "CLOSED_CANDIDATE",
+    "EG-W2R9-EXT-002": "CLOSED_CANDIDATE",
+    "EG-W2R9-EXT-003": "OUT_OF_SCOPE_REVIEW_TOOLING",
+    "source_product_defect_found": false,
+    "product_source_mutated": false
+  },
+  "raw_evidence": {
+    "final_policy_probe_ref": "R9E_POLICY_PROJECTION_RAW.log",
+    "prior_raw_reuse_ref": "R9E_PRIOR_RAW_EVIDENCE_READBACK.json",
+    "product_checker_ref": {
+      "commit": "49ceff1c5a80559fc09572cefc23f9216434c46e",
+      "path": "R9_FRESH_CHECKER_TRANSCRIPT.log"
+    },
+    "evidence_checker_ref": "R9E_FRESH_EVIDENCE_CHECKER_RECEIPT.json"
+  },
+  "sanitation": {
+    "prepack_redaction_ref": "R9E_PREPACK_REDACTION_RECEIPT.json",
+    "prepack_secret_scan_ref": "R9E_PREPACK_SECRET_PII_SCAN_RECEIPT.json",
+    "path_safety_ref": "R9E_PATH_SYMLINK_REPARSE_SCAN_RECEIPT.json",
+    "final_package_sanitation_ref": "R9E_FINAL_PACKAGE_SANITATION_RECEIPT.json",
+    "active_scope_coverage": "100_percent"
+  },
+  "regression": {
+    "W1": 113,
+    "W2": 830,
+    "security": 468,
+    "effect": 116,
+    "assurance": 144,
+    "observability": 102,
+    "grand": 943,
+    "zero_denominator_roots": 0,
+    "shrink": false,
+    "disposition": "reused_exact_final_hash_validated"
+  },
+  "manifest_sha256": "fdf1a76ff7277f8c8f6031406698eb622494fb2378981db3a8500e34467d55c6",
+  "claim_ceiling": "READY_FOR_W2_R9E_EXTERNAL_RECHALLENGE",
+  "nonclaims": [
+    "NOT_EXTERNALLY_ACCEPTED",
+    "W3_REPO_MUTATION_NOT_AUTHORIZED",
+    "NOT_MERGED",
+    "NOT_RELEASED",
+    "NOT_PRODUCTION",
+    "NO_WORLD_EFFECT_ACCEPTANCE"
+  ]
+}

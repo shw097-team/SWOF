@@ -1,0 +1,27 @@
+{
+  "schema": "SWOF-R9E-COMPILER-RECEIPT/1",
+  "task_id": "SWOF-W2-R9E-EXACT-SUBJECT-EVIDENCE-RECLOSURE",
+  "contract_path": "C:/Projects/Agent_Workspace/HG-KSEOS/var/swof-construction-002-w2-repair-001/specs/R9E_PROMPT_CONTRACT.json",
+  "contract_sha256": "60161f19d6c85842b06faf058acfd450fbf289d43fa17bc5c7bc5f5e8c7aac08",
+  "stages": {
+    "lint": {
+      "exit": 0,
+      "error_count": 0
+    },
+    "activation": {
+      "exit": 0,
+      "error_count": 0
+    },
+    "acceptance": {
+      "exit": 0,
+      "error_count": 0
+    },
+    "compile": {
+      "exit": 0
+    },
+    "duplication": {
+      "exit": 0
+    }
+  },
+  "verdict": "PROMPT_COMPILE_PASS"
+}

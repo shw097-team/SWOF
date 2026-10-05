@@ -1,0 +1,63 @@
+{
+  "schema": "SWOF-R9E-SUPERSESSION-MAP/1",
+  "final_source": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "historical_intermediate": "0ab90c6582d80056d75e073bf7c861464ea3e2bd",
+  "items": [
+    {
+      "old_commit": "49ceff1c5a80559fc09572cefc23f9216434c46e",
+      "old_path": "R9_WORKORDER.json",
+      "old_sha256": "6eb6f42ead620d8dfca7493daadc5c8e9d58c1eb8e2959a4d63a97e96b4c6480",
+      "historical_subject": "0ab90c6582d80056d75e073bf7c861464ea3e2bd",
+      "status": "SUPERSEDED_FOR_R9E_EXTERNAL_ACCEPTANCE",
+      "active_for_R9E_acceptance": false,
+      "replacement_or_readback": "R9E_WORKORDER.json",
+      "reason": "exact_final_subject_or_content_mismatch",
+      "history_mutated": false
+    },
+    {
+      "old_commit": "49ceff1c5a80559fc09572cefc23f9216434c46e",
+      "old_path": "R9_EDGE_READBACK.json",
+      "old_sha256": "52fefcc6e1491cf5586c952275d494292895b7f45665f5a7d44e536a9b46ba65",
+      "historical_subject": "0ab90c6582d80056d75e073bf7c861464ea3e2bd",
+      "status": "SUPERSEDED_FOR_R9E_EXTERNAL_ACCEPTANCE",
+      "active_for_R9E_acceptance": false,
+      "replacement_or_readback": "R9E_EDGE_READBACK.json",
+      "reason": "exact_final_subject_or_content_mismatch",
+      "history_mutated": false
+    },
+    {
+      "old_commit": "49ceff1c5a80559fc09572cefc23f9216434c46e",
+      "old_path": "R9_ENVIRONMENT_IDENTITY.json",
+      "old_sha256": "761dc7f792c984ea0c92371bf69338905396db7fdc386e79baedc8fbd43e5a9a",
+      "historical_subject": "0ab90c6582d80056d75e073bf7c861464ea3e2bd",
+      "status": "SUPERSEDED_FOR_R9E_EXTERNAL_ACCEPTANCE",
+      "active_for_R9E_acceptance": false,
+      "replacement_or_readback": "R9E_ENVIRONMENT_IDENTITY.json",
+      "reason": "exact_final_subject_or_content_mismatch",
+      "history_mutated": false
+    },
+    {
+      "old_commit": "49ceff1c5a80559fc09572cefc23f9216434c46e",
+      "old_path": "SWOF_W2_R9_FINAL_EVIDENCE_DOSSIER.md",
+      "old_sha256": "7b5f3bacd70167940a251f8b64b2ae4cfc20c46ef8de183c6e7702795c5f305b",
+      "historical_subject": "0ab90c6582d80056d75e073bf7c861464ea3e2bd",
+      "status": "SUPERSEDED_FOR_R9E_EXTERNAL_ACCEPTANCE",
+      "active_for_R9E_acceptance": false,
+      "replacement_or_readback": "SWOF_W2_R9E_FINAL_EVIDENCE_DOSSIER.md",
+      "reason": "exact_final_subject_or_content_mismatch",
+      "history_mutated": false
+    },
+    {
+      "old_commit": "49ceff1c5a80559fc09572cefc23f9216434c46e",
+      "old_path": "R9_POLICY_PROJECTION_RAW.log",
+      "old_sha256": "4e6477058c50523507ed043ea5062c437850926584b68e97a2e8f6918bf27f12",
+      "historical_subject": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+      "status": "SUPERSEDED_FOR_R9E_EXTERNAL_ACCEPTANCE",
+      "active_for_R9E_acceptance": false,
+      "replacement_or_readback": "R9E_POLICY_PROJECTION_RAW.log",
+      "reason": "exact_final_subject_or_content_mismatch",
+      "history_mutated": false
+    }
+  ],
+  "history_mutated": false
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "SWOF-R9E-TASKSPEC/1",
+  "taskspec_id": "TS-SWOF-W2-R9E-001",
+  "repair_id": "SWOF-W2-R9E-EXACT-SUBJECT-EVIDENCE-RECLOSURE",
+  "source_candidate_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "product_source_change": "FORBIDDEN",
+  "scope": [
+    "exact final-subject lineage reconciliation",
+    "final-source policy probe regeneration",
+    "prior raw evidence reuse validation",
+    "full active-publication sanitation",
+    "fresh independent evidence checker",
+    "new exact evidence commit and readset"
+  ],
+  "non_goals": [
+    "source mutation",
+    "W3 domain implementation",
+    "second policy engine",
+    "HGK/Fabric mutation",
+    "merge/release/production"
+  ]
+}

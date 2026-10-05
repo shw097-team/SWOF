@@ -1,0 +1,24 @@
+C:\Projects\Agent_Workspace\HG-KSEOS\var\swof-construction-002-w2-repair-001\evidence\R9E_EVIDENCE\R9E_policy_probe.py:32: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  print("START=%s" % datetime.datetime.utcnow().isoformat() + "Z")
+C:\Projects\Agent_Workspace\HG-KSEOS\var\swof-construction-002-w2-repair-001\evidence\R9E_EVIDENCE\R9E_policy_probe.py:44: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  print("END=%s" % datetime.datetime.utcnow().isoformat() + "Z")
+R9E_SOURCE_SHA=c333e47141393b4f6c39a13f70c96b31190f3c3d
+CWD=C:/Projects/Agent_Workspace/SWOF/.w2r9-worktree
+PYTHON=C:\Projects\Agent_Workspace\HG-KSEOS\.venv\Scripts\python.exe
+START=2026-10-05T09:19:04.018492Z
+------------------------------------------------------------
+merge_HA1_only             action=ACT-MERGE                    resolved=True  deferred=None                   floor=('AUTHORITY_FLOOR:no_pi06_clause_covered',)
+merge_HA1_plus_HA3         action=ACT-MERGE                    resolved=True  deferred=None                   floor=()
+stateful_MEDIUM            action=ACT-EXTERNAL-WRITE-STATEFUL  resolved=True  deferred=None                   floor=("RISK_FLOOR:'MEDIUM'<HIGH",)
+identity_rights_no_domain  action=ACT-IDENTITY-RIGHTS          resolved=False deferred=OWNER_BOUNDARY_DEFERRED floor=('TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED',)
+delete_irrev_no_domain     action=ACT-DELETE-IRREV             resolved=False deferred=OWNER_BOUNDARY_DEFERRED floor=('TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED',)
+data_export_no_domain      action=ACT-DATA-EXPORT              resolved=False deferred=OWNER_BOUNDARY_DEFERRED floor=('TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED',)
+financial_no_domain        action=ACT-FINANCIAL                resolved=False deferred=OWNER_BOUNDARY_DEFERRED floor=('TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED',)
+physical_no_domain         action=ACT-PHYSICAL                 resolved=False deferred=OWNER_BOUNDARY_DEFERRED floor=('TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED',)
+benign_read                action=                             resolved=True  deferred=None                   floor=()
+release_positive           action=ACT-DEPLOY-RELEASE           resolved=True  deferred=None                   floor=()
+secret_positive            action=ACT-SECRET-RESOLVE           resolved=True  deferred=None                   floor=()
+reversible_write_positive  action=ACT-EXTERNAL-WRITE-REV       resolved=True  deferred=None                   floor=()
+------------------------------------------------------------
+END=2026-10-05T09:19:04.019996Z
+EXIT_CODE=0

@@ -1,0 +1,17 @@
+{
+  "schema": "SWOF-R9E-EDGE-READBACK/1",
+  "source_candidate_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "workorder_id": "WO-SWOF-W2-R9E-001",
+  "requirements_to_acceptance": {
+    "R9E-REQ-001": "ACC-R9E-001",
+    "R9E-REQ-002": "ACC-R9E-002",
+    "R9E-REQ-003": "ACC-R9E-003",
+    "R9E-REQ-004": "ACC-R9E-004",
+    "R9E-REQ-005": "ACC-R9E-005",
+    "R9E-REQ-006": "ACC-R9E-006",
+    "R9E-REQ-007": "ACC-R9E-007",
+    "R9E-REQ-008": "ACC-R9E-008",
+    "R9E-REQ-009": "ACC-R9E-009",
+    "R9E-REQ-010": "ACC-R9E-010"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "SWOF-R9E-FRESH-EVIDENCE-CHECKER/1",
+  "checker_identity": "fresh independent read-only evidence checker (round 2)",
+  "producer_identity": "Hermes executor lane (EVIDENCE_ONLY)",
+  "checker_ne_producer": true,
+  "read_only": true,
+  "source_derived_oracle": true,
+  "source_candidate_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "r9e_workorder_id": "WO-SWOF-W2-R9E-001",
+  "r9e_checkpoint_id": "CK-W2-R9E-FINAL",
+  "verdict": "PASS",
+  "transcript": "R9E_FRESH_EVIDENCE_CHECKER_TRANSCRIPT.log",
+  "findings": "R9E_FRESH_EVIDENCE_CHECKER_FINDINGS.json"
+}

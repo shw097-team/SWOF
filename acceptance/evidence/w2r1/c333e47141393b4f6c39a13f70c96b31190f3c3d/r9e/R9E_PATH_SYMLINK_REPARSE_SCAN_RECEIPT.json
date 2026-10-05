@@ -1,0 +1,7 @@
+{
+  "schema": "SWOF-R9E-PATH-SAFETY/1",
+  "status": "PASS",
+  "scope": "R9E_EVIDENCE",
+  "symlink_or_reparse_detected": false,
+  "path_traversal_detected": false
+}
