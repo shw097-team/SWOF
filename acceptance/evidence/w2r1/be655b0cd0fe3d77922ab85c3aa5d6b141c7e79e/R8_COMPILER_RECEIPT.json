@@ -1,0 +1,19 @@
+{
+  "schema": "SWOF-W2-R8-COMPILER-RECEIPT/1",
+  "repair_id": "SWOF-W2-CLOSURE-R8",
+  "contract_sha256": "f43d7ebd62a99def8304779492395c96fb8c64c05b27112a01a94fe793576372",
+  "stages": {
+    "lint": "PROMPT_COMPILE_PASS",
+    "activation": "PROMPT_COMPILE_PASS",
+    "acceptance": "PROMPT_COMPILE_PASS",
+    "compile": "PROMPT_COMPILE_PASS",
+    "duplication": "PROMPT_COMPILE_PASS"
+  },
+  "thin_prompt": {
+    "path": "R8_COMPILED/thin-prompt.md",
+    "sha256": "388e6286d5be7e488a72d518f6d3cb97ad494a68c9344a7cbd75b27f008603a7",
+    "bytes": 10623
+  },
+  "source_sha_at_compile": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+  "compiled_at": "2026-10-05T03:58:51Z"
+}

@@ -1,0 +1,16 @@
+# command : C:\Users\user\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe -m unittest discover -s src/effect/tests -t src/effect/tests
+# cwd     : C:/Projects/Agent_Workspace/SWOF/.w2r8-worktree
+# git HEAD: be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e
+# branch  : repair/swof-w2-r8-pi06-humangate-policy-substrate
+# python  : C:\Users\user\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe
+# phase   : w2_candidate_w2r8
+# started : 2026-10-05T03:58:35Z
+# duration: 0.165s
+# exit_code: 0
+------------------------------------------------------------------------------
+
+....................................................................................................................
+----------------------------------------------------------------------
+Ran 116 tests in 0.007s
+
+OK

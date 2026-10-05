@@ -1,0 +1,124 @@
+{
+  "schema": "SWOF-W2-R8-FULL-REGRESSION-INDEX/1",
+  "phase": "w2_candidate_w2r8",
+  "source_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+  "generated_at": "2026-10-05T03:58:35Z",
+  "roots": [
+    {
+      "name": "R8_ROOT_w1_tests.log",
+      "command": "C:\\Users\\user\\AppData\\Local\\hermes\\hermes-agent\\venv\\Scripts\\python.exe -m unittest discover -s tests -t .",
+      "exit_code": 0,
+      "started": "2026-10-05T03:58:33Z",
+      "duration": "0.251s",
+      "sha256": "1824ebf0acc95ffca6947381a05d90015171188b070f882e78cf96d44bea0341",
+      "bytes": 670
+    },
+    {
+      "name": "R8_ROOT_w1_fabric.log",
+      "command": "C:\\Users\\user\\AppData\\Local\\hermes\\hermes-agent\\venv\\Scripts\\python.exe -m unittest discover -s src/fabric/tests -t src/fabric/tests",
+      "exit_code": 0,
+      "started": "2026-10-05T03:58:33Z",
+      "duration": "0.138s",
+      "sha256": "7ecd909738372989ef2d45c46bdba43bf8633536821afac1e563dba04ad30353",
+      "bytes": 701
+    },
+    {
+      "name": "R8_ROOT_w1_knowledge.log",
+      "command": "C:\\Users\\user\\AppData\\Local\\hermes\\hermes-agent\\venv\\Scripts\\python.exe -m unittest discover -s src/knowledge/tests -t src/knowledge/tests",
+      "exit_code": 0,
+      "started": "2026-10-05T03:58:33Z",
+      "duration": "0.130s",
+      "sha256": "d51c5ed8caf9d5fc5cb3a79b25a733375560dc5caef478b54d528b6302f995cd",
+      "bytes": 711
+    },
+    {
+      "name": "R8_ROOT_w1_admission.log",
+      "command": "C:\\Users\\user\\AppData\\Local\\hermes\\hermes-agent\\venv\\Scripts\\python.exe -m unittest discover -s src/admission/tests -t src/admission/tests",
+      "exit_code": 0,
+      "started": "2026-10-05T03:58:34Z",
+      "duration": "0.120s",
+      "sha256": "ee4e56f74b75397cf18d0750e4efcd7425e98ae68bb8eee928a06a98c116b2cf",
+      "bytes": 703
+    },
+    {
+      "name": "R8_ROOT_w1_profile.log",
+      "command": "C:\\Users\\user\\AppData\\Local\\hermes\\hermes-agent\\venv\\Scripts\\python.exe -m unittest discover -s src/profile/tests -t src/profile/tests",
+      "exit_code": 0,
+      "started": "2026-10-05T03:58:34Z",
+      "duration": "0.123s",
+      "sha256": "b2b0dd22f162de721c62b8b8eec9676b21c62b932cd08bc6ffd3dfad19a131e1",
+      "bytes": 694
+    },
+    {
+      "name": "R8_ROOT_w1_capability.log",
+      "command": "C:\\Users\\user\\AppData\\Local\\hermes\\hermes-agent\\venv\\Scripts\\python.exe -m unittest discover -s src/capability/tests -t src/capability/tests",
+      "exit_code": 0,
+      "started": "2026-10-05T03:58:34Z",
+      "duration": "0.348s",
+      "sha256": "259a1ce74eea7baa94fd8c24fd9df9d0f7fa84938c9bf2e95a9559246ae0ac93",
+      "bytes": 710
+    },
+    {
+      "name": "R8_ROOT_w2_security.log",
+      "command": "C:\\Users\\user\\AppData\\Local\\hermes\\hermes-agent\\venv\\Scripts\\python.exe -m unittest discover -s src/security/tests -t src/security/tests",
+      "exit_code": 0,
+      "started": "2026-10-05T03:58:34Z",
+      "duration": "0.405s",
+      "sha256": "97a2f3dd66a4663b4191cf830788d94e0630e65e060778bfcf4b86e58c003978",
+      "bytes": 1136
+    },
+    {
+      "name": "R8_ROOT_w2_effect.log",
+      "command": "C:\\Users\\user\\AppData\\Local\\hermes\\hermes-agent\\venv\\Scripts\\python.exe -m unittest discover -s src/effect/tests -t src/effect/tests",
+      "exit_code": 0,
+      "started": "2026-10-05T03:58:35Z",
+      "duration": "0.165s",
+      "sha256": "f6ca2eb2e024454959bc0fea25ac3e30d92b67399f61346818930614c166170e",
+      "bytes": 797
+    },
+    {
+      "name": "R8_ROOT_w2_assurance.log",
+      "command": "C:\\Users\\user\\AppData\\Local\\hermes\\hermes-agent\\venv\\Scripts\\python.exe -m unittest discover -s src/assurance/tests -t src/assurance/tests",
+      "exit_code": 0,
+      "started": "2026-10-05T03:58:35Z",
+      "duration": "0.187s",
+      "sha256": "72d596aab12bfb023883607ed9cd823b2335a10bc610916e652a54410cbe90b4",
+      "bytes": 831
+    },
+    {
+      "name": "R8_ROOT_w2_observability.log",
+      "command": "C:\\Users\\user\\AppData\\Local\\hermes\\hermes-agent\\venv\\Scripts\\python.exe -m unittest discover -s src/observability/tests -t src/observability/tests",
+      "exit_code": 0,
+      "started": "2026-10-05T03:58:35Z",
+      "duration": "0.178s",
+      "sha256": "92dee4cd08eed733de0c44141c20e330ff635ec70bf2a3f16a0cb8b4e473c7a6",
+      "bytes": 797
+    }
+  ],
+  "summary": {
+    "exit_zero_all": true,
+    "root_count": 10,
+    "zero_denominator_roots": 0
+  },
+  "denominator": {
+    "w1_total": 113,
+    "w2_total": 813,
+    "grand_total": 926,
+    "by_root_w1": {
+      "tests": 16,
+      "fabric": 21,
+      "knowledge": 25,
+      "admission": 17,
+      "profile": 12,
+      "capability": 22
+    },
+    "by_root_w2": {
+      "security": 451,
+      "effect": 116,
+      "assurance": 144,
+      "observability": 102
+    }
+  },
+  "index_sha256_recipe": "sha256 hex of utf-8 bytes of json.dumps(base, sort_keys=True, separators=(',',':'), ensure_ascii=False); base = index minus {index_sha256, index_sha256_recipe}",
+  "index_sha256": "dab82c36077250245efe63863ad69d71bc50dd8e302899f280a1b37f11fd0bd2"
+}

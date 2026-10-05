@@ -1,0 +1,30 @@
+# command : python -m unittest src.security.tests.test_rights.TestR8PolicyConformance -v
+# cwd     : C:/Projects/Agent_Workspace/SWOF/.w2r8-worktree
+# git HEAD: be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e
+# phase   : w2_candidate_w2r8_focused
+# started : 2026-10-05T03:58:51Z
+# exit_code: 0
+------------------------------------------------------------------------------
+test_r8_a01_release_p2_is_denied (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a01_release_p2_is_denied) ... ok
+test_r8_a02_release_low_risk_is_denied (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a02_release_low_risk_is_denied) ... ok
+test_r8_a03_release_t2_is_denied (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a03_release_t2_is_denied) ... ok
+test_r8_a04_release_aac2_is_denied (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a04_release_aac2_is_denied) ... ok
+test_r8_a05_release_t3_without_checker_is_denied (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a05_release_t3_without_checker_is_denied) ... ok
+test_r8_a06_missing_coapproval_is_denied (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a06_missing_coapproval_is_denied) ... ok
+test_r8_a07_stale_coapproval_is_denied (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a07_stale_coapproval_is_denied) ... ok
+test_r8_a08_foreign_request_coapproval_is_denied (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a08_foreign_request_coapproval_is_denied) ... ok
+test_r8_a09_revoked_or_superseded_coapproval_is_denied (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a09_revoked_or_superseded_coapproval_is_denied) ... ok
+test_r8_a10_caller_removes_trusted_coapproval_is_policy_mismatch (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a10_caller_removes_trusted_coapproval_is_policy_mismatch) ... ok
+test_r8_a11_secret_missing_clause_is_denied (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a11_secret_missing_clause_is_denied) ... ok
+test_r8_a12_external_write_as_p2_is_denied (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a12_external_write_as_p2_is_denied) ... ok
+test_r8_a13_malformed_coapproval_ref_is_denied (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a13_malformed_coapproval_ref_is_denied) ... ok
+test_r8_a14_coapproval_without_resolver_is_temp_closed (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_a14_coapproval_without_resolver_is_temp_closed) ... ok
+test_r8_p01_benign_read_unchanged (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_p01_benign_read_unchanged) ... ok
+test_r8_p02_valid_external_write_passes (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_p02_valid_external_write_passes) ... ok
+test_r8_p03_full_release_baseline_passes (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_p03_full_release_baseline_passes) ... ok
+test_r8_p04_domain_tighter_policy_is_preserved (src.security.tests.test_rights.TestR8PolicyConformance.test_r8_p04_domain_tighter_policy_is_preserved) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.024s
+
+OK

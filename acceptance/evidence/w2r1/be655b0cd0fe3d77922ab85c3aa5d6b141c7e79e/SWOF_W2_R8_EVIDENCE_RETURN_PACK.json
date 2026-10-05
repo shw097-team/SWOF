@@ -1,0 +1,53 @@
+{
+  "schema": "SWOF_W2_R8_EVIDENCE_RETURN_PACK/1",
+  "repair_id": "SWOF-W2-CLOSURE-R7",
+  "source_candidate_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+  "parent_evidence_sha": "36cc241bc5823ff0f489e4e4a7518a3d96653e97",
+  "evidence_commit_sha": "PREPUBLICATION / assigned by publication receipt",
+  "manifest_file": "R8_EVIDENCE_MANIFEST.json",
+  "manifest_sha256": "14f5face1ffa001b25718257d1d71bcb5fc926492484bbf296c447faa3906223",
+  "manifest_bytes": 4818,
+  "artifacts": [
+    {
+      "path": "R8_POLICY_CONFORMANCE_ADJUDICATION.json",
+      "sha256": "604693e1df026f153962a2a33f0b8ae03247dd397e9d953012cb20dbbc5cb9a2",
+      "bytes": 1528
+    },
+    {
+      "path": "R7_RAW_FOCUSED_PROBES.log",
+      "status": "ABSENT"
+    },
+    {
+      "path": "R8_FULL_REGRESSION_INDEX.json",
+      "sha256": "061994a9a90b9095e1ccd51732afab7e284e1b8a6c04e803ac92188009b36425",
+      "bytes": 5068
+    },
+    {
+      "path": "R8_FRESH_CHECKER_RECEIPT.json",
+      "sha256": "12b9a428ef74437094eff0ba2083bcd374cf8eff00c93be9e594f8bcbc627f94",
+      "bytes": 493
+    },
+    {
+      "path": "R8_FRESH_CHECKER_FINDINGS.json",
+      "sha256": "1e0422745a5ae447fed06d1ca8bda7d7a30e887f014afbd9ddf5c408d19561e9",
+      "bytes": 2368
+    },
+    {
+      "path": "R8_W2_NORMATIVE_CLOSURE_PROJECTION.json",
+      "sha256": "a6008f2970758ea5a1f1195379005092d10c36c09ac5e44c70482d89b565e51b",
+      "bytes": 2911
+    },
+    {
+      "path": "R8_COMPILER_RECEIPT.json",
+      "sha256": "dfc7337587cb32239901ffb3f2f843e229dd5fedd92a56a50392392caaf34ab4",
+      "bytes": 667
+    },
+    {
+      "path": "R8_COMPILED_THIN_PROMPT.md",
+      "sha256": "388e6286d5be7e488a72d518f6d3cb97ad494a68c9344a7cbd75b27f008603a7",
+      "bytes": 10623
+    }
+  ],
+  "non_circular_note": "This pack hashes R8_EVIDENCE_MANIFEST.json and selected children. It does NOT hash itself, and does NOT embed the evidence commit SHA that contains it. Postpublication readset records the recomputed pack hash + evidence commit E.",
+  "generated_at": "2026-10-05T04:03:13+00:00"
+}

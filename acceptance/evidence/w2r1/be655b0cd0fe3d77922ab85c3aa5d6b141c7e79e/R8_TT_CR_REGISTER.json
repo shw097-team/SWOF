@@ -1,0 +1,37 @@
+{
+  "schema": "SWOF-W2-R8-TT-CR-REGISTER/1",
+  "repair_id": "SWOF-W2-CLOSURE-R8",
+  "open": [],
+  "non_blocking_observations": [
+    {
+      "id": "NB-R8-001",
+      "owner": "src/security/humangate.py _resolve/_trusted boundary",
+      "close_evidence": "Harden the no-floor branch to still resolve the trusted request for the projection; not exploitable (branch fails DENY_AUTHN / DENY_REQUEST_UNRESOLVED).",
+      "status": "DOCUMENTED_NON_BLOCKING"
+    },
+    {
+      "id": "NB-R8-002",
+      "owner": "src/security/policy_projection.py",
+      "note": "unused permission_class param",
+      "status": "DOCUMENTED_NON_BLOCKING"
+    },
+    {
+      "id": "NB-R8-003",
+      "owner": "src/security/policy_projection.py",
+      "note": "policy_deny_code collapses mixed reasons",
+      "status": "DOCUMENTED_NON_BLOCKING"
+    }
+  ],
+  "w3_deferred": [
+    {
+      "id": "W3-FULL-EFFECT-E2E"
+    },
+    {
+      "id": "W3-DOMAIN-COAPPROVAL-MAPS"
+    },
+    {
+      "id": "W3-WORLD-EFFECT-READBACK"
+    }
+  ],
+  "generated_at": "2026-10-05T04:03:13Z"
+}

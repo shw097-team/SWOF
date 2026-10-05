@@ -1,0 +1,12 @@
+# command : trusted-policy-conformance counterexample (F-W2R7-EXT-001)
+# phase   : w2_candidate_w2r8_adjudication
+# started : 2026-10-05T03:58:51Z
+------------------------------------------------------------------------------
+[OBSERVED] R7 source 335c231659f42badd15085e379fe252def988584: no minimum-policy projection; a trusted release request declaring P2/LOW/T2/AAC2/checker=false was accepted (its own weak floor honored).
+[OBSERVED] R8 source be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e: policy_projection.policy_floor_errors(release/P2/LOW/T2/AAC2/checker=false)=
+  ('PERMISSION_FLOOR:P2<P5','RISK_FLOOR:LOW<CRITICAL','AUTHN_FLOOR:AAC2<AAC3','T3_CHECKER','AUTHORITY_FLOOR') => DENY_POLICY_FLOOR
+  release/P5/CRITICAL/T3/HA1+HA5/AAC3/checker=true => () (valid)
+  P4 secret {HA1} only => AUTHORITY_FLOOR => DENY_POLICY_FLOOR
+  P4 secret HA1+HA3 => () (valid)
+  benign read => () (no floor)
+FINAL: F-W2R7-EXT-001 CLOSED; benign low-friction preserved.

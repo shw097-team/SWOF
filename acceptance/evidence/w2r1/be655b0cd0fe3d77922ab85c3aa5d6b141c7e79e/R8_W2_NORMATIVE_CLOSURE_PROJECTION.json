@@ -1,0 +1,90 @@
+{
+  "schema": "SWOF-W2-R8-NORMATIVE-CLOSURE-PROJECTION/1",
+  "project": "HGK-P0-SWOF-W2",
+  "changeset": "NARROW_REPAIR (PI06 minimum-policy conformance)",
+  "final_source_candidate_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+  "parent_source_sha": "335c231659f42badd15085e379fe252def988584",
+  "parent_evidence_sha": "36cc241bc5823ff0f489e4e4a7518a3d96653e97",
+  "typed_api_only": true,
+  "no_direct_sql_writes": true,
+  "historical_rows_preserved": "R1-R7 rows untouched; R8 cone appended as projection (same non-live-db projection mode as R1-R7)",
+  "actions": [
+    {
+      "step": "register_evidence",
+      "evidence_id": "EVD-W2R8-ADJUDICATION",
+      "sha256": "604693e1df026f153962a2a33f0b8ae03247dd397e9d953012cb20dbbc5cb9a2"
+    },
+    {
+      "step": "register_evidence",
+      "evidence_id": "EVD-W2R8-REGRESSION",
+      "sha256": "061994a9a90b9095e1ccd51732afab7e284e1b8a6c04e803ac92188009b36425"
+    },
+    {
+      "step": "register_evidence",
+      "evidence_id": "EVD-W2R8-CHECKER",
+      "sha256": "12b9a428ef74437094eff0ba2083bcd374cf8eff00c93be9e594f8bcbc627f94"
+    },
+    {
+      "step": "register_evidence",
+      "evidence_id": "EVD-W2R8-COMPILER",
+      "sha256": "dfc7337587cb32239901ffb3f2f843e229dd5fedd92a56a50392392caaf34ab4"
+    },
+    {
+      "step": "governed_row",
+      "requirement": "REQ-HGK-SWOF-W2R8-001",
+      "acceptance": "ACC-REQ-HGK-SWOF-W2R8-001",
+      "workorder": "WO-REQ-HGK-SWOF-W2R8-001",
+      "acceptance_result": "PASS",
+      "evidence_refs": [
+        "EVD-W2R8-ADJUDICATION",
+        "EVD-W2R8-REGRESSION",
+        "EVD-W2R8-CHECKER"
+      ],
+      "source_binding": "SRC:be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e"
+    },
+    {
+      "step": "per_obligation_checkpoint",
+      "checkpoint_id": "CK-W2-R8OBL-0001"
+    },
+    {
+      "step": "final_normative_checkpoint",
+      "checkpoint_id": "CK-W2-R8-FINAL"
+    }
+  ],
+  "denominator_after": {
+    "project_id": "HGK-P0-SWOF-W2",
+    "requirements_total": 11,
+    "requirements_frozen": 11,
+    "workorders_total": 11,
+    "workorders_open_count": 0,
+    "acceptances_total": 11,
+    "acceptances_open_count": 0,
+    "blocking_open_count": 0,
+    "required_active_capabilities_open_count": 0,
+    "denominator_nonvacuous": true
+  },
+  "exact_source_binding": {
+    "canonical_binding_field": "checkpoints.source_digest",
+    "payload_names_exact_source_sha": true,
+    "resolves_to_exact_source_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+    "lifecycle_last_checkpoint_id": "CK-W2-R8-FINAL",
+    "lifecycle_points_at_final": true
+  },
+  "regression_denominator": {
+    "w1": 113,
+    "w2": 813,
+    "grand_total": 926,
+    "security": 451,
+    "shrink": false,
+    "zero_denominator_roots": 0,
+    "all_roots_exit_zero": true
+  },
+  "non_claims": [
+    "NOT_EXTERNALLY_ACCEPTED",
+    "W3_NOT_STARTED",
+    "NOT_MERGED",
+    "NOT_RELEASED",
+    "NOT_PRODUCTION",
+    "NO_WORLD_EFFECT"
+  ]
+}

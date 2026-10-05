@@ -1,0 +1,39 @@
+{
+  "schema": "SWOF-W2-R8-FRESH-CHECKER-FINDINGS/1",
+  "checker_identity": "deleg_6b2ec532 sa-0-9eb323f8",
+  "checker_ne_maker": true,
+  "checker_read_only": true,
+  "subject_source_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+  "product_verdict": "PASS",
+  "governance_verdict": "PASS",
+  "wave_verdict": "PASS",
+  "confirmed_defects": [],
+  "evidence_gaps": [],
+  "independent_evidence": {
+    "own_fixtures": "projection reconstructed locally: release=>P5/CRITICAL/T3/AAC3/{HA1,HA5}; secret=>P4/CRITICAL/AAC3/{HA1,HA3}; external-write risk-conditional",
+    "floor_denials": "release+P2=>DENY_POLICY_FLOOR; release+AAC2=>DENY_POLICY_FLOOR; release T3+checker=false=>DENY_T3_CHECKER; secret P4 {HA1}=>DENY_POLICY_FLOOR; benign read=>no floor",
+    "both_seams": "humangate._policy_conformance_deny consumed at verify_approval_token + rights benign/gated paths on TRUSTED request",
+    "coapprovals": "required_coapprovals on ApprovalRequest + _REQUEST_POLICY_FIELDS; canonical set; caller shrink=>DENY_REQUEST_POLICY_MISMATCH; missing/stale/foreign/revoked=>DENY_COAPPROVAL; no resolver=>TEMP_CLOSED_AUTHORITY_RESOLUTION",
+    "no_second_engine": "one projection only; no global AAC3; R6/R7 test-def removals=0; 72-combo sweep LEAKS=0",
+    "regression": "security 451 OK; R8 class 18 OK; W1=113 W2=813 grand=926 all exit 0",
+    "byte_binding": "R8_FULL_REGRESSION_INDEX.json roots[] 10/10 match literal on-disk bytes; headers name be655b0c"
+  },
+  "non_blocking_observations": [
+    {
+      "id": "NB-R8-001",
+      "note": "humangate.py:1298-1319: when the caller request declares no canonical required_authn_assurance, the R6 trusted boundary is skipped and trusted_request falls back to the caller request, so the projection is evaluated against a caller object on that branch; NOT exploitable (that branch then fails DENY_AUTHN at 1361-1363; rights benign path fails DENY_REQUEST_UNRESOLVED).",
+      "blocking": false
+    },
+    {
+      "id": "NB-R8-002",
+      "note": "policy_projection.minimum_policy permission_class param unused (dead).",
+      "blocking": false
+    },
+    {
+      "id": "NB-R8-003",
+      "note": "policy_deny_code collapses mixed floor reasons to DENY_POLICY_FLOOR; only all-T3 set yields DENY_T3_CHECKER; deterministic/fail-closed; details retained.",
+      "blocking": false
+    }
+  ],
+  "generated_at": "2026-10-05T04:03:03Z"
+}

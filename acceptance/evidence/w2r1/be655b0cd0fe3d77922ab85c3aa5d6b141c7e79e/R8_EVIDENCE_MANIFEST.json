@@ -1,0 +1,136 @@
+{
+  "schema": "SWOF-W2-R8-EVIDENCE-MANIFEST/1",
+  "repair_id": "SWOF-W2-CLOSURE-R7",
+  "source_subject_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+  "parent_evidence_sha": "36cc241bc5823ff0f489e4e4a7518a3d96653e97",
+  "identity_model": "NON_CIRCULAR: this manifest hashes child artifacts only; it does NOT hash itself and does NOT hash the Return Pack. The Return Pack hashes this manifest. Postpublication readset records recomputed hashes of both.",
+  "item_count": 25,
+  "items": [
+    {
+      "relative_path": "R8_COMPILED/compiler-receipt.json",
+      "sha256": "79884c64225468091efaf6fb150b47c2eb8cca4f6c966663008d9a96fe2aa977",
+      "bytes": 545
+    },
+    {
+      "relative_path": "R8_COMPILED/compiler-report.json",
+      "sha256": "1807ae6904aa0e239aff851d6d3e657dba5edeaf16d8929e043c330235d00657",
+      "bytes": 227
+    },
+    {
+      "relative_path": "R8_COMPILED/thin-prompt.md",
+      "sha256": "388e6286d5be7e488a72d518f6d3cb97ad494a68c9344a7cbd75b27f008603a7",
+      "bytes": 10623
+    },
+    {
+      "relative_path": "R8_COMPILED_THIN_PROMPT.md",
+      "sha256": "388e6286d5be7e488a72d518f6d3cb97ad494a68c9344a7cbd75b27f008603a7",
+      "bytes": 10623
+    },
+    {
+      "relative_path": "R8_COMPILER_RECEIPT.json",
+      "sha256": "dfc7337587cb32239901ffb3f2f843e229dd5fedd92a56a50392392caaf34ab4",
+      "bytes": 667
+    },
+    {
+      "relative_path": "R8_FRESH_CHECKER_FINDINGS.json",
+      "sha256": "1e0422745a5ae447fed06d1ca8bda7d7a30e887f014afbd9ddf5c408d19561e9",
+      "bytes": 2368
+    },
+    {
+      "relative_path": "R8_FRESH_CHECKER_RECEIPT.json",
+      "sha256": "12b9a428ef74437094eff0ba2083bcd374cf8eff00c93be9e594f8bcbc627f94",
+      "bytes": 493
+    },
+    {
+      "relative_path": "R8_FRESH_CHECKER_TRANSCRIPT.log",
+      "sha256": "cf1e6f3112a17cc9ac4987969b638978f2881b61b4e26ceafc9f84bba40b27eb",
+      "bytes": 25831
+    },
+    {
+      "relative_path": "R8_FULL_REGRESSION_INDEX.json",
+      "sha256": "061994a9a90b9095e1ccd51732afab7e284e1b8a6c04e803ac92188009b36425",
+      "bytes": 5068
+    },
+    {
+      "relative_path": "R8_POLICY_CONFORMANCE_ADJUDICATION.json",
+      "sha256": "604693e1df026f153962a2a33f0b8ae03247dd397e9d953012cb20dbbc5cb9a2",
+      "bytes": 1528
+    },
+    {
+      "relative_path": "R8_RAW_ADJUDICATION_TRANSCRIPT.log",
+      "sha256": "10fe6071cea215dbde63aaa022b3aec24288afc47b372daba8e0616efa5577a2",
+      "bytes": 952
+    },
+    {
+      "relative_path": "R8_RAW_FOCUSED_PROBES.log",
+      "sha256": "2d57cd3d08358647cf4c0b4937b9ad944ea20702b23702222e236b55c9762c07",
+      "bytes": 3217
+    },
+    {
+      "relative_path": "R8_ROOT_w1_admission.log",
+      "sha256": "ee4e56f74b75397cf18d0750e4efcd7425e98ae68bb8eee928a06a98c116b2cf",
+      "bytes": 703
+    },
+    {
+      "relative_path": "R8_ROOT_w1_capability.log",
+      "sha256": "259a1ce74eea7baa94fd8c24fd9df9d0f7fa84938c9bf2e95a9559246ae0ac93",
+      "bytes": 710
+    },
+    {
+      "relative_path": "R8_ROOT_w1_fabric.log",
+      "sha256": "7ecd909738372989ef2d45c46bdba43bf8633536821afac1e563dba04ad30353",
+      "bytes": 701
+    },
+    {
+      "relative_path": "R8_ROOT_w1_knowledge.log",
+      "sha256": "d51c5ed8caf9d5fc5cb3a79b25a733375560dc5caef478b54d528b6302f995cd",
+      "bytes": 711
+    },
+    {
+      "relative_path": "R8_ROOT_w1_profile.log",
+      "sha256": "b2b0dd22f162de721c62b8b8eec9676b21c62b932cd08bc6ffd3dfad19a131e1",
+      "bytes": 694
+    },
+    {
+      "relative_path": "R8_ROOT_w1_tests.log",
+      "sha256": "1824ebf0acc95ffca6947381a05d90015171188b070f882e78cf96d44bea0341",
+      "bytes": 670
+    },
+    {
+      "relative_path": "R8_ROOT_w2_assurance.log",
+      "sha256": "72d596aab12bfb023883607ed9cd823b2335a10bc610916e652a54410cbe90b4",
+      "bytes": 831
+    },
+    {
+      "relative_path": "R8_ROOT_w2_effect.log",
+      "sha256": "f6ca2eb2e024454959bc0fea25ac3e30d92b67399f61346818930614c166170e",
+      "bytes": 797
+    },
+    {
+      "relative_path": "R8_ROOT_w2_observability.log",
+      "sha256": "92dee4cd08eed733de0c44141c20e330ff635ec70bf2a3f16a0cb8b4e473c7a6",
+      "bytes": 797
+    },
+    {
+      "relative_path": "R8_ROOT_w2_security.log",
+      "sha256": "97a2f3dd66a4663b4191cf830788d94e0630e65e060778bfcf4b86e58c003978",
+      "bytes": 1136
+    },
+    {
+      "relative_path": "R8_TT_CR_REGISTER.json",
+      "sha256": "9a2d68acf1a340ec214ddd9aa6a1771439fba36157959239c929446f02ad7961",
+      "bytes": 1049
+    },
+    {
+      "relative_path": "R8_W2_NORMATIVE_CLOSURE_PROJECTION.json",
+      "sha256": "a6008f2970758ea5a1f1195379005092d10c36c09ac5e44c70482d89b565e51b",
+      "bytes": 2911
+    },
+    {
+      "relative_path": "SWOF_W2_R8_FINAL_EVIDENCE_DOSSIER.md",
+      "sha256": "086d07192fc137946becebffffdbd9b260807f41fb60b60cdb10ade0a87f6352",
+      "bytes": 3687
+    }
+  ],
+  "generated_at": "2026-10-05T04:03:13+00:00"
+}

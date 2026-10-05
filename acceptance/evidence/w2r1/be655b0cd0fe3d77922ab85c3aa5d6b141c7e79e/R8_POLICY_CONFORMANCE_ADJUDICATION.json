@@ -1,0 +1,38 @@
+{
+  "schema": "SWOF-W2-R8-POLICY-CONFORMANCE-ADJUDICATION/1",
+  "repair_id": "SWOF-W2-CLOSURE-R8",
+  "finding_family": [
+    "F-W2R7-EXT-001",
+    "F-W2R7-REPAIRED-001",
+    "PI06_PREDEV_HUMANGATE_MINIMUM_POLICY_CAPABILITY_INCOMPLETE"
+  ],
+  "classification": "CONFIRMED_DEFECT",
+  "severity": "S3_BLOCKING",
+  "subject": {
+    "r7_source_sha": "335c231659f42badd15085e379fe252def988584",
+    "r7_evidence_sha": "36cc241bc5823ff0f489e4e4a7518a3d96653e97",
+    "r8_source_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e"
+  },
+  "first_failing_invariant": "trusted request itself cannot be weaker than frozen PI06 minimum policy",
+  "deterministic_counterexample": {
+    "trusted": "release/P2/LOW/T2/AAC2/checker=false/AAC2",
+    "observed_on_r7": "ACCEPT (trusted request's own weak floor honored)",
+    "observed_on_r8": "DENY_POLICY_FLOOR"
+  },
+  "repair": {
+    "class": "NARROW_REPAIR",
+    "files": [
+      "src/security/policy_projection.py",
+      "src/security/humangate.py",
+      "src/security/rights.py",
+      "src/security/__init__.py",
+      "src/security/tests/test_rights.py",
+      "src/security/tests/test_humangate_currentness.py"
+    ],
+    "seam": "ONE source-derived PI06 minimum-policy projection consumed by BOTH rights gate + verify_approval_token; required_coapprovals representable+pinned; coapproval_resolver; T3/checker floor",
+    "no_second_policy_engine": true,
+    "no_global_aac3": true,
+    "no_adapter_fallback": true
+  },
+  "decision": "F-W2R7-EXT-001 CLOSED at trusted-policy-conformance"
+}
