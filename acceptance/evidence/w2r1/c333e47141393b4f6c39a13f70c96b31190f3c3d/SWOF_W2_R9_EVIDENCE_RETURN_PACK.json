@@ -1,0 +1,51 @@
+{
+  "schema": "SWOF-W2-R9-EVIDENCE-RETURN-PACK/1",
+  "repair_id": "SWOF-W2-R9-PI06-POLICY-PROJECTION-BOUNDARY",
+  "construction": {
+    "repocontext_ref": "R9_REPOCONTEXT_RECEIPT.json",
+    "pd04_packet_ref": "R9_PD04_PACKET.json",
+    "taskspec_ref": "R9_TASKSPEC.json",
+    "workorder_ref": "R9_WORKORDER.json",
+    "ecp_ref": "R9_ECP.json"
+  },
+  "candidate": {
+    "parent_source_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+    "source_candidate_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+    "evidence_commit_sha": null,
+    "evidence_commit_binding": "POSTPUBLICATION_READSET",
+    "source_ne_evidence": true
+  },
+  "acceptance": {
+    "canonical_action_identity": "PASS",
+    "merge_coapproval_floor": "PASS",
+    "stateful_write_floor": "PASS",
+    "owner_boundary_fail_closed": "PASS",
+    "R8_release_secret_coapproval_retained": "PASS",
+    "regression_no_shrink": "PASS",
+    "fresh_checker": "PASS",
+    "HGK_checkpoint": "PASS"
+  },
+  "regression": {
+    "W1": 113,
+    "W2_prior_floor": 813,
+    "security_prior_floor": 451,
+    "grand_prior_floor": 926,
+    "observed_grand": 943,
+    "zero_denominator_roots": 0
+  },
+  "evidence": {
+    "manifest_sha256": "454e9eeb6d308f1c7f238cb2703ee6e63f346b190174d6ad0b5dd47200988e87",
+    "manifest_ref": "R9_EVIDENCE_MANIFEST.json",
+    "checker_ref": "R9_FRESH_CHECKER_RECEIPT.json",
+    "readset_ref": "SWOF-W2-R9-EXTERNAL-ACCEPTANCE-READSET.json"
+  },
+  "claim_ceiling": "READY_FOR_W2_R9_EXTERNAL_RECHALLENGE",
+  "nonclaims": [
+    "NOT_EXTERNALLY_ACCEPTED",
+    "W3_NOT_STARTED",
+    "NOT_MERGED",
+    "NOT_RELEASED",
+    "NOT_PRODUCTION",
+    "NO_WORLD_EFFECT"
+  ]
+}

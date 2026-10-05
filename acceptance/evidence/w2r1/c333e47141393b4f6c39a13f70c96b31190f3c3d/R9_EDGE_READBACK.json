@@ -1,0 +1,12 @@
+{
+  "requirements_to_acceptance": {
+    "REQ-R9-001": "ACC-R9-ACTION-IDENTITY",
+    "REQ-R9-002": "ACC-R9-MERGE-AUTHORITY",
+    "REQ-R9-003": "ACC-R9-STATEFUL-WRITE",
+    "REQ-R9-004": "ACC-R9-OWNER-BOUNDARY",
+    "REQ-R9-005": "ACC-R9-R8-REGRESSION",
+    "REQ-R9-006": "ACC-R9-FULL-REGRESSION"
+  },
+  "source_sha": "0ab90c6582d80056d75e073bf7c861464ea3e2bd",
+  "evidence_dir": "C:/Projects/Agent_Workspace/HG-KSEOS/var/swof-construction-002-w2-repair-001/evidence/R9_EVIDENCE"
+}

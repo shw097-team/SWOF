@@ -1,0 +1,25 @@
+{
+  "schema": "SWOF-R9-REPOCONTEXT/1",
+  "repo_root": "C:/Projects/Agent_Workspace/SWOF/.w2r9-worktree",
+  "parent_source_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+  "current_source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "branch": "repair/swof-w2-r9-pi06-policy-projection-boundary",
+  "git_status_porcelain": "?? R9_MAKER_SPEC.md\n?? nul\n?? r9_policy_probe.py",
+  "python": "C:/Projects/Agent_Workspace/HG-KSEOS/.venv/Scripts/python.exe",
+  "write_set": [
+    "src/security/policy_projection.py",
+    "src/security/rights.py",
+    "src/security/tests/test_rights.py"
+  ],
+  "forbidden": [
+    "HGK core",
+    "Fabric core",
+    "merge",
+    "release",
+    "deploy",
+    "production"
+  ],
+  "source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "checkpoint_source_digest": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "r9_source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d"
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "SWOF-R9-PATH-SAFETY/1",
+  "status": "PASS",
+  "scope": "R9_EVIDENCE",
+  "symlink_or_reparse_detected": false
+}

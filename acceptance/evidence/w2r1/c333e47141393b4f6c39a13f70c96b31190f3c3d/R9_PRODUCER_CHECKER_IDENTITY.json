@@ -1,0 +1,6 @@
+{
+  "schema": "SWOF-R9-IDENTITY/1",
+  "producer": "Codex/opencode-go lane",
+  "checker": "fresh GLM-5.3/NVIDIA independent checker",
+  "producer_ne_checker": true
+}

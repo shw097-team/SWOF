@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "id": "NB-R8-001",
+      "owner": "security/HumanGate",
+      "status": "deferred",
+      "reason": "no observed bypass"
+    },
+    {
+      "id": "NB-R8-002",
+      "owner": "policy_projection",
+      "status": "deferred",
+      "reason": "unused parameter hygiene"
+    },
+    {
+      "id": "NB-R8-003",
+      "owner": "policy_projection",
+      "status": "deferred",
+      "reason": "coarse deny code with deterministic detail"
+    }
+  ],
+  "blocking_open": []
+}

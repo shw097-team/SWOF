@@ -1,0 +1,13 @@
+{
+  "parent_source_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+  "r8_grand": 926,
+  "r9_grand": 943,
+  "r9_w1": 113,
+  "r9_w2": 830,
+  "zero_denominator_roots": 0,
+  "shrink": false,
+  "source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "current_source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "checkpoint_source_digest": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "r9_source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d"
+}

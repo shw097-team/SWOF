@@ -1,0 +1,8 @@
+{
+  "schema": "SWOF-R9-FRESH-CHECKER/1",
+  "source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "checker_ne_maker": true,
+  "read_only": true,
+  "verdict": "PASS",
+  "transcript": "R9_FRESH_CHECKER_TRANSCRIPT.log"
+}

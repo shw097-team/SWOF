@@ -1,0 +1,11 @@
+{
+  "schema": "SWOF-R9-ECP/1",
+  "ecp_id": "ECP-SWOF-W2-R9-001",
+  "workorder_id": "WO-SWOF-W2-R9-001",
+  "write_set": [
+    "src/security/policy_projection.py",
+    "src/security/rights.py",
+    "src/security/tests/test_rights.py"
+  ],
+  "claim_ceiling": "READY_FOR_W2_R9_EXTERNAL_RECHALLENGE"
+}

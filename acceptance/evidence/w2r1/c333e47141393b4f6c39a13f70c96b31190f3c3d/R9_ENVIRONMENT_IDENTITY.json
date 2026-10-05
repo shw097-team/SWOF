@@ -1,0 +1,7 @@
+{
+  "schema": "SWOF-R9-ENVIRONMENT/1",
+  "platform": "Windows",
+  "python": "3.11.15",
+  "source_sha": "0ab90c6582d80056d75e073bf7c861464ea3e2bd",
+  "generated_at": "2026-10-05T06:23:26.309049Z"
+}

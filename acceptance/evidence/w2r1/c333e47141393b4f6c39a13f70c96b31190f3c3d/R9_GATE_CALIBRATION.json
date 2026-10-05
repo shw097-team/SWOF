@@ -1,0 +1,28 @@
+{
+  "objective": "No trusted request below current PI06 minimum; unresolved owner/domain truth fails closed",
+  "strictness": "S3",
+  "negative_cases": [
+    "merge HA1-only",
+    "stateful MEDIUM",
+    "identity HIGH",
+    "data export unresolved",
+    "financial unresolved",
+    "physical unresolved",
+    "delete HIGH"
+  ],
+  "positive_controls": [
+    "merge HA1+HA3",
+    "benign read",
+    "R8 reversible",
+    "R8 secret",
+    "R8 release"
+  ],
+  "implementation_helper_as_oracle": false,
+  "baseline_grand": 926,
+  "observed_grand": 943,
+  "shrink_forbidden": true,
+  "source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "current_source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "checkpoint_source_digest": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "r9_source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d"
+}

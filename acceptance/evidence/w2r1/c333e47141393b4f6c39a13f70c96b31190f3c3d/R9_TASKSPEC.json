@@ -1,0 +1,16 @@
+{
+  "schema": "SWOF-R9-TASKSPEC/1",
+  "repair_id": "SWOF-W2-R9-PI06-POLICY-PROJECTION-BOUNDARY",
+  "parent_source_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+  "scope": [
+    "canonical action identity",
+    "ACT-MERGE coapproval",
+    "stateful write floor",
+    "owner-boundary fail-closed"
+  ],
+  "non_goals": [
+    "W3 domain implementation",
+    "second policy engine",
+    "HGK/Fabric mutation"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "schema": "SWOF-R9-WORKORDER/1",
+  "workorder_id": "WO-SWOF-W2-R9-001",
+  "task_spec": "R9_TASKSPEC.json",
+  "one_ecp": true,
+  "status": "CLOSED_PENDING_EXTERNAL_RECHALLENGE",
+  "source_sha": "0ab90c6582d80056d75e073bf7c861464ea3e2bd"
+}

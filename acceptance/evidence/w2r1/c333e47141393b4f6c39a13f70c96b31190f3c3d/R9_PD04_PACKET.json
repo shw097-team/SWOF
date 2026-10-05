@@ -1,0 +1,23 @@
+{
+  "schema": "SWOF-R9-PD04-PACKET/1",
+  "repair_id": "SWOF-W2-R9-PI06-POLICY-PROJECTION-BOUNDARY",
+  "repo_context": "R9_REPOCONTEXT_RECEIPT.json",
+  "changeset": "NARROW_REPAIR",
+  "source_requirement_edges": [
+    "REQ-R9-001",
+    "REQ-R9-002",
+    "REQ-R9-003",
+    "REQ-R9-004"
+  ],
+  "acceptance_edges": [
+    "ACC-R9-ACTION-IDENTITY",
+    "ACC-R9-MERGE-AUTHORITY",
+    "ACC-R9-OWNER-BOUNDARY",
+    "ACC-R9-FULL-REGRESSION"
+  ],
+  "evidence_edges": [
+    "R9_POLICY_PROJECTION_RAW.log",
+    "R9_FULL_REGRESSION_INDEX.json",
+    "R9_FRESH_CHECKER_TRANSCRIPT.log"
+  ]
+}

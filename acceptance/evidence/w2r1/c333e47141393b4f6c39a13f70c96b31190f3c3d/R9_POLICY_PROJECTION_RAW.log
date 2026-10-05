@@ -1,0 +1,10 @@
+R9_SOURCE_SHA=c333e47141393b4f6c39a13f70c96b31190f3c3d
+merge-ha1-only action= ACT-MERGE resolved= True deferred= None floor= ('AUTHORITY_FLOOR:no_pi06_clause_covered',)
+merge-ha1-ha3 action= ACT-MERGE resolved= True deferred= None floor= ()
+stateful-medium action= ACT-EXTERNAL-WRITE-STATEFUL resolved= True deferred= None floor= ("RISK_FLOOR:'MEDIUM'<HIGH", "AUTHN_FLOOR:'AAC1'<AAC2")
+identity-high action= ACT-IDENTITY-RIGHTS resolved= True deferred= None floor= ("RISK_FLOOR:'HIGH'<CRITICAL", 'AUTHORITY_FLOOR:no_pi06_clause_covered')
+data-export action= ACT-DATA-EXPORT resolved= False deferred= OWNER_BOUNDARY_DEFERRED floor= ('TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED',)
+financial action= ACT-FINANCIAL resolved= False deferred= OWNER_BOUNDARY_DEFERRED floor= ('TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED',)
+physical action= ACT-PHYSICAL resolved= False deferred= OWNER_BOUNDARY_DEFERRED floor= ('TEMP_CLOSED_POLICY_RESOLUTION:OWNER_BOUNDARY_DEFERRED',)
+delete-high action= ACT-DELETE-IRREV resolved= True deferred= None floor= ("RISK_FLOOR:'HIGH'<CRITICAL",)
+benign action=  resolved= True deferred= None floor= ()

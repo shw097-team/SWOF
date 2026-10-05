@@ -1,0 +1,16 @@
+{
+  "schema": "SWOF-R9-LOCAL-CLOSURE/1",
+  "source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "requirements_frozen": 10,
+  "workorder_id": "WO-SWOF-W2-R9-001",
+  "checkpoint_id": "CK-W2-R9-FINAL",
+  "checkpoint_source_digest": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "blocking_open_count": 0,
+  "required_active_capabilities_open_count": 0,
+  "denominator_nonvacuous": true,
+  "regression_index": "R9_FULL_REGRESSION_INDEX.json",
+  "literal_log_binding_mismatches": [],
+  "claim_ceiling": "READY_FOR_W2_R9_EXTERNAL_RECHALLENGE",
+  "current_source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "r9_source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d"
+}
