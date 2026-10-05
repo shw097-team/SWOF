@@ -1,0 +1,10 @@
+{
+  "schema": "SWOF-R9E-POSTPUBLICATION-VERIFY/1",
+  "source_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "evidence_sha": "11d88f1ad36fcf7c9a1b159d8c86648bb2812bd7",
+  "manifest_sha256": "fdf1a76ff7277f8c8f6031406698eb622494fb2378981db3a8500e34467d55c6",
+  "return_pack_sha256": "a73f16b3b060916ea8420695e501b48f8ec81a1ed563f2524e7cafa169688d5d",
+  "remote_readback_match": true,
+  "source_ne_evidence": true,
+  "remote_evidence_ref": "evidence/swof-w2-r9e-exact-subject-recert-001"
+}

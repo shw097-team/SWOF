@@ -1,0 +1,30 @@
+{
+  "schema": "SWOF-W2-R9E-EXTERNAL-ACCEPTANCE-READSET/1",
+  "github_disposition": "PUBLISHED",
+  "repo": "shw097-team/SWOF",
+  "pr": 7,
+  "source_candidate_sha": "c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "evidence_commit_sha": "11d88f1ad36fcf7c9a1b159d8c86648bb2812bd7",
+  "prior_evidence_commit_sha": "49ceff1c5a80559fc09572cefc23f9216434c46e",
+  "postpublication_support_sha": null,
+  "source_ne_evidence": true,
+  "branch_tip_is_not_subject": true,
+  "evidence_branch": "evidence/swof-w2-r9e-exact-subject-recert-001",
+  "manifest_sha256": "fdf1a76ff7277f8c8f6031406698eb622494fb2378981db3a8500e34467d55c6",
+  "manifest_bytes": 16822,
+  "return_pack_sha256": "a73f16b3b060916ea8420695e501b48f8ec81a1ed563f2524e7cafa169688d5d",
+  "return_pack_bytes": 2330,
+  "final_sanitation_receipt_sha256": "4d59c40299db6cf26486c9238acfa31a3b282251e5ea24402a1945070cbee23f",
+  "evidence_checker_receipt_sha256": "c29c6a8adab76a8b2dee5c9b9189fba28b959acf4632d3575657e31abadd0b0d",
+  "source_ref": "https://github.com/shw097-team/SWOF/commit/c333e47141393b4f6c39a13f70c96b31190f3c3d",
+  "evidence_ref": "https://github.com/shw097-team/SWOF/commit/11d88f1ad36fcf7c9a1b159d8c86648bb2812bd7",
+  "claim_ceiling": "READY_FOR_W2_R9E_EXTERNAL_RECHALLENGE",
+  "nonclaims": [
+    "NOT_EXTERNALLY_ACCEPTED",
+    "W3_REPO_MUTATION_NOT_AUTHORIZED",
+    "NOT_MERGED",
+    "NOT_RELEASED",
+    "NOT_PRODUCTION",
+    "NO_WORLD_EFFECT_ACCEPTANCE"
+  ]
+}
