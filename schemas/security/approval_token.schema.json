@@ -1,0 +1,272 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/security/approval_token.schema.json",
+ "title": "ApprovalToken 1.0.0 - exact-bound human approval (fail-closed)",
+ "description": "This is a SHAPE check only: passing it is not an acceptance and never authorizes an action. The law is enforced in src/security/humangate.py and is NOT expressible here - the token must bind exactly to the ApprovalRequest (subject, subject_hash, semantic_version, actor, operation, target_system, resource set, environment, purpose_ref, scope set, data_class, effect_digest, consumer_audience_hash, request_id, decision_id; token.request_id/decision_id must equal the request's, DENY_EXACT_BINDING), the approver/actor must be a human principal ref (prefix human:), issued_at <= commit_time < expires_at, every generation the VerificationContext supplies AND every generation the request declares must match (DENY_STALE_GENERATION), the expected consumer audience hash is mandatory (DENY_AUDIENCE_MISMATCH), approval_basis_hash is RECOMPUTED from the request's six fields (DENY_APPROVAL_BASIS), and the signature must be a REAL Ed25519 verification over DOMAIN_FRAME || RFC8785-JCS(token without signature) against a public key resolved by the injected trusted key registry. RUIN / UNKNOWN_RUIN always refuse. R5: the canonical risk domain is one EffectRiskTier enum (effect_risk_tier = LOW|MEDIUM|HIGH|CRITICAL|RUIN|UNKNOWN_RUIN); RUIN/UNKNOWN_RUIN are carried INSIDE it. `ruin_class` does NOT exist in the canonical source and is accepted ONLY as a NON-CANONICAL legacy alias when effect_risk_tier is absent, and it may never weaken a present canonical value. A present-but-malformed permission_class/effect_risk_tier/autonomy_tier fails closed (DOC-03 15.6). A proxy, a syntactic string or a green check can never close this gate.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "token_id",
+  "request_id",
+  "decision_id",
+  "subject",
+  "subject_hash",
+  "semantic_version",
+  "actor",
+  "operation",
+  "target_system",
+  "resource",
+  "environment",
+  "purpose_ref",
+  "scope",
+  "data_class",
+  "effect_digest",
+  "consumer_audience_hash",
+  "approver",
+  "authority_class",
+  "approver_authn_context_ref",
+  "authn_assurance_class",
+  "reauthenticated_at",
+  "authn_session_generation",
+  "credential_generation",
+  "approval_basis_hash",
+  "if06b_version",
+  "payload_schema_version",
+  "min_reader_version",
+  "writer_version",
+  "compatibility_class",
+  "evidence_link",
+  "independent_checker_required",
+  "issued_at",
+  "expires_at",
+  "nonce",
+  "rollback_ref",
+  "token_state",
+  "consumer",
+  "integrity_profile_id",
+  "issuer_id",
+  "key_id",
+  "key_generation",
+  "signature"
+ ],
+ "properties": {
+  "token_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "request_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "decision_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "subject": {
+   "type": "string",
+   "minLength": 1
+  },
+  "subject_hash": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{64}$"
+  },
+  "semantic_version": {
+   "type": "string",
+   "minLength": 1
+  },
+  "actor": {
+   "type": "string",
+   "minLength": 1,
+   "description": "The human principal asserting the operation; runtime requires the human: prefix."
+  },
+  "operation": {
+   "type": "string",
+   "minLength": 1
+  },
+  "target_system": {
+   "type": "string",
+   "minLength": 1
+  },
+  "resource": {
+   "type": "array",
+   "x-swof-collection-semantics": "set",
+   "minItems": 1,
+   "uniqueItems": true,
+   "items": {
+    "type": "string",
+    "minLength": 1
+   }
+  },
+  "environment": {
+   "type": "string",
+   "minLength": 1
+  },
+  "purpose_ref": {
+   "type": "string",
+   "minLength": 1
+  },
+  "scope": {
+   "type": "array",
+   "x-swof-collection-semantics": "set",
+   "minItems": 1,
+   "uniqueItems": true,
+   "items": {
+    "type": "string",
+    "minLength": 1
+   }
+  },
+  "data_class": {
+   "type": "string",
+   "minLength": 1
+  },
+  "effect_digest": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{64}$"
+  },
+  "consumer_audience_hash": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{64}$"
+  },
+  "approver": {
+   "type": "string",
+   "minLength": 1,
+   "description": "The approving human principal ref; runtime requires the human: prefix and refuses any model/tool/provider/agent/mcp/a2a/automation ref."
+  },
+  "authority_class": {
+   "type": "string",
+   "minLength": 1
+  },
+  "approver_authn_context_ref": {
+   "type": "string",
+   "minLength": 1
+  },
+  "authn_assurance_class": {
+   "enum": [
+    "AAC1",
+    "AAC2",
+    "AAC3"
+   ]
+  },
+  "reauthenticated_at": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"
+  },
+  "authn_session_generation": {
+   "type": "integer"
+  },
+  "credential_generation": {
+   "type": "integer"
+  },
+  "approval_basis_hash": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{64}$"
+  },
+  "if06b_version": {
+   "type": "string",
+   "pattern": "^[0-9]+\\.[0-9]+$",
+   "description": "IF-06B ABI version. The runtime requires ABI major 1; any other major is refused with IF06B_VERSION_UNSUPPORTED."
+  },
+  "payload_schema_version": {
+   "const": "1.0.0",
+   "description": "Payload schema version emitted by the writer; the runtime reader accepts only 1.0.0 (DENY_TOKEN_SCHEMA otherwise)."
+  },
+  "min_reader_version": {
+   "type": "string",
+   "pattern": "^[0-9]+\\.[0-9]+$",
+   "description": "Oldest reader ABI allowed to read this token. The runtime reader is 1.0 and refuses a token whose min_reader_version is newer (DENY_TOKEN_SCHEMA)."
+  },
+  "writer_version": {
+   "enum": [
+    "DOC03-r2"
+   ],
+   "description": "Recognised writer revision. An unrecognised writer is a hard failure (DENY_TOKEN_SCHEMA), never a silent downgrade."
+  },
+  "compatibility_class": {
+   "enum": [
+    "STRICT_MAJOR_ADDITIVE_MINOR"
+   ],
+   "description": "Declared compatibility class. An unknown class is a hard failure (DENY_TOKEN_SCHEMA)."
+  },
+  "evidence_link": {
+   "type": "string",
+   "minLength": 1,
+   "description": "Non-empty evidence pointer bound to the approval basis; the runtime refuses an empty or non-string value (DENY_TOKEN_SCHEMA)."
+  },
+  "independent_checker_required": {
+   "type": "boolean"
+  },
+  "independent_checker_evidence_ref": {
+   "type": "string"
+  },
+  "issued_at": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"
+  },
+  "expires_at": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"
+  },
+  "nonce": {
+   "type": "string",
+   "minLength": 1
+  },
+  "rollback_ref": {
+   "type": "string"
+  },
+  "token_state": {
+   "enum": [
+    "ACTIVE",
+    "CONSUMED",
+    "REVOKED",
+    "EXPIRED"
+   ]
+  },
+  "consumer": {
+   "type": "string",
+   "minLength": 1
+  },
+  "integrity_profile_id": {
+   "const": "SWOF-HG-INTEGRITY-001"
+  },
+  "issuer_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "key_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "key_generation": {
+   "type": "integer"
+  },
+  "signature": {
+   "type": "string",
+   "pattern": "^[A-Za-z0-9_-]{86}$"
+  }
+ },
+ "allOf": [
+  {
+   "if": {
+    "properties": {
+     "independent_checker_required": {
+      "const": true
+     }
+    },
+    "required": [
+     "independent_checker_required"
+    ]
+   },
+   "then": {
+    "properties": {
+     "independent_checker_evidence_ref": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "required": [
+     "independent_checker_evidence_ref"
+    ]
+   }
+  }
+ ]
+}

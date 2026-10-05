@@ -1,0 +1,31 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/security/rights_currentness.schema.json",
+ "title": "RightsScope - entitlement scope with explicit currentness (fail-closed)",
+ "description": "Shape of a RightsScope (see src/security/rights.py). This is a SHAPE check only; passing it is not an acceptance and never authorizes an action. The currentness law is enforced in src/security/rights.py and is NOT expressible in JSON Schema because it is a decision law, not a shape law: a scope whose expires_at is non-null CANNOT be evaluated without a trusted `now` supplied by the caller. An omitted or malformed `now` is unknown currentness and DENIES with CURRENTNESS_UNAVAILABLE_FAIL_CLOSED before any entitlement is consulted. Equality at the expiry instant (now == expires_at) is EXPIRED. A scope with expires_at null has nothing to evaluate and is not made expired by an absent `now`. The library never reads the wall clock; `now` is an explicit trusted input.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "subject",
+  "entitlements"
+ ],
+ "properties": {
+  "subject": {"type": "string", "minLength": 1},
+  "entitlements": {
+   "type": "array",
+   "uniqueItems": true,
+   "items": {"type": "string", "minLength": 1}
+  },
+  "credential_scope": {
+   "type": "array",
+   "uniqueItems": true,
+   "items": {"type": "string", "minLength": 1}
+  },
+  "expires_at": {
+   "type": ["string", "null"],
+   "description": "ISO-8601 UTC instant, or null for no expiry. When non-null the runtime requires a trusted `now`: check_rights / assert_credential_scope fail closed (CURRENTNESS_UNAVAILABLE_FAIL_CLOSED) if `now` is omitted, an unparsable `expires_at` is treated as expired, and `now >= expires_at` (equality included) is expired. currentness_required(scope) is True exactly when this field is non-null.",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$"
+  },
+  "revoked": {"type": "boolean"}
+ }
+}

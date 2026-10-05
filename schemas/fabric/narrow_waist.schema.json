@@ -1,0 +1,30 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://swof.local/schemas/fabric/narrow_waist.schema.json",
+ "title": "Narrow waist + architectural invariants (PI-PKG-04 §6.1/§6.2)",
+ "type": "object",
+ "required": [
+  "waist",
+  "invariants"
+ ],
+ "properties": {
+  "waist": {
+   "const": [
+    "Sovereign Semantic World / Canonical Plan IR",
+    "Mission / TaskSpec / WorkOrder",
+    "ECPDesignSchema",
+    "CapabilityContract",
+    "HarnessABI"
+   ]
+  },
+  "invariants": {
+   "type": "array",
+   "minItems": 10,
+   "maxItems": 10
+  },
+  "canonical_plan_ir_count": {
+   "const": 1
+  }
+ },
+ "additionalProperties": true
+}
