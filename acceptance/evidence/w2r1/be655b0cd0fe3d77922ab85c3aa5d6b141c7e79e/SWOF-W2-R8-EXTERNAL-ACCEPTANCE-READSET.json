@@ -1,0 +1,61 @@
+{
+  "schema": "SWOF-W2-R8-EXTERNAL-ACCEPTANCE-READSET/1",
+  "repair_id": "SWOF-W2-R8-PI06-HUMANGATE-POLICY-SUBSTRATE",
+  "generated_at": "2026-10-05",
+  "publication_model": "non-circular: in-tree immutable evidence commit + out-of-tree readset (support commit)",
+  "repo": "shw097-team/SWOF",
+  "pr": 7,
+  "identity": {
+    "source_candidate_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+    "parent_source_sha": "335c231659f42badd15085e379fe252def988584",
+    "parent_evidence_sha": "36cc241bc5823ff0f489e4e4a7518a3d96653e97",
+    "evidence_commit_sha": "97c43aa36a3e1a0acec03d62904b9f9a7241481a",
+    "source_ne_evidence": true,
+    "main_sha_unchanged": "acdbfaadd19d12927eb5bd542b09ed230bbc481e"
+  },
+  "refs": {
+    "source_branch": {
+      "name": "repair/swof-w2-r8-pi06-humangate-policy-substrate",
+      "sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e"
+    },
+    "pr_head_branch": {
+      "name": "wo/swof-w2-closure-r1",
+      "sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e"
+    },
+    "evidence_branch": {
+      "name": "evidence/swof-w2r8-closure-repair",
+      "sha": "97c43aa36a3e1a0acec03d62904b9f9a7241481a"
+    },
+    "pr_head": {
+      "sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+      "state": "open",
+      "merged": false
+    }
+  },
+  "artifact_identity": {
+    "rule": "git commit/blob identity + independently computed file hash/bytes; no self-referential self-hash",
+    "evidence_tree_root": "acceptance/evidence/w2r1/be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e",
+    "evidence_commit_sha": "97c43aa36a3e1a0acec03d62904b9f9a7241481a",
+    "manifest_sha256": "14f5face1ffa001b25718257d1d71bcb5fc926492484bbf296c447faa3906223",
+    "return_pack_sha256": "99c31fb98caf6160530b9ef8458777d4b3b80850cfd34180ec26cac21d4b304a"
+  },
+  "checkpoint": {
+    "project": "HGK-P0-SWOF-W2",
+    "final_checkpoint_id": "CK-W2-R8-FINAL",
+    "binding_field": "checkpoints.source_digest",
+    "resolves_to_exact_source_sha": "be655b0cd0fe3d77922ab85c3aa5d6b141c7e79e"
+  },
+  "compiler": {
+    "contract_sha256": "f43d7ebd62a99def8304779492395c96fb8c64c05b27112a01a94fe793576372",
+    "thin_prompt_path": "R8_COMPILED_THIN_PROMPT.md"
+  },
+  "later_support_pointer_policy": "later evidence-branch commits are NON_SUBJECT_POINTER_ONLY",
+  "non_claims": [
+    "NOT_EXTERNALLY_ACCEPTED",
+    "W3_NOT_STARTED",
+    "NOT_MERGED",
+    "NOT_RELEASED",
+    "NOT_PRODUCTION",
+    "NO_WORLD_EFFECT"
+  ]
+}
